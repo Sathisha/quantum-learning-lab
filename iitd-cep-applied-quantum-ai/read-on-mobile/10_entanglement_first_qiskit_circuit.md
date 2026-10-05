@@ -18,6 +18,26 @@ If you're running this on your own machine, install Qiskit first (one time):
 pip install qiskit qiskit-aer matplotlib
 ```
 
+## Symbols in this notebook
+Not sure how to read something? Here's every symbol used below, with how to say it. The full dictionary is in [Day 0](00_reading_maths_symbols.md).
+
+| Symbol | Say it | Means |
+|---|---|---|
+| CNOT | "C-NOT" or "controlled-NOT" | flips the second qubit when the first is 1 |
+| q0, q1 | "qubit zero", "qubit one" | the two qubits, numbered from 0 |
+| (\|00⟩ + \|11⟩)/√2 | "ket zero zero plus ket one one, over root two" | the Bell state |
+| det | "determinant" | ad − bc; zero for product states |
+| shots | "shots" | how many times the circuit is run and measured |
+| counts | "counts" | how many times each outcome appeared |
+
+## Back to basics: what 'product state' and 'entangled' mean in plain words
+- A **product state** is one where each qubit has its own state and you simply put them side by side. Knowing one tells you nothing about the other.
+- An **entangled state** can't be written that way. The qubits only have a joint description.
+
+**The Bell state in one sentence:** each qubit on its own is a 50/50 coin flip, but the two always land the **same** way: both 0 or both 1, never mixed.
+
+**A test you can do by hand:** write the four amplitudes in a 2×2 grid (rows = first qubit, columns = second). If the grid's determinant ad − bc is 0, it's a product state; otherwise it's entangled.
+
 
 ```python
 %matplotlib inline
@@ -76,7 +96,7 @@ axes[0].set_ylabel("probability"); plt.tight_layout(); plt.show()
 
 
     
-![png](10_entanglement_first_qiskit_circuit_files/10_entanglement_first_qiskit_circuit_6_1.png)
+![png](10_entanglement_first_qiskit_circuit_files/10_entanglement_first_qiskit_circuit_8_1.png)
     
 
 
@@ -102,7 +122,7 @@ plt.tight_layout(); plt.show()
 
 
     
-![png](10_entanglement_first_qiskit_circuit_files/10_entanglement_first_qiskit_circuit_8_0.png)
+![png](10_entanglement_first_qiskit_circuit_files/10_entanglement_first_qiskit_circuit_10_0.png)
     
 
 
@@ -159,9 +179,16 @@ plt.title("1000 shots of the Bell circuit"); plt.ylabel("counts"); plt.show()
 
 
     
-![png](10_entanglement_first_qiskit_circuit_files/10_entanglement_first_qiskit_circuit_11_1.png)
+![png](10_entanglement_first_qiskit_circuit_files/10_entanglement_first_qiskit_circuit_13_1.png)
     
 
+
+## Worked example, every step shown: following |00⟩ through H then CNOT
+1. **Start:** \|00⟩ = (1, 0, 0, 0). Only \|00⟩ has amplitude.
+2. **H on the first qubit:** \|0⟩ becomes (\|0⟩ + \|1⟩)/√2, so the pair becomes (\|00⟩ + \|10⟩)/√2 = (0.707, 0, 0.707, 0).
+3. **CNOT:** the \|00⟩ part has first qubit 0, so nothing changes. The \|10⟩ part has first qubit 1, so the second qubit flips and it becomes \|11⟩.
+4. **Result:** (\|00⟩ + \|11⟩)/√2 = (0.707, 0, 0, 0.707). That's the Bell state.
+5. **Determinant test:** grid [[0.707, 0], [0, 0.707]], det = 0.707 × 0.707 − 0 × 0 = 0.5 ≠ 0, so it's entangled.
 
 ## Exercises
 **E1.** Run the circuit with 1000 shots. Confirm `00` and `11` each appear about 500 times, and `01`/`10` never appear. Explain the zeros in one line.

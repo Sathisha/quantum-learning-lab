@@ -27,6 +27,35 @@ def tex(label):
     return label
 ```
 
+## Symbols in this notebook
+Not sure how to read something? Here's every symbol used below, with how to say it. The full dictionary is in [Day 0](00_reading_maths_symbols.md).
+
+| Symbol | Say it | Means |
+|---|---|---|
+| A, X, Z | "matrix A" … | a grid of numbers; capitals usually mean matrices |
+| Aᵢⱼ | "A sub i j" | the entry in row i, column j |
+| 2×2 | "two by two" | 2 rows, 2 columns (rows always come first) |
+| Av | "A times v" | matrix-vector product |
+| AB | "A times B" | matrix-matrix product: do B first, then A |
+| I | "the identity" | 1s on the diagonal, 0s elsewhere |
+| Aᵀ | "A transpose" | swap rows and columns |
+| A† | "A dagger" | transpose, then conjugate every entry |
+
+## Back to basics: what a matrix is and how its size works
+A matrix is a rectangular grid of numbers. Its size is written **rows × columns**: a 2×3 matrix has 2 rows and 3 columns.
+
+```
+      col 0  col 1  col 2
+row 0 [  1     2     3  ]
+row 1 [  4     5     6  ]
+```
+
+**When can you multiply?** A (m×n) matrix times a (n×p) matrix gives an (m×p) matrix. The **inner sizes must match**:
+- (2×3) times (3×1) works and gives (2×1).
+- (2×3) times (2×1) does **not** work: 3 ≠ 2.
+
+**The recipe for each output entry:** take a **row** of the left matrix and a **column** of the right matrix, multiply matching entries, and add. That's the inner product from Day 2.
+
 ## 1. Matrix times vector
 Each output entry is a row of the matrix dotted with the vector:
 
@@ -69,7 +98,7 @@ show_transform(np.array([[2, 1], [0, 1]]), "A shear-and-stretch")
 
 
     
-![png](03_matrices_files/03_matrices_5_0.png)
+![png](03_matrices_files/03_matrices_7_0.png)
     
 
 
@@ -85,7 +114,7 @@ print("X @ [1, 0] =", X @ np.array([1, 0]), "   X @ [0, 1] =", X @ np.array([0, 
 
 
     
-![png](03_matrices_files/03_matrices_7_0.png)
+![png](03_matrices_files/03_matrices_9_0.png)
     
 
 
@@ -135,6 +164,57 @@ print("A-dagger =\n", A.conj().T)
      [[1.-0.j 2.-0.j]
      [0.-1.j 3.+1.j]]
 
+
+## Worked example, every step shown: a 2×2 times 2×2 product
+Compute AB for A = [[1, 2], [3, 4]] and B = [[0, 1], [1, 0]].
+
+- Top-left = row 0 of A · column 0 of B = (1)(0) + (2)(1) = **2**
+- Top-right = row 0 of A · column 1 of B = (1)(1) + (2)(0) = **1**
+- Bottom-left = row 1 of A · column 0 of B = (3)(0) + (4)(1) = **4**
+- Bottom-right = row 1 of A · column 1 of B = (3)(1) + (4)(0) = **3**
+
+**AB = [[2, 1], [4, 3]]**: B swapped A's columns. Now try BA: you'll get [[3, 4], [1, 2]], with the rows swapped instead. Different, so order matters.
+
+
+```python
+A = np.array([[1, 2], [3, 4]]); B = np.array([[0, 1], [1, 0]])
+print("AB =\n", A @ B, "\nBA =\n", B @ A)
+```
+
+    AB =
+     [[2 1]
+     [4 3]] 
+    BA =
+     [[3 4]
+     [1 2]]
+
+
+## Worked example, every step shown: the conjugate transpose of a 2×2 complex matrix
+For M = [[2 + i, 3], [−i, 4 − 2i]]:
+
+1. **Transpose** (row 0 becomes column 0): [[2 + i, −i], [3, 4 − 2i]]
+2. **Conjugate every entry** (flip the sign of each imaginary part):
+   - 2 + i → 2 − i
+   - −i → i
+   - 3 → 3
+   - 4 − 2i → 4 + 2i
+3. **M† = [[2 − i, i], [3, 4 + 2i]]**
+
+
+```python
+M = np.array([[2 + 1j, 3], [-1j, 4 - 2j]])
+print("M-dagger =\n", M.conj().T)
+```
+
+    M-dagger =
+     [[ 2.-1.j -0.+1.j]
+     [ 3.-0.j  4.+2.j]]
+
+
+### Common mistakes
+- Multiplying matching entries (`A * B` in NumPy) when you mean matrix multiplication (`A @ B`).
+- Reading a circuit's gate order the wrong way round. Gates applied in the order G1 then G2 give the product G2·G1.
+- Transposing but forgetting to conjugate for A†.
 
 ## Exercises
 **E1.** Compute X·(a, b) by hand for X = [[0, 1], [1, 0]].

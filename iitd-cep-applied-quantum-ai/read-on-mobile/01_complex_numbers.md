@@ -27,6 +27,51 @@ def tex(label):
     return label
 ```
 
+## Symbols in this notebook
+Not sure how to read something? Here's every symbol used below, with how to say it. The full dictionary is in [Day 0](00_reading_maths_symbols.md).
+
+| Symbol | Say it | Means |
+|---|---|---|
+| i | "i" | the imaginary unit; i × i = −1 |
+| a + bi | "a plus b i" | a complex number with real part a and imaginary part b |
+| z | "z" | the usual name for a complex number |
+| z* or conj(z) | "z star", "conjugate of z" | a − bi: flip the sign of the imaginary part |
+| \|z\| | "mod z" | the length of z: √(a² + b²) |
+| r | "r" | the length again, in polar form |
+| θ | "theta" | the angle from the positive real axis |
+| e^(iθ) | "e to the i theta" | cos θ + i sin θ: a point on the unit circle |
+| π | "pi" | 3.14159…; π radians = 180° |
+| √ | "square root" |  |
+
+## Back to basics: why do we need i at all?
+Ordinary ("real") numbers live on a line. There's no real number whose square is −1, because any real number squared is ≥ 0.
+Mathematicians simply **defined** a new number i with i² = −1 and found that everything still works. Adding a second axis for multiples of i turns the number line into a number **plane**.
+
+**Powers of i cycle every four steps**, and this pattern is worth remembering:
+- i¹ = i
+- i² = −1 (the definition)
+- i³ = i² · i = −1 · i = −i
+- i⁴ = i² · i² = (−1)(−1) = 1
+- i⁵ = i⁴ · i = i, and the cycle repeats
+
+**Solving with i:** x² = −9 has no real answer, but x = 3i works: (3i)² = 9 · i² = 9 · (−1) = −9. ✓
+
+
+```python
+for n in range(1, 9):
+    print(f"i^{n} = {1j**n}")
+```
+
+    i^1 = 1j
+    i^2 = (-1+0j)
+    i^3 = (-0-1j)
+    i^4 = (1+0j)
+    i^5 = 1j
+    i^6 = (-1+0j)
+    i^7 = (-0-1j)
+    i^8 = (1+0j)
+
+
 ## 1. A complex number is a point on a plane
 `z = a + bi` has a **real part** `a` and an **imaginary part** `b`, where `i² = −1`.
 Plot `a` on the horizontal axis and `b` on the vertical axis and every complex number becomes a point (or an arrow from the origin).
@@ -119,7 +164,7 @@ plt.show()
 
 
     
-![png](01_complex_numbers_files/01_complex_numbers_11_0.png)
+![png](01_complex_numbers_files/01_complex_numbers_14_0.png)
     
 
 
@@ -142,7 +187,7 @@ print("lengths:", [round(abs(p), 6) for p in pts])
 
 
     
-![png](01_complex_numbers_files/01_complex_numbers_13_0.png)
+![png](01_complex_numbers_files/01_complex_numbers_16_0.png)
     
 
 
@@ -152,6 +197,49 @@ print("lengths:", [round(abs(p), 6) for p in pts])
 ## 5. Why this matters for qubits
 A qubit state is `α|0⟩ + β|1⟩` with complex α and β. The probabilities are |α|² and |β|², and they must add to 1.
 Two states that differ only by multiplying everything by e^(iθ) (a **global phase**) give identical probabilities. You'll meet this again on Day 11.
+
+## Worked example, every step shown: multiplying (2 + 3i)(1 − 4i)
+Treat it like multiplying two brackets (first, outer, inner, last), then replace every i² with −1.
+
+1. First terms: 2 × 1 = 2
+2. Outer terms: 2 × (−4i) = −8i
+3. Inner terms: 3i × 1 = 3i
+4. Last terms: 3i × (−4i) = −12i²
+5. Replace i² with −1: −12i² = −12 × (−1) = +12
+6. Collect real parts: 2 + 12 = 14
+7. Collect imaginary parts: −8i + 3i = −5i
+8. **Answer: 14 − 5i**
+
+
+```python
+print((2 + 3j) * (1 - 4j))
+```
+
+    (14-5j)
+
+
+## Worked example, every step shown: converting 1 + i√3 to polar form
+1. Real part a = 1, imaginary part b = √3 ≈ 1.732.
+2. Length: r = √(a² + b²) = √(1 + 3) = √4 = **2**.
+3. Angle: tan θ = b/a = √3. The point is in the upper-right quarter, and the angle whose tangent is √3 is 60°, so **θ = π/3**.
+4. **Polar form: 2·e^(iπ/3)**.
+5. Check going back: 2(cos 60° + i sin 60°) = 2(0.5 + 0.866i) = 1 + 1.732i ✓
+
+
+```python
+z = 1 + 1j * np.sqrt(3)
+print("r =", abs(z), " theta =", np.angle(z), " pi/3 =", np.pi / 3)
+print("back again:", 2 * np.exp(1j * np.pi / 3))
+```
+
+    r = 2.0  theta = 1.0471975511965976  pi/3 = 1.0471975511965976
+    back again: (1.0000000000000002+1.7320508075688772j)
+
+
+### Common mistakes
+- Forgetting that i² = −1 and leaving i² in the answer.
+- Writing |a + bi| = a + b. It's √(a² + b²): |3 + 4i| = 5, not 7.
+- Mixing degrees and radians. NumPy's `np.angle`, `np.cos` and `np.exp` all use radians.
 
 ## Exercises
 **E1.** Write (1 + i)/√2 in polar form and show its modulus is 1.

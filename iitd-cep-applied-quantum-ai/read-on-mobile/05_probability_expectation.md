@@ -29,6 +29,41 @@ def tex(label):
 rng = np.random.default_rng(7)
 ```
 
+## Symbols in this notebook
+Not sure how to read something? Here's every symbol used below, with how to say it. The full dictionary is in [Day 0](00_reading_maths_symbols.md).
+
+| Symbol | Say it | Means |
+|---|---|---|
+| P(A) | "probability of A" | a number from 0 (never) to 1 (always) |
+| pₖ | "p sub k" | the probability of outcome k |
+| Σₖ pₖ = 1 | "the sum of all p sub k is one" | probabilities must add to 1 |
+| X | "X" | a random variable: a quantity whose value comes out at random |
+| E[X] | "expected value of X" | the long-run average, Σ xₖ pₖ |
+| Var[X] | "variance of X" | spread: E[X²] − E[X]² |
+| α, β | "alpha", "beta" | the amplitudes of \|0⟩ and \|1⟩ |
+| \|α\|² | "mod alpha squared" | the probability of measuring 0 (Born rule) |
+| ⟨Z⟩ | "expectation value of Z" | average result when outcomes are labelled +1 and −1 |
+
+## Back to basics: probability from scratch
+A **probability** is a number between 0 and 1 saying how likely something is: 0 means impossible, 1 means certain, 0.5 means half the time.
+
+**Basic rules, with a coin and a die:**
+- **Equally likely outcomes:** P = (number of ways it can happen) / (total number of outcomes). A fair die: P(rolling a 4) = 1/6.
+- **"Not":** P(not A) = 1 − P(A). P(not a 4) = 1 − 1/6 = 5/6.
+- **"Or", when they can't both happen:** add. P(1 or 2) = 1/6 + 1/6 = 1/3.
+- **"And", for independent events:** multiply. Two coin flips, P(heads and heads) = 1/2 × 1/2 = 1/4.
+
+**Percentages and decimals:** 0.25 = 25% = 1/4. In quantum computing results, you'll see all three.
+
+
+```python
+from fractions import Fraction as F
+print("P(4) =", F(1, 6), "  P(not 4) =", 1 - F(1, 6), "  P(1 or 2) =", F(1, 6) + F(1, 6), "  P(HH) =", F(1, 2) * F(1, 2))
+```
+
+    P(4) = 1/6   P(not 4) = 5/6   P(1 or 2) = 1/3   P(HH) = 1/4
+
+
 ## 1. Discrete distributions
 A distribution lists outcomes and their probabilities. Two rules: every probability is ≥ 0, and they **sum to 1**.
 
@@ -45,7 +80,7 @@ plt.figure(figsize=(6, 3)); plt.bar(outcomes, p); plt.title("A fair die"); plt.y
 
 
     
-![png](05_probability_expectation_files/05_probability_expectation_3_1.png)
+![png](05_probability_expectation_files/05_probability_expectation_6_1.png)
     
 
 
@@ -69,7 +104,7 @@ plt.title("Expected value = balance point"); plt.legend(); plt.show()
 
 
     
-![png](05_probability_expectation_files/05_probability_expectation_5_1.png)
+![png](05_probability_expectation_files/05_probability_expectation_8_1.png)
     
 
 
@@ -98,7 +133,7 @@ plt.show()
 
 
     
-![png](05_probability_expectation_files/05_probability_expectation_7_1.png)
+![png](05_probability_expectation_files/05_probability_expectation_10_1.png)
     
 
 
@@ -126,13 +161,55 @@ plt.xlabel("shots"); plt.ylabel("observed P(0)"); plt.title("Frequencies converg
 
 
     
-![png](05_probability_expectation_files/05_probability_expectation_9_1.png)
+![png](05_probability_expectation_files/05_probability_expectation_12_1.png)
     
 
 
 ## 5. Expected value of a measurement
 If outcome 0 is labelled +1 and outcome 1 is labelled −1, then E = (+1)·P(0) + (−1)·P(1) = P(0) − P(1).
 This is the **expectation value ⟨Z⟩** you'll compute constantly in variational algorithms (Module 8).
+
+## Worked example, every step shown: expected value and variance of a weighted die
+A die has P(1) = 0.5, P(2) = 0.3, P(3) = 0.2. Find E[X] and Var[X].
+
+**Read it aloud:** E[X] = Σ xₖ pₖ, "the expected value of X is the sum of each value times its probability".
+
+1. Check it's a valid distribution: 0.5 + 0.3 + 0.2 = 1.0 ✓
+2. E[X] = 1(0.5) + 2(0.3) + 3(0.2) = 0.5 + 0.6 + 0.6 = **1.7**
+3. E[X²] = 1²(0.5) + 2²(0.3) + 3²(0.2) = 0.5 + 1.2 + 1.8 = 3.5
+4. Var[X] = E[X²] − E[X]² = 3.5 − 1.7² = 3.5 − 2.89 = **0.61**
+
+
+```python
+x = np.array([1, 2, 3]); p = np.array([0.5, 0.3, 0.2])
+E = (x * p).sum(); E2 = (x**2 * p).sum()
+print("E[X] =", E, "  E[X^2] =", E2, "  Var =", round(E2 - E**2, 4))
+```
+
+    E[X] = 1.7000000000000002   E[X^2] = 3.5   Var = 0.61
+
+
+## Worked example, every step shown: the Born rule with a complex amplitude
+A qubit is in the state (3/5)|0⟩ + (4i/5)|1⟩. What are P(0), P(1) and ⟨Z⟩?
+
+1. α = 3/5, so |α|² = (3/5)² = 9/25 = **0.36**
+2. β = 4i/5, so |β| = 4/5 (the i only rotates it, it doesn't change the length) and |β|² = 16/25 = **0.64**
+3. Check: 0.36 + 0.64 = 1 ✓
+4. ⟨Z⟩ = (+1)(0.36) + (−1)(0.64) = **−0.28**. Negative, because 1 is the more likely outcome.
+
+
+```python
+amps = np.array([3 / 5, 4j / 5]); p = np.abs(amps)**2
+print("P(0), P(1) =", p, "  <Z> =", p[0] - p[1])
+```
+
+    P(0), P(1) = [0.36 0.64]   <Z> = -0.28000000000000014
+
+
+### Common mistakes
+- Squaring the amplitude instead of its modulus. (i/√2)² = −1/2, which can't be a probability; |i/√2|² = 1/2 is correct.
+- Forgetting that the probabilities must add to 1. If they don't, the state wasn't normalised.
+- Expecting exact 50/50 counts from a finite number of shots. Real counts wobble around the true value.
 
 ## Exercises
 **E1.** For amplitudes (1/√2, i/√2), give P(0) and P(1).

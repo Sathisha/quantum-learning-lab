@@ -32,6 +32,26 @@ plus = (ket0 + ket1) / np.sqrt(2)
 minus = (ket0 - ket1) / np.sqrt(2)
 ```
 
+## Symbols in this notebook
+Not sure how to read something? Here's every symbol used below, with how to say it. The full dictionary is in [Day 0](00_reading_maths_symbols.md).
+
+| Symbol | Say it | Means |
+|---|---|---|
+| θ | "theta" | angle down from the north pole (\|0⟩), from 0 to π |
+| φ | "phi" ("fee") | angle around the equator from the +x axis, 0 to 2π |
+| θ/2 | "theta over two" | half the angle; it appears inside cos and sin |
+| e^(iφ) | "e to the i phi" | a phase: a rotation by φ |
+| (x, y, z) |  | the point on the sphere: (sin θ cos φ, sin θ sin φ, cos θ) |
+| Rz(α) | "R z of alpha" | rotation by α about the z axis |
+| \|i⟩ | "ket i" | (\|0⟩ + i\|1⟩)/√2, on the +y axis |
+
+## Back to basics: angles on a sphere, like latitude and longitude
+Think of the globe:
+- **θ (theta)** is like latitude, but measured **down from the North Pole**: θ = 0 is the North Pole (\|0⟩), θ = π/2 is the equator, θ = π is the South Pole (\|1⟩).
+- **φ (phi)** is like longitude: how far round the equator you've gone, starting from the +x direction.
+
+**Why θ/2 in the formula?** Because opposite points on the sphere (\|0⟩ at θ = 0 and \|1⟩ at θ = π) are orthogonal states. Halving the angle makes cos(θ/2) go from 1 to 0 as θ goes from 0 to π, which is exactly the amplitude of \|0⟩ fading out.
+
 ## 1. From two complex numbers to two angles
 Any normalised state can be written (ignoring an unobservable global phase) as
 
@@ -90,7 +110,7 @@ draw_bloch({n: bloch_angles(s) for n, s in states.items()}, r"$|0\rangle$ top, $
 
 
     
-![png](11_bloch_sphere_files/11_bloch_sphere_5_0.png)
+![png](11_bloch_sphere_files/11_bloch_sphere_7_0.png)
     
 
 
@@ -108,12 +128,19 @@ print("thetas:", [round(t / np.pi, 3) for t, _ in walk.values()], "(all 0.5 pi)"
 
 
     
-![png](11_bloch_sphere_files/11_bloch_sphere_7_0.png)
+![png](11_bloch_sphere_files/11_bloch_sphere_9_0.png)
     
 
 
     thetas: [np.float64(0.5), np.float64(0.5), np.float64(0.5), np.float64(0.5), np.float64(0.5), np.float64(0.5), np.float64(0.5), np.float64(0.5)] (all 0.5 pi)
 
+
+## Worked example, every step shown: finding θ and φ for (|0⟩ − i|1⟩)/√2
+1. Match it to cos(θ/2)\|0⟩ + e^(iφ) sin(θ/2)\|1⟩.
+2. Amplitude of \|0⟩: cos(θ/2) = 1/√2, so θ/2 = π/4 and **θ = π/2**: it's on the equator.
+3. Amplitude of \|1⟩: e^(iφ) sin(θ/2) = −i/√2. Since sin(π/4) = 1/√2, we need e^(iφ) = −i.
+4. −i is the point at angle −90°, i.e. **φ = 3π/2** (or −π/2).
+5. Point on the sphere: (sin θ cos φ, sin θ sin φ, cos θ) = (1·0, 1·(−1), 0) = **(0, −1, 0)**, the −y axis.
 
 ## Exercises
 **E1.** Give θ and φ for |0⟩, |1⟩, |+⟩ and |−⟩.

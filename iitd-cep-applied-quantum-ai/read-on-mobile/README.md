@@ -1,10 +1,11 @@
 # Read on mobile
 
-The 11 prep notebooks as Markdown pages, with every result and plot already included. GitHub shows these cleanly on a phone, including in the GitHub mobile app.
+The 12 prep notebooks (Day 0 plus Days 1–11) as Markdown pages, with every result and plot already included. GitHub shows these cleanly on a phone, including in the GitHub mobile app.
 To run or edit the code, use the original notebooks in [../notebooks](../notebooks/).
 
 | Day | Topic |
 | --- | --- |
+| 0 | [Reading maths symbols and refreshing the basics](00_reading_maths_symbols.md) — start here |
 | 1 | [Complex numbers](01_complex_numbers.md) |
 | 2 | [Linear algebra 1: vectors and inner products](02_vectors_inner_products.md) |
 | 3 | [Linear algebra 2: matrices](03_matrices.md) |

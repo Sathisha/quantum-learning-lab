@@ -32,6 +32,42 @@ plus = (ket0 + ket1) / np.sqrt(2)
 minus = (ket0 - ket1) / np.sqrt(2)
 ```
 
+## Symbols in this notebook
+Not sure how to read something? Here's every symbol used below, with how to say it. The full dictionary is in [Day 0](00_reading_maths_symbols.md).
+
+| Symbol | Say it | Means |
+|---|---|---|
+| ⊗ | "tensor" ("a tensor b") | the Kronecker product: combines two systems |
+| \|00⟩ | "ket zero zero" | both qubits are 0; short for \|0⟩⊗\|0⟩ |
+| \|01⟩, \|10⟩, \|11⟩ | "ket zero one" … | the other two-qubit basis states |
+| 2ⁿ | "two to the n" | number of amplitudes for n qubits |
+| H ⊗ I | "H tensor I" | apply H to the first qubit, nothing to the second |
+
+## Back to basics: binary counting and powers of two
+Two-qubit states are labelled with **binary**, and the four labels count from 0 to 3:
+
+| Binary | Decimal | Basis state | Vector position |
+|---|---|---|---|
+| 00 | 0 | \|00⟩ | entry 0 |
+| 01 | 1 | \|01⟩ | entry 1 |
+| 10 | 2 | \|10⟩ | entry 2 |
+| 11 | 3 | \|11⟩ | entry 3 |
+
+**Powers of two** grow fast: 2¹ = 2, 2² = 4, 2³ = 8, 2¹⁰ = 1,024, 2²⁰ ≈ 1 million, 2³⁰ ≈ 1 billion.
+n qubits have 2ⁿ basis states, so 3 qubits have 8 and 10 qubits have 1,024.
+
+
+```python
+for k in range(4):
+    print(f"decimal {k} = binary {k:02b}")
+```
+
+    decimal 0 = binary 00
+    decimal 1 = binary 01
+    decimal 2 = binary 10
+    decimal 3 = binary 11
+
+
 ## 1. The Kronecker product
 (a, b) ⊗ (c, d) = (a·c, a·d, b·c, b·d). Each entry of the first vector scales a whole copy of the second.
 The order of the basis states that falls out is |00⟩, |01⟩, |10⟩, |11⟩, like counting in binary.
@@ -66,7 +102,7 @@ print("sum of squares still 1:", np.sum(np.abs(out) ** 2))
 
 
     
-![png](09_two_qubits_tensor_products_files/09_two_qubits_tensor_products_5_0.png)
+![png](09_two_qubits_tensor_products_files/09_two_qubits_tensor_products_8_0.png)
     
 
 
@@ -90,7 +126,7 @@ ax.set_title("Classical memory for an n-qubit state vector"); plt.show()
 
 
     
-![png](09_two_qubits_tensor_products_files/09_two_qubits_tensor_products_7_0.png)
+![png](09_two_qubits_tensor_products_files/09_two_qubits_tensor_products_10_0.png)
     
 
 
@@ -111,6 +147,24 @@ print("(H (x) I)|00> =", HI @ np.kron(ket0, ket0).real)
      [ 0.7071  0.     -0.7071 -0.    ]
      [ 0.      0.7071 -0.     -0.7071]]
     (H (x) I)|00> = [0.7071 0.     0.7071 0.    ]
+
+
+## Worked example, every step shown: (a|0⟩ + b|1⟩) ⊗ (c|0⟩ + d|1⟩) with real numbers
+Take the first qubit as (0.6, 0.8) and the second as (1/√2, 1/√2) ≈ (0.707, 0.707).
+
+**Recipe:** each entry of the first vector multiplies the **whole** second vector, and the results are stacked:
+1. 0.6 × (0.707, 0.707) = (0.424, 0.424) → amplitudes of \|00⟩ and \|01⟩
+2. 0.8 × (0.707, 0.707) = (0.566, 0.566) → amplitudes of \|10⟩ and \|11⟩
+3. Result: **(0.424, 0.424, 0.566, 0.566)**
+4. Check the probabilities add to 1: 0.18 + 0.18 + 0.32 + 0.32 = 1.0 ✓
+
+
+```python
+out = np.kron(np.array([0.6, 0.8]), np.array([1, 1]) / np.sqrt(2))
+print("result =", np.round(out, 3), "  sum of squares =", np.sum(out**2))
+```
+
+    result = [0.424 0.424 0.566 0.566]   sum of squares = 1.0
 
 
 ## Exercises

@@ -36,6 +36,26 @@ Z = np.array([[1, 0], [0, -1]], dtype=complex)
 H = np.array([[1, 1], [1, -1]], dtype=complex) / np.sqrt(2)
 ```
 
+## Symbols in this notebook
+Not sure how to read something? Here's every symbol used below, with how to say it. The full dictionary is in [Day 0](00_reading_maths_symbols.md).
+
+| Symbol | Say it | Means |
+|---|---|---|
+| X | "X gate" or "NOT gate" | [[0, 1], [1, 0]]: swaps \|0⟩ and \|1⟩ |
+| Z | "Z gate" | [[1, 0], [0, −1]]: flips the sign of \|1⟩ |
+| H | "Hadamard" | (1/√2)[[1, 1], [1, −1]]: makes superpositions |
+| U | "U" | a general gate (unitary matrix) |
+| U† | "U dagger" | conjugate transpose of U; it undoes U |
+| U†U = I | "U dagger U equals the identity" | the condition for a valid gate |
+| H\|0⟩ | "H applied to ket zero" | matrix times vector |
+
+## Back to basics: applying a gate is just matrix × vector
+When you see **H\|0⟩**, read it as "the H matrix times the \|0⟩ vector". That's the Day 3 recipe: each output entry is a row of the matrix dotted with the vector.
+
+**Why the 1/√2 in front of H?** Without it, [[1, 1], [1, −1]] applied to (1, 0) gives (1, 1), which has length √2. Dividing by √2 brings the length back to 1, so probabilities still add to 1.
+
+**A number in front of a matrix multiplies every entry:** (1/√2)[[1, 1], [1, −1]] = [[0.707, 0.707], [0.707, −0.707]].
+
 ## 1. Three gates to know
 - **X** (NOT): swaps |0⟩ ↔ |1⟩
 - **Z** (phase flip): leaves |0⟩ alone, sends |1⟩ → −|1⟩
@@ -69,7 +89,7 @@ plt.show()
 
 
     
-![png](08_gates_as_matrices_files/08_gates_as_matrices_5_0.png)
+![png](08_gates_as_matrices_files/08_gates_as_matrices_7_0.png)
     
 
 
@@ -103,6 +123,32 @@ print("HZH == X ?", np.allclose(H @ Z @ H, X))
 
     H Z H |0> = [-0.+0.j  1.+0.j]   (that's |1>: HZH acts like X)
     HZH == X ? True
+
+
+## Worked example, every step shown: H|1⟩, then check H is unitary
+**Part 1: H\|1⟩.** \|1⟩ = (0, 1).
+- Row 0 of H · (0, 1) = (1/√2)(1·0 + 1·1) = 1/√2
+- Row 1 of H · (0, 1) = (1/√2)(1·0 + (−1)·1) = −1/√2
+- **H\|1⟩ = (1/√2, −1/√2) = \|−⟩**
+
+**Part 2: H†H = I.** H is real and symmetric, so H† = H. Compute H·H = ½·[[1, 1], [1, −1]]·[[1, 1], [1, −1]]:
+- Top-left: ½(1·1 + 1·1) = ½·2 = 1
+- Top-right: ½(1·1 + 1·(−1)) = 0
+- Bottom-left: ½(1·1 + (−1)·1) = 0
+- Bottom-right: ½(1·1 + (−1)(−1)) = 1
+- **H·H = I** ✓
+
+
+```python
+H1 = np.array([[1, 1], [1, -1]]) / np.sqrt(2)
+print("H|1> =", H1 @ np.array([0, 1]))
+print("H dagger H =\n", np.round(H1.conj().T @ H1, 10))
+```
+
+    H|1> = [ 0.7071 -0.7071]
+    H dagger H =
+     [[ 1. -0.]
+     [-0.  1.]]
 
 
 ## Exercises

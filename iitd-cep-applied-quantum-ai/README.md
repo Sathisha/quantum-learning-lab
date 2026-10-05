@@ -19,6 +19,7 @@ Runs 17 Oct 2026 to 10 Apr 2027, weekend classes. Faculty: Prof. Amit Kumar, Pro
 
 | Day | Date | Phase | Notebook |
 | --- | --- | --- | --- |
+| 0 | Anytime first | Refresher | [Reading maths symbols and refreshing the basics](notebooks/00_reading_maths_symbols.ipynb) |
 | 1 | Tue, Oct 6 | Prep | [Complex numbers](notebooks/01_complex_numbers.ipynb) |
 | 2 | Wed, Oct 7 | Prep | [Linear algebra 1: vectors and inner products](notebooks/02_vectors_inner_products.ipynb) |
 | 3 | Thu, Oct 8 | Prep | [Linear algebra 2: matrices](notebooks/03_matrices.ipynb) |
@@ -31,13 +32,15 @@ Runs 17 Oct 2026 to 10 Apr 2027, weekend classes. Faculty: Prof. Amit Kumar, Pro
 | 10 | Thu, Oct 15 | Intro | [Entanglement and your first Qiskit circuit](notebooks/10_entanglement_first_qiskit_circuit.ipynb) |
 | 11 | Fri, Oct 16 | Intro | [The Bloch sphere](notebooks/11_bloch_sphere.ipynb) |
 
-Days 1–6 cover Module 1's maths: complex numbers, linear algebra, probability and the AI/ML bridge. Days 7–11 are short, picture-first previews of what Modules 2–3 teach properly.
+Day 0 is a symbol dictionary (with how to say each one aloud) plus a refresher on powers, roots, fractions, angles, sin/cos, Σ and slopes; keep it open while you work. Days 1–6 cover Module 1's maths: complex numbers, linear algebra, probability and the AI/ML bridge. Days 7–11 are short, picture-first previews of what Modules 2–3 teach properly.
 
 ## How to work through a notebook
 
-1. Read each explanation and run the cell under it. Change the numbers and run it again.
-2. Do the exercises by hand first, then use the "your turn" cell to check in code.
-3. Open the hidden worked solution only after trying.
-4. The last cell of every notebook runs automatic checks. If it prints "checks passed", you're done.
+1. Start with the "Symbols in this notebook" table and the "Back to basics" section at the top of each notebook.
+2. Read each explanation and run the cell under it. Change the numbers and run it again.
+3. Follow the "Worked example, every step shown" sections with pen and paper.
+4. Do the exercises by hand first, then use the "your turn" cell to check in code.
+5. Open the hidden worked solution only after trying.
+6. The last cell of every notebook runs automatic checks. If it prints "checks passed", you're done.
 
 The notebooks are saved with their outputs, so you can read them on GitHub without running anything. Day 10 needs Qiskit (`pip install -r ../requirements.txt` from this folder).

@@ -27,6 +27,40 @@ def tex(label):
     return label
 ```
 
+## Symbols in this notebook
+Not sure how to read something? Here's every symbol used below, with how to say it. The full dictionary is in [Day 0](00_reading_maths_symbols.md).
+
+| Symbol | Say it | Means |
+|---|---|---|
+| λ | "lambda" | an eigenvalue: the stretch factor |
+| v | "v" | an eigenvector: a direction that doesn't rotate |
+| Av = λv | "A v equals lambda v" | applying A just scales v by λ |
+| I | "the identity" | the do-nothing matrix |
+| A − λI | "A minus lambda I" | subtract λ from each diagonal entry of A |
+| det(M) | "determinant of M" | for [[a, b], [c, d]], it's ad − bc |
+| vvᵀ | "v v transpose" | an outer product: column times row gives a matrix |
+| ± | "plus or minus" | two answers at once |
+
+## Back to basics: the determinant and solving a quadratic
+**Determinant of a 2×2 matrix.** For M = [[a, b], [c, d]], **det(M) = a·d − b·c**: "top-left times bottom-right, minus top-right times bottom-left".
+- det([[3, 1], [2, 4]]) = 3·4 − 1·2 = 12 − 2 = **10**
+- det([[1, 2], [2, 4]]) = 4 − 4 = **0**, and a zero determinant means the matrix squashes the plane flat.
+
+**Solving a quadratic** (you'll need this to find eigenvalues). Equations like λ² − 5λ + 6 = 0:
+- **Try factoring:** find two numbers that multiply to 6 and add to −5. Those are −2 and −3, so (λ − 2)(λ − 3) = 0, giving λ = 2 or λ = 3.
+- **Or use the formula** for aλ² + bλ + c = 0: λ = (−b ± √(b² − 4ac)) / (2a).
+  Here a = 1, b = −5, c = 6: λ = (5 ± √(25 − 24))/2 = (5 ± 1)/2, which is 3 or 2. ✓
+
+
+```python
+print("det [[3,1],[2,4]] =", np.linalg.det(np.array([[3, 1], [2, 4]])))
+print("roots of l^2 - 5l + 6:", np.roots([1, -5, 6]))
+```
+
+    det [[3,1],[2,4]] = 10.000000000000002
+    roots of l^2 - 5l + 6: [3. 2.]
+
+
 ## 1. The idea
 Most vectors change direction when a matrix acts on them. **Eigenvectors** are the special ones that stay on their own line:
 
@@ -54,7 +88,7 @@ plt.show()
 
 
     
-![png](04_eigenvalues_eigenvectors_files/04_eigenvalues_eigenvectors_3_0.png)
+![png](04_eigenvalues_eigenvectors_files/04_eigenvalues_eigenvectors_6_0.png)
     
 
 
@@ -125,6 +159,41 @@ print(rebuilt, "\nequals Z:", np.array_equal(rebuilt, Z))
      [ 0 -1]] 
     equals Z: True
 
+
+## Worked example, every step shown: eigenvalues and eigenvectors of [[4, 1], [2, 3]]
+**Step 1: build A − λI.** Subtract λ from the diagonal: [[4 − λ, 1], [2, 3 − λ]].
+
+**Step 2: set its determinant to zero.**
+(4 − λ)(3 − λ) − (1)(2) = 0
+Expand: 12 − 4λ − 3λ + λ² − 2 = 0
+Tidy: **λ² − 7λ + 10 = 0**
+
+**Step 3: solve.** Two numbers that multiply to 10 and add to −7 are −2 and −5: (λ − 2)(λ − 5) = 0, so **λ = 2 or λ = 5**.
+
+**Step 4: find the eigenvector for λ = 5.** Solve (A − 5I)v = 0:
+[[−1, 1], [2, −2]] · (x, y) = 0 gives −x + y = 0, so y = x. **v = (1, 1)**, or normalised (1, 1)/√2.
+
+**Step 5: find the eigenvector for λ = 2.** Solve (A − 2I)v = 0:
+[[2, 1], [2, 1]] · (x, y) = 0 gives 2x + y = 0, so y = −2x. **v = (1, −2)**.
+
+**Step 6: check.** A·(1, 1) = (4 + 1, 2 + 3) = (5, 5) = 5·(1, 1) ✓ and A·(1, −2) = (4 − 2, 2 − 6) = (2, −4) = 2·(1, −2) ✓
+
+
+```python
+A = np.array([[4, 1], [2, 3]])
+vals, vecs = np.linalg.eig(A)
+print("eigenvalues:", vals)
+print("A(1,1) =", A @ np.array([1, 1]), "   A(1,-2) =", A @ np.array([1, -2]))
+```
+
+    eigenvalues: [5.+0.j 2.+0.j]
+    A(1,1) = [5 5]    A(1,-2) = [ 2 -4]
+
+
+### Common mistakes
+- Subtracting λ from **every** entry instead of only the diagonal.
+- Thinking an eigenvector is unique. Any non-zero multiple works: (1, 1), (2, 2) and (1, 1)/√2 are all eigenvectors for λ = 5. Quantum computing normally uses the length-1 version.
+- Expecting `np.linalg.eig` to list eigenvalues in a particular order. It doesn't; `np.linalg.eigh` sorts them for Hermitian matrices.
 
 ## Exercises
 **E1.** Find the eigenvalues and eigenvectors of X = [[0, 1], [1, 0]] by hand.

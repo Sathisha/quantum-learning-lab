@@ -30,6 +30,50 @@ def tex(label):
 rng = np.random.default_rng(0)
 ```
 
+## Symbols in this notebook
+Not sure how to read something? Here's every symbol used below, with how to say it. The full dictionary is in [Day 0](00_reading_maths_symbols.md).
+
+| Symbol | Say it | Means |
+|---|---|---|
+| x | "x" | an input (feature) vector |
+| W | "W" | the weight matrix of a layer |
+| b | "b" | the bias vector |
+| y = Wx + b | "y equals W x plus b" | a layer's output |
+| L(w) | "L of w" | the loss: how wrong the model is |
+| dL/dw | "d L by d w" | the slope of the loss: the gradient |
+| η | "eta" | the learning rate (step size) |
+| w ← w − η·dL/dw | "w becomes w minus eta times d L by d w" | one gradient-descent step |
+| e^s | "e to the s" | the exponential function, always positive |
+| softmax | "softmax" | turns scores into probabilities |
+
+## Back to basics: the exponential, and slopes again
+**The exponential eˣ** (e ≈ 2.718) grows fast and is **always positive**: e⁰ = 1, e¹ ≈ 2.718, e² ≈ 7.389, e⁻¹ ≈ 0.368.
+That "always positive" property is why softmax uses it: any score, even a negative one, becomes a positive number.
+
+**Slope recap (Day 0, B8):** for L(w) = (w − 3)²:
+- L(w) is smallest at w = 3, where the loss is 0.
+- The slope is dL/dw = 2(w − 3).
+- At w = 0 the slope is −6 (the curve goes **down** to the right), so step right.
+- At w = 5 the slope is +4 (the curve goes **up** to the right), so step left.
+- Gradient descent always steps in the direction **opposite** the slope.
+
+
+```python
+for s in [-1, 0, 1, 2]:
+    print(f"e^{s:>2} = {np.exp(s):.4f}")
+for w in [0, 3, 5]:
+    print(f"w = {w}: slope 2(w-3) = {2 * (w - 3):+d}")
+```
+
+    e^-1 = 0.3679
+    e^ 0 = 1.0000
+    e^ 1 = 2.7183
+    e^ 2 = 7.3891
+    w = 0: slope 2(w-3) = -6
+    w = 3: slope 2(w-3) = +0
+    w = 5: slope 2(w-3) = +4
+
+
 ## 1. Data points are vectors
 A house might be (area, bedrooms, age). A sentence embedding might be 1,536 numbers. Either way it's a vector, and **similarity is an inner product**.
 
@@ -78,7 +122,7 @@ ax.axis("off"); ax.set_title("Each edge is one entry of W (blue +, red −)"); p
 
 
     
-![png](06_ai_ml_maths_bridge_files/06_ai_ml_maths_bridge_5_1.png)
+![png](06_ai_ml_maths_bridge_files/06_ai_ml_maths_bridge_8_1.png)
     
 
 
@@ -111,7 +155,7 @@ plt.suptitle("Too small = slow, about right = fast, too large = overshoots"); pl
 
 
     
-![png](06_ai_ml_maths_bridge_files/06_ai_ml_maths_bridge_7_0.png)
+![png](06_ai_ml_maths_bridge_files/06_ai_ml_maths_bridge_10_0.png)
     
 
 
@@ -138,7 +182,7 @@ a2.bar(["A", "B", "C"], p, color="C1"); a2.set_title("softmax probabilities"); p
 
 
     
-![png](06_ai_ml_maths_bridge_files/06_ai_ml_maths_bridge_9_1.png)
+![png](06_ai_ml_maths_bridge_files/06_ai_ml_maths_bridge_12_1.png)
     
 
 
@@ -146,6 +190,51 @@ a2.bar(["A", "B", "C"], p, color="C1"); a2.set_title("softmax probabilities"); p
 Classical kernel methods (like an SVM) compare data points through inner products ⟨φ(x), φ(x')⟩ of transformed feature vectors.
 A **quantum kernel** does the same thing, except φ(x) is a quantum state and the inner product is estimated on a quantum computer.
 That's the QSVM in Module 15. Everything you practised on Day 2 carries straight over.
+
+## Worked example, every step shown: three gradient-descent steps
+Minimise L(w) = (w − 3)² from w = 0 with learning rate η = 0.25.
+
+| Step | w now | slope 2(w − 3) | change −η·slope | new w | loss (w − 3)² |
+|---|---|---|---|---|---|
+| 1 | 0 | −6 | +1.5 | 1.5 | 2.25 |
+| 2 | 1.5 | −3 | +0.75 | 2.25 | 0.5625 |
+| 3 | 2.25 | −1.5 | +0.375 | 2.625 | 0.140625 |
+
+Each step halves the distance to the minimum at w = 3, and the loss shrinks each time.
+
+
+```python
+w, eta = 0.0, 0.25
+for step in range(1, 4):
+    g = 2 * (w - 3); w = w - eta * g
+    print(f"step {step}: slope {g:+.3f} -> w = {w:.4f}, loss = {(w - 3)**2:.6f}")
+```
+
+    step 1: slope -6.000 -> w = 1.5000, loss = 2.250000
+    step 2: slope -3.000 -> w = 2.2500, loss = 0.562500
+    step 3: slope -1.500 -> w = 2.6250, loss = 0.140625
+
+
+## Worked example, every step shown: one layer output by hand
+W = [[1, 0, 2], [−1, 3, 0]], x = (2, 1, 1), b = (0.5, −1).
+
+1. Row 0 of W · x = 1(2) + 0(1) + 2(1) = 4. Add b₀: 4 + 0.5 = **4.5**
+2. Row 1 of W · x = −1(2) + 3(1) + 0(1) = 1. Add b₁: 1 − 1 = **0**
+3. **y = (4.5, 0)**
+
+
+```python
+W2 = np.array([[1, 0, 2], [-1, 3, 0]]); x2 = np.array([2, 1, 1]); b2 = np.array([0.5, -1])
+print("y =", W2 @ x2 + b2)
+```
+
+    y = [4.5 0. ]
+
+
+### Common mistakes
+- Stepping **with** the slope instead of against it, which climbs the loss.
+- A learning rate that's too large: the steps overshoot and bounce, or even diverge.
+- Computing softmax directly on big scores; e¹⁰⁰⁰ overflows. Subtract the largest score first, as the `softmax` function above does.
 
 ## Exercises
 **E1.** Take one gradient-descent step on L(w) = (w − 3)² from w = 0 with learning rate 0.1.

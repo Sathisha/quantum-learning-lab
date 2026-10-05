@@ -27,6 +27,32 @@ def tex(label):
     return label
 ```
 
+## Symbols in this notebook
+Not sure how to read something? Here's every symbol used below, with how to say it. The full dictionary is in [Day 0](00_reading_maths_symbols.md).
+
+| Symbol | Say it | Means |
+|---|---|---|
+| \|ψ⟩ | "ket psi" | a quantum state, written as a column vector |
+| ⟨ψ\| | "bra psi" | the same state as a conjugated row |
+| ⟨φ\|ψ⟩ | "bra-ket phi psi" | inner product: how much the states overlap |
+| \|0⟩, \|1⟩ | "ket zero", "ket one" | (1, 0) and (0, 1) |
+| \|+⟩, \|−⟩ | "ket plus", "ket minus" | (1, 1)/√2 and (1, −1)/√2 |
+| α, β | "alpha", "beta" | amplitudes; the state is α\|0⟩ + β\|1⟩ |
+| ψ, φ | "psi", "phi" | just names for states |
+
+## Back to basics: Dirac notation is Day 2 in disguise
+Nothing new is being introduced, only new spelling for things you already know:
+
+| Day 2 wrote | Day 7 writes | Read it |
+|---|---|---|
+| e₀ = (1, 0) | \|0⟩ | "ket zero" |
+| e₁ = (0, 1) | \|1⟩ | "ket one" |
+| v = α·e₀ + β·e₁ | \|ψ⟩ = α\|0⟩ + β\|1⟩ | "ket psi equals alpha ket zero plus beta ket one" |
+| ⟨u, v⟩ | ⟨u\|v⟩ | "bra u ket v" |
+| ‖v‖ = 1 | ⟨ψ\|ψ⟩ = 1 | "the state is normalised" |
+
+**Why the funny brackets?** A ket \|ψ⟩ is a column and a bra ⟨φ\| is a row. Put a bra on the left of a ket and they "click" into ⟨φ\|ψ⟩: a row times a column, which is a single number.
+
 ## 1. Kets are column vectors
 | Dirac | Vector | Meaning |
 |---|---|---|
@@ -70,7 +96,7 @@ ax.set_title("Two bases: {|0>,|1>} and {|+>,|->}"); plt.show()
 
 
     
-![png](07_qubits_dirac_notation_files/07_qubits_dirac_notation_5_0.png)
+![png](07_qubits_dirac_notation_files/07_qubits_dirac_notation_7_0.png)
     
 
 
@@ -87,6 +113,23 @@ print("<0|+> =", braket(ket0, plus), " -> P(0) for |+> =", abs(braket(ket0, plus
 
     <0|1> = 0j   <+|-> = (-2.2371143170757382e-17+0j)
     <0|+> = (0.7071067811865475+0j)  -> P(0) for |+> = 0.4999999999999999
+
+
+## Worked example, every step shown: ⟨+|ψ⟩ for ψ = (3/5)|0⟩ + (4/5)|1⟩
+1. Write both as vectors: \|+⟩ = (1/√2, 1/√2) and \|ψ⟩ = (3/5, 4/5).
+2. The bra ⟨+\| is the conjugated row (1/√2, 1/√2); nothing to conjugate here since it's real.
+3. Multiply matching entries and add: (1/√2)(3/5) + (1/√2)(4/5) = (3 + 4)/(5√2) = 7/(5√2).
+4. Numerically: 7/(5 × 1.4142) ≈ **0.990**.
+5. Meaning: \|⟨+\|ψ⟩\|² ≈ 0.98, so if you measured in the ± basis, you'd get "+" about 98% of the time.
+
+
+```python
+plus = np.array([1, 1]) / np.sqrt(2); psi = np.array([3 / 5, 4 / 5])
+amp = np.vdot(plus, psi)
+print("<+|psi> =", amp, "  probability =", abs(amp)**2)
+```
+
+    <+|psi> = 0.9899494936611665   probability = 0.9799999999999999
 
 
 ## Exercises

@@ -19,6 +19,7 @@ Days 1–6 match Module 1's maths topics: complex numbers (Day 1), linear algebr
 
 | Day | Date | Phase | Concept | Study | Practice |
 | --- | --- | --- | --- | --- | --- |
+| 0 | Anytime first | Refresher | Reading maths symbols and the basics | Every symbol with how to say it aloud; powers, roots, fractions, radians, sin/cos, Σ, functions, slopes | Read Σₖ₌₀³ 2ᵏ aloud and compute it |
 | 1 | Tue, Oct 6 | Prep | Complex numbers | a + bi, conjugate, modulus, polar form, Euler's formula e^(iθ) = cos θ + i sin θ | Write (1 + i)/√2 in polar form; show its modulus is 1 |
 | 2 | Wed, Oct 7 | Prep | Linear algebra 1: vectors and inner products | Complex vectors, linear combinations, basis, inner product, norm, normalisation | Normalise (1, i, 1); compute its inner product with (1, 0, 0) |
 | 3 | Thu, Oct 8 | Prep | Linear algebra 2: matrices | Matrix-vector and matrix-matrix products, identity, transpose, conjugate transpose (†) | Compute X·(a, b) for X = \[\[0,1\],\[1,0\]\]; find A† for a 2×2 complex A |
