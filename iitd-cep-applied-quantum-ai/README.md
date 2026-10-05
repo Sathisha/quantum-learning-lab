@@ -12,6 +12,7 @@ Runs 17 Oct 2026 to 10 Apr 2027, weekend classes. Faculty: Prof. Amit Kumar, Pro
 | --- | --- |
 | [plan/](plan/) | The 11-day pre-course maths prep plan |
 | [notebooks/](notebooks/) | One tutorial notebook per prep day, with explanations, plots, exercises and hidden worked solutions |
+| [read-on-mobile/](read-on-mobile/) | **Start here on a phone:** the same notebooks as Markdown pages, with all results and plots included |
 | [daily-pages/](daily-pages/) | The illustrated daily concept pages, added each morning from Oct 6 to Oct 16 |
 
 ## Pre-course prep (Oct 6–16)
