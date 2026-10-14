@@ -1,0 +1,354 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Day 9: Two qubits and tensor products</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column (~68ch); wide figures scroll in their own frame. Qubit 1 = blue, qubit 2 = amber, throughout. */
+:root{
+  --bg:#f5f7f8; --surface:#ffffff; --fg:#17212b; --muted:#566573; --line:#d5dde3;
+  --accent:#0f6b72; --q1:#2459b8; --q2:#b86a12; --q1soft:#e3ecfb; --q2soft:#fbeedd; --code:#eef2f4;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Literata", Georgia, "Times New Roman", serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10161c; --surface:#18212a; --fg:#e4eaef; --muted:#9aa8b4; --line:#2c3a46;
+  --accent:#4fc1c8; --q1:#7fa8f5; --q2:#f0aa5a; --q1soft:#1d2c48; --q2soft:#3a2a16; --code:#1d2731; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10161c; --surface:#18212a; --fg:#e4eaef; --muted:#9aa8b4; --line:#2c3a46;
+  --accent:#4fc1c8; --q1:#7fa8f5; --q2:#f0aa5a; --q1soft:#1d2c48; --q2soft:#3a2a16; --code:#1d2731; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.65}
+.wrap{max-width:46rem;margin:0 auto;padding-inline:18px;padding-block:28px 48px;display:flex;flex-direction:column;gap:34px}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:2.3rem}
+h2{font-size:1.4rem;margin-bottom:10px}
+p{margin:0 0 .8em}
+section>*:last-child{margin-bottom:0}
+.eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.lede{color:var(--muted);margin-top:10px}
+.m{font-family:var(--mono);font-size:.92em;white-space:nowrap}
+.q1{color:var(--q1);font-weight:500}.q2{color:var(--q2);font-weight:500}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td.sym{font-family:var(--mono);font-size:1.02rem;white-space:nowrap}
+td.say{font-style:italic;white-space:nowrap}
+.steps{font-family:var(--mono);font-size:.95rem;background:var(--code);border-radius:8px;padding:12px 14px;margin:0 0 .8em;line-height:1.9;overflow-x:auto;white-space:pre}
+.formula{font-family:var(--mono);font-size:clamp(1.05rem,4.2vw,1.55rem);text-align:center;padding:22px 10px;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow-x:auto;white-space:nowrap}
+.aloud{margin-top:10px;color:var(--muted)}
+.aloud b{color:var(--fg)}
+figure{margin:0;display:flex;flex-direction:column;gap:10px}
+figcaption{font-size:.92rem;color:var(--muted)}
+svg{display:block;width:100%;height:auto;min-width:520px}
+svg text{font-family:var(--mono);fill:var(--fg)}
+.cellA{fill:var(--q1soft);stroke:var(--q1)}
+.cellB{fill:var(--q2soft);stroke:var(--q2)}
+.cellR{fill:var(--surface);stroke:var(--line)}
+.lblA{fill:var(--q1)}.lblB{fill:var(--q2)}
+.mut{fill:var(--muted)}
+.bar{fill:var(--accent)}
+.bl{font-size:12px;text-anchor:middle;fill:var(--fg)}
+.ax{font-size:12px;text-anchor:middle;fill:var(--muted)}
+.axis{stroke:var(--muted);stroke-width:1}
+.controls{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;font-size:.92rem}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{font:inherit;font-family:var(--mono);background:var(--surface);color:var(--fg);border:0;padding:6px 12px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--bg)}
+button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+ul.mist{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:8px}
+details{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 16px}
+summary{cursor:pointer;font-family:var(--display);font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:10px}
+pre.code{font-family:var(--mono);font-size:.9rem;background:var(--code);border-radius:8px;padding:14px;overflow-x:auto;margin:0}
+a{color:var(--accent)}
+.links{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+footer{border-top:1px solid var(--line);padding-top:16px;font-size:.92rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 20px;justify-content:space-between}
+.check{color:var(--accent);font-weight:600}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Day 9 of 11 · Wed 14 Oct 2026 · Intro</div>
+  <h1>Two qubits and tensor products</h1>
+  <p class="lede">How two separate qubits become one list of four numbers, and why every extra qubit doubles that list.</p>
+</header>
+
+<section>
+  <h2>Symbols on this page</h2>
+  <div class="box scroll">
+    <table>
+      <thead><tr><th>Symbol</th><th>Say it</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td class="sym">|0⟩</td><td class="say">"ket zero"</td><td>The qubit state "zero". As a column: (1, 0).</td></tr>
+        <tr><td class="sym">|1⟩</td><td class="say">"ket one"</td><td>The qubit state "one". As a column: (0, 1).</td></tr>
+        <tr><td class="sym">|+⟩</td><td class="say">"ket plus"</td><td>Equal mix of |0⟩ and |1⟩: (1/√2, 1/√2).</td></tr>
+        <tr><td class="sym">|01⟩</td><td class="say">"ket zero-one"</td><td>Two qubits: first is 0, second is 1. Same as |0⟩⊗|1⟩.</td></tr>
+        <tr><td class="sym">⊗</td><td class="say">"tensor" (or "kron")</td><td>Tensor product: glue two qubit vectors into one bigger vector.</td></tr>
+        <tr><td class="sym">(a, b)</td><td class="say">"the vector a, b"</td><td>A column of numbers, written sideways to save space.</td></tr>
+        <tr><td class="sym">a·c</td><td class="say">"a times c"</td><td>Ordinary multiplication. The dot just means ×.</td></tr>
+        <tr><td class="sym">2ⁿ</td><td class="say">"two to the power n"</td><td>2 multiplied by itself n times. 2³ = 2×2×2 = 8.</td></tr>
+        <tr><td class="sym">n</td><td class="say">"n"</td><td>How many qubits we have.</td></tr>
+        <tr><td class="sym">√2</td><td class="say">"root two"</td><td>The number that times itself gives 2 (about 1.414).</td></tr>
+        <tr><td class="sym">1/√2</td><td class="say">"one over root two"</td><td>About 0.707. Squared, it gives 1/2.</td></tr>
+        <tr><td class="sym">|x|²</td><td class="say">"x squared" (size of x, squared)</td><td>The probability that comes from amplitude x.</td></tr>
+        <tr><td class="sym">≠</td><td class="say">"is not equal to"</td><td>The two sides are different.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Back to basics: powers of two and binary</h2>
+  <p>Two ideas from school do all the work today.</p>
+  <p><b>Powers of two.</b> 2ⁿ means "multiply 2 by itself n times". Each time n goes up by 1, the answer doubles.</p>
+  <p><b>Binary counting.</b> With only the digits 0 and 1, two digits can make exactly four labels: 00, 01, 10, 11. Read them as numbers: the left digit is worth 2, the right digit is worth 1.</p>
+  <div class="steps">2³ = 2 × 2 × 2
+   = 4 × 2
+   = 8
+
+binary 10 = (1 × 2) + (0 × 1)
+          = 2 + 0
+          = 2
+
+binary 11 = (1 × 2) + (1 × 1)
+          = 2 + 1
+          = 3</div>
+  <p>So the two-qubit labels 00, 01, 10, 11 are just the numbers 0, 1, 2, 3. That number is the label's position in the list (counting from 0).</p>
+</section>
+
+<section>
+  <h2>The idea</h2>
+  <p>One qubit is a list of 2 numbers: how much of |0⟩ and how much of |1⟩. Two qubits together are described by a list of 4 numbers, one for each label 00, 01, 10, 11. The tensor product ⊗ builds that 4-list from the two 2-lists: take each number of the first qubit and multiply it into the whole second qubit. Because every added qubit doubles the list, n qubits need 2ⁿ numbers, which is why big quantum states are so hard to store on a normal computer.</p>
+</section>
+
+<section>
+  <figure>
+    <h2>Picture 1: the block expansion</h2>
+    <div class="controls" role="group" aria-label="Choose the two qubit states">
+      <span><span class="q1">Qubit 1</span>&nbsp;
+        <span class="seg" id="segA"><button type="button" id="a0" data-v="0">|0⟩</button><button type="button" id="a1" data-v="1">|1⟩</button><button type="button" id="ap" data-v="p">|+⟩</button></span></span>
+      <span><span class="q2">Qubit 2</span>&nbsp;
+        <span class="seg" id="segB"><button type="button" id="b0" data-v="0">|0⟩</button><button type="button" id="b1" data-v="1">|1⟩</button><button type="button" id="bp" data-v="p">|+⟩</button></span></span>
+    </div>
+    <div class="box scroll">
+    <svg viewBox="0 0 640 280" role="img" aria-label="Kronecker product: a two-number vector times a two-number vector gives a four-number vector">
+      <text x="72" y="48" text-anchor="middle" class="lblA" font-size="14">qubit 1</text>
+      <rect class="cellA" x="40" y="80" width="64" height="44" rx="6"/>
+      <rect class="cellA" x="40" y="132" width="64" height="44" rx="6"/>
+      <text id="tA0" x="72" y="108" text-anchor="middle" font-size="15">1/√2</text>
+      <text id="tA1" x="72" y="160" text-anchor="middle" font-size="15">1/√2</text>
+      <text x="30" y="108" text-anchor="end" class="lblA" font-size="14">a</text>
+      <text x="30" y="160" text-anchor="end" class="lblA" font-size="14">b</text>
+
+      <text x="146" y="138" text-anchor="middle" font-size="26">⊗</text>
+
+      <text x="220" y="48" text-anchor="middle" class="lblB" font-size="14">qubit 2</text>
+      <rect class="cellB" x="188" y="80" width="64" height="44" rx="6"/>
+      <rect class="cellB" x="188" y="132" width="64" height="44" rx="6"/>
+      <text id="tB0" x="220" y="108" text-anchor="middle" font-size="15">1</text>
+      <text id="tB1" x="220" y="160" text-anchor="middle" font-size="15">0</text>
+      <text x="262" y="108" class="lblB" font-size="14">c</text>
+      <text x="262" y="160" class="lblB" font-size="14">d</text>
+
+      <text x="306" y="138" text-anchor="middle" font-size="26">=</text>
+
+      <text x="440" y="20" text-anchor="middle" class="mut" font-size="13">4 numbers, one per label</text>
+      <!-- block 1: a times (c,d) -->
+      <path d="M350 32 h-8 v116 h8" fill="none" stroke="var(--q1)" stroke-width="2"/>
+      <text x="336" y="94" text-anchor="end" class="lblA" font-size="12">a×</text>
+      <!-- block 2: b times (c,d) -->
+      <path d="M350 156 h-8 v116 h8" fill="none" stroke="var(--q1)" stroke-width="2"/>
+      <text x="336" y="218" text-anchor="end" class="lblA" font-size="12">b×</text>
+
+      <rect class="cellR" x="360" y="36" width="160" height="50" rx="6"/>
+      <rect class="cellR" x="360" y="94" width="160" height="50" rx="6"/>
+      <rect class="cellR" x="360" y="160" width="160" height="50" rx="6"/>
+      <rect class="cellR" x="360" y="218" width="160" height="50" rx="6"/>
+      <text x="372" y="66" font-size="13"><tspan class="lblA">a</tspan>·<tspan class="lblB">c</tspan></text>
+      <text x="372" y="124" font-size="13"><tspan class="lblA">a</tspan>·<tspan class="lblB">d</tspan></text>
+      <text x="372" y="190" font-size="13"><tspan class="lblA">b</tspan>·<tspan class="lblB">c</tspan></text>
+      <text x="372" y="248" font-size="13"><tspan class="lblA">b</tspan>·<tspan class="lblB">d</tspan></text>
+      <text id="r0" x="508" y="66" text-anchor="end" font-size="15">1/√2</text>
+      <text id="r1" x="508" y="124" text-anchor="end" font-size="15">0</text>
+      <text id="r2" x="508" y="190" text-anchor="end" font-size="15">1/√2</text>
+      <text id="r3" x="508" y="248" text-anchor="end" font-size="15">0</text>
+      <text x="534" y="66" font-size="14"><tspan class="lblA">|0</tspan><tspan class="lblB">0⟩</tspan></text>
+      <text x="534" y="124" font-size="14"><tspan class="lblA">|0</tspan><tspan class="lblB">1⟩</tspan></text>
+      <text x="534" y="190" font-size="14"><tspan class="lblA">|1</tspan><tspan class="lblB">0⟩</tspan></text>
+      <text x="534" y="248" font-size="14"><tspan class="lblA">|1</tspan><tspan class="lblB">1⟩</tspan></text>
+      <text x="590" y="66" class="mut" font-size="12">#0</text>
+      <text x="590" y="124" class="mut" font-size="12">#1</text>
+      <text x="590" y="190" class="mut" font-size="12">#2</text>
+      <text x="590" y="248" class="mut" font-size="12">#3</text>
+    </svg>
+    </div>
+    <figcaption>The top <span class="q1">qubit-1</span> number <i>a</i> multiplies the whole <span class="q2">qubit-2</span> column, giving the top half. The bottom number <i>b</i> does the same for the bottom half. The left digit of each label comes from qubit 1, the right digit from qubit 2. Try the buttons: <b>Now showing <span id="nowShowing" class="m">|+⟩ ⊗ |0⟩</span></b>.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <figure>
+    <h2>Picture 2: every qubit doubles the list</h2>
+    <div class="controls">
+      <span>Scale&nbsp;<span class="seg"><button type="button" id="sLin" aria-pressed="true">plain</button><button type="button" id="sLog">doubling steps</button></span></span>
+    </div>
+    <div class="box scroll">
+    <svg viewBox="0 0 640 300" role="img" aria-label="Bar chart of 2 to the power n for n from 1 to 10">
+      <line class="axis" x1="56" y1="250" x2="624" y2="250"/>
+      <line class="axis" x1="56" y1="30" x2="56" y2="250"/>
+      <text x="340" y="292" text-anchor="middle" class="mut" font-size="13">n = number of qubits</text>
+      <text x="20" y="140" text-anchor="middle" class="mut" font-size="13" transform="rotate(-90 20 140)">numbers needed (2ⁿ)</text>
+      <g id="gLin">
+<rect x="64.0" y="249.2" width="40.8" height="0.8" class="bar"/><text x="84.4" y="243.6" class="bl">2</text>
+<rect x="120.8" y="249.1" width="40.8" height="0.9" class="bar"/><text x="141.2" y="243.1" class="bl">4</text>
+<rect x="177.6" y="248.3" width="40.8" height="1.7" class="bar"/><text x="198.0" y="242.3" class="bl">8</text>
+<rect x="234.4" y="246.6" width="40.8" height="3.4" class="bar"/><text x="254.8" y="240.6" class="bl">16</text>
+<rect x="291.2" y="243.1" width="40.8" height="6.9" class="bar"/><text x="311.6" y="237.1" class="bl">32</text>
+<rect x="348.0" y="236.2" width="40.8" height="13.8" class="bar"/><text x="368.4" y="230.2" class="bl">64</text>
+<rect x="404.8" y="222.5" width="40.8" height="27.5" class="bar"/><text x="425.2" y="216.5" class="bl">128</text>
+<rect x="461.6" y="195.0" width="40.8" height="55.0" class="bar"/><text x="482.0" y="189.0" class="bl">256</text>
+<rect x="518.4" y="140.0" width="40.8" height="110.0" class="bar"/><text x="538.8" y="134.0" class="bl">512</text>
+<rect x="575.2" y="30.0" width="40.8" height="220.0" class="bar"/><text x="595.6" y="24.0" class="bl">1024</text>
+      </g>
+      <g id="gLog" hidden>
+<rect x="64.0" y="228.0" width="40.8" height="22.0" class="bar"/><text x="84.4" y="222.0" class="bl">2</text>
+<rect x="120.8" y="206.0" width="40.8" height="44.0" class="bar"/><text x="141.2" y="200.0" class="bl">4</text>
+<rect x="177.6" y="184.0" width="40.8" height="66.0" class="bar"/><text x="198.0" y="178.0" class="bl">8</text>
+<rect x="234.4" y="162.0" width="40.8" height="88.0" class="bar"/><text x="254.8" y="156.0" class="bl">16</text>
+<rect x="291.2" y="140.0" width="40.8" height="110.0" class="bar"/><text x="311.6" y="134.0" class="bl">32</text>
+<rect x="348.0" y="118.0" width="40.8" height="132.0" class="bar"/><text x="368.4" y="112.0" class="bl">64</text>
+<rect x="404.8" y="96.0" width="40.8" height="154.0" class="bar"/><text x="425.2" y="90.0" class="bl">128</text>
+<rect x="461.6" y="74.0" width="40.8" height="176.0" class="bar"/><text x="482.0" y="68.0" class="bl">256</text>
+<rect x="518.4" y="52.0" width="40.8" height="198.0" class="bar"/><text x="538.8" y="46.0" class="bl">512</text>
+<rect x="575.2" y="30.0" width="40.8" height="220.0" class="bar"/><text x="595.6" y="24.0" class="bl">1024</text>
+      </g>
+<text x="84.4" y="268" class="ax">1</text><text x="141.2" y="268" class="ax">2</text><text x="198.0" y="268" class="ax">3</text><text x="254.8" y="268" class="ax">4</text><text x="311.6" y="268" class="ax">5</text><text x="368.4" y="268" class="ax">6</text><text x="425.2" y="268" class="ax">7</text><text x="482.0" y="268" class="ax">8</text><text x="538.8" y="268" class="ax">9</text><text x="595.6" y="268" class="ax">10</text>
+    </svg>
+    </div>
+    <figcaption><b>Plain</b> scale: bar height is the real count, so the first few bars are almost flat and the last one shoots up. <b>Doubling steps</b>: each step up means "times 2", so the bars climb evenly. Ten qubits already need 1,024 numbers; fifty qubits would need about a million billion (2⁵⁰ ≈ 1.13 × 10¹⁵).</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>The key formula</h2>
+  <div class="formula">(<span class="q1">a</span>, <span class="q1">b</span>) ⊗ (<span class="q2">c</span>, <span class="q2">d</span>) = (<span class="q1">a</span>·<span class="q2">c</span>, <span class="q1">a</span>·<span class="q2">d</span>, <span class="q1">b</span>·<span class="q2">c</span>, <span class="q1">b</span>·<span class="q2">d</span>)</div>
+  <p class="aloud"><b>Read it aloud:</b> "The vector a, b, tensor the vector c, d, equals the vector: a times c, a times d, b times c, b times d."</p>
+  <p>The four slots, in order, belong to the labels |00⟩, |01⟩, |10⟩, |11⟩. With n qubits, the list has 2ⁿ slots.</p>
+</section>
+
+<section>
+  <h2>Worked example: |+⟩ ⊗ |0⟩</h2>
+  <p>Qubit 1 is |+⟩ = (1/√2, 1/√2), so <span class="q1">a = 1/√2</span>, <span class="q1">b = 1/√2</span>. Qubit 2 is |0⟩ = (1, 0), so <span class="q2">c = 1</span>, <span class="q2">d = 0</span>.</p>
+  <div class="steps">slot 1 (|00⟩):  a·c = (1/√2) × 1 = 1/√2
+slot 2 (|01⟩):  a·d = (1/√2) × 0 = 0
+slot 3 (|10⟩):  b·c = (1/√2) × 1 = 1/√2
+slot 4 (|11⟩):  b·d = (1/√2) × 0 = 0
+
+|+⟩ ⊗ |0⟩ = (1/√2, 0, 1/√2, 0)
+          = (1/√2)|00⟩ + (1/√2)|10⟩
+          = (|00⟩ + |10⟩)/√2</div>
+  <p>In words: qubit 1 is a 50/50 mix, qubit 2 is surely 0. So only labels ending in 0 (00 and 10) appear.</p>
+  <p class="check">Check: the probabilities must add up to 1.</p>
+  <div class="steps">(1/√2)² = 1 / (√2 × √2) = 1/2
+0²      = 0
+
+1/2 + 0 + 1/2 + 0
+  = 1/2 + 1/2
+  = 1   ✓</div>
+</section>
+
+<section>
+  <h2>Common mistakes</h2>
+  <ul class="mist">
+    <li><b>Swapping the order.</b> ⊗ is not like ordinary ×. |0⟩⊗|1⟩ = (0, 1, 0, 0) = |01⟩, but |1⟩⊗|0⟩ = (0, 0, 1, 0) = |10⟩. So |0⟩⊗|1⟩ ≠ |1⟩⊗|0⟩.</li>
+    <li><b>Adding sizes instead of multiplying.</b> Two 2-number vectors give 2 × 2 = 4 numbers, not 2 + 2. Three qubits give 2 × 2 × 2 = 8.</li>
+    <li><b>Qiskit reads labels backwards.</b> On paper the left digit is the first qubit. Qiskit names qubits q0, q1, … and prints q0 on the <i>right</i>. When Qiskit shows "01", it means q0 = 1 and q1 = 0. You will meet this tomorrow.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Check question</h2>
+  <p>Compute |0⟩ ⊗ |1⟩ (by hand, then with <span class="m">np.kron</span>) and say which basis state it is.</p>
+  <details>
+    <summary>Show answer</summary>
+    <p>|0⟩ = (1, 0), so <span class="q1">a = 1</span>, <span class="q1">b = 0</span>. |1⟩ = (0, 1), so <span class="q2">c = 0</span>, <span class="q2">d = 1</span>.</p>
+    <div class="steps">slot 1 (|00⟩):  a·c = 1 × 0 = 0
+slot 2 (|01⟩):  a·d = 1 × 1 = 1
+slot 3 (|10⟩):  b·c = 0 × 0 = 0
+slot 4 (|11⟩):  b·d = 0 × 1 = 0
+
+|0⟩ ⊗ |1⟩ = (0, 1, 0, 0)</div>
+    <p>The only 1 sits in slot 2, whose label is 01. So |0⟩⊗|1⟩ = <b>|01⟩</b>: first qubit 0, second qubit 1. In binary, 01 = (0 × 2) + (1 × 1) = 1, which matches the position (#1, counting from 0).</p>
+    <p class="check">Check: 0² + 1² + 0² + 0² = 0 + 1 + 0 + 0 = 1 ✓</p>
+  </details>
+</section>
+
+<section>
+  <h2>Check it in NumPy</h2>
+<pre class="code">import numpy as np
+ket0, ket1 = np.array([1, 0]), np.array([0, 1])
+state = np.kron(ket0, ket1)
+print(state)                 # [0 1 0 0]
+print(np.argmax(state), format(np.argmax(state), "02b"))  # 1 01</pre>
+</section>
+
+<section>
+  <h2>Go deeper</h2>
+  <ul class="links">
+    <li><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/notebooks/09_two_qubits_tensor_products.ipynb">Tutorial notebook: 09 Two qubits and tensor products</a></li>
+    <li><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/read-on-mobile/09_two_qubits_tensor_products.md">Phone-friendly version</a></li>
+    <li><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/read-on-mobile/00_reading_maths_symbols.md">Symbol dictionary: reading maths symbols</a></li>
+  </ul>
+</section>
+
+<footer>
+  <span>Today's study time: 30 min</span>
+  <a href="https://claude.ai/code/artifact/babb28bd-92dc-4c2c-8c12-efe7ec2608a3">Back to the 11-day plan</a>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var R2=Math.SQRT1_2;
+  var S={"0":[1,0],"1":[0,1],"p":[R2,R2]};
+  var N={"0":"|0⟩","1":"|1⟩","p":"|+⟩"};
+  function fmt(x){
+    if(Math.abs(x)<1e-9) return "0";
+    if(Math.abs(x-1)<1e-9) return "1";
+    if(Math.abs(x-R2)<1e-9) return "1/√2";
+    if(Math.abs(x-0.5)<1e-9) return "1/2";
+    return x.toFixed(3);
+  }
+  var st={a:"p",b:"0"};
+  function set(id,t){document.getElementById(id).textContent=t;}
+  function render(){
+    var A=S[st.a],B=S[st.b];
+    set("tA0",fmt(A[0]));set("tA1",fmt(A[1]));
+    set("tB0",fmt(B[0]));set("tB1",fmt(B[1]));
+    set("r0",fmt(A[0]*B[0]));set("r1",fmt(A[0]*B[1]));
+    set("r2",fmt(A[1]*B[0]));set("r3",fmt(A[1]*B[1]));
+    set("nowShowing",N[st.a]+" ⊗ "+N[st.b]);
+    ["0","1","p"].forEach(function(k){
+      document.getElementById("a"+k).setAttribute("aria-pressed",String(st.a===k));
+      document.getElementById("b"+k).setAttribute("aria-pressed",String(st.b===k));
+    });
+  }
+  ["0","1","p"].forEach(function(k){
+    document.getElementById("a"+k).addEventListener("click",function(){st.a=k;render();});
+    document.getElementById("b"+k).addEventListener("click",function(){st.b=k;render();});
+  });
+  render();
+  var lin=document.getElementById("gLin"),lg=document.getElementById("gLog");
+  var bL=document.getElementById("sLin"),bG=document.getElementById("sLog");
+  function scale(isLog){lin.hidden=isLog;lg.hidden=!isLog;bL.setAttribute("aria-pressed",String(!isLog));bG.setAttribute("aria-pressed",String(isLog));}
+  bL.addEventListener("click",function(){scale(false);});
+  bG.addEventListener("click",function(){scale(true);});
+})();
+</script>
+
+</body></html>
