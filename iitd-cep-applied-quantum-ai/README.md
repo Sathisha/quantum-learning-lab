@@ -17,23 +17,23 @@ Material is organised by concept, in learning order. Each concept folder holds:
 | --- | --- |
 | `index.html` | The illustrated page: symbols read aloud, back-to-basics, diagrams, a worked example, common mistakes, a practice question. Concepts taught in class also have a **"What class added"** section. |
 | `practice.html` | Worked solutions to the class quiz questions on this concept (concepts taught so far) |
-| `notes.md` | Phone-friendly version of the notebook, with all results and plots |
-| `notebook.ipynb` | Tutorial notebook: explanations, plots, exercises, hidden solutions, automatic checks |
+| `notebook.html` | The tutorial notebook as a web page, with all results and plots (built by `tools/build_tutorials.py`) |
+| `notebook.ipynb` | The same tutorial to run yourself: explanations, plots, exercises, hidden solutions, automatic checks |
 
-| # | Concept | In class | Page | Practice | Notes | Notebook |
+| # | Concept | In class | Page | Practice | Tutorial | Notebook |
 | --- | --- | --- | --- | --- | --- | --- |
-| 01 | Complex numbers | Week 1 | [page](concepts/01-complex-numbers/index.html) | [Q1–10](concepts/01-complex-numbers/practice.html) | [notes](concepts/01-complex-numbers/notes.md) | [notebook](concepts/01-complex-numbers/notebook.ipynb) |
-| 02 | Vector spaces | Week 1 | [page](concepts/02-vector-spaces/index.html) | [Q11–13](concepts/02-vector-spaces/practice.html) | [notes](concepts/02-vector-spaces/notes.md) | – |
-| 03 | Inner products and bases | Week 1 | [page](concepts/03-inner-products-and-bases/index.html) | [Q14–17](concepts/03-inner-products-and-bases/practice.html) | [notes](concepts/03-inner-products-and-bases/notes.md) | [notebook](concepts/03-inner-products-and-bases/notebook.ipynb) |
-| 04 | Matrices and linear maps | Next | [page](concepts/04-matrices-and-linear-maps/index.html) | [Q18–20](concepts/04-matrices-and-linear-maps/practice.html) | [notes](concepts/04-matrices-and-linear-maps/notes.md) | [notebook](concepts/04-matrices-and-linear-maps/notebook.ipynb) |
-| 05 | Eigenvalues and eigenvectors | | [page](concepts/05-eigenvalues/index.html) | | [notes](concepts/05-eigenvalues/notes.md) | [notebook](concepts/05-eigenvalues/notebook.ipynb) |
-| 06 | Probability and expectation | | [page](concepts/06-probability/index.html) | | [notes](concepts/06-probability/notes.md) | [notebook](concepts/06-probability/notebook.ipynb) |
-| 07 | AI/ML maths bridge | | [page](concepts/07-ml-maths-bridge/index.html) | | [notes](concepts/07-ml-maths-bridge/notes.md) | [notebook](concepts/07-ml-maths-bridge/notebook.ipynb) |
-| 08 | Qubits and Dirac notation | | [page](concepts/08-qubits-and-dirac-notation/index.html) | | [notes](concepts/08-qubits-and-dirac-notation/notes.md) | [notebook](concepts/08-qubits-and-dirac-notation/notebook.ipynb) |
-| 09 | Gates as matrices | | [page](concepts/09-gates/index.html) | | [notes](concepts/09-gates/notes.md) | [notebook](concepts/09-gates/notebook.ipynb) |
-| 10 | Two qubits and tensor products | | [page](concepts/10-tensor-products/index.html) | | [notes](concepts/10-tensor-products/notes.md) | [notebook](concepts/10-tensor-products/notebook.ipynb) |
-| 11 | Entanglement and your first Qiskit circuit | | [page](concepts/11-entanglement-and-qiskit/index.html) | | [notes](concepts/11-entanglement-and-qiskit/notes.md) | [notebook](concepts/11-entanglement-and-qiskit/notebook.ipynb) |
-| 12 | The Bloch sphere | | [page](concepts/12-bloch-sphere/index.html) | | [notes](concepts/12-bloch-sphere/notes.md) | [notebook](concepts/12-bloch-sphere/notebook.ipynb) |
+| 01 | Complex numbers | Week 1 | [page](concepts/01-complex-numbers/index.html) | [Q1–10](concepts/01-complex-numbers/practice.html) | [tutorial](concepts/01-complex-numbers/notebook.html) | [notebook](concepts/01-complex-numbers/notebook.ipynb) |
+| 02 | Vector spaces | Week 1 | [page](concepts/02-vector-spaces/index.html) | [Q11–13](concepts/02-vector-spaces/practice.html) | – | – |
+| 03 | Inner products and bases | Week 1 | [page](concepts/03-inner-products-and-bases/index.html) | [Q14–17](concepts/03-inner-products-and-bases/practice.html) | [tutorial](concepts/03-inner-products-and-bases/notebook.html) | [notebook](concepts/03-inner-products-and-bases/notebook.ipynb) |
+| 04 | Matrices and linear maps | Next | [page](concepts/04-matrices-and-linear-maps/index.html) | [Q18–20](concepts/04-matrices-and-linear-maps/practice.html) | [tutorial](concepts/04-matrices-and-linear-maps/notebook.html) | [notebook](concepts/04-matrices-and-linear-maps/notebook.ipynb) |
+| 05 | Eigenvalues and eigenvectors | | [page](concepts/05-eigenvalues/index.html) | | [tutorial](concepts/05-eigenvalues/notebook.html) | [notebook](concepts/05-eigenvalues/notebook.ipynb) |
+| 06 | Probability and expectation | | [page](concepts/06-probability/index.html) | | [tutorial](concepts/06-probability/notebook.html) | [notebook](concepts/06-probability/notebook.ipynb) |
+| 07 | AI/ML maths bridge | | [page](concepts/07-ml-maths-bridge/index.html) | | [tutorial](concepts/07-ml-maths-bridge/notebook.html) | [notebook](concepts/07-ml-maths-bridge/notebook.ipynb) |
+| 08 | Qubits and Dirac notation | | [page](concepts/08-qubits-and-dirac-notation/index.html) | | [tutorial](concepts/08-qubits-and-dirac-notation/notebook.html) | [notebook](concepts/08-qubits-and-dirac-notation/notebook.ipynb) |
+| 09 | Gates as matrices | | [page](concepts/09-gates/index.html) | | [tutorial](concepts/09-gates/notebook.html) | [notebook](concepts/09-gates/notebook.ipynb) |
+| 10 | Two qubits and tensor products | | [page](concepts/10-tensor-products/index.html) | | [tutorial](concepts/10-tensor-products/notebook.html) | [notebook](concepts/10-tensor-products/notebook.ipynb) |
+| 11 | Entanglement and your first Qiskit circuit | | [page](concepts/11-entanglement-and-qiskit/index.html) | | [tutorial](concepts/11-entanglement-and-qiskit/notebook.html) | [notebook](concepts/11-entanglement-and-qiskit/notebook.ipynb) |
+| 12 | The Bloch sphere | | [page](concepts/12-bloch-sphere/index.html) | | [tutorial](concepts/12-bloch-sphere/notebook.html) | [notebook](concepts/12-bloch-sphere/notebook.ipynb) |
 
 Concepts 01–07 are Module 1's maths. Concepts 08–12 are picture-first previews of what Modules 1–3 teach properly. New concepts get the next number as classes reach them.
 
@@ -41,7 +41,7 @@ Concepts 01–07 are Module 1's maths. Concepts 08–12 are picture-first previe
 
 | File | What it is |
 | --- | --- |
-| [reading-maths-symbols.md](reference/reading-maths-symbols.md) / [.ipynb](reference/reading-maths-symbols.ipynb) | Symbol dictionary with how to say each one aloud, plus a refresher on powers, roots, fractions, angles, sin/cos, Σ and slopes. Keep it open while you work. |
+| [reading-maths-symbols.html](reference/reading-maths-symbols.html) / [.ipynb](reference/reading-maths-symbols.ipynb) | Symbol dictionary with how to say each one aloud, plus a refresher on powers, roots, fractions, angles, sin/cos, Σ and slopes. Keep it open while you work. |
 | [course-info.md](reference/course-info.md) | Schedule, faculty, modules, capstones, books, certificates |
 | [checks/](reference/checks/) | NumPy scripts that verify the worked answers |
 | [prep-plan.md](reference/prep-plan.md) | The original 11-day pre-course plan (historical) |
@@ -51,7 +51,7 @@ Concepts 01–07 are Module 1's maths. Concepts 08–12 are picture-first previe
 
 1. Drop the class recordings and slides into `class-material/week-NN/`. That folder is never committed: the repo is public.
 2. Double-click `transcribe-new-recordings.bat` in the repo root ([how it works](../tools/class-pipeline/)).
-3. Ask Claude to "process week NN class material". Claude adds a "What class added" section to each concept taught, new concept folders where needed, practice pages for the quiz, and an entry in the [class log](class-log.md).
+3. Ask Claude to "process week NN class material". Claude adds a "What class added" section to each concept taught, new concept folders where needed, practice pages for the quiz, and an entry in the [class log](class-log.md). After any notebook change, `python tools/build_tutorials.py` rebuilds the tutorial pages.
 
 ## How to work through a notebook
 
