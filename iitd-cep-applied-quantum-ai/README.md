@@ -14,6 +14,13 @@ Runs 17 Oct 2026 to 10 Apr 2027, weekend classes. Faculty: Prof. Amit Kumar, Pro
 | [notebooks/](notebooks/) | One tutorial notebook per prep day, with explanations, plots, exercises and hidden worked solutions |
 | [read-on-mobile/](read-on-mobile/) | **Start here on a phone:** the same notebooks as Markdown pages, with all results and plots included |
 | [daily-pages/](daily-pages/) | The illustrated daily concept pages, added each morning from Oct 6 to Oct 16 |
+| [course-days/](course-days/) | Work from the actual course sessions (quizzes, worked solutions), one folder per session |
+
+## Course sessions
+
+| Days | Dates | Topic | Folder |
+| --- | --- | --- | --- |
+| 1–2 | Sat–Sun, Oct 17–18 | Maths foundation quiz: complex numbers, vector spaces, inner products, linear maps | [day-01-02-maths-foundation](course-days/day-01-02-maths-foundation/) |
 
 ## Pre-course prep (Oct 6–16)
 
