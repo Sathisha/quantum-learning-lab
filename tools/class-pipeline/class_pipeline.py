@@ -29,7 +29,13 @@ import time
 import urllib.request
 from pathlib import Path
 
-DEFAULT_PATH = Path(os.environ.get("PIPELINE_DEFAULT_PATH", Path(__file__).resolve().parents[2] / "class material"))
+def default_path() -> Path:
+    """PIPELINE_DEFAULT_PATH (set to /data in Docker), else the repo's "class material" folder."""
+    if os.environ.get("PIPELINE_DEFAULT_PATH"):
+        return Path(os.environ["PIPELINE_DEFAULT_PATH"])
+    here = Path(__file__).resolve()
+    return (here.parents[2] if len(here.parents) > 2 else here.parent) / "class material"
+
 MEDIA = {".mp4", ".mkv", ".mov", ".webm", ".m4a", ".mp3", ".wav"}
 VIDEO = {".mp4", ".mkv", ".mov", ".webm"}
 
@@ -186,7 +192,7 @@ def notes(out: Path, url: str, model: str | None, chunk_chars: int) -> None:
 
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("path", type=Path, nargs="?", default=DEFAULT_PATH,
+    ap.add_argument("path", type=Path, nargs="?", default=None,
                     help="a recording, or a folder searched recursively for recordings")
     ap.add_argument("--model", default="large-v3-turbo", help="Whisper model: large-v3-turbo (default), large-v3, medium.en, small.en")
     ap.add_argument("--device", default=os.environ.get("PIPELINE_DEVICE", "auto"), choices=["auto", "cuda", "cpu"])
@@ -198,6 +204,7 @@ def main() -> None:
     ap.add_argument("--lmstudio-model", default=None, help="model id in LM Studio (default: the loaded one)")
     ap.add_argument("--chunk-chars", type=int, default=12000, help="transcript characters per LM Studio request")
     a = ap.parse_args()
+    a.path = a.path or default_path()
 
     if a.path.is_file():
         if a.path.suffix.lower() not in MEDIA:
