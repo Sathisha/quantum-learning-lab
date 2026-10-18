@@ -1,6 +1,6 @@
 # Speech-to-text (OpenAI Whisper, fast implementation) and video frame reading
 faster-whisper>=1.1
-av>=12
+av>=12,<19        # PyAV 19 removed an option faster-whisper 1.2 still uses
 pillow>=10.1
 # NVIDIA GPU support on Windows (skip these two lines on a PC without an NVIDIA GPU)
 nvidia-cublas-cu12
