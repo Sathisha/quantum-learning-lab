@@ -64,7 +64,7 @@ tools\class-pipeline\transcribe.cmd "class-material\week-02\lecture.mp4" -- --on
 ## Every week
 
 1. Put the recordings and slide PDFs anywhere under `class-material`, for example `class-material\week-02\`.
-2. From the repo folder, run the command with no path. It finds every recording under `class-material`, including subfolders, and skips those already transcribed:
+2. Double-click **`transcribe-new-recordings.bat`** in the repo folder (or drag a single video onto it). It's the same as running this command with no path. It finds every recording under `class-material`, including subfolders, and skips those already transcribed:
    ```powershell
    tools\class-pipeline\transcribe.cmd
    ```
