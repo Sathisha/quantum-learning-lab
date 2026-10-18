@@ -14,7 +14,7 @@ the NVIDIA GPU is used if available, otherwise the CPU.
 
 Usage (normally via Docker: transcribe.ps1 / transcribe.sh; see README.md):
   python class_pipeline.py "lecture.mp4"                 # one recording: transcript + slide sheets
-  python class_pipeline.py "class material/week-02"      # every new recording in a folder
+  python class_pipeline.py "class-material/week-02"      # every new recording in a folder
   python class_pipeline.py lecture.mp4 --notes           # ...and LM Studio notes
   python class_pipeline.py lecture.mp4 --only notes      # notes for a recording already transcribed
 """
@@ -30,11 +30,11 @@ import urllib.request
 from pathlib import Path
 
 def default_path() -> Path:
-    """PIPELINE_DEFAULT_PATH (set to /data in Docker), else the repo's "class material" folder."""
+    """PIPELINE_DEFAULT_PATH (set to /data in Docker), else the repo's "class-material" folder."""
     if os.environ.get("PIPELINE_DEFAULT_PATH"):
         return Path(os.environ["PIPELINE_DEFAULT_PATH"])
     here = Path(__file__).resolve()
-    return (here.parents[2] if len(here.parents) > 2 else here.parent) / "class material"
+    return (here.parents[2] if len(here.parents) > 2 else here.parent) / "class-material"
 
 MEDIA = {".mp4", ".mkv", ".mov", ".webm", ".m4a", ".mp3", ".wav"}
 VIDEO = {".mp4", ".mkv", ".mov", ".webm"}

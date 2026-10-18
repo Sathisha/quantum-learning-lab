@@ -1,19 +1,19 @@
 <#
 .SYNOPSIS
   Transcribe a class recording, or every recording in a folder that isn't done yet, with Docker.
-  With no path, processes everything under the repo's "class material" folder.
+  With no path, processes everything under the repo's "class-material" folder.
 
 .EXAMPLE
-  .\tools\class-pipeline\transcribe.ps1          # all new recordings in "class material"
+  .\tools\class-pipeline\transcribe.ps1          # all new recordings in "class-material"
 .EXAMPLE
-  .\tools\class-pipeline\transcribe.ps1 "C:\workspace\quantum-learning-lab\class material\week-02\lecture.mp4"
+  .\tools\class-pipeline\transcribe.ps1 "C:\workspace\quantum-learning-lab\class-material\week-02\lecture.mp4"
 .EXAMPLE
-  .\tools\class-pipeline\transcribe.ps1 "C:\workspace\quantum-learning-lab\class material\week-02" -Notes
+  .\tools\class-pipeline\transcribe.ps1 "C:\workspace\quantum-learning-lab\class-material\week-02" -Notes
 .EXAMPLE
   .\tools\class-pipeline\transcribe.ps1 lecture.mp4 -Cpu -- --model medium.en
 #>
 param(
-  [Parameter(Position = 0)][string]$Path,   # a recording or a folder; default: the repo's "class material"
+  [Parameter(Position = 0)][string]$Path,   # a recording or a folder; default: the repo's "class-material"
   [switch]$Notes,     # also write notes.md with the model loaded in LM Studio (start its server first)
   [switch]$Cpu,       # no NVIDIA GPU, or the GPU is busy
   [switch]$Rebuild,   # rebuild the image after the pipeline code changes
@@ -21,7 +21,7 @@ param(
 )
 $ErrorActionPreference = "Stop"
 
-if (-not $Path) { $Path = Join-Path $PSScriptRoot "..\..\class material" }
+if (-not $Path) { $Path = Join-Path $PSScriptRoot "..\..\class-material" }
 $item = Get-Item -LiteralPath $Path
 if ($item.PSIsContainer) {
   $env:MEDIA_DIR = $item.FullName

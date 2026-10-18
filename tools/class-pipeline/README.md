@@ -3,7 +3,7 @@
 One command turns a class recording into text that's quick to read and to hand to Claude. Everything runs on your PC: the recordings never leave it.
 
 ```powershell
-tools\class-pipeline\transcribe.cmd "C:\workspace\quantum-learning-lab\class material\week-02\lecture.mp4"
+tools\class-pipeline\transcribe.cmd "C:\workspace\quantum-learning-lab\class-material\week-02\lecture.mp4"
 ```
 
 ```
@@ -44,7 +44,7 @@ If this prints a GPU table, you're set. If it errors, update the NVIDIA driver (
 
 ```powershell
 cd C:\workspace\quantum-learning-lab
-tools\class-pipeline\transcribe.cmd "class material\1071830_ssgv.mp4"
+tools\class-pipeline\transcribe.cmd "class-material\1071830_ssgv.mp4"
 ```
 
 Rough time for a 2-hour class: 6–15 minutes on an RTX laptop GPU, 40–90 minutes on CPU.
@@ -58,18 +58,18 @@ Rough time for a 2-hour class: 6–15 minutes on an RTX laptop GPU, 40–90 minu
 The pipeline finishes transcribing before it calls LM Studio, so Whisper and the LLM don't overlap. On a GPU with 8 GB or less, it's still safest to unload the LM Studio model while transcribing and load it for `-Notes`. Notes for a recording that's already transcribed:
 
 ```powershell
-tools\class-pipeline\transcribe.cmd "class material\week-02\lecture.mp4" -- --only notes
+tools\class-pipeline\transcribe.cmd "class-material\week-02\lecture.mp4" -- --only notes
 ```
 
 ## Every week
 
-1. Put the recordings and slide PDFs anywhere under `class material`, for example `class material\week-02\`.
-2. From the repo folder, run the command with no path. It finds every recording under `class material`, including subfolders, and skips those already transcribed:
+1. Put the recordings and slide PDFs anywhere under `class-material`, for example `class-material\week-02\`.
+2. From the repo folder, run the command with no path. It finds every recording under `class-material`, including subfolders, and skips those already transcribed:
    ```powershell
    tools\class-pipeline\transcribe.cmd
    ```
    Add `-Notes` for LM Studio notes. To limit it to one folder or one file, give that path instead.
-3. Tell Claude **"process week 02 class material"**. Claude reads the transcripts, slide sheets, notes and PDFs from your linked computer and updates the study pages.
+3. Tell Claude **"process week 02 class-material"**. Claude reads the transcripts, slide sheets, notes and PDFs from your linked computer and updates the study pages.
 
 A recording counts as done when its `.processed` folder has `transcript.txt` and `done.json`. Delete `done.json` to transcribe it again. Slide sheets and notes are skipped the same way when they already exist.
 
@@ -103,4 +103,4 @@ Everything after `--` is passed to `class_pipeline.py`; `--help` lists all optio
 
 ## Privacy and the public repo
 
-`class material/` is in `.gitignore`, so recordings, slides, transcripts and notes stay on your PC and never reach GitHub or the public site. Only this tool is committed.
+`class-material/` is in `.gitignore`, so recordings, slides, transcripts and notes stay on your PC and never reach GitHub or the public site. Only this tool is committed.

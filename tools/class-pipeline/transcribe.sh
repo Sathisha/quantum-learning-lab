@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Transcribe a class recording, or every recording in a folder that isn't done yet, with Docker.
-#   ./transcribe.sh ["class material/week-02/lecture.mp4" | folder] [--notes] [--cpu] [--rebuild] [-- extra pipeline options]
-# With no path (or an option first), processes everything under the repo's "class material" folder.
+#   ./transcribe.sh ["class-material/week-02/lecture.mp4" | folder] [--notes] [--cpu] [--rebuild] [-- extra pipeline options]
+# With no path (or an option first), processes everything under the repo's "class-material" folder.
 set -euo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
-if [ $# -ge 1 ] && [ "${1#-}" = "$1" ]; then path="$1"; shift; else path="$here/../../class material"; fi
+if [ $# -ge 1 ] && [ "${1#-}" = "$1" ]; then path="$1"; shift; else path="$here/../../class-material"; fi
 service=transcribe; args=(); rebuild=0
 while [ $# -gt 0 ]; do
   case "$1" in
