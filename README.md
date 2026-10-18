@@ -2,6 +2,8 @@
 
 My workspace for learning quantum computing: course material, notebooks and experiments.
 
+**Read on a phone:** https://sathisha.github.io/quantum-learning-lab/ (the HTML pages rendered, via GitHub Pages)
+
 ## Projects
 
 | Folder | What it is | Status |

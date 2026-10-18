@@ -3,7 +3,7 @@
 One illustrated HTML page per prep day (diagrams, a worked example, a practice question with a hidden answer, and a NumPy check).
 The pages were made by the "Daily Quantum Maths Card" scheduled task at 6:53 am IST, Oct 6 to Oct 16 2026 (see [../scheduled-tasks/](../scheduled-tasks/)). All 11 are here.
 
-Open a page by downloading it and opening it in a browser. GitHub shows HTML files as source code.
+To read a page rendered (diagrams, sliders, answer toggles), open it on the site: https://sathisha.github.io/quantum-learning-lab/ . GitHub and its app show HTML files as source code.
 
 | Day | Date | Phase | Page | Live page |
 | --- | --- | --- | --- | --- |

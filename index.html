@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Quantum Learning Lab</title>
+<meta name="description" content="Sathisha's quantum computing study pages: IIT Delhi CEP Applied Quantum Computing & AI.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500;600&family=Spectral:wght@600;700&display=swap">
+<style>
+/* Layout: one phone-first column of tappable rows, grouped by course session and prep day. Same palette as the daily pages. */
+:root{
+  --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4;
+  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --soft:#f5f7fb;
+  --f-display:"Spectral",Georgia,serif; --f-body:"Atkinson Hyperlegible",system-ui,sans-serif; --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --soft:#1b2330; color-scheme:dark}}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 var(--f-body);
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-top:max(24px,env(safe-area-inset-top,0px));padding-bottom:max(40px,env(safe-area-inset-bottom,0px))}
+main{max-width:42rem;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2{font-family:var(--f-display);margin:0;line-height:1.2;text-wrap:balance}
+h1{font-size:2rem}
+h2{font-size:1.25rem}
+p{margin:0}
+.eyebrow{font:600 .75rem/1.3 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--muted)}
+section{display:flex;flex-direction:column;gap:10px}
+.list{list-style:none;margin:0;padding:0;background:var(--paper);border:1px solid var(--rule);border-radius:12px;overflow:hidden}
+.list li+li{border-top:1px solid var(--rule)}
+.row{display:grid;grid-template-columns:3.2rem 1fr;gap:2px 12px;padding:12px 14px;align-items:baseline}
+.tag{font:600 .8rem var(--f-mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.main{font-weight:700;color:var(--ink);text-decoration:none;min-width:0}
+a.main:hover,a.main:focus-visible{color:var(--re);text-decoration:underline}
+.sub{grid-column:2;font-size:.88rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 14px}
+.sub a{color:var(--re)}
+.pill{font:600 .7rem var(--f-mono);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:1px 8px;margin-left:6px;vertical-align:2px}
+.prep{color:var(--re);background:var(--soft)} .intro{color:var(--im);background:var(--soft)} .new{color:var(--ok);background:var(--soft)}
+a:focus-visible{outline:2px solid var(--re);outline-offset:2px;border-radius:4px}
+footer{color:var(--muted);font-size:.88rem;border-top:1px solid var(--rule);padding-top:14px;display:flex;flex-direction:column;gap:6px}
+footer a{color:var(--re)}
+</style>
+</head>
+<body>
+<main>
+<header style="display:flex;flex-direction:column;gap:8px">
+  <span class="eyebrow">IIT Delhi CEP · Applied Quantum Computing &amp; AI · Oct 2026 – Apr 2027</span>
+  <h1>Quantum Learning Lab</h1>
+  <p class="lede">Study pages for the course. Tap a title to open the illustrated page; "read notes" opens the phone-friendly notebook.</p>
+</header>
+
+<section>
+  <h2>Course sessions</h2>
+  <ul class="list">
+    <li class="row"><span class="tag">D1–2</span>
+      <a class="main" href="iitd-cep-applied-quantum-ai/course-days/day-01-02-maths-foundation/quiz-solutions.html">Maths foundation quiz: worked solutions<span class="pill new">New</span></a>
+      <span class="sub">Sat–Sun, 17–18 Oct · complex numbers, vector spaces, inner products, linear maps</span></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Pre-course prep, 11 days</h2>
+  <ul class="list" id="days"></ul>
+</section>
+
+<section>
+  <h2>Reference</h2>
+  <ul class="list">
+    <li class="row"><span class="tag">D0</span>
+      <a class="main" href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/read-on-mobile/00_reading_maths_symbols.md">Reading maths symbols, and the basics</a>
+      <span class="sub">Symbol dictionary with how to say each one aloud</span></li>
+    <li class="row"><span class="tag">Plan</span>
+      <a class="main" href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/plan/prep-plan.md">11-day prep plan</a>
+      <span class="sub">What each prep day covers</span></li>
+  </ul>
+</section>
+
+<footer>
+  <span>Source and notebooks: <a href="https://github.com/Sathisha/quantum-learning-lab">github.com/Sathisha/quantum-learning-lab</a></span>
+  <span>Pages update about a minute after each push to main.</span>
+</footer>
+</main>
+
+<script>
+(function(){
+  var gh="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/";
+  var days=[
+    ["01","Tue 6 Oct","prep","Complex numbers","day-01-complex-numbers","01_complex_numbers"],
+    ["02","Wed 7 Oct","prep","Vectors and inner products","day-02-vectors-inner-products","02_vectors_inner_products"],
+    ["03","Thu 8 Oct","prep","Matrices","day-03-matrices","03_matrices"],
+    ["04","Fri 9 Oct","prep","Eigenvalues and eigenvectors","day-04-eigenvalues-eigenvectors","04_eigenvalues_eigenvectors"],
+    ["05","Sat 10 Oct","prep","Probability and expectation","day-05-probability-expectation","05_probability_expectation"],
+    ["06","Sun 11 Oct","prep","AI/ML maths bridge","day-06-ai-ml-maths-bridge","06_ai_ml_maths_bridge"],
+    ["07","Mon 12 Oct","intro","Qubits and Dirac notation","day-07-qubits-dirac-notation","07_qubits_dirac_notation"],
+    ["08","Tue 13 Oct","intro","Gates as matrices","day-08-gates-as-matrices","08_gates_as_matrices"],
+    ["09","Wed 14 Oct","intro","Two qubits and tensor products","day-09-two-qubits-tensor-products","09_two_qubits_tensor_products"],
+    ["10","Thu 15 Oct","intro","Entanglement and your first Qiskit circuit","day-10-entanglement-first-qiskit-circuit","10_entanglement_first_qiskit_circuit"],
+    ["11","Fri 16 Oct","intro","The Bloch sphere","day-11-bloch-sphere","11_bloch_sphere"]
+  ];
+  var ul=document.getElementById("days");
+  days.forEach(function(d){
+    var li=document.createElement("li"); li.className="row";
+    li.innerHTML='<span class="tag">D'+d[0]+'</span>'+
+      '<a class="main" href="iitd-cep-applied-quantum-ai/daily-pages/'+d[4]+'.html">'+d[3]+'<span class="pill '+d[2]+'">'+(d[2]==="prep"?"Prep":"Intro")+'</span></a>'+
+      '<span class="sub"><span>'+d[1]+'</span><a href="'+gh+'read-on-mobile/'+d[5]+'.md">read notes</a><a href="'+gh+'notebooks/'+d[5]+'.ipynb">notebook</a></span>';
+    ul.appendChild(li);
+  });
+})();
+</script>
+<noscript><p style="max-width:42rem;margin:16px auto">The prep-day list needs JavaScript. All pages are in <a href="https://github.com/Sathisha/quantum-learning-lab/tree/main/iitd-cep-applied-quantum-ai/daily-pages">daily-pages</a>.</p></noscript>
+</body>
+</html>
