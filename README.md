@@ -8,7 +8,7 @@ My workspace for learning quantum computing: course material, notebooks and expe
 
 | Folder | What it is | Status |
 | --- | --- | --- |
-| [iitd-cep-applied-quantum-ai](iitd-cep-applied-quantum-ai/) | IIT Delhi CEP Certification in Applied Quantum Computing & AI (Oct 2026 – Apr 2027) | Pre-course prep |
+| [iitd-cep-applied-quantum-ai](iitd-cep-applied-quantum-ai/) | IIT Delhi CEP Certification in Applied Quantum Computing & AI (Oct 2026 – Apr 2027), organised by concept | In progress: Week 1 done |
 
 New projects get their own top-level folder.
 

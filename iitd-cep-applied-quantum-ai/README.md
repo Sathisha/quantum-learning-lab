@@ -3,52 +3,63 @@
 Certification in Applied Quantum Computing & AI, Continuing Education Programme (CEP), IIT Delhi.
 Runs 17 Oct 2026 to 10 Apr 2027, weekend classes. Faculty: Prof. Amit Kumar, Prof. Kolin Paul, Prof. Rajendra Kumar (CSE, IIT Delhi).
 
+**Read on a phone:** https://sathisha.github.io/quantum-learning-lab/ shows the pages rendered. GitHub and its app show HTML as source code.
+
 - Official programme page: https://cepqip.iitd.ac.in/post/program/applied-quantum-computing-and-ai
-- Live prep plan (editable): https://claude.ai/code/artifact/babb28bd-92dc-4c2c-8c12-efe7ec2608a3
+- [Course information](reference/course-info.md): schedule, faculty, modules, capstones, books, certificates
+- [Class log](class-log.md): what each class covered and what to do before the next one
 
-## Folder layout
+## Learn by concept
 
-| Folder | Contents |
+Material is organised by concept, in learning order. Each concept folder holds:
+
+| File | What it is |
 | --- | --- |
-| [plan/](plan/) | The 11-day pre-course maths prep plan |
-| [notebooks/](notebooks/) | One tutorial notebook per prep day, with explanations, plots, exercises and hidden worked solutions |
-| [read-on-mobile/](read-on-mobile/) | **Start here on a phone:** the same notebooks as Markdown pages, with all results and plots included |
-| [daily-pages/](daily-pages/) | The 11 illustrated daily concept pages, one per prep day (Oct 6 to Oct 16) |
-| [scheduled-tasks/](scheduled-tasks/) | The settings and prompt of the cloud scheduled task that made the daily pages |
-| [course-days/](course-days/) | Work from the actual course sessions (quizzes, worked solutions), one folder per session |
+| `index.html` | The illustrated page: symbols read aloud, back-to-basics, diagrams, a worked example, common mistakes, a practice question. Concepts taught in class also have a **"What class added"** section. |
+| `practice.html` | Worked solutions to the class quiz questions on this concept (concepts taught so far) |
+| `notes.md` | Phone-friendly version of the notebook, with all results and plots |
+| `notebook.ipynb` | Tutorial notebook: explanations, plots, exercises, hidden solutions, automatic checks |
 
-## Course sessions
+| # | Concept | In class | Page | Practice | Notes | Notebook |
+| --- | --- | --- | --- | --- | --- | --- |
+| 01 | Complex numbers | Week 1 | [page](concepts/01-complex-numbers/index.html) | [Q1–10](concepts/01-complex-numbers/practice.html) | [notes](concepts/01-complex-numbers/notes.md) | [notebook](concepts/01-complex-numbers/notebook.ipynb) |
+| 02 | Vector spaces | Week 1 | [page](concepts/02-vector-spaces/index.html) | [Q11–13](concepts/02-vector-spaces/practice.html) | [notes](concepts/02-vector-spaces/notes.md) | – |
+| 03 | Inner products and bases | Week 1 | [page](concepts/03-inner-products-and-bases/index.html) | [Q14–17](concepts/03-inner-products-and-bases/practice.html) | [notes](concepts/03-inner-products-and-bases/notes.md) | [notebook](concepts/03-inner-products-and-bases/notebook.ipynb) |
+| 04 | Matrices and linear maps | Next | [page](concepts/04-matrices-and-linear-maps/index.html) | [Q18–20](concepts/04-matrices-and-linear-maps/practice.html) | [notes](concepts/04-matrices-and-linear-maps/notes.md) | [notebook](concepts/04-matrices-and-linear-maps/notebook.ipynb) |
+| 05 | Eigenvalues and eigenvectors | | [page](concepts/05-eigenvalues/index.html) | | [notes](concepts/05-eigenvalues/notes.md) | [notebook](concepts/05-eigenvalues/notebook.ipynb) |
+| 06 | Probability and expectation | | [page](concepts/06-probability/index.html) | | [notes](concepts/06-probability/notes.md) | [notebook](concepts/06-probability/notebook.ipynb) |
+| 07 | AI/ML maths bridge | | [page](concepts/07-ml-maths-bridge/index.html) | | [notes](concepts/07-ml-maths-bridge/notes.md) | [notebook](concepts/07-ml-maths-bridge/notebook.ipynb) |
+| 08 | Qubits and Dirac notation | | [page](concepts/08-qubits-and-dirac-notation/index.html) | | [notes](concepts/08-qubits-and-dirac-notation/notes.md) | [notebook](concepts/08-qubits-and-dirac-notation/notebook.ipynb) |
+| 09 | Gates as matrices | | [page](concepts/09-gates/index.html) | | [notes](concepts/09-gates/notes.md) | [notebook](concepts/09-gates/notebook.ipynb) |
+| 10 | Two qubits and tensor products | | [page](concepts/10-tensor-products/index.html) | | [notes](concepts/10-tensor-products/notes.md) | [notebook](concepts/10-tensor-products/notebook.ipynb) |
+| 11 | Entanglement and your first Qiskit circuit | | [page](concepts/11-entanglement-and-qiskit/index.html) | | [notes](concepts/11-entanglement-and-qiskit/notes.md) | [notebook](concepts/11-entanglement-and-qiskit/notebook.ipynb) |
+| 12 | The Bloch sphere | | [page](concepts/12-bloch-sphere/index.html) | | [notes](concepts/12-bloch-sphere/notes.md) | [notebook](concepts/12-bloch-sphere/notebook.ipynb) |
 
-| Days | Dates | Topic | Folder |
-| --- | --- | --- | --- |
-| 1–2 | Sat–Sun, Oct 17–18 | Maths foundation quiz: complex numbers, vector spaces, inner products, linear maps | [day-01-02-maths-foundation](course-days/day-01-02-maths-foundation/) |
+Concepts 01–07 are Module 1's maths. Concepts 08–12 are picture-first previews of what Modules 1–3 teach properly. New concepts get the next number as classes reach them.
 
-## Pre-course prep (Oct 6–16)
+## Reference
 
-| Day | Date | Phase | Notebook |
-| --- | --- | --- | --- |
-| 0 | Anytime first | Refresher | [Reading maths symbols and refreshing the basics](notebooks/00_reading_maths_symbols.ipynb) |
-| 1 | Tue, Oct 6 | Prep | [Complex numbers](notebooks/01_complex_numbers.ipynb) |
-| 2 | Wed, Oct 7 | Prep | [Linear algebra 1: vectors and inner products](notebooks/02_vectors_inner_products.ipynb) |
-| 3 | Thu, Oct 8 | Prep | [Linear algebra 2: matrices](notebooks/03_matrices.ipynb) |
-| 4 | Fri, Oct 9 | Prep | [Linear algebra 3: eigenvalues and eigenvectors](notebooks/04_eigenvalues_eigenvectors.ipynb) |
-| 5 | Sat, Oct 10 | Prep | [Probability: distributions and expectation](notebooks/05_probability_expectation.ipynb) |
-| 6 | Sun, Oct 11 | Prep | [AI/ML maths bridge](notebooks/06_ai_ml_maths_bridge.ipynb) |
-| 7 | Mon, Oct 12 | Intro | [Qubits and Dirac notation](notebooks/07_qubits_dirac_notation.ipynb) |
-| 8 | Tue, Oct 13 | Intro | [Gates as matrices](notebooks/08_gates_as_matrices.ipynb) |
-| 9 | Wed, Oct 14 | Intro | [Two qubits and tensor products](notebooks/09_two_qubits_tensor_products.ipynb) |
-| 10 | Thu, Oct 15 | Intro | [Entanglement and your first Qiskit circuit](notebooks/10_entanglement_first_qiskit_circuit.ipynb) |
-| 11 | Fri, Oct 16 | Intro | [The Bloch sphere](notebooks/11_bloch_sphere.ipynb) |
+| File | What it is |
+| --- | --- |
+| [reading-maths-symbols.md](reference/reading-maths-symbols.md) / [.ipynb](reference/reading-maths-symbols.ipynb) | Symbol dictionary with how to say each one aloud, plus a refresher on powers, roots, fractions, angles, sin/cos, Σ and slopes. Keep it open while you work. |
+| [course-info.md](reference/course-info.md) | Schedule, faculty, modules, capstones, books, certificates |
+| [checks/](reference/checks/) | NumPy scripts that verify the worked answers |
+| [prep-plan.md](reference/prep-plan.md) | The original 11-day pre-course plan (historical) |
+| [daily-page-scheduled-task.md](reference/daily-page-scheduled-task.md) | The scheduled task that generated the pre-course pages (historical) |
 
-Day 0 is a symbol dictionary (with how to say each one aloud) plus a refresher on powers, roots, fractions, angles, sin/cos, Σ and slopes; keep it open while you work. Days 1–6 cover Module 1's maths: complex numbers, linear algebra, probability and the AI/ML bridge. Days 7–11 are short, picture-first previews of what Modules 2–3 teach properly.
+## Each week
+
+1. Drop the class recordings and slides into `class-material/week-NN/`. That folder is never committed: the repo is public.
+2. Double-click `transcribe-new-recordings.bat` in the repo root ([how it works](../tools/class-pipeline/)).
+3. Ask Claude to "process week NN class material". Claude adds a "What class added" section to each concept taught, new concept folders where needed, practice pages for the quiz, and an entry in the [class log](class-log.md).
 
 ## How to work through a notebook
 
-1. Start with the "Symbols in this notebook" table and the "Back to basics" section at the top of each notebook.
+1. Start with the "Symbols in this notebook" table and the "Back to basics" section at the top.
 2. Read each explanation and run the cell under it. Change the numbers and run it again.
 3. Follow the "Worked example, every step shown" sections with pen and paper.
 4. Do the exercises by hand first, then use the "your turn" cell to check in code.
 5. Open the hidden worked solution only after trying.
-6. The last cell of every notebook runs automatic checks. If it prints "checks passed", you're done.
+6. The last cell runs automatic checks. If it prints "All checks passed", you're done.
 
-The notebooks are saved with their outputs, so you can read them on GitHub without running anything. Day 10 needs Qiskit (`pip install -r ../requirements.txt` from this folder).
+Concept 11 needs Qiskit: `pip install -r ../requirements.txt` from this folder.

@@ -1,0 +1,387 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Complex numbers: Practice</title><meta name="description" content="Worked solutions to the Week 1 quiz questions on complex numbers."><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&family=Spectral:wght@500;700&display=swap"><style>
+/* Layout: same graph-paper notebook column as the prep daily pages; maths in mono, real = blue, imaginary = magenta, correct answer = green */
+:root{
+  --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4; --grid:#e6ebf2;
+  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --okbg:#e5f4ec; --soft:#f5f7fb; --code:#f2f4f8;
+  --f-display:"Spectral",Georgia,serif; --f-body:"Atkinson Hyperlegible",system-ui,sans-serif; --f-math:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:17px/1.6 var(--f-body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px}
+main{max-width:46rem;margin:0 auto;display:flex;flex-direction:column;gap:30px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.2}
+h1{font-size:clamp(1.8rem,6vw,2.3rem)}
+h2{font-size:1.5rem;padding-bottom:6px;border-bottom:1px solid var(--rule)}
+h3{font-size:1.2rem}
+section,article{display:flex;flex-direction:column;gap:12px;min-width:0}
+p{margin:0;max-width:65ch}
+.eyebrow{font:600 .78rem/1 var(--f-math);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.m{font-family:var(--f-math);font-size:.92em;white-space:nowrap}
+.re{color:var(--re)} .im{color:var(--im)}
+.bar{text-decoration:overline;text-decoration-thickness:1.5px}
+.box{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font:600 .75rem var(--f-math);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sym td:first-child{font-family:var(--f-math);font-weight:600;white-space:nowrap}
+.key{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:8px}
+.key a{display:flex;justify-content:space-between;align-items:baseline;gap:6px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:7px 10px;font-family:var(--f-math);font-variant-numeric:tabular-nums}
+.key a b{color:var(--ok)}
+.key a span{color:var(--muted);font-size:.85rem}
+.qcard{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
+.qhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.qhead .qn{font:700 .85rem var(--f-math);color:var(--muted)}
+.qtext{font-size:1.05rem}
+.opts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:6px}
+.opts li{border:1px solid var(--rule);border-radius:8px;padding:6px 10px;font-family:var(--f-math);font-size:.92rem;min-width:0;overflow-wrap:anywhere}
+.opts li .l{color:var(--muted);margin-right:6px}
+.show .opts li.ok,.revealed .opts li.ok{border-color:var(--ok);background:var(--okbg);color:var(--ink)}
+.show .opts li.ok .l,.revealed .opts li.ok .l{color:var(--ok);font-weight:700}
+.badge{font:700 .82rem var(--f-math);color:var(--ok);background:var(--okbg);border-radius:999px;padding:3px 10px;white-space:nowrap}
+body:not(.show) .qcard:not(.revealed) .badge{visibility:hidden}
+.steps{font-family:var(--f-math);font-size:.93rem;background:var(--code);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.steps span{white-space:pre-wrap}
+.steps .note{color:var(--muted);font-family:var(--f-body);font-size:.88rem;white-space:normal}
+.steps .ok{color:var(--ok);font-weight:600}
+figure{margin:0;background:var(--soft);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+figure svg{width:100%;height:auto;max-width:360px;align-self:center;display:block}
+figcaption{font-size:.9rem;color:var(--muted)}
+figcaption b{color:var(--ink)}
+svg text{font-family:var(--f-math);font-size:12px;fill:var(--ink)}
+svg .lab{font-size:13px;font-weight:600}
+svg .mut{fill:var(--muted)}
+svg .grid{stroke:var(--grid);stroke-width:1}
+svg .axis{stroke:var(--muted);stroke-width:1.3}
+svg .reS{stroke:var(--re)} svg .imS{stroke:var(--im)} svg .inkS{stroke:var(--ink)} svg .okS{stroke:var(--ok)} svg .mutS{stroke:var(--muted)}
+svg .reF{fill:var(--re)} svg .imF{fill:var(--im)} svg .inkF{fill:var(--ink)} svg .okF{fill:var(--ok)} svg .bgF{fill:var(--paper)} svg .none{fill:none}
+svg .okT{fill:var(--ok)} svg .reT{fill:var(--re)} svg .imT{fill:var(--im)}
+.why{font-size:.95rem;color:var(--muted)}
+.why b{color:var(--ink)}
+.ql{background:var(--soft);border-left:3px solid var(--im);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.ql b{color:var(--im)}
+.warn{background:var(--soft);border-left:3px solid var(--re);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+details.sol{border-top:1px dashed var(--rule);padding-top:10px}
+details.sol>summary{cursor:pointer;font-weight:700;color:var(--re);list-style-position:inside}
+details.sol[open]>summary{margin-bottom:10px}
+details.sol>div{display:flex;flex-direction:column;gap:12px}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+button{font:600 .9rem var(--f-body);color:var(--re);background:var(--paper);border:1px solid var(--re);border-radius:8px;padding:8px 14px;cursor:pointer}
+button:hover{background:var(--soft)}
+button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--re);outline-offset:3px}
+ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;max-width:65ch}
+pre.code{margin:0;background:var(--code);border-radius:8px;padding:14px 16px;overflow-x:auto;font:.85rem/1.55 var(--f-math)}
+a{color:var(--re)}
+footer{border-top:1px solid var(--rule);padding-top:14px;color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+.tag{font:600 .72rem var(--f-math);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.tag.new{color:var(--ok);background:var(--okbg)} .tag.have{color:var(--re);background:var(--soft)} .tag.next{color:var(--im);background:var(--soft)}
+.cov td:nth-child(2){white-space:nowrap}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:12px}
+.grid2>div{min-width:0}
+</style>
+</head><body><style>
+.cnav{--cn-ink:#1b2430;--cn-mut:#566275;--cn-bg:#f5f7fb;--cn-rule:#d3dae4;--cn-a:#1d5bbd;
+ display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 18px;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+ color:var(--cn-mut);background:var(--cn-bg);border-bottom:1px solid var(--cn-rule);
+ padding-block:9px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.cnav:not(.bottom){margin-bottom:22px}
+.cnav.bottom{border-bottom:0;border-top:1px solid var(--cn-rule);margin-top:32px}
+.cnav a{color:var(--cn-a);text-decoration:none}.cnav a:hover{text-decoration:underline}
+.cnav a:focus-visible{outline:2px solid var(--cn-a);outline-offset:2px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}}
+:root[data-theme="dark"] .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}
+</style><nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 01 of 12</span> · <a href="./">Complex numbers page</a> · <a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/01-complex-numbers/notes.md">Phone notes</a></div><div><a href="../02-vector-spaces/">Vector spaces →</a></div></nav>
+<main id="top">
+<header style="display:flex;flex-direction:column;gap:10px">
+  <span class="eyebrow">Concept 01 · Practice · from the Week 1 maths-foundation quiz</span>
+  <h1>Complex numbers: practice</h1>
+  <p>Questions 1–10 of the 20-question Week 1 quiz, each with a full worked solution, diagrams and a link to where the idea shows up in quantum computing. Hide the answers to test yourself first. All answers are checked in <a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/reference/checks/week-01-quiz-check.py">week-01-quiz-check.py</a>.</p>
+  <div class="toolbar">
+    <button type="button" id="toggle">Hide answers (practise mode)</button>
+    <span class="why" id="mode">Answers are showing. Tap a question number below to jump to it.</span>
+  </div>
+</header>
+<section><h2>Answer key</h2><nav class="key" aria-label="Answer key"><a href="#q1">Q1 <b>C</b><span>−1</span></a><a href="#q2">Q2 <b>z̄/4</b><span></span></a><a href="#q3">Q3 <b>D</b><span>i</span></a><a href="#q4">Q4 <b>B</b><span>64</span></a><a href="#q5">Q5 <b>C</b><span>7π/6</span></a><a href="#q6">Q6 <b>A</b><span></span></a><a href="#q7">Q7 <b>D</b><span>2π/3</span></a><a href="#q8">Q8 <b>B</b><span>−1</span></a><a href="#q9">Q9 <b>A</b><span>2−2i</span></a><a href="#q10">Q10 <b>C</b><span></span></a></nav><p class="warn"><b>Q2 has a lost symbol.</b> When the quiz was copied, options (A) and (C) both came through as "z/4". The right one has a bar over the z (the conjugate z̄).</p></section>
+<article class="qcard" id="q1">
+  <div class="qhead"><span class="qn">Q1</span><span class="badge">Answer (C) −1</span></div>
+  <p class="qtext">Let z = (1 + i)/(1 − i). Then z<sup>2026</sup> equals</p>
+  <ul class="opts"><li><span class="l">A</span>1</li><li><span class="l">B</span>i</li><li class="ok"><span class="l">C</span>−1</li><li><span class="l">D</span>−i</li></ul>
+  <details class="sol" open><summary>Solution</summary><div>
+    <p><b>Idea:</b> to divide by a complex number, multiply top and bottom by its conjugate. That makes the bottom real.</p>
+    <div class="steps">
+      <span>z = (1+i)/(1−i) × (1+i)/(1+i)</span>
+      <span>  = (1+i)² / (1² + 1²)        <span class="note">bottom: (1−i)(1+i) = 1 − i² = 2</span></span>
+      <span>  = (1 + 2i + i²) / 2 = (1 + 2i − 1)/2 = 2i/2 = i</span>
+      <span>So z = i. Powers of i repeat every 4: i, −1, −i, 1, …</span>
+      <span>2026 = 4 × 506 + 2   →   i^2026 = i² = −1</span>
+      <span class="ok">z^2026 = −1   (C)</span>
+    </div>
+    <figure>
+      <svg viewBox="0 0 300 250" role="img" aria-label="Powers of i on the unit circle: 1, i, minus 1, minus i, repeating every four steps; step 2026 lands on minus 1">
+        <line class="axis" x1="30" y1="125" x2="270" y2="125"/><line class="axis" x1="150" y1="15" x2="150" y2="235"/>
+        <circle cx="150" cy="125" r="90" class="none mutS" stroke-dasharray="4 4"/>
+        <path d="M222 78 A90 90 0 0 0 197 48" class="none reS" stroke-width="2" marker-end="url(#ar)"/>
+        <defs><marker id="ar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="reF"/></marker></defs>
+        <circle cx="240" cy="125" r="6" class="reF"/><text x="246" y="115" class="lab">1 (i⁰, i⁴…)</text>
+        <circle cx="150" cy="35" r="6" class="imF"/><text x="158" y="30" class="lab">i (i¹)</text>
+        <circle cx="60" cy="125" r="9" class="okF"/><text x="10" y="110" class="lab okT">−1 (i², i²⁰²⁶)</text>
+        <circle cx="150" cy="215" r="6" class="imF"/><text x="158" y="230" class="lab">−i (i³)</text>
+        <text x="205" y="58" class="mut">×i = turn 90°</text>
+      </svg>
+      <figcaption><b>Multiplying by i turns a point 90° anticlockwise.</b> Four turns bring you home, so only the remainder of 2026 ÷ 4 matters. Remainder 2 → half a turn → −1.</figcaption>
+    </figure>
+    <p class="ql"><b>Quantum link:</b> factors like i and −1 are <i>phases</i>. The S gate multiplies |1⟩ by i; applying S twice gives Z, which multiplies by −1.</p>
+  </div></details>
+</article>
+<article class="qcard" id="q2">
+  <div class="qhead"><span class="qn">Q2</span><span class="badge">Answer z̄/4 (the option with the bar)</span></div>
+  <p class="qtext">If |z| = 2, then 1/z equals</p>
+  <ul class="opts"><li class="ok"><span class="l">A</span><span class="bar">z</span>/4</li><li><span class="l">B</span>z/2</li><li><span class="l">C</span>z/4</li><li><span class="l">D</span>−z/4</li></ul>
+  <details class="sol" open><summary>Solution</summary><div>
+    <p><b>Idea:</b> z times its conjugate is a real number: z·z̄ = |z|². Rearranged, that gives a formula for 1/z.</p>
+    <div class="steps">
+      <span>z · z̄ = |z|² = 2² = 4</span>
+      <span>Divide both sides by 4z:   z̄/4 = 1/z</span>
+      <span class="ok">1/z = z̄/4</span>
+      <span class="note">Check with z = 2: 1/z = 1/2 and z̄/4 = 2/4 = 1/2 ✓. With z = 2i: 1/(2i) = −i/2 and z̄/4 = −2i/4 = −i/2 ✓ (plain z/4 would give +i/2 ✗).</span>
+    </div>
+    <p class="why">The pasted text lost the bar, so I've marked (A) as the bar option. On your sheet, choose whichever of (A)/(C) shows <span class="bar">z</span> with a line over it.</p>
+    <p class="ql"><b>Quantum link:</b> conjugation is everywhere: the "bra" ⟨ψ| is the conjugate of the "ket" |ψ⟩, and probabilities are |α|² = α·ᾱ.</p>
+  </div></details>
+</article>
+<article class="qcard" id="q3">
+  <div class="qhead"><span class="qn">Q3</span><span class="badge">Answer (D) i</span></div>
+  <p class="qtext">(2 + i)/(1 − 2i) equals</p>
+  <ul class="opts"><li><span class="l">A</span>(4 + 5i)/5</li><li><span class="l">B</span>−i</li><li><span class="l">C</span>1</li><li class="ok"><span class="l">D</span>i</li></ul>
+  <details class="sol" open><summary>Solution</summary><div>
+    <div class="steps">
+      <span>Multiply top and bottom by the conjugate of the bottom, (1 + 2i):</span>
+      <span>top:    (2+i)(1+2i) = 2 + 4i + i + 2i² = 2 + 5i − 2 = 5i</span>
+      <span>bottom: (1−2i)(1+2i) = 1 − 4i² = 1 + 4 = 5</span>
+      <span class="ok">(2+i)/(1−2i) = 5i/5 = i   (D)</span>
+      <span class="note">Shortcut: i·(1−2i) = i − 2i² = 2 + i. So the top is exactly i times the bottom.</span>
+    </div>
+    <p class="why"><b>Trap:</b> (A) is what you get if you forget that i² = −1 and write 2i² as +2.</p>
+  </div></details>
+</article>
+<article class="qcard" id="q4">
+  <div class="qhead"><span class="qn">Q4</span><span class="badge">Answer (B) 64</span></div>
+  <p class="qtext">(1 + i√3)<sup>6</sup> equals</p>
+  <ul class="opts"><li><span class="l">A</span>−64</li><li class="ok"><span class="l">B</span>64</li><li><span class="l">C</span>64i</li><li><span class="l">D</span>32</li></ul>
+  <details class="sol" open><summary>Solution</summary><div>
+    <p><b>Idea:</b> never expand a 6th power by hand. Convert to polar form, then use (r e<sup>iθ</sup>)ⁿ = rⁿ e<sup>inθ</sup> (De Moivre).</p>
+    <div class="steps">
+      <span>length: r = √(1² + (√3)²) = √4 = 2</span>
+      <span>angle:  tan θ = √3/1 → θ = 60° = π/3   <span class="note">(point is in the first quadrant)</span></span>
+      <span>(2 e^{iπ/3})⁶ = 2⁶ · e^{i·6π/3} = 64 · e^{i2π} = 64 · 1</span>
+      <span class="ok">= 64   (B)</span>
+    </div>
+    <figure>
+      <svg viewBox="0 0 300 250" role="img" aria-label="Six steps of 60 degrees each go once around the circle and land back on the positive real axis">
+        <line class="axis" x1="20" y1="125" x2="280" y2="125"/><line class="axis" x1="150" y1="10" x2="150" y2="240"/>
+        <circle cx="150" cy="125" r="80" class="none mutS" stroke-dasharray="4 4"/>
+        <line x1="150" y1="125" x2="190" y2="55.7" class="reS" stroke-width="2.5"/><circle cx="190" cy="55.7" r="5" class="reF"/>
+        <text x="196" y="50" class="lab reT">1+i√3 (60°)</text>
+        <circle cx="110" cy="55.7" r="3.5" class="mutS bgF"/><circle cx="70" cy="125" r="3.5" class="mutS bgF"/><circle cx="110" cy="194.3" r="3.5" class="mutS bgF"/><circle cx="190" cy="194.3" r="3.5" class="mutS bgF"/>
+        <text x="80" y="48" class="mut">120°</text><text x="30" y="118" class="mut">180°</text><text x="80" y="212" class="mut">240°</text><text x="196" y="212" class="mut">300°</text>
+        <circle cx="230" cy="125" r="7" class="okF"/><text x="214" y="148" class="lab okT">360° → +64</text>
+        <path d="M168 125 A18 18 0 0 0 159 109.4" class="none reS"/><text x="170" y="114" class="mut">π/3</text>
+      </svg>
+      <figcaption><b>Six turns of 60° = one full circle.</b> The angle ends at 0°, on the positive real axis, so the answer is a positive real number: 2⁶ = 64.</figcaption>
+    </figure>
+  </div></details>
+</article>
+<article class="qcard" id="q5">
+  <div class="qhead"><span class="qn">Q5</span><span class="badge">Answer (C) 2e<sup>7iπ/6</sup></span></div>
+  <p class="qtext">A polar form of −√3 − i is</p>
+  <ul class="opts"><li><span class="l">A</span>2e<sup>iπ/6</sup></li><li><span class="l">B</span>2e<sup>5iπ/6</sup></li><li class="ok"><span class="l">C</span>2e<sup>7iπ/6</sup></li><li><span class="l">D</span>2e<sup>−iπ/6</sup></li></ul>
+  <details class="sol" open><summary>Solution</summary><div>
+    <div class="steps">
+      <span>length: r = √((−√3)² + (−1)²) = √(3+1) = 2</span>
+      <span>Both parts negative → third quadrant (bottom-left).</span>
+      <span>Reference angle: tan α = 1/√3 → α = 30° = π/6</span>
+      <span>Third quadrant angle = 180° + 30° = 210° = 7π/6</span>
+      <span class="ok">−√3 − i = 2 e^{7iπ/6}   (C)</span>
+    </div>
+    <figure>
+      <svg viewBox="0 0 300 250" role="img" aria-label="The point minus root 3 minus i lies in the third quadrant at angle 210 degrees and distance 2">
+        <line class="grid" x1="0" y1="75" x2="300" y2="75"/><line class="grid" x1="0" y1="175" x2="300" y2="175"/><line class="grid" x1="50" y1="0" x2="50" y2="250"/><line class="grid" x1="250" y1="0" x2="250" y2="250"/>
+        <line class="axis" x1="10" y1="125" x2="290" y2="125"/><line class="axis" x1="150" y1="10" x2="150" y2="240"/>
+        <text x="272" y="118" class="mut">Re</text><text x="156" y="22" class="mut">Im</text>
+        <circle cx="150" cy="125" r="100" class="none mutS" stroke-dasharray="4 4"/>
+        <line x1="150" y1="125" x2="63.4" y2="175" class="okS" stroke-width="2.5"/><circle cx="63.4" cy="175" r="6" class="okF"/>
+        <line x1="63.4" y1="125" x2="63.4" y2="175" class="imS" stroke-dasharray="3 3"/>
+        <text x="20" y="200" class="lab okT">−√3 − i</text>
+        <text x="60" y="117" class="reT">−√3</text><text x="30" y="155" class="imT">−1</text>
+        <path d="M180 125 A30 30 0 1 0 124 140" class="none reS" stroke-width="1.8"/>
+        <text x="186" y="95" class="lab reT">210° = 7π/6</text>
+        <text x="100" y="140" class="mut">30°</text>
+        <text x="96" y="160" class="okT">r=2</text>
+      </svg>
+      <figcaption><b>Always sketch the point first.</b> (A) π/6 is first quadrant, (B) 5π/6 is second, (D) −π/6 is fourth. Only 7π/6 lands bottom-left.</figcaption>
+    </figure>
+  </div></details>
+</article>
+<article class="qcard" id="q6">
+  <div class="qhead"><span class="qn">Q6</span><span class="badge">Answer (A)</span></div>
+  <p class="qtext">Which of the following is <b>not</b> a solution of z³ = −27?</p>
+  <ul class="opts"><li class="ok"><span class="l">A</span>(3/2)(−1 + i√3)</li><li><span class="l">B</span>(3/2)(1 + i√3)</li><li><span class="l">C</span>−3</li><li><span class="l">D</span>(3/2)(1 − i√3)</li></ul>
+  <details class="sol" open><summary>Solution</summary><div>
+    <div class="steps">
+      <span>−27 = 27 e^{iπ}. Cube roots: length ∛27 = 3, angles (π + 2πk)/3:</span>
+      <span>k=0: 3e^{iπ/3}  = 3(1/2 + i√3/2) = (3/2)(1 + i√3)   → (B)</span>
+      <span>k=1: 3e^{iπ}    = −3                                → (C)</span>
+      <span>k=2: 3e^{i5π/3} = 3(1/2 − i√3/2) = (3/2)(1 − i√3)   → (D)</span>
+      <span>(A) = (3/2)(−1 + i√3) = 3e^{i2π/3}; cubed: 27e^{i2π} = +27, not −27</span>
+      <span class="ok">(A) is not a solution</span>
+    </div>
+    <figure>
+      <svg viewBox="0 0 300 250" role="img" aria-label="The three cube roots of minus 27 at 60, 180 and 300 degrees, evenly spaced; option A at 120 degrees is a cube root of plus 27 instead">
+        <line class="axis" x1="20" y1="125" x2="280" y2="125"/><line class="axis" x1="150" y1="10" x2="150" y2="240"/>
+        <circle cx="150" cy="125" r="90" class="none mutS" stroke-dasharray="4 4"/>
+        <polygon points="195,47.1 60,125 195,202.9" class="none okS" stroke-width="1.5"/>
+        <circle cx="195" cy="47.1" r="6" class="okF"/><text x="203" y="44" class="lab okT">B (60°)</text>
+        <circle cx="60" cy="125" r="6" class="okF"/><text x="22" y="145" class="lab okT">C (180°)</text>
+        <circle cx="195" cy="202.9" r="6" class="okF"/><text x="203" y="215" class="lab okT">D (300°)</text>
+        <g class="imS" stroke-width="2.5"><line x1="98" y1="40" x2="112" y2="54"/><line x1="112" y1="40" x2="98" y2="54"/></g>
+        <text x="40" y="30" class="lab imT">A (120°) ✗</text>
+        <text x="236" y="120" class="mut">r = 3</text>
+      </svg>
+      <figcaption><b>n-th roots are evenly spaced around a circle</b>, here every 120° starting at 60°. (A) sits at 120°, which is a cube root of <i>+</i>27.</figcaption>
+    </figure>
+  </div></details>
+</article>
+<article class="qcard" id="q7">
+  <div class="qhead"><span class="qn">Q7</span><span class="badge">Answer (D) 2π/3</span></div>
+  <p class="qtext">Real numbers α, β satisfy |e<sup>iα</sup> + e<sup>iβ</sup>| = 1. A possible value of α − β is</p>
+  <ul class="opts"><li><span class="l">A</span>π/3</li><li><span class="l">B</span>π/2</li><li><span class="l">C</span>π</li><li class="ok"><span class="l">D</span>2π/3</li></ul>
+  <details class="sol" open><summary>Solution</summary><div>
+    <p><b>Idea:</b> two unit-length arrows added together. Their sum's length depends only on the angle between them.</p>
+    <div class="steps">
+      <span>|e^{iα} + e^{iβ}| = |e^{iβ}| · |e^{i(α−β)} + 1| = |e^{iφ} + 1|,  φ = α − β</span>
+      <span>|e^{iφ} + 1|² = (cos φ + 1)² + sin²φ = 2 + 2cos φ</span>
+      <span>Set = 1²:  2 + 2cos φ = 1  →  cos φ = −1/2  →  φ = 2π/3 (120°)</span>
+      <span class="ok">α − β = 2π/3   (D)</span>
+      <span class="note">Other options: π/3 gives length √3, π/2 gives √2, π gives 0.</span>
+    </div>
+    <figure>
+      <svg viewBox="0 0 280 210" role="img" aria-label="Two unit arrows 120 degrees apart; their sum is also length 1, forming two equilateral triangles">
+        <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="inkF"/></marker></defs>
+        <polygon points="120,170 80,100.7 160,100.7 200,170" class="none mutS" stroke-dasharray="3 3"/>
+        <line x1="120" y1="170" x2="200" y2="170" class="reS" stroke-width="2.5"/><text x="180" y="190" class="lab reT">e^{iβ}</text>
+        <line x1="120" y1="170" x2="80" y2="100.7" class="imS" stroke-width="2.5"/><text x="20" y="100" class="lab imT">e^{iα}</text>
+        <line x1="120" y1="170" x2="160" y2="100.7" class="okS" stroke-width="3"/><circle cx="160" cy="100.7" r="5" class="okF"/>
+        <text x="166" y="96" class="lab okT">sum, length 1</text>
+        <path d="M140 170 A20 20 0 0 0 110 152.7" class="none inkS"/><text x="130" y="150" class="mut">120°</text>
+      </svg>
+      <figcaption><b>At 120° apart, the two arrows and their sum make equilateral triangles</b>, so every side, including the sum, has length 1.</figcaption>
+    </figure>
+    <p class="ql"><b>Quantum link:</b> this is interference. Adding amplitudes with a phase difference φ gives |sum|² = 2 + 2cos φ: φ = 0 is fully constructive (4), φ = π is fully destructive (0).</p>
+  </div></details>
+</article>
+<article class="qcard" id="q8">
+  <div class="qhead"><span class="qn">Q8</span><span class="badge">Answer (B) −1</span></div>
+  <p class="qtext">Let ω = e<sup>2πi/5</sup>. Then ω + ω² + ω³ + ω⁴ equals</p>
+  <ul class="opts"><li><span class="l">A</span>0</li><li class="ok"><span class="l">B</span>−1</li><li><span class="l">C</span>1</li><li><span class="l">D</span>4</li></ul>
+  <details class="sol" open><summary>Solution</summary><div>
+    <div class="steps">
+      <span>ω⁵ = e^{2πi} = 1, and ω ≠ 1.</span>
+      <span>Geometric series: 1 + ω + ω² + ω³ + ω⁴ = (ω⁵ − 1)/(ω − 1) = 0/(ω−1) = 0</span>
+      <span>So ω + ω² + ω³ + ω⁴ = 0 − 1</span>
+      <span class="ok">= −1   (B)</span>
+    </div>
+    <figure>
+      <svg viewBox="0 0 300 250" role="img" aria-label="The five fifth roots of unity form a regular pentagon; their arrows balance to zero">
+        <line class="axis" x1="20" y1="125" x2="280" y2="125"/><line class="axis" x1="150" y1="10" x2="150" y2="240"/>
+        <circle cx="150" cy="125" r="90" class="none mutS" stroke-dasharray="4 4"/>
+        <polygon points="240,125 177.8,39.4 77.2,72.1 77.2,177.9 177.8,210.6" class="none mutS"/>
+        <g class="imS" stroke-width="2"><line x1="150" y1="125" x2="177.8" y2="39.4"/><line x1="150" y1="125" x2="77.2" y2="72.1"/><line x1="150" y1="125" x2="77.2" y2="177.9"/><line x1="150" y1="125" x2="177.8" y2="210.6"/></g>
+        <line x1="150" y1="125" x2="240" y2="125" class="reS" stroke-width="2.5"/>
+        <circle cx="240" cy="125" r="5" class="reF"/><text x="246" y="120" class="lab reT">1</text>
+        <circle cx="177.8" cy="39.4" r="5" class="imF"/><text x="184" y="34" class="lab">ω</text>
+        <circle cx="77.2" cy="72.1" r="5" class="imF"/><text x="52" y="64" class="lab">ω²</text>
+        <circle cx="77.2" cy="177.9" r="5" class="imF"/><text x="52" y="198" class="lab">ω³</text>
+        <circle cx="177.8" cy="210.6" r="5" class="imF"/><text x="184" y="228" class="lab">ω⁴</text>
+        <circle cx="60" cy="125" r="6" class="okF"/><text x="26" y="118" class="lab okT">−1</text>
+      </svg>
+      <figcaption><b>Five evenly spaced arrows cancel out (sum = 0)</b>, like five equal forces pulling in balanced directions. Remove the arrow "1" and the other four must add to −1.</figcaption>
+    </figure>
+    <p class="ql"><b>Quantum link:</b> roots of unity are the building blocks of the Quantum Fourier Transform, and this exact cancellation is why QFT-based algorithms (like Shor's) concentrate probability on the right answers.</p>
+  </div></details>
+</article>
+<article class="qcard" id="q9">
+  <div class="qhead"><span class="qn">Q9</span><span class="badge">Answer (A) 2 − 2i</span></div>
+  <p class="qtext">The point 1 + i is rotated by 90° clockwise about the origin and its distance from the origin is doubled. The new point is</p>
+  <ul class="opts"><li class="ok"><span class="l">A</span>2 − 2i</li><li><span class="l">B</span>−2 + 2i</li><li><span class="l">C</span>2 + 2i</li><li><span class="l">D</span>−2 − 2i</li></ul>
+  <details class="sol" open><summary>Solution</summary><div>
+    <div class="steps">
+      <span>Anticlockwise 90° = multiply by i.  Clockwise 90° = multiply by −i.</span>
+      <span>Double the distance = multiply by 2.</span>
+      <span>(1+i) × (−i) × 2 = (−i − i²) × 2 = (1 − i) × 2</span>
+      <span class="ok">= 2 − 2i   (A)</span>
+    </div>
+    <figure>
+      <svg viewBox="0 0 300 270" role="img" aria-label="1 plus i rotates clockwise to 1 minus i, then stretches to 2 minus 2i">
+        <line class="grid" x1="0" y1="70" x2="300" y2="70"/><line class="grid" x1="0" y1="190" x2="300" y2="190"/><line class="grid" x1="0" y1="230" x2="300" y2="230"/><line class="grid" x1="190" y1="0" x2="190" y2="270"/><line class="grid" x1="230" y1="0" x2="230" y2="270"/>
+        <line class="axis" x1="20" y1="150" x2="290" y2="150"/><line class="axis" x1="150" y1="10" x2="150" y2="260"/>
+        <line x1="150" y1="150" x2="190" y2="110" class="reS" stroke-width="2.5"/><circle cx="190" cy="110" r="5" class="reF"/><text x="196" y="106" class="lab reT">1 + i</text>
+        <line x1="150" y1="150" x2="190" y2="190" class="mutS" stroke-width="2" stroke-dasharray="4 3"/><circle cx="190" cy="190" r="4" class="mutS bgF"/><text x="198" y="186" class="mut">1 − i</text>
+        <line x1="150" y1="150" x2="230" y2="230" class="okS" stroke-width="2.5"/><circle cx="230" cy="230" r="6" class="okF"/><text x="218" y="255" class="lab okT">2 − 2i</text>
+        <path d="M167.7 132.3 A25 25 0 0 1 167.7 167.7" class="none imS" stroke-width="2"/>
+        <text x="176" y="154" class="imT">−90°</text>
+        <text x="236" y="60" class="mut">×(−i), then ×2</text>
+      </svg>
+      <figcaption><b>Multiplication = rotate + scale.</b> Multiply by −i to turn clockwise 90°, then by 2 to double the length.</figcaption>
+    </figure>
+  </div></details>
+</article>
+<article class="qcard" id="q10">
+  <div class="qhead"><span class="qn">Q10</span><span class="badge">Answer (C) 2i sin θ</span></div>
+  <p class="qtext">For z = e<sup>iθ</sup> with θ real, z − 1/z equals</p>
+  <ul class="opts"><li><span class="l">A</span>2 sin θ</li><li><span class="l">B</span>2 cos θ</li><li class="ok"><span class="l">C</span>2i sin θ</li><li><span class="l">D</span>0</li></ul>
+  <details class="sol" open><summary>Solution</summary><div>
+    <div class="steps">
+      <span>1/z = e^{−iθ}   <span class="note">(on the unit circle, 1/z = z̄)</span></span>
+      <span>z − 1/z = (cos θ + i sin θ) − (cos θ − i sin θ)</span>
+      <span class="ok">        = 2i sin θ   (C)</span>
+      <span class="note">Companion fact: z + 1/z = 2 cos θ (that's option B, the trap).</span>
+    </div>
+    <figure>
+      <svg viewBox="0 0 300 250" role="img" aria-label="z at angle theta and its mirror image 1 over z at minus theta; their difference is a vertical, purely imaginary segment of length 2 sin theta">
+        <line class="axis" x1="20" y1="125" x2="280" y2="125"/><line class="axis" x1="150" y1="10" x2="150" y2="240"/>
+        <circle cx="150" cy="125" r="100" class="none mutS" stroke-dasharray="4 4"/>
+        <line x1="150" y1="125" x2="226.6" y2="60.7" class="reS" stroke-width="2.5"/><circle cx="226.6" cy="60.7" r="5" class="reF"/><text x="232" y="56" class="lab reT">z = e^{iθ}</text>
+        <line x1="150" y1="125" x2="226.6" y2="189.3" class="reS" stroke-width="2" stroke-dasharray="5 3"/><circle cx="226.6" cy="189.3" r="5" class="reF"/><text x="232" y="204" class="lab reT">1/z = e^{−iθ}</text>
+        <line x1="226.6" y1="66" x2="226.6" y2="184" class="okS" stroke-width="3"/>
+        <text x="236" y="130" class="lab okT">2 sin θ</text>
+        <path d="M180 125 A30 30 0 0 0 173 105.7" class="none inkS"/><text x="184" y="114" class="mut">θ</text>
+      </svg>
+      <figcaption><b>z and 1/z are mirror images across the real axis.</b> Their difference points straight up, so it is purely imaginary: height 2 sin θ, times i.</figcaption>
+    </figure>
+  </div></details>
+</article>
+<footer><span>Practice for <a href="./">Complex numbers</a></span><a href="#top">Back to top</a></footer>
+</main>
+<script>
+(function(){
+  var btn=document.getElementById('toggle'), mode=document.getElementById('mode'), body=document.body;
+  var sols=[].slice.call(document.querySelectorAll('details.sol'));
+  body.classList.add('show');
+  btn.addEventListener('click',function(){
+    var showing=body.classList.toggle('show');
+    sols.forEach(function(d){d.open=showing; d.closest('.qcard').classList.remove('revealed');});
+    btn.textContent=showing?'Hide answers (practise mode)':'Show all answers';
+    mode.textContent=showing?'Answers are showing. Tap a question number below to jump to it.':'Practise mode: answers hidden. Open "Solution" under a question to check it.';
+  });
+  document.querySelectorAll('details.sol').forEach(function(d){
+    d.addEventListener('toggle',function(){ if(d.open) d.closest('.qcard').classList.add('revealed'); });
+  });
+})();
+</script>
+<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 01 of 12</span> · <a href="./">Complex numbers page</a> · <a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/01-complex-numbers/notes.md">Phone notes</a></div><div><a href="../02-vector-spaces/">Vector spaces →</a></div></nav></body></html>

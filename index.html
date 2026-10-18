@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500;600&family=Spectral:wght@600;700&display=swap">
 <style>
-/* Layout: one phone-first column of tappable rows, grouped by course session and prep day. Same palette as the daily pages. */
+/* Layout: one phone-first column of tappable rows, one per concept in learning order. Same palette as the concept pages. */
 :root{
   --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4;
   --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --soft:#f5f7fb;
@@ -38,6 +38,7 @@ section{display:flex;flex-direction:column;gap:10px}
 .main{font-weight:700;color:var(--ink);text-decoration:none;min-width:0}
 a.main:hover,a.main:focus-visible{color:var(--re);text-decoration:underline}
 .sub{grid-column:2;font-size:.88rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 14px}
+.sub>span{flex-basis:100%}
 .sub a{color:var(--re)}
 .pill{font:600 .7rem var(--f-mono);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:1px 8px;margin-left:6px;vertical-align:2px}
 .prep{color:var(--re);background:var(--soft)} .intro{color:var(--im);background:var(--soft)} .new{color:var(--ok);background:var(--soft)}
@@ -51,32 +52,69 @@ footer a{color:var(--re)}
 <header style="display:flex;flex-direction:column;gap:8px">
   <span class="eyebrow">IIT Delhi CEP · Applied Quantum Computing &amp; AI · Oct 2026 – Apr 2027</span>
   <h1>Quantum Learning Lab</h1>
-  <p class="lede">Study pages for the course. Tap a title to open the illustrated page; "read notes" opens the phone-friendly notebook.</p>
+  <p class="lede">Study material organised by concept, in learning order. Each concept has an illustrated page; most also have practice questions with worked solutions, phone-friendly notes, and a notebook. A green tag marks what's been taught in class.</p>
 </header>
 
 <section>
-  <h2>Course sessions</h2>
+  <h2>Maths foundations</h2>
   <ul class="list">
-    <li class="row"><span class="tag">D1–2</span>
-      <a class="main" href="iitd-cep-applied-quantum-ai/course-days/day-01-02-maths-foundation/quiz-solutions.html">Maths foundation quiz: worked solutions<span class="pill new">New</span></a>
-      <span class="sub">Sat–Sun, 17–18 Oct · complex numbers, vector spaces, inner products, linear maps</span></li>
+    <li class="row"><span class="tag">01</span>
+      <a class="main" href="iitd-cep-applied-quantum-ai/concepts/01-complex-numbers/">Complex numbers<span class="pill new">In class: Week 1</span></a>
+      <span class="sub"><span>i, conjugate, polar form, Euler&#x27;s formula, roots of unity, phase</span><a href="iitd-cep-applied-quantum-ai/concepts/01-complex-numbers/practice.html">practice</a><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/01-complex-numbers/notes.md">phone notes</a><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/01-complex-numbers/notebook.ipynb">notebook</a></span></li>
+    <li class="row"><span class="tag">02</span>
+      <a class="main" href="iitd-cep-applied-quantum-ai/concepts/02-vector-spaces/">Vector spaces<span class="pill new">In class: Week 1</span></a>
+      <span class="sub"><span>span, subspaces, independence, basis, dimension over ℂ vs ℝ</span><a href="iitd-cep-applied-quantum-ai/concepts/02-vector-spaces/practice.html">practice</a><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/02-vector-spaces/notes.md">phone notes</a></span></li>
+    <li class="row"><span class="tag">03</span>
+      <a class="main" href="iitd-cep-applied-quantum-ai/concepts/03-inner-products-and-bases/">Inner products and bases<span class="pill new">In class: Week 1</span></a>
+      <span class="sub"><span>conjugate-first inner product, norms, Cauchy–Schwarz, orthonormal bases, Parseval</span><a href="iitd-cep-applied-quantum-ai/concepts/03-inner-products-and-bases/practice.html">practice</a><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/03-inner-products-and-bases/notes.md">phone notes</a><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/03-inner-products-and-bases/notebook.ipynb">notebook</a></span></li>
+    <li class="row"><span class="tag">04</span>
+      <a class="main" href="iitd-cep-applied-quantum-ai/concepts/04-matrices-and-linear-maps/">Matrices and linear maps<span class="pill intro">Next class</span></a>
+      <span class="sub"><span>matrix products, transpose, dagger, linear maps as matrices</span><a href="iitd-cep-applied-quantum-ai/concepts/04-matrices-and-linear-maps/practice.html">practice</a><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/04-matrices-and-linear-maps/notes.md">phone notes</a><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/04-matrices-and-linear-maps/notebook.ipynb">notebook</a></span></li>
+    <li class="row"><span class="tag">05</span>
+      <a class="main" href="iitd-cep-applied-quantum-ai/concepts/05-eigenvalues/">Eigenvalues and eigenvectors</a>
+      <span class="sub"><span>determinant, characteristic equation, eigenbases</span><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/05-eigenvalues/notes.md">phone notes</a><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/05-eigenvalues/notebook.ipynb">notebook</a></span></li>
+    <li class="row"><span class="tag">06</span>
+      <a class="main" href="iitd-cep-applied-quantum-ai/concepts/06-probability/">Probability and expectation</a>
+      <span class="sub"><span>distributions, expected value, amplitudes squared</span><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/06-probability/notes.md">phone notes</a><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/06-probability/notebook.ipynb">notebook</a></span></li>
+    <li class="row"><span class="tag">07</span>
+      <a class="main" href="iitd-cep-applied-quantum-ai/concepts/07-ml-maths-bridge/">AI/ML maths bridge</a>
+      <span class="sub"><span>dot products as similarity, layers, gradient descent, softmax</span><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/07-ml-maths-bridge/notes.md">phone notes</a><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/07-ml-maths-bridge/notebook.ipynb">notebook</a></span></li>
   </ul>
 </section>
 
 <section>
-  <h2>Pre-course prep, 11 days</h2>
-  <ul class="list" id="days"></ul>
+  <h2>Quantum computing basics</h2>
+  <ul class="list">
+    <li class="row"><span class="tag">08</span>
+      <a class="main" href="iitd-cep-applied-quantum-ai/concepts/08-qubits-and-dirac-notation/">Qubits and Dirac notation</a>
+      <span class="sub"><span>kets, bras, superposition</span><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/08-qubits-and-dirac-notation/notes.md">phone notes</a><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/08-qubits-and-dirac-notation/notebook.ipynb">notebook</a></span></li>
+    <li class="row"><span class="tag">09</span>
+      <a class="main" href="iitd-cep-applied-quantum-ai/concepts/09-gates/">Gates as matrices</a>
+      <span class="sub"><span>X, Z, H, unitary U†U = I</span><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/09-gates/notes.md">phone notes</a><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/09-gates/notebook.ipynb">notebook</a></span></li>
+    <li class="row"><span class="tag">10</span>
+      <a class="main" href="iitd-cep-applied-quantum-ai/concepts/10-tensor-products/">Two qubits and tensor products</a>
+      <span class="sub"><span>Kronecker product, 2ⁿ amplitudes</span><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/10-tensor-products/notes.md">phone notes</a><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/10-tensor-products/notebook.ipynb">notebook</a></span></li>
+    <li class="row"><span class="tag">11</span>
+      <a class="main" href="iitd-cep-applied-quantum-ai/concepts/11-entanglement-and-qiskit/">Entanglement and your first Qiskit circuit</a>
+      <span class="sub"><span>Bell state, CNOT, running a circuit</span><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/11-entanglement-and-qiskit/notes.md">phone notes</a><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/11-entanglement-and-qiskit/notebook.ipynb">notebook</a></span></li>
+    <li class="row"><span class="tag">12</span>
+      <a class="main" href="iitd-cep-applied-quantum-ai/concepts/12-bloch-sphere/">The Bloch sphere</a>
+      <span class="sub"><span>one qubit as a point on a sphere</span><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/12-bloch-sphere/notes.md">phone notes</a><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/concepts/12-bloch-sphere/notebook.ipynb">notebook</a></span></li>
+  </ul>
 </section>
 
 <section>
-  <h2>Reference</h2>
+  <h2>Course and reference</h2>
   <ul class="list">
-    <li class="row"><span class="tag">D0</span>
-      <a class="main" href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/read-on-mobile/00_reading_maths_symbols.md">Reading maths symbols, and the basics</a>
-      <span class="sub">Symbol dictionary with how to say each one aloud</span></li>
-    <li class="row"><span class="tag">Plan</span>
-      <a class="main" href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/plan/prep-plan.md">11-day prep plan</a>
-      <span class="sub">What each prep day covers</span></li>
+    <li class="row"><span class="tag">Log</span>
+      <a class="main" href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/class-log.md">Class log</a>
+      <span class="sub"><span>What each class covered, what was stressed, announcements, what to do before the next one</span></span></li>
+    <li class="row"><span class="tag">Info</span>
+      <a class="main" href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/reference/course-info.md">Course information</a>
+      <span class="sub"><span>Schedule, faculty, modules, capstones, books, certificate rules</span></span></li>
+    <li class="row"><span class="tag">Sym</span>
+      <a class="main" href="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/reference/reading-maths-symbols.md">Reading maths symbols</a>
+      <span class="sub"><span>Every symbol with how to say it aloud, plus the school-maths basics</span></span></li>
   </ul>
 </section>
 
@@ -85,33 +123,5 @@ footer a{color:var(--re)}
   <span>Pages update about a minute after each push to main.</span>
 </footer>
 </main>
-
-<script>
-(function(){
-  var gh="https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/";
-  var days=[
-    ["01","Tue 6 Oct","prep","Complex numbers","day-01-complex-numbers","01_complex_numbers"],
-    ["02","Wed 7 Oct","prep","Vectors and inner products","day-02-vectors-inner-products","02_vectors_inner_products"],
-    ["03","Thu 8 Oct","prep","Matrices","day-03-matrices","03_matrices"],
-    ["04","Fri 9 Oct","prep","Eigenvalues and eigenvectors","day-04-eigenvalues-eigenvectors","04_eigenvalues_eigenvectors"],
-    ["05","Sat 10 Oct","prep","Probability and expectation","day-05-probability-expectation","05_probability_expectation"],
-    ["06","Sun 11 Oct","prep","AI/ML maths bridge","day-06-ai-ml-maths-bridge","06_ai_ml_maths_bridge"],
-    ["07","Mon 12 Oct","intro","Qubits and Dirac notation","day-07-qubits-dirac-notation","07_qubits_dirac_notation"],
-    ["08","Tue 13 Oct","intro","Gates as matrices","day-08-gates-as-matrices","08_gates_as_matrices"],
-    ["09","Wed 14 Oct","intro","Two qubits and tensor products","day-09-two-qubits-tensor-products","09_two_qubits_tensor_products"],
-    ["10","Thu 15 Oct","intro","Entanglement and your first Qiskit circuit","day-10-entanglement-first-qiskit-circuit","10_entanglement_first_qiskit_circuit"],
-    ["11","Fri 16 Oct","intro","The Bloch sphere","day-11-bloch-sphere","11_bloch_sphere"]
-  ];
-  var ul=document.getElementById("days");
-  days.forEach(function(d){
-    var li=document.createElement("li"); li.className="row";
-    li.innerHTML='<span class="tag">D'+d[0]+'</span>'+
-      '<a class="main" href="iitd-cep-applied-quantum-ai/daily-pages/'+d[4]+'.html">'+d[3]+'<span class="pill '+d[2]+'">'+(d[2]==="prep"?"Prep":"Intro")+'</span></a>'+
-      '<span class="sub"><span>'+d[1]+'</span><a href="'+gh+'read-on-mobile/'+d[5]+'.md">read notes</a><a href="'+gh+'notebooks/'+d[5]+'.ipynb">notebook</a></span>';
-    ul.appendChild(li);
-  });
-})();
-</script>
-<noscript><p style="max-width:42rem;margin:16px auto">The prep-day list needs JavaScript. All pages are in <a href="https://github.com/Sathisha/quantum-learning-lab/tree/main/iitd-cep-applied-quantum-ai/daily-pages">daily-pages</a>.</p></noscript>
 </body>
 </html>
