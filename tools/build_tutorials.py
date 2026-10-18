@@ -28,7 +28,10 @@ def build(nb, in_concept):
     subprocess.run([sys.executable, "-m", "jupyter", "nbconvert", "--to", "html", "--template", "lab",
                     "--log-level", "WARN", "--output", os.path.basename(out), nb], check=True)
     html = fix_links(open(out, encoding="utf-8").read(), in_concept)
-    title = re.search(r"<h1[^>]*>(.*?)<", html, re.S)
+    h1 = re.search(r"<h1[^>]*>(.*?)</h1>", html, re.S)
+    name = re.sub(r"<[^>]+>|¶", "", h1.group(1)).strip() if h1 else "Tutorial"
+    html = re.sub(r"<title>.*?</title>", f"<title>{name}: tutorial</title>", html, count=1, flags=re.S)
+    html = html.replace('<img alt="No description has been provided for this image"', '<img alt="Plot produced by the cell above"')
     if in_concept:
         bar = BAR.format(home="../../../", page="./", label="Back to the concept page", ipynb=os.path.basename(nb))
     else:
