@@ -3,3 +3,7 @@ __pycache__/
 .ipynb_checkpoints/
 .DS_Store
 *.pyc
+
+# Course recordings, slides and their transcripts: private, never commit (repo is public)
+class material/
+.venv-pipeline/

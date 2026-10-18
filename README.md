@@ -12,6 +12,12 @@ My workspace for learning quantum computing: course material, notebooks and expe
 
 New projects get their own top-level folder.
 
+## Tools
+
+| Folder | What it is |
+| --- | --- |
+| [tools/class-pipeline](tools/class-pipeline/) | One-command Docker pipeline: class recording → Whisper transcript, slide snapshots, optional LM Studio notes. Runs locally. |
+
 ## Setup
 
 ```bash

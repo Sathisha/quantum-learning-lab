@@ -1,0 +1,41 @@
+# Run through transcribe.ps1 (Windows) or transcribe.sh (macOS/Linux), which set MEDIA_DIR and pass the file name.
+# Direct use:  MEDIA_DIR=/path/to/folder docker compose run --rm transcribe "/data/lecture.mp4"
+name: class-pipeline
+
+x-common: &common
+  build: .
+  image: class-pipeline:latest
+  volumes:
+    - type: bind                            # folder holding the recording; results are written next to it
+      source: "${MEDIA_DIR:-./data}"
+      target: /data
+    - type: volume                          # Whisper model cache, downloaded once (~1.6 GB)
+      source: whisper-models
+      target: /models
+  environment:
+    LMSTUDIO_URL: "${LMSTUDIO_URL:-http://host.docker.internal:1234/v1}"   # LM Studio on the host PC
+    PIPELINE_DEVICE: auto
+  extra_hosts:
+    - "host.docker.internal:host-gateway"
+
+services:
+  # NVIDIA GPU (Docker Desktop + WSL2 on Windows, or nvidia-container-toolkit on Linux)
+  transcribe:
+    <<: *common
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  # Same image without a GPU: used by the wrappers' -Cpu / --cpu switch
+  transcribe-cpu:
+    <<: *common
+    environment:
+      LMSTUDIO_URL: "${LMSTUDIO_URL:-http://host.docker.internal:1234/v1}"
+      PIPELINE_DEVICE: cpu
+
+volumes:
+  whisper-models:
