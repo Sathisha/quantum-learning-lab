@@ -63,12 +63,15 @@ tools\class-pipeline\transcribe.cmd "class material\week-02\lecture.mp4" -- --on
 
 ## Every week
 
-1. Put the recordings and slide PDFs in a new folder, for example `class material\week-02\`.
-2. Run one command on the folder. It processes every recording in it that isn't done yet:
+1. Put the recordings and slide PDFs anywhere under `class material`, for example `class material\week-02\`.
+2. From the repo folder, run the command with no path. It finds every recording under `class material`, including subfolders, and skips those already transcribed:
    ```powershell
-   tools\class-pipeline\transcribe.cmd "C:\workspace\quantum-learning-lab\class material\week-02" -Notes
+   tools\class-pipeline\transcribe.cmd
    ```
+   Add `-Notes` for LM Studio notes. To limit it to one folder or one file, give that path instead.
 3. Tell Claude **"process week 02 class material"**. Claude reads the transcripts, slide sheets, notes and PDFs from your linked computer and updates the study pages.
+
+A recording counts as done when its `.processed` folder has `transcript.txt` and `done.json`. Delete `done.json` to transcribe it again. Slide sheets and notes are skipped the same way when they already exist.
 
 ## Options
 

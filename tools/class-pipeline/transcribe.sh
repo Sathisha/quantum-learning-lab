@@ -1,11 +1,10 @@
 #!/usr/bin/env bash
-# Transcribe a class recording (or every new recording in a folder) with Docker.
-#   ./transcribe.sh "class material/week-02/lecture.mp4" [--notes] [--cpu] [--rebuild] [-- extra pipeline options]
+# Transcribe a class recording, or every recording in a folder that isn't done yet, with Docker.
+#   ./transcribe.sh ["class material/week-02/lecture.mp4" | folder] [--notes] [--cpu] [--rebuild] [-- extra pipeline options]
+# With no path (or an option first), processes everything under the repo's "class material" folder.
 set -euo pipefail
 here="$(cd "$(dirname "$0")" && pwd)"
-[ $# -ge 1 ] || { echo "Usage: $0 <video file or folder> [--notes] [--cpu] [--rebuild] [-- options]"; exit 1; }
-
-path="$1"; shift
+if [ $# -ge 1 ] && [ "${1#-}" = "$1" ]; then path="$1"; shift; else path="$here/../../class material"; fi
 service=transcribe; args=(); rebuild=0
 while [ $# -gt 0 ]; do
   case "$1" in
@@ -26,5 +25,5 @@ else
 fi
 
 [ "$rebuild" = 1 ] && docker compose -f "$here/docker-compose.yml" build
-echo "Processing $path ($service)..."
+echo "Processing $MEDIA_DIR${target#/data} ($service)..."
 exec docker compose -f "$here/docker-compose.yml" run --rm "$service" "$target" ${args[@]+"${args[@]}"}
