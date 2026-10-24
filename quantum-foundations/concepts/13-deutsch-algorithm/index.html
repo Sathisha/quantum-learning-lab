@@ -96,13 +96,103 @@ ol.flow{margin:0 0 .8em;padding-left:1.3em;display:flex;flex-direction:column;ga
 svg.circ{max-width:440px;margin:0 auto}
 </style>
 
+<style id="xt-style">
+.xt{
+  --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4; --grid:#e6ebf2;
+  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --okbg:#e5f4ec; --soft:#f5f7fb; --code:#f2f4f8;
+  --f-math:ui-monospace,"IBM Plex Mono","JetBrains Mono",Menlo,Consolas,monospace;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .xt{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}}
+:root[data-theme="dark"] .xt{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}
+.xt{color:inherit;font:inherit;display:flex;flex-direction:column;gap:12px;min-width:0;text-align:left}
+.xt h3{margin:10px 0 0}
+.xt section,.xt article{display:flex;flex-direction:column;gap:12px;min-width:0}
+.xt p{margin:0;max-width:65ch}
+.xt .eyebrow{font:600 .78rem/1 var(--f-math);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.xt .m{font-family:var(--f-math);font-size:.92em;white-space:nowrap}
+.xt .re{color:var(--re)} .im{color:var(--im)}
+.xt .bar{text-decoration:overline;text-decoration-thickness:1.5px}
+.xt .box{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.xt .scroll{overflow-x:auto}
+.xt table{border-collapse:collapse;width:100%;font-size:.95rem}
+.xt th,.xt td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+.xt th{font:600 .75rem var(--f-math);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.xt .sym td:first-child{font-family:var(--f-math);font-weight:600;white-space:nowrap}
+.xt .key{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:8px}
+.xt .key a{display:flex;justify-content:space-between;align-items:baseline;gap:6px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:7px 10px;font-family:var(--f-math);font-variant-numeric:tabular-nums}
+.xt .key a b{color:var(--ok)}
+.xt .key a span{color:var(--muted);font-size:.85rem}
+.xt .qcard{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
+.xt .qhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.xt .qhead .qn{font:700 .85rem var(--f-math);color:var(--muted)}
+.xt .qtext{font-size:1.05rem}
+.xt .opts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:6px}
+.xt .opts li{border:1px solid var(--rule);border-radius:8px;padding:6px 10px;font-family:var(--f-math);font-size:.92rem;min-width:0;overflow-wrap:anywhere}
+.xt .opts li .l{color:var(--muted);margin-right:6px}
+.xt .show .opts li.ok,.xt .revealed .opts li.ok{border-color:var(--ok);background:var(--okbg);color:var(--ink)}
+.xt .show .opts li.ok .l,.xt .revealed .opts li.ok .l{color:var(--ok);font-weight:700}
+.xt .badge{font:700 .82rem var(--f-math);color:var(--ok);background:var(--okbg);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.xt body:not(.show) .qcard:not(.revealed) .badge{visibility:hidden}
+.xt .steps{font-family:var(--f-math);font-size:.93rem;background:var(--code);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.xt .steps span{white-space:pre-wrap}
+.xt .steps .note{color:var(--muted);font-family:var(--f-body);font-size:.88rem;white-space:normal}
+.xt .steps .ok{color:var(--ok);font-weight:600}
+.xt figure{margin:0;background:var(--soft);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.xt figure svg{width:100%;height:auto;max-width:360px;align-self:center;display:block}
+.xt figcaption{font-size:.9rem;color:var(--muted)}
+.xt figcaption b{color:var(--ink)}
+.xt svg text{font-family:var(--f-math);font-size:12px;fill:var(--ink)}
+.xt svg .lab{font-size:13px;font-weight:600}
+.xt svg .mut{fill:var(--muted)}
+.xt svg .grid{stroke:var(--grid);stroke-width:1}
+.xt svg .axis{stroke:var(--muted);stroke-width:1.3}
+.xt svg .reS{stroke:var(--re)} svg .imS{stroke:var(--im)} svg .inkS{stroke:var(--ink)} svg .okS{stroke:var(--ok)} svg .mutS{stroke:var(--muted)}
+.xt svg .reF{fill:var(--re)} svg .imF{fill:var(--im)} svg .inkF{fill:var(--ink)} svg .okF{fill:var(--ok)} svg .bgF{fill:var(--paper)} svg .none{fill:none}
+.xt svg .okT{fill:var(--ok)} svg .reT{fill:var(--re)} svg .imT{fill:var(--im)}
+.xt .why{font-size:.95rem;color:var(--muted)}
+.xt .why b{color:var(--ink)}
+.xt .ql{background:var(--soft);border-left:3px solid var(--im);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.xt .ql b{color:var(--im)}
+.xt .warn{background:var(--soft);border-left:3px solid var(--re);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.xt details.sol{border-top:1px dashed var(--rule);padding-top:10px}
+.xt details.sol>summary{cursor:pointer;font-weight:700;color:var(--re);list-style-position:inside}
+.xt details.sol[open]>summary{margin-bottom:10px}
+.xt details.sol>div{display:flex;flex-direction:column;gap:12px}
+.xt .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.xt button{font:600 .9rem var(--f-body);color:var(--re);background:var(--paper);border:1px solid var(--re);border-radius:8px;padding:8px 14px;cursor:pointer}
+.xt button:hover{background:var(--soft)}
+.xt button:focus-visible,.xt summary:focus-visible,.xt a:focus-visible{outline:2px solid var(--re);outline-offset:3px}
+.xt ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;max-width:65ch}
+.xt pre.code{margin:0;background:var(--code);border-radius:8px;padding:14px 16px;overflow-x:auto;font:.85rem/1.55 var(--f-math)}
+.xt a{color:var(--re)}
+.xt footer{border-top:1px solid var(--rule);padding-top:14px;color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+@media (prefers-reduced-motion:reduce){.xt *{transition:none!important}}
+.xt .tag{font:600 .72rem var(--f-math);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.xt .tag.new{color:var(--ok);background:var(--okbg)} .tag.have{color:var(--re);background:var(--soft)} .tag.next{color:var(--im);background:var(--soft)}
+.xt .cov td:nth-child(2){white-space:nowrap}
+.xt .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:12px}
+.xt .grid2>div{min-width:0}
+
+.xt .formula{text-align:center}
+.xt>p,.xt>ul{margin:0}
+.xt .fml{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:18px 12px;text-align:center;font:600 clamp(1.05rem,4.4vw,1.5rem)/1.4 var(--f-math);overflow-x:auto}
+.xt .say{color:var(--muted);font-size:.95rem}
+.xt .say b{color:var(--ink)}
+.xt thead{display:table-header-group}.xt tbody tr{display:table-row;padding:0}.xt tbody td{display:table-cell;padding:7px 10px;border-bottom:1px solid var(--rule);color:inherit}
+.xt .steps{font-size:.86rem}
+@media (max-width:560px){.xt table.symt thead{display:none}.xt table.symt tbody tr{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;padding:9px 6px;border-bottom:1px solid var(--rule)}.xt table.symt tbody td{display:block;border:0;padding:0}.xt table.symt td:nth-child(3){grid-column:1/-1;color:var(--muted)}}
+.xt .steps .note{background:none;border:0;padding:0;margin:0;border-radius:0;font-size:.85rem}
+</style>
 <div class="wrap">
 
 <header>
-  <div class="eyebrow">Concept 13</div>
+  <div class="eyebrow">Concept 13 · Quantum algorithms</div>
   <h1>Deutsch's algorithm: your first quantum speedup</h1>
   <p class="lede">A black box hides a one-bit function. Is it constant or balanced? A classical computer must ask the box twice. A quantum computer asks once, and the reason is not "trying both inputs at once": it is making the wrong answer cancel out.</p>
-  <p class="lede"><span class="tag2">From class</span> Week 2, Sat 24 Oct 2026, afternoon lecture. Uses only H, X, Z and CNOT, so read <a href="../10-gates/">gates</a> and <a href="../12-entanglement-and-qiskit/">entanglement</a> first.</p>
+  <p class="lede">Uses only H, X, Z and CNOT, so read <a href="../10-gates/">gates</a> and <a href="../12-entanglement-and-qiskit/">entanglement</a> first. The cancelling arrows are the ones from <a href="../01-complex-numbers/#phase">phase and interference</a>.</p>
 </header>
 
 <section>
@@ -162,7 +252,7 @@ svg.circ{max-width:440px;margin:0 auto}
   <h2>Move 1: make the box reversible</h2>
   <p>Quantum gates are rotations, and every rotation can be undone. "Output f(x)" can't be: if "always 0" outputs 0, you can't tell whether the input was 0 or 1. The fix is to <b>keep the input and write the answer on a second "helper" wire</b>:</p>
   <div class="formula">|x⟩|y⟩  ↦  |x⟩|y ⊕ f(x)⟩</div>
-  <p class="aloud"><b>Read it aloud:</b> "ket x, ket y maps to ket x, ket y x-or f of x". In words: look at x; if f(x) = 1, flip the helper; otherwise do nothing. Run it twice and the helper is flipped twice, back where it started: reversible. (Class states this formula properly in the third lecture.)</p>
+  <p class="aloud"><b>Read it aloud:</b> "ket x, ket y maps to ket x, ket y x-or f of x". In words: look at x; if f(x) = 1, flip the helper; otherwise do nothing. Run it twice and the helper is flipped twice, back where it started: reversible. Applying U_f is one <b>query</b> to the box.</p>
   <div class="box scroll">
     <table>
       <thead><tr><th>Box</th><th>Circuit inside</th><th>Why</th></tr></thead>
@@ -182,13 +272,13 @@ svg.circ{max-width:440px;margin:0 auto}
   <p>Feed the input wire |+⟩ (the equator) and the helper |0⟩. One pass through the box acts on both "lanes", x = 0 and x = 1, at once:</p>
   <div class="steps">|+⟩|0⟩ = (|0⟩|0⟩ + |1⟩|0⟩)/√2
   —U_f→  (|0⟩|f(0)⟩ + |1⟩|f(1)⟩)/√2</div>
-  <p>Both answers are "in the state". For the copy box this is (|00⟩ + |11⟩)/√2, the Bell pair from the morning. <b>The catch:</b> measuring casts one shadow. You get one lane at random and learn one value of f: worse than a classical query, since you didn't even choose which input.</p>
+  <p>Both answers are "in the state". For the copy box this is (|00⟩ + |11⟩)/√2, the Bell pair from <a href="../12-entanglement-and-qiskit/">entanglement</a>. <b>The catch:</b> measuring casts one shadow. You get one lane at random and learn one value of f: worse than a classical query, since you didn't even choose which input.</p>
   <div class="note"><b>Parallelism alone is useless.</b> The lanes have to interfere, so that the <i>relationship</i> between f(0) and f(1) shows up in one readout.</div>
 </section>
 
 <section>
   <h2>Move 3: phase kickback</h2>
-  <p><b>Class poll.</b> Control at |+⟩, target at |−⟩. Apply CNOT. Which Bloch arrow moves? A) target B) control C) both D) neither.</p>
+  <p><b>Quick check.</b> Control at |+⟩, target at |−⟩. Apply CNOT. Which Bloch arrow moves? A) target B) control C) both D) neither.</p>
   <p><b>Answer: B, the control.</b> CNOT "flips the target", yet the target stays put and the control turns from |+⟩ to |−⟩. Why, in four steps:</p>
   <ol class="flow">
     <li>The control |+⟩ is a 0-branch and a 1-branch side by side.</li>
@@ -251,8 +341,8 @@ reads 0, every time</div></div>
  —H→ |1⟩ (south)
 reads 1, every time</div></div>
   </div>
-  <div class="good"><b>It's the morning's poll!</b> Constant box: the input sees H H, which reads 0. Balanced box: it sees H Z H, which reads 1. <b>Deutsch's algorithm in one sentence:</b> the oracle secretly decides whether a Z sits between two Hadamards, and the answer comes out with certainty after one query.</div>
-  <p><b>Class poll.</b> In "always 1" the helper is flipped. Why does the readout still say 0? A) Quirk bug B) the flip only adds an overall sign C) the final H undoes it. <b>Answer B:</b> a constant box treats both lanes the same, so the sign hits both lanes equally and nothing <i>relative</i> changes.</p>
+  <div class="good"><b>It's the HZH puzzle again</b> (<a href="../10-gates/#hzh">gates</a>). Constant box: the input sees H H, which reads 0. Balanced box: it sees H Z H, which reads 1. <b>Deutsch's algorithm in one sentence:</b> the oracle secretly decides whether a Z sits between two Hadamards, and the answer comes out with certainty after one query.</div>
+  <p><b>Quick check.</b> In "always 1" the helper is flipped. Why does the readout still say 0? A) Quirk bug B) the flip only adds an overall sign C) the final H undoes it. <b>Answer B:</b> a constant box treats both lanes the same, so the sign hits both lanes equally and nothing <i>relative</i> changes.</p>
 </section>
 
 <section>
@@ -298,7 +388,7 @@ Result           1 ⇒ balanced   <span class="check">✓</span></div>
 <section>
   <h2>From 1 bit to n bits: Deutsch–Jozsa</h2>
   <p>Now f takes an n-bit input. The <b>promise</b>: f is either constant, or balanced (exactly half its 2ⁿ outputs are 1). Same recipe: n input wires all |0⟩ with an H on each, the helper at |−⟩, one query, H on every input wire again. <b>Readout rule:</b> all inputs read 0 ⇒ constant; anything else ⇒ balanced.</p>
-  <p>Same picture with 2ⁿ routes. For a constant box, every route to "all zeros" carries the same arrow, so they all add up. For a balanced box exactly half are flipped, and they cancel completely. (The algebra comes in the third lecture.)</p>
+  <p>Same picture with 2ⁿ routes. For a constant box, every route to "all zeros" carries the same arrow, so they all add up. For a balanced box exactly half are flipped, and they cancel completely.</p>
   <div class="box scroll">
     <table>
       <thead><tr><th>n (input bits)</th><th>Classical, certain (worst case)</th><th>Quantum</th></tr></thead>
@@ -317,11 +407,27 @@ n = 100: 2⁹⁹ + 1 ≈ 6.34 × 10²⁹ queries
          ÷ 3.16 × 10⁷ s per year ≈ 2 × 10¹³ years   <span class="check">✓ 20 trillion</span></div>
 </section>
 
+<section class="xt" id="dj-algebra">
+  <h2>Deutsch–Jozsa: the algebra in four lines</h2>
+<p>For n input bits the same three moves give one formula. After the final H on every input wire, the amplitude of reading <b>all zeros</b> is the average of the kicked signs:</p>
+  <div class="fml">amp(0…0) = (1/2ⁿ) · Σₓ (−1)^f(x)</div>
+  <p class="say"><b>Read it aloud:</b> "one over two to the n, times the sum over every input x of minus one to the f of x". Each of the 2ⁿ inputs contributes +1 if f(x) = 0 and −1 if f(x) = 1.</p>
+  <div class="steps">
+    <span class="note">Constant f = 0: every term is +1.</span>
+    <span>(1/2ⁿ) · 2ⁿ = 1   → reads all zeros, certainly</span>
+    <span class="note">Constant f = 1: every term is −1.</span>
+    <span>(1/2ⁿ) · (−2ⁿ) = −1   → |−1|² = 1, all zeros again</span>
+    <span class="note">Balanced: half +1, half −1.</span>
+    <span>(1/2ⁿ) · (2ⁿ⁻¹ − 2ⁿ⁻¹) = 0   → never all zeros</span>
+  </div>
+  <p class="why">Where the formula comes from: H on |0⟩ gives every input with amplitude 1/√(2ⁿ); the oracle multiplies input x by (−1)^f(x); and the final H sends each input back to "all zeros" with another factor 1/√(2ⁿ). Multiply and add over x. n = 1 is Deutsch's table above: (+1 + 1)/2 = 1 for constant, (+1 − 1)/2 = 0 for balanced.</p>
+</section>
+
 <section>
   <h2>Common mistakes</h2>
   <ul class="mist">
     <li><b>"It tries both inputs at once and reads both answers."</b> No: measurement gives one lane at random. The win comes from interference, not from reading everything.</li>
-    <li><b>Forgetting the helper's X.</b> Without it the helper sits at |+⟩, X|+⟩ = +|+⟩, nothing kicks back, and every box reads 0 (sandbox task 3 below).</li>
+    <li><b>Forgetting the helper's X.</b> Without it the helper sits at |+⟩, X|+⟩ = +|+⟩, nothing kicks back, and every box reads 0 (task 2 below).</li>
     <li><b>Expecting the helper to move.</b> In kickback the target stays put; the control (input) changes.</li>
     <li><b>Treating a global sign as an answer.</b> "Always 1" makes the whole state −1 times itself. That is invisible.</li>
     <li><b>Reading Qiskit counts left to right.</b> Qiskit lists bits right to left, so a count "q1q0" has qubit 0 on the right.</li>
@@ -329,17 +435,17 @@ n = 100: 2⁹⁹ + 1 ≈ 6.34 × 10²⁹ queries
 </section>
 
 <section id="practice">
-  <h2>Practice: the class sandbox</h2>
-  <p>In class the sandbox had Deutsch's circuit with an empty slot and three mystery boxes A, B, C (the links were shared in the class chat). Task 1: drop each box in, run once, decide constant or balanced. The two thinking tasks work without the boxes:</p>
-  <details><summary>Task 2: one of the balanced boxes contains no CNOT. How can it still be balanced?</summary>
+  <h2>Practice: mystery boxes</h2>
+  <p>Build Deutsch's circuit in <a href="https://algassert.com/quirk">Quirk</a> with an empty slot for the box. Make three "mystery boxes" of your own (or swap boxes with someone else) from the four circuits in the table above, drop each one in, run once and decide: constant or balanced? Then the thinking tasks:</p>
+  <details><summary>Task 1: one of the balanced boxes contains no CNOT. How can it still be balanced?</summary>
     <p>Balanced only means "flips the helper for exactly one of x = 0, 1". The box's insides can be anything that behaves that way. Two common ways without a CNOT gate:</p>
     <ul class="mist">
       <li><b>A controlled-Z between two H's on the helper:</b> H·CZ·H on the target is exactly a CNOT, built from other parts.</li>
       <li><b>A Z straight on the input wire:</b> with the helper at |−⟩, a CNOT's only effect is a Z on the input (kickback). A box that just applies Z to the input gives the same readout, 1. It skips the "flip the helper" story and goes straight to the phase.</li>
     </ul>
-    <p>Open your box in Quirk to see which one it uses. The lesson: the algorithm only ever sees the <i>phase</i> the box leaves on the input.</p>
+    <p>Try building both in Quirk and check they read 1. The lesson: the algorithm only ever sees the <i>phase</i> the box leaves on the input.</p>
   </details>
-  <details><summary>Task 3 (stretch): remove the helper's X gate, so it starts at |+⟩ instead of |−⟩. What breaks, and why?</summary>
+  <details><summary>Task 2 (stretch): remove the helper's X gate, so it starts at |+⟩ instead of |−⟩. What breaks, and why?</summary>
     <div class="steps">Helper: |0⟩ —H→ |+⟩
 "Flip the helper" = X|+⟩ = +|+⟩   (|+⟩ is on the x-axis,
                                    and with no minus sign)
@@ -370,10 +476,10 @@ qc.measure(0, 0)   # read the input</pre>
 <section>
   <h2>Go deeper</h2>
   <ul class="links">
-    <li>Mermin, <i>Quantum Computer Science</i>: §2.1 (general features of quantum algorithms) and §2.2 (Deutsch's problem). Skim now for the pictures; read properly after the 31 Oct lecture, which does the algebra.</li>
+    <li>Mermin, <i>Quantum Computer Science</i>: §2.1 (general features of quantum algorithms) and §2.2 (Deutsch's problem). Mermin writes the same steps in full Dirac algebra.</li>
     <li>Nielsen &amp; Chuang: §1.4.2 quantum parallelism, §1.4.3 Deutsch's algorithm, §1.4.4 Deutsch–Jozsa.</li>
     <li><a href="https://algassert.com/quirk">Quirk</a>: build the circuit and watch the input's Bloch arrow swing east or west.</li>
-    <li><a href="../../reference/checks/week-02-lecture-check.py">week-02-lecture-check.py</a>: every number on this page, including Deutsch–Jozsa for all balanced functions with n = 2 and 3.</li>
+    <li><a href="../../reference/checks/quantum-basics-check.py">quantum-basics-check.py</a>: every number on this page, including Deutsch–Jozsa for all balanced functions with n = 2 and 3.</li>
     <li><a href="../../reference/reading-maths-symbols.html">Symbol dictionary: how to read maths symbols</a></li>
   </ul>
 </section>

@@ -92,12 +92,102 @@ footer { border-top: 1px solid var(--line); padding-top: 1rem; font-size: .92rem
 footer b { color: var(--ink); }
 </style>
 
+<style id="xt-style">
+.xt{
+  --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4; --grid:#e6ebf2;
+  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --okbg:#e5f4ec; --soft:#f5f7fb; --code:#f2f4f8;
+  --f-math:ui-monospace,"IBM Plex Mono","JetBrains Mono",Menlo,Consolas,monospace;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .xt{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}}
+:root[data-theme="dark"] .xt{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}
+.xt{color:inherit;font:inherit;display:flex;flex-direction:column;gap:12px;min-width:0;text-align:left}
+.xt h3{margin:10px 0 0}
+.xt section,.xt article{display:flex;flex-direction:column;gap:12px;min-width:0}
+.xt p{margin:0;max-width:65ch}
+.xt .eyebrow{font:600 .78rem/1 var(--f-math);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.xt .m{font-family:var(--f-math);font-size:.92em;white-space:nowrap}
+.xt .re{color:var(--re)} .im{color:var(--im)}
+.xt .bar{text-decoration:overline;text-decoration-thickness:1.5px}
+.xt .box{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.xt .scroll{overflow-x:auto}
+.xt table{border-collapse:collapse;width:100%;font-size:.95rem}
+.xt th,.xt td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+.xt th{font:600 .75rem var(--f-math);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.xt .sym td:first-child{font-family:var(--f-math);font-weight:600;white-space:nowrap}
+.xt .key{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:8px}
+.xt .key a{display:flex;justify-content:space-between;align-items:baseline;gap:6px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:7px 10px;font-family:var(--f-math);font-variant-numeric:tabular-nums}
+.xt .key a b{color:var(--ok)}
+.xt .key a span{color:var(--muted);font-size:.85rem}
+.xt .qcard{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
+.xt .qhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.xt .qhead .qn{font:700 .85rem var(--f-math);color:var(--muted)}
+.xt .qtext{font-size:1.05rem}
+.xt .opts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:6px}
+.xt .opts li{border:1px solid var(--rule);border-radius:8px;padding:6px 10px;font-family:var(--f-math);font-size:.92rem;min-width:0;overflow-wrap:anywhere}
+.xt .opts li .l{color:var(--muted);margin-right:6px}
+.xt .show .opts li.ok,.xt .revealed .opts li.ok{border-color:var(--ok);background:var(--okbg);color:var(--ink)}
+.xt .show .opts li.ok .l,.xt .revealed .opts li.ok .l{color:var(--ok);font-weight:700}
+.xt .badge{font:700 .82rem var(--f-math);color:var(--ok);background:var(--okbg);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.xt body:not(.show) .qcard:not(.revealed) .badge{visibility:hidden}
+.xt .steps{font-family:var(--f-math);font-size:.93rem;background:var(--code);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.xt .steps span{white-space:pre-wrap}
+.xt .steps .note{color:var(--muted);font-family:var(--f-body);font-size:.88rem;white-space:normal}
+.xt .steps .ok{color:var(--ok);font-weight:600}
+.xt figure{margin:0;background:var(--soft);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.xt figure svg{width:100%;height:auto;max-width:360px;align-self:center;display:block}
+.xt figcaption{font-size:.9rem;color:var(--muted)}
+.xt figcaption b{color:var(--ink)}
+.xt svg text{font-family:var(--f-math);font-size:12px;fill:var(--ink)}
+.xt svg .lab{font-size:13px;font-weight:600}
+.xt svg .mut{fill:var(--muted)}
+.xt svg .grid{stroke:var(--grid);stroke-width:1}
+.xt svg .axis{stroke:var(--muted);stroke-width:1.3}
+.xt svg .reS{stroke:var(--re)} svg .imS{stroke:var(--im)} svg .inkS{stroke:var(--ink)} svg .okS{stroke:var(--ok)} svg .mutS{stroke:var(--muted)}
+.xt svg .reF{fill:var(--re)} svg .imF{fill:var(--im)} svg .inkF{fill:var(--ink)} svg .okF{fill:var(--ok)} svg .bgF{fill:var(--paper)} svg .none{fill:none}
+.xt svg .okT{fill:var(--ok)} svg .reT{fill:var(--re)} svg .imT{fill:var(--im)}
+.xt .why{font-size:.95rem;color:var(--muted)}
+.xt .why b{color:var(--ink)}
+.xt .ql{background:var(--soft);border-left:3px solid var(--im);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.xt .ql b{color:var(--im)}
+.xt .warn{background:var(--soft);border-left:3px solid var(--re);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.xt details.sol{border-top:1px dashed var(--rule);padding-top:10px}
+.xt details.sol>summary{cursor:pointer;font-weight:700;color:var(--re);list-style-position:inside}
+.xt details.sol[open]>summary{margin-bottom:10px}
+.xt details.sol>div{display:flex;flex-direction:column;gap:12px}
+.xt .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.xt button{font:600 .9rem var(--f-body);color:var(--re);background:var(--paper);border:1px solid var(--re);border-radius:8px;padding:8px 14px;cursor:pointer}
+.xt button:hover{background:var(--soft)}
+.xt button:focus-visible,.xt summary:focus-visible,.xt a:focus-visible{outline:2px solid var(--re);outline-offset:3px}
+.xt ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;max-width:65ch}
+.xt pre.code{margin:0;background:var(--code);border-radius:8px;padding:14px 16px;overflow-x:auto;font:.85rem/1.55 var(--f-math)}
+.xt a{color:var(--re)}
+.xt footer{border-top:1px solid var(--rule);padding-top:14px;color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+@media (prefers-reduced-motion:reduce){.xt *{transition:none!important}}
+.xt .tag{font:600 .72rem var(--f-math);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.xt .tag.new{color:var(--ok);background:var(--okbg)} .tag.have{color:var(--re);background:var(--soft)} .tag.next{color:var(--im);background:var(--soft)}
+.xt .cov td:nth-child(2){white-space:nowrap}
+.xt .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:12px}
+.xt .grid2>div{min-width:0}
+
+.xt .formula{text-align:center}
+.xt>p,.xt>ul{margin:0}
+.xt .fml{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:18px 12px;text-align:center;font:600 clamp(1.05rem,4.4vw,1.5rem)/1.4 var(--f-math);overflow-x:auto}
+.xt .say{color:var(--muted);font-size:.95rem}
+.xt .say b{color:var(--ink)}
+.xt thead{display:table-header-group}.xt tbody tr{display:table-row;padding:0}.xt tbody td{display:table-cell;padding:7px 10px;border-bottom:1px solid var(--rule);color:inherit}
+.xt .steps{font-size:.86rem}
+@media (max-width:560px){.xt table.symt thead{display:none}.xt table.symt tbody tr{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;padding:9px 6px;border-bottom:1px solid var(--rule)}.xt table.symt tbody td{display:block;border:0;padding:0}.xt table.symt td:nth-child(3){grid-column:1/-1;color:var(--muted)}}
+.xt .steps .note{background:none;border:0;padding:0;margin:0;border-radius:0;font-size:.85rem}
+</style>
 <div class="wrap">
 
 <header>
-  <div class="eyebrow">Concept 03</div>
+  <div class="eyebrow">Concept 03 · Maths foundations</div>
   <h1>Linear algebra 1: vectors and inner products</h1>
-  <p>A qubit's state is a list of complex numbers. Today you learn how to measure the length of such a list and how alike two lists are. Every quantum probability you meet later is built from these two operations.</p>
+  <p>A qubit's state is a list of complex numbers. This page shows how to measure the length of such a list and how alike two lists are. Every quantum probability you meet later is built from these two operations.</p>
 </header>
 
 <section>
@@ -121,7 +211,13 @@ footer b { color: var(--ink); }
         <tr><td class="sym">θ</td><td class="say">"theta"</td><td>A Greek letter used for an angle.</td></tr>
         <tr><td class="sym">cos θ</td><td class="say">"cosine of theta"</td><td>1 when the angle is 0°, 0 at 90°, −1 at 180°.</td></tr>
         <tr><td class="sym">≈</td><td class="say">"is approximately"</td><td>Rounded value.</td></tr>
-      </tbody>
+              <tr><td class="sym">Σ</td><td class="say">"sum" (capital sigma)</td><td>Add up the terms that follow, one for each index.</td></tr>
+        <tr><td class="sym">≤</td><td class="say">"is at most"</td><td>Less than or equal to.</td></tr>
+        <tr><td class="sym">δᵢⱼ</td><td class="say">"delta i j" (Kronecker delta)</td><td>1 if i = j, otherwise 0.</td></tr>
+        <tr><td class="sym">ONB</td><td class="say">"orthonormal basis"</td><td>A basis of unit-length vectors that are all perpendicular to each other.</td></tr>
+        <tr><td class="sym">h₊, h₋</td><td class="say">"h plus", "h minus"</td><td>The Hadamard basis (1, ±1)/√2, later written |+⟩, |−⟩.</td></tr>
+        <tr><td class="sym">c₊, c₋</td><td class="say">"c plus", "c minus"</td><td>The circular basis (1, ±i)/√2, later written |+i⟩, |−i⟩.</td></tr>
+</tbody>
     </table>
   </div>
 </section>
@@ -260,6 +356,27 @@ footer b { color: var(--ink); }
   </div>
 </section>
 
+<section class="xt" id="rules">
+  <h2>The three rules of the inner product</h2>
+<p>Why conjugate at all? Without it, v = (1, i) would give 1·1 + i·i = 1 − 1 = 0: a non-zero vector of "length" 0. With it, Σ v̄ⱼvⱼ = Σ |vⱼ|² is always ≥ 0.</p>
+  <div class="box">
+    <ul>
+      <li><b>Conjugate symmetry:</b> ⟨v, u⟩ = conj(⟨u, v⟩). Swapping the order conjugates the answer.</li>
+      <li><b>Linear in the second slot:</b> ⟨u, αv + βw⟩ = α⟨u, v⟩ + β⟨u, w⟩</li>
+      <li><b>Positive:</b> ⟨v, v⟩ ≥ 0, and it is 0 only for v = 0</li>
+      <li><b>Consequence:</b> a scalar leaves the <i>first</i> slot conjugated: ⟨αu, v⟩ = ᾱ⟨u, v⟩ ("anti-linear")</li>
+    </ul>
+  </div>
+  <div class="steps">
+    <span>u = (1, i), v = (1+i, 2)</span>
+    <span>⟨u, v⟩ = conj(1)(1+i) + conj(i)(2) = (1+i) + (−i)(2) = 1 + i − 2i = 1 − i</span>
+    <span>⟨v, u⟩ = conj(1+i)(1) + conj(2)(i) = (1−i) + 2i = 1 + i</span>
+    <span class="ok">1 + i = conj(1 − i) ✓ conjugate symmetry</span>
+  </div>
+  <p class="why">Maths books often conjugate the <i>second</i> slot instead. Quantum computing, and these pages, conjugate the first. Check which convention a source uses before copying formulas.</p>
+</section>
+
+
 <section>
   <h2>Worked example</h2>
   <p>Take u = (1, i) and v = (2, 3i). Find ⟨u, v⟩, then the length of u, then normalise u.</p>
@@ -291,194 +408,9 @@ footer b { color: var(--ink); }
   </div>
 </section>
 
-<section>
-  <h2>Common mistakes</h2>
-  <ul class="mist">
-    <li><b>Forgetting to conjugate the first vector.</b> Without it, u = (1, i) "dotted" with itself gives 1·1 + i·i = 1 + (−1) = 0, a non-zero vector with length 0. That is nonsense, and it is why the bar is there.</li>
-    <li><b>Squaring i instead of taking its modulus squared.</b> The length of (1, i, 1) uses |i|² = 1, not i² = −1. Lengths add only positive pieces.</li>
-    <li><b>Using np.dot instead of np.vdot.</b> np.dot does not conjugate: np.dot([1, 1j], [2, 3j]) gives −1, the wrong answer. np.vdot conjugates the first argument and gives 5.</li>
-  </ul>
-</section>
-
-<section>
-  <h2>Practice</h2>
-  <p class="q">Normalise v = (1, i, 1). Then compute the inner product of your normalised vector v̂ with e₁ = (1, 0, 0).</p>
-  <details>
-    <summary>Show answer</summary>
-    <h3>Step 1: length of v</h3>
-    <div class="steps">
-      <div>|1|² = 1</div>
-      <div>|i|² = ī · i = (−i)(i) = −i² = 1</div>
-      <div>|1|² = 1</div>
-      <div>⟨v, v⟩ = 1 + 1 + 1 = 3</div>
-      <div>‖v‖ = √3 ≈ 1.732</div>
-    </div>
-    <h3>Step 2: divide every entry by √3</h3>
-    <div class="steps">
-      <div>v̂ = (1 ⁄ √3, i ⁄ √3, 1 ⁄ √3)</div>
-      <div>1 ⁄ √3 ≈ 1 ⁄ 1.732 ≈ 0.577</div>
-      <div>v̂ ≈ (0.577, 0.577i, 0.577)</div>
-      <div>Check: 1⁄3 + 1⁄3 + 1⁄3 = 3⁄3 = 1 <span class="ok">✓ normalised</span></div>
-    </div>
-    <h3>Step 3: inner product with e₁ = (1, 0, 0)</h3>
-    <div class="steps">
-      <div>Conjugate v̂: (1 ⁄ √3, −i ⁄ √3, 1 ⁄ √3)</div>
-      <div>⟨v̂, e₁⟩ = (1 ⁄ √3)·1 + (−i ⁄ √3)·0 + (1 ⁄ √3)·0</div>
-      <div>= 1 ⁄ √3 + 0 + 0</div>
-      <div>= 1 ⁄ √3 ≈ 0.577 <span class="ok">✓</span></div>
-      <div class="note">The zeros in e₁ simply pick out the first entry. Swapping the order, ⟨e₁, v̂⟩, gives the conjugate of this number; here the first entry is real, so it is also 1 ⁄ √3. Squared, (1 ⁄ √3)² = 1 ⁄ 3: on the probability concept you will see this is a probability.</div>
-    </div>
-  </details>
-</section>
-
-<section>
-  <h2>Check it in NumPy</h2>
-<pre><code>import numpy as np
-v = np.array([1, 1j, 1])
-v_hat = v / np.linalg.norm(v)              # divide by √3
-print(np.linalg.norm(v), np.linalg.norm(v_hat))   # 1.732..., 1.0
-print(np.vdot(v_hat, [1, 0, 0]))           # vdot conjugates the first: (0.577+0j)</code></pre>
-</section>
-
-<section>
-  <h2>Go deeper</h2>
-  <ul class="links">
-    <li><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/quantum-foundations/concepts/03-inner-products-and-bases/notebook.ipynb">Tutorial notebook: 02 Vectors and inner products</a></li>
-    <li><a href="notebook.html">The same tutorial as a web page</a></li>
-    <li><a href="../../reference/reading-maths-symbols.html">Symbol dictionary: how to read maths symbols</a></li>
-  </ul>
-</section>
-
-
-
-
-
-
-
-
-<!-- from-class:start --><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&family=Spectral:wght@500;700&display=swap"><style>
-.fc{
-  --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4; --grid:#e6ebf2;
-  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --okbg:#e5f4ec; --soft:#f5f7fb; --code:#f2f4f8;
-  --f-display:"Spectral",Georgia,serif; --f-body:"Atkinson Hyperlegible",system-ui,sans-serif; --f-math:"JetBrains Mono",ui-monospace,Menlo,monospace;}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .fc{
-  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
-  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}}
-:root[data-theme="dark"] .fc{
-  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
-  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}
-.fc{color:var(--ink);font:17px/1.6 var(--f-body);display:flex;flex-direction:column;gap:28px;border-top:2px solid var(--rule);padding-top:22px;margin-top:8px;text-align:left}
-.fc h1{font-size:clamp(1.8rem,6vw,2.3rem)}
-.fc h2{font-size:1.5rem;padding-bottom:6px;border-bottom:1px solid var(--rule)}
-.fc h3{font-size:1.2rem}
-.fc section,.fc article{display:flex;flex-direction:column;gap:12px;min-width:0}
-.fc p{margin:0;max-width:65ch}
-.fc .eyebrow{font:600 .78rem/1 var(--f-math);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.fc .m{font-family:var(--f-math);font-size:.92em;white-space:nowrap}
-.fc .re{color:var(--re)} .im{color:var(--im)}
-.fc .bar{text-decoration:overline;text-decoration-thickness:1.5px}
-.fc .box{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
-.fc .scroll{overflow-x:auto}
-.fc table{border-collapse:collapse;width:100%;font-size:.95rem}
-.fc th,.fc td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
-.fc th{font:600 .75rem var(--f-math);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.fc .sym td:first-child{font-family:var(--f-math);font-weight:600;white-space:nowrap}
-.fc .key{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:8px}
-.fc .key a{display:flex;justify-content:space-between;align-items:baseline;gap:6px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:7px 10px;font-family:var(--f-math);font-variant-numeric:tabular-nums}
-.fc .key a b{color:var(--ok)}
-.fc .key a span{color:var(--muted);font-size:.85rem}
-.fc .qcard{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
-.fc .qhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
-.fc .qhead .qn{font:700 .85rem var(--f-math);color:var(--muted)}
-.fc .qtext{font-size:1.05rem}
-.fc .opts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:6px}
-.fc .opts li{border:1px solid var(--rule);border-radius:8px;padding:6px 10px;font-family:var(--f-math);font-size:.92rem;min-width:0;overflow-wrap:anywhere}
-.fc .opts li .l{color:var(--muted);margin-right:6px}
-.fc .show .opts li.ok,.fc .revealed .opts li.ok{border-color:var(--ok);background:var(--okbg);color:var(--ink)}
-.fc .show .opts li.ok .l,.fc .revealed .opts li.ok .l{color:var(--ok);font-weight:700}
-.fc .badge{font:700 .82rem var(--f-math);color:var(--ok);background:var(--okbg);border-radius:999px;padding:3px 10px;white-space:nowrap}
-.fc body:not(.show) .qcard:not(.revealed) .badge{visibility:hidden}
-.fc .steps{font-family:var(--f-math);font-size:.93rem;background:var(--code);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
-.fc .steps span{white-space:pre-wrap}
-.fc .steps .note{color:var(--muted);font-family:var(--f-body);font-size:.88rem;white-space:normal}
-.fc .steps .ok{color:var(--ok);font-weight:600}
-.fc figure{margin:0;background:var(--soft);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
-.fc figure svg{width:100%;height:auto;max-width:360px;align-self:center;display:block}
-.fc figcaption{font-size:.9rem;color:var(--muted)}
-.fc figcaption b{color:var(--ink)}
-.fc svg text{font-family:var(--f-math);font-size:12px;fill:var(--ink)}
-.fc svg .lab{font-size:13px;font-weight:600}
-.fc svg .mut{fill:var(--muted)}
-.fc svg .grid{stroke:var(--grid);stroke-width:1}
-.fc svg .axis{stroke:var(--muted);stroke-width:1.3}
-.fc svg .reS{stroke:var(--re)} svg .imS{stroke:var(--im)} svg .inkS{stroke:var(--ink)} svg .okS{stroke:var(--ok)} svg .mutS{stroke:var(--muted)}
-.fc svg .reF{fill:var(--re)} svg .imF{fill:var(--im)} svg .inkF{fill:var(--ink)} svg .okF{fill:var(--ok)} svg .bgF{fill:var(--paper)} svg .none{fill:none}
-.fc svg .okT{fill:var(--ok)} svg .reT{fill:var(--re)} svg .imT{fill:var(--im)}
-.fc .why{font-size:.95rem;color:var(--muted)}
-.fc .why b{color:var(--ink)}
-.fc .ql{background:var(--soft);border-left:3px solid var(--im);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
-.fc .ql b{color:var(--im)}
-.fc .warn{background:var(--soft);border-left:3px solid var(--re);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
-.fc details.sol{border-top:1px dashed var(--rule);padding-top:10px}
-.fc details.sol>summary{cursor:pointer;font-weight:700;color:var(--re);list-style-position:inside}
-.fc details.sol[open]>summary{margin-bottom:10px}
-.fc details.sol>div{display:flex;flex-direction:column;gap:12px}
-.fc .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.fc button{font:600 .9rem var(--f-body);color:var(--re);background:var(--paper);border:1px solid var(--re);border-radius:8px;padding:8px 14px;cursor:pointer}
-.fc button:hover{background:var(--soft)}
-.fc button:focus-visible,.fc summary:focus-visible,.fc a:focus-visible{outline:2px solid var(--re);outline-offset:3px}
-.fc ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;max-width:65ch}
-.fc pre.code{margin:0;background:var(--code);border-radius:8px;padding:14px 16px;overflow-x:auto;font:.85rem/1.55 var(--f-math)}
-.fc a{color:var(--re)}
-.fc footer{border-top:1px solid var(--rule);padding-top:14px;color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
-@media (prefers-reduced-motion:reduce){.fc *{transition:none!important}}
-.fc .tag{font:600 .72rem var(--f-math);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
-.fc .tag.new{color:var(--ok);background:var(--okbg)} .tag.have{color:var(--re);background:var(--soft)} .tag.next{color:var(--im);background:var(--soft)}
-.fc .cov td:nth-child(2){white-space:nowrap}
-.fc .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:12px}
-.fc .grid2>div{min-width:0}
-</style><div class="fc" id="from-class"><section><span class="eyebrow">From class · Week 1 · Sat 17 Oct 2026</span><h2>What class added</h2><p>Slides 37–51. The lecture uses bold vectors and ⟨u, v⟩ where this page uses kets, so the table maps one onto the other. Then come four ideas this page didn't cover: the inner product's rules, Cauchy–Schwarz, coordinates and Parseval in an orthonormal basis, and the circular basis.</p></section>
-<section>
-  <h2>Notation: class ↔ prep pages</h2>
-  <p>The lecture writes vectors in bold with ⟨u, v⟩. The concept pages from <a href="../08-qubits-and-dirac-notation/">qubits and Dirac notation</a> onward use Dirac "kets". They name the same things, and the lecturer said kets come in the QC Foundations lecture.</p>
-  <div class="scroll"><table class="sym">
-    <thead><tr><th>Class writes</th><th>Prep pages write</th><th>Meaning</th></tr></thead>
-    <tbody>
-      <tr><td>e₁, e₂</td><td>|0⟩, |1⟩</td><td>standard basis: (1, 0) and (0, 1)</td></tr>
-      <tr><td>h₊, h₋</td><td>|+⟩, |−⟩</td><td>Hadamard basis: (1, ±1)/√2</td></tr>
-      <tr><td>c₊, c₋</td><td>|+i⟩, |−i⟩</td><td>circular basis: (1, ±i)/√2</td></tr>
-      <tr><td><b>ψ</b> (bold)</td><td>|ψ⟩</td><td>a state, as a column vector</td></tr>
-      <tr><td>v†</td><td>⟨v|</td><td>conjugate transpose: the row of conjugated entries</td></tr>
-      <tr><td>⟨u, v⟩ = u†v</td><td>⟨u|v⟩</td><td>inner product, conjugating the first vector</td></tr>
-      <tr><td>z̄ (physics: z*)</td><td>z̄</td><td>complex conjugate</td></tr>
-      <tr><td>δᵢⱼ</td><td>δᵢⱼ</td><td>"Kronecker delta": 1 if i = j, else 0</td></tr>
-    </tbody>
-  </table></div>
-</section>
-<article class="qcard" id="rules">
-  <div class="qhead"><span class="qn">From class, Week 1 · slides 38–41</span></div>
-  <h3>The three rules of the inner product</h3>
-  <p>Why conjugate at all? Without it, v = (1, i) would give 1·1 + i·i = 1 − 1 = 0: a non-zero vector of "length" 0. With it, Σ v̄ⱼvⱼ = Σ |vⱼ|² is always ≥ 0.</p>
-  <div class="box">
-    <ul>
-      <li><b>Conjugate symmetry:</b> ⟨v, u⟩ = conj(⟨u, v⟩). Swapping the order conjugates the answer.</li>
-      <li><b>Linear in the second slot:</b> ⟨u, αv + βw⟩ = α⟨u, v⟩ + β⟨u, w⟩</li>
-      <li><b>Positive:</b> ⟨v, v⟩ ≥ 0, and it is 0 only for v = 0</li>
-      <li><b>Consequence:</b> a scalar leaves the <i>first</i> slot conjugated: ⟨αu, v⟩ = ᾱ⟨u, v⟩ ("anti-linear")</li>
-    </ul>
-  </div>
-  <div class="steps">
-    <span>u = (1, i), v = (1+i, 2)</span>
-    <span>⟨u, v⟩ = conj(1)(1+i) + conj(i)(2) = (1+i) + (−i)(2) = 1 + i − 2i = 1 − i</span>
-    <span>⟨v, u⟩ = conj(1+i)(1) + conj(2)(i) = (1−i) + 2i = 1 + i</span>
-    <span class="ok">1 + i = conj(1 − i) ✓ conjugate symmetry</span>
-  </div>
-  <p class="why">Maths books often conjugate the <i>second</i> slot instead. The course and quantum computing conjugate the first. Check which convention a source uses before copying formulas.</p>
-</article>
-<article class="qcard" id="cs">
-  <div class="qhead"><span class="qn">From class, Week 1 · slide 44</span></div>
-  <h3>Cauchy–Schwarz and the triangle inequality</h3>
-  <div class="formula"><div class="big">|⟨u, v⟩| ≤ ‖u‖ ‖v‖</div><div class="read"><b>Read it aloud:</b> "the size of the inner product of u and v is at most the length of u times the length of v." Equal only when one is a multiple of the other.</div></div>
+<section class="xt" id="cs">
+  <h2>Cauchy–Schwarz and the triangle inequality</h2>
+<div class="formula"><div class="big">|⟨u, v⟩| ≤ ‖u‖ ‖v‖</div><div class="read"><b>Read it aloud:</b> "the size of the inner product of u and v is at most the length of u times the length of v." Equal only when one is a multiple of the other.</div></div>
   <figure>
     <svg viewBox="0 0 340 200" role="img" aria-label="Vector u casts a shadow on the line of v; the shadow is never longer than u itself">
       <line x1="30" y1="170" x2="320" y2="170" class="reS" stroke-width="2.5"/><text x="300" y="190" class="lab reT">v</text>
@@ -500,11 +432,11 @@ print(np.vdot(v_hat, [1, 0, 0]))           # vdot conjugates the first: (0.577+0
     <span>‖u‖ + ‖v‖ = 1.414 + 2.449 = 3.863 ≥ 3.162 ✓</span>
   </div>
   <p class="ql"><b>Quantum link:</b> for unit vectors (states) φ and ψ, Cauchy–Schwarz gives 0 ≤ |⟨φ, ψ⟩|² ≤ 1. That is why this number can be a <b>probability</b>.</p>
-</article>
-<article class="qcard" id="onb">
-  <div class="qhead"><span class="qn">From class, Week 1 · slides 48–51</span></div>
-  <h3>Orthonormal bases: coordinates are inner products, and Parseval</h3>
-  <p>An <b>orthonormal basis (ONB)</b> has unit-length, mutually orthogonal vectors: ⟨eᵢ, eⱼ⟩ = δᵢⱼ. Then two formulas do all the work:</p>
+</section>
+
+<section class="xt" id="onb">
+  <h2>Orthonormal bases: coordinates are inner products, and Parseval</h2>
+<p>An <b>orthonormal basis (ONB)</b> has unit-length, mutually orthogonal vectors: ⟨eᵢ, eⱼ⟩ = δᵢⱼ. Then two formulas do all the work:</p>
   <div class="grid2">
     <div class="formula"><div class="big" style="font-size:1.25rem">v = Σ ⟨eᵢ, v⟩ eᵢ</div><div class="read">each coordinate is one inner product, with no equations to solve</div></div>
     <div class="formula"><div class="big" style="font-size:1.25rem">‖v‖² = Σ |⟨eᵢ, v⟩|²</div><div class="read"><b>Parseval:</b> squared coordinates add up to the squared length, in any ONB</div></div>
@@ -538,11 +470,11 @@ print(np.vdot(v_hat, [1, 0, 0]))           # vdot conjugates the first: (0.577+0
       <span class="ok">P(0) = 1/3, P(1) = 2/3. Same state, different basis, different probabilities.</span>
     </div>
   </div></details>
-</article>
-<article class="qcard" id="circ">
-  <div class="qhead"><span class="qn">From class, Week 1 · slide 48</span></div>
-  <h3>The three standard bases of ℂ², including the circular one</h3>
-  <div class="scroll"><table>
+</section>
+
+<section class="xt" id="circ">
+  <h2>The three standard bases of ℂ², including the circular one</h2>
+<div class="scroll"><table>
     <thead><tr><th>Basis</th><th>Vectors</th><th>Bloch-sphere axis (<a href="../09-bloch-sphere/">Bloch sphere</a>)</th></tr></thead>
     <tbody>
       <tr><td>Standard</td><td class="m">e₁ = (1, 0), e₂ = (0, 1)</td><td>z: north and south poles</td></tr>
@@ -571,9 +503,95 @@ print(np.vdot(v_hat, [1, 0, 0]))           # vdot conjugates the first: (0.577+0
     <span>⟨c₊, c₋⟩ = ½ (conj(1)·1 + conj(i)·(−i)) = ½ (1 + (−i)(−i)) = ½ (1 + i²) = ½ (1 − 1) = 0 ✓</span>
     <span>Without the conjugate: ½ (1·1 + i·(−i)) = ½ (1 + 1) = 1 ✗. The conjugate is what makes this basis work.</span>
   </div>
-</article>
-<section><p>Worked solutions: <a href="practice.html">practice questions 14–17</a>. For span, independence and basis, see <a href="../02-vector-spaces/">vector spaces</a>.</p></section>
-</div><!-- from-class:end -->
+</section>
+
+<section class="xt" id="notation">
+  <h2>Same ideas, other notation</h2>
+<p>Linear-algebra books and many slide decks write vectors in bold with ⟨u, v⟩. From <a href="../08-qubits-and-dirac-notation/">qubits and Dirac notation</a> onward these pages use Dirac "kets". They name the same things, so here is the translation.</p>
+  <div class="scroll"><table class="sym">
+    <thead><tr><th>Books write</th><th>Quantum notation</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>e₁, e₂</td><td>|0⟩, |1⟩</td><td>standard basis: (1, 0) and (0, 1)</td></tr>
+      <tr><td>h₊, h₋</td><td>|+⟩, |−⟩</td><td>Hadamard basis: (1, ±1)/√2</td></tr>
+      <tr><td>c₊, c₋</td><td>|+i⟩, |−i⟩</td><td>circular basis: (1, ±i)/√2</td></tr>
+      <tr><td><b>ψ</b> (bold)</td><td>|ψ⟩</td><td>a state, as a column vector</td></tr>
+      <tr><td>v†</td><td>⟨v|</td><td>conjugate transpose: the row of conjugated entries</td></tr>
+      <tr><td>⟨u, v⟩ = u†v</td><td>⟨u|v⟩</td><td>inner product, conjugating the first vector</td></tr>
+      <tr><td>z̄ (physics: z*)</td><td>z̄</td><td>complex conjugate</td></tr>
+      <tr><td>δᵢⱼ</td><td>δᵢⱼ</td><td>"Kronecker delta": 1 if i = j, else 0</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Common mistakes</h2>
+  <ul class="mist">
+    <li><b>Forgetting to conjugate the first vector.</b> Without it, u = (1, i) "dotted" with itself gives 1·1 + i·i = 1 + (−1) = 0, a non-zero vector with length 0. That is nonsense, and it is why the bar is there.</li>
+    <li><b>Squaring i instead of taking its modulus squared.</b> The length of (1, i, 1) uses |i|² = 1, not i² = −1. Lengths add only positive pieces.</li>
+    <li><b>Using np.dot instead of np.vdot.</b> np.dot does not conjugate: np.dot([1, 1j], [2, 3j]) gives −1, the wrong answer. np.vdot conjugates the first argument and gives 5.</li>
+      <li><b>Copying a formula from a book with the other convention.</b> Many maths books conjugate the <i>second</i> slot. Then ⟨αu, v⟩ = α⟨u, v⟩ instead of ᾱ⟨u, v⟩. Check before you copy.</li>
+    <li><b>Using "coordinate = inner product" in a basis that isn't orthonormal.</b> v = Σ⟨eᵢ, v⟩eᵢ only works when the eᵢ have length 1 and are perpendicular. Otherwise solve the equations (<a href="../02-vector-spaces/#worked">vector spaces</a>).</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Practice</h2>
+  <p class="q">Normalise v = (1, i, 1). Then compute the inner product of your normalised vector v̂ with e₁ = (1, 0, 0).</p>
+  <details>
+    <summary>Show answer</summary>
+    <h3>Step 1: length of v</h3>
+    <div class="steps">
+      <div>|1|² = 1</div>
+      <div>|i|² = ī · i = (−i)(i) = −i² = 1</div>
+      <div>|1|² = 1</div>
+      <div>⟨v, v⟩ = 1 + 1 + 1 = 3</div>
+      <div>‖v‖ = √3 ≈ 1.732</div>
+    </div>
+    <h3>Step 2: divide every entry by √3</h3>
+    <div class="steps">
+      <div>v̂ = (1 ⁄ √3, i ⁄ √3, 1 ⁄ √3)</div>
+      <div>1 ⁄ √3 ≈ 1 ⁄ 1.732 ≈ 0.577</div>
+      <div>v̂ ≈ (0.577, 0.577i, 0.577)</div>
+      <div>Check: 1⁄3 + 1⁄3 + 1⁄3 = 3⁄3 = 1 <span class="ok">✓ normalised</span></div>
+    </div>
+    <h3>Step 3: inner product with e₁ = (1, 0, 0)</h3>
+    <div class="steps">
+      <div>Conjugate v̂: (1 ⁄ √3, −i ⁄ √3, 1 ⁄ √3)</div>
+      <div>⟨v̂, e₁⟩ = (1 ⁄ √3)·1 + (−i ⁄ √3)·0 + (1 ⁄ √3)·0</div>
+      <div>= 1 ⁄ √3 + 0 + 0</div>
+      <div>= 1 ⁄ √3 ≈ 0.577 <span class="ok">✓</span></div>
+      <div class="note">The zeros in e₁ simply pick out the first entry. Swapping the order, ⟨e₁, v̂⟩, gives the conjugate of this number; here the first entry is real, so it is also 1 ⁄ √3. Squared, (1 ⁄ √3)² = 1 ⁄ 3: on the probability concept you will see this is a probability.</div>
+    </div>
+  </details>
+  <p>More worked solutions: <a href="practice.html">practice questions 14–17</a>.</p>
+</section>
+
+<section>
+  <h2>Check it in NumPy</h2>
+<pre><code>import numpy as np
+v = np.array([1, 1j, 1])
+v_hat = v / np.linalg.norm(v)              # divide by √3
+print(np.linalg.norm(v), np.linalg.norm(v_hat))   # 1.732..., 1.0
+print(np.vdot(v_hat, [1, 0, 0]))           # vdot conjugates the first: (0.577+0j)</code></pre>
+</section>
+
+<section>
+  <h2>Go deeper</h2>
+  <ul class="links">
+    <li><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/quantum-foundations/concepts/03-inner-products-and-bases/notebook.ipynb">Tutorial notebook (.ipynb, to run yourself)</a></li>
+    <li><a href="notebook.html">The same tutorial as a web page</a></li>
+    <li><a href="../../reference/reading-maths-symbols.html">Symbol dictionary: how to read maths symbols</a></li>
+  </ul>
+</section>
+
+
+
+
+
+
+
+
+
 <footer>
   <span>Study time: <b>45 min</b></span>
   <span><a href="../../../">All concepts</a></span>

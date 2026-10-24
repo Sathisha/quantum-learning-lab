@@ -102,13 +102,102 @@ footer strong { color: var(--ink); }
 @media (prefers-reduced-motion: no-preference) { #psiArrow, #psiDot { transition: none; } }
 </style>
 
+<style id="xt-style">
+.xt{
+  --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4; --grid:#e6ebf2;
+  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --okbg:#e5f4ec; --soft:#f5f7fb; --code:#f2f4f8;
+  --f-math:ui-monospace,"IBM Plex Mono","JetBrains Mono",Menlo,Consolas,monospace;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .xt{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}}
+:root[data-theme="dark"] .xt{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}
+.xt{color:inherit;font:inherit;display:flex;flex-direction:column;gap:12px;min-width:0;text-align:left}
+.xt h3{margin:10px 0 0}
+.xt section,.xt article{display:flex;flex-direction:column;gap:12px;min-width:0}
+.xt p{margin:0;max-width:65ch}
+.xt .eyebrow{font:600 .78rem/1 var(--f-math);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.xt .m{font-family:var(--f-math);font-size:.92em;white-space:nowrap}
+.xt .re{color:var(--re)} .im{color:var(--im)}
+.xt .bar{text-decoration:overline;text-decoration-thickness:1.5px}
+.xt .box{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.xt .scroll{overflow-x:auto}
+.xt table{border-collapse:collapse;width:100%;font-size:.95rem}
+.xt th,.xt td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+.xt th{font:600 .75rem var(--f-math);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.xt .sym td:first-child{font-family:var(--f-math);font-weight:600;white-space:nowrap}
+.xt .key{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:8px}
+.xt .key a{display:flex;justify-content:space-between;align-items:baseline;gap:6px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:7px 10px;font-family:var(--f-math);font-variant-numeric:tabular-nums}
+.xt .key a b{color:var(--ok)}
+.xt .key a span{color:var(--muted);font-size:.85rem}
+.xt .qcard{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
+.xt .qhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.xt .qhead .qn{font:700 .85rem var(--f-math);color:var(--muted)}
+.xt .qtext{font-size:1.05rem}
+.xt .opts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:6px}
+.xt .opts li{border:1px solid var(--rule);border-radius:8px;padding:6px 10px;font-family:var(--f-math);font-size:.92rem;min-width:0;overflow-wrap:anywhere}
+.xt .opts li .l{color:var(--muted);margin-right:6px}
+.xt .show .opts li.ok,.xt .revealed .opts li.ok{border-color:var(--ok);background:var(--okbg);color:var(--ink)}
+.xt .show .opts li.ok .l,.xt .revealed .opts li.ok .l{color:var(--ok);font-weight:700}
+.xt .badge{font:700 .82rem var(--f-math);color:var(--ok);background:var(--okbg);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.xt body:not(.show) .qcard:not(.revealed) .badge{visibility:hidden}
+.xt .steps{font-family:var(--f-math);font-size:.93rem;background:var(--code);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.xt .steps span{white-space:pre-wrap}
+.xt .steps .note{color:var(--muted);font-family:var(--f-body);font-size:.88rem;white-space:normal}
+.xt .steps .ok{color:var(--ok);font-weight:600}
+.xt figure{margin:0;background:var(--soft);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.xt figure svg{width:100%;height:auto;max-width:360px;align-self:center;display:block}
+.xt figcaption{font-size:.9rem;color:var(--muted)}
+.xt figcaption b{color:var(--ink)}
+.xt svg text{font-family:var(--f-math);font-size:12px;fill:var(--ink)}
+.xt svg .lab{font-size:13px;font-weight:600}
+.xt svg .mut{fill:var(--muted)}
+.xt svg .grid{stroke:var(--grid);stroke-width:1}
+.xt svg .axis{stroke:var(--muted);stroke-width:1.3}
+.xt svg .reS{stroke:var(--re)} svg .imS{stroke:var(--im)} svg .inkS{stroke:var(--ink)} svg .okS{stroke:var(--ok)} svg .mutS{stroke:var(--muted)}
+.xt svg .reF{fill:var(--re)} svg .imF{fill:var(--im)} svg .inkF{fill:var(--ink)} svg .okF{fill:var(--ok)} svg .bgF{fill:var(--paper)} svg .none{fill:none}
+.xt svg .okT{fill:var(--ok)} svg .reT{fill:var(--re)} svg .imT{fill:var(--im)}
+.xt .why{font-size:.95rem;color:var(--muted)}
+.xt .why b{color:var(--ink)}
+.xt .ql{background:var(--soft);border-left:3px solid var(--im);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.xt .ql b{color:var(--im)}
+.xt .warn{background:var(--soft);border-left:3px solid var(--re);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.xt details.sol{border-top:1px dashed var(--rule);padding-top:10px}
+.xt details.sol>summary{cursor:pointer;font-weight:700;color:var(--re);list-style-position:inside}
+.xt details.sol[open]>summary{margin-bottom:10px}
+.xt details.sol>div{display:flex;flex-direction:column;gap:12px}
+.xt .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.xt button{font:600 .9rem var(--f-body);color:var(--re);background:var(--paper);border:1px solid var(--re);border-radius:8px;padding:8px 14px;cursor:pointer}
+.xt button:hover{background:var(--soft)}
+.xt button:focus-visible,.xt summary:focus-visible,.xt a:focus-visible{outline:2px solid var(--re);outline-offset:3px}
+.xt ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;max-width:65ch}
+.xt pre.code{margin:0;background:var(--code);border-radius:8px;padding:14px 16px;overflow-x:auto;font:.85rem/1.55 var(--f-math)}
+.xt a{color:var(--re)}
+.xt footer{border-top:1px solid var(--rule);padding-top:14px;color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+@media (prefers-reduced-motion:reduce){.xt *{transition:none!important}}
+.xt .tag{font:600 .72rem var(--f-math);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.xt .tag.new{color:var(--ok);background:var(--okbg)} .tag.have{color:var(--re);background:var(--soft)} .tag.next{color:var(--im);background:var(--soft)}
+.xt .cov td:nth-child(2){white-space:nowrap}
+.xt .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:12px}
+.xt .grid2>div{min-width:0}
+
+.xt .formula{text-align:center}
+.xt>p,.xt>ul{margin:0}
+.xt .fml{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:18px 12px;text-align:center;font:600 clamp(1.05rem,4.4vw,1.5rem)/1.4 var(--f-math);overflow-x:auto}
+.xt .say{color:var(--muted);font-size:.95rem}
+.xt .say b{color:var(--ink)}
+.xt thead{display:table-header-group}.xt tbody tr{display:table-row;padding:0}.xt tbody td{display:table-cell;padding:7px 10px;border-bottom:1px solid var(--rule);color:inherit}
+.xt .steps{font-size:.86rem}
+@media (max-width:560px){.xt table.symt thead{display:none}.xt table.symt tbody tr{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;padding:9px 6px;border-bottom:1px solid var(--rule)}.xt table.symt tbody td{display:block;border:0;padding:0}.xt table.symt td:nth-child(3){grid-column:1/-1;color:var(--muted)}}
+.xt .steps .note{background:none;border:0;padding:0;margin:0;border-radius:0;font-size:.85rem}
+</style>
 <main class="page">
 
 <header>
-  <div class="eyebrow">Concept 08</div>
+  <div class="eyebrow">Concept 08 · Quantum basics</div>
   <h1>Qubits and Dirac notation</h1>
   <p>New spelling for the vectors you met on the inner products concept. Nothing here is new maths: a qubit's state is a length‑1 arrow, and the brackets are just a compact way to write it.</p>
-  <p class="lede"><a href="#from-class">What class added in Week 2 ↓</a></p>
 </header>
 
 <section aria-labelledby="sym">
@@ -132,7 +221,11 @@ footer strong { color: var(--ink); }
         <tr><td>θ</td><td>"theta"</td><td>An angle (used by the slider). cos θ ("cos theta") and sin θ ("sine theta") are the x and y of the point at that angle on a radius‑1 circle.</td></tr>
         <tr><td>≈</td><td>"is about"</td><td>Approximately equal.</td></tr>
         <tr><td>·</td><td>"times"</td><td>Multiply.</td></tr>
-      </tbody>
+              <tr><td>P(0)</td><td>"P of zero"</td><td>The probability that measuring gives 0.</td></tr>
+        <tr><td>|⟨0|ψ⟩|²</td><td>"mod bra zero ket psi, squared"</td><td>The same P(0), written with the inner product.</td></tr>
+        <tr><td>|V⟩, |H⟩</td><td>"ket V", "ket H"</td><td>Vertical and horizontal polarisation of light: |0⟩ and |1⟩.</td></tr>
+        <tr><td>°</td><td>"degrees"</td><td>Lab angles of a polarising filter.</td></tr>
+</tbody>
     </table>
   </div>
 </section>
@@ -159,6 +252,47 @@ footer strong { color: var(--ink); }
   <h2 id="idea">The idea</h2>
   <p>A qubit's state is a column of two numbers, <span class="m">(α, β)</span>, whose squared sizes add up to 1. Physicists write that column as a <em>ket</em>, <span class="m">|ψ⟩</span>, and name the two basis columns <span class="m c0">|0⟩</span> and <span class="m c0">|1⟩</span>, so any state reads <span class="m">α|0⟩ + β|1⟩</span>. A <em>superposition</em> just means both α and β are non‑zero. Flip a ket into a conjugated row and you get a <em>bra</em>, <span class="m">⟨ψ|</span>; put a bra in front of a ket and the two click into <span class="m">⟨φ|ψ⟩</span>, the inner products concept's inner product.</p>
 </section>
+
+<section class="xt" id="ket-tag">
+  <h2>A ket is just a name tag</h2>
+<p>Whatever is written inside |&nbsp;⟩ is a label, not a number. |0⟩, |+⟩, |ψ⟩ are all names for column vectors with two complex entries. Dirac invented the bracket so that long multi-qubit expressions stay readable.</p>
+  <div class="steps">
+    <span>|ψ⟩ = α|0⟩ + β|1⟩ = column (α, β)</span>
+    <span>|+⟩ = (1/√2)(|0⟩ + |1⟩) = column (1/√2, 1/√2)</span>
+    <span>|−⟩ = (1/√2)(|0⟩ − |1⟩) = column (1/√2, −1/√2)</span>
+    <span class="note">Read aloud: "ket psi equals alpha ket zero plus beta ket one".</span>
+  </div>
+  <p class="why">Kets are used everywhere from here on. Their partner, the bra ⟨·|, is a row instead of a column; it is in the diagrams below.</p>
+</section>
+
+<section class="xt" id="superposition">
+  <h2>Bit vs qubit, and two pictures of superposition</h2>
+<div class="grid2">
+    <div class="box"><b>Classical bit</b><p>Exactly two isolated states, 0 and 1. Operations are fixed maps {0,1} → {0,1}, such as NOT. Everything a classical computer does is sequences of these.</p></div>
+    <div class="box"><b>Qubit</b><p>A unit vector in ℂ²: |ψ⟩ = α|0⟩ + β|1⟩ with |α|² + |β|² = 1. Infinitely many states, but one measurement still returns exactly one bit.</p></div>
+  </div>
+  <ul>
+    <li><b>The spinning coin:</b> while it spins it is neither heads nor tails; landing forces one answer.</li>
+    <li><b>The compass needle:</b> it can point in any direction, not just north or south. Measuring asks "north or south?" and the needle's direction sets the odds.</li>
+  </ul>
+  <div class="warn">Superposition is <b>not</b> "being in two places at once". It is one definite, specific state, just not a classical one.</div>
+</section>
+
+<section class="xt" id="polarisation">
+  <h2>Polarisation <i>is</i> a qubit (not an analogy)</h2>
+<div class="scroll"><table>
+    <thead><tr><th>Physical state</th><th>Notation</th></tr></thead>
+    <tbody>
+      <tr><td>Vertical, |V⟩</td><td class="m">|0⟩</td></tr>
+      <tr><td>Horizontal, |H⟩</td><td class="m">|1⟩</td></tr>
+      <tr><td>45° diagonal</td><td class="m">|+⟩ = (|0⟩ + |1⟩)/√2</td></tr>
+    </tbody>
+  </table></div>
+  <p>Other real qubits: electron spin up/down, energy levels of a superconducting circuit, internal states of a trapped ion, defects ("NV centres") in diamond.</p>
+  <div class="ql"><b>Caveat: angles double.</b> 0° and 90° light are perpendicular, so as qubit states they are orthogonal: opposite poles of the Bloch sphere, 180° apart. A 45° filter is halfway in the lab but lands on the equator, 90° from each pole (<a href="../09-bloch-sphere/">the Bloch sphere</a>, next concept).</div>
+  <p class="why"><b>One line to remember:</b> a polariser is a measurement, and Malus's law (light passing = cos² of the angle between filters) is the Born rule. cos²(45°) = (1/√2)² = 1/2.</p>
+</section>
+
 
 <section aria-labelledby="diag">
   <h2 id="diag">Diagrams</h2>
@@ -211,7 +345,7 @@ footer strong { color: var(--ink); }
     </div>
     <div class="readout" id="readout" aria-live="polite">|ψ⟩ = 0.866|0⟩ + 0.500|1⟩
 P(0) = 0.750, P(1) = 0.250, total = 1.000</div>
-    <figcaption>Blue: the standard basis. Amber: the "plus/minus" basis, rotated 45°. Each arrow has length 1. Try θ = 45° (you land on |+⟩) and θ = −45° (|−⟩). The probabilities always total 1. This flat picture only works for real amplitudes; on the Bloch sphere concept the Bloch sphere handles complex ones, and there |0⟩ and |1⟩ sit at opposite poles instead of at 90°.</figcaption>
+    <figcaption>Blue: the standard basis. Amber: the "plus/minus" basis, rotated 45°. Each arrow has length 1. Try θ = 45° (you land on |+⟩) and θ = −45° (|−⟩). The probabilities always total 1. This flat picture only works for real amplitudes; the <a href="../09-bloch-sphere/">Bloch sphere</a> handles complex ones, and there |0⟩ and |1⟩ sit at opposite poles instead of at 90°.</figcaption>
   </figure>
 
   <figure class="box">
@@ -292,211 +426,9 @@ P(0) = 0.750, P(1) = 0.250, total = 1.000</div>
   </div>
 </section>
 
-<section aria-labelledby="mist">
-  <h2 id="mist">Common mistakes</h2>
-  <ul class="mistakes">
-    <li><b>Forgetting to conjugate the bra.</b> With the example above, skipping it gives 9/25 + (4i/5)·(4i/5) = 9/25 + 16i²/25 = 9/25 − 16/25 = −7/25. A negative "length squared" is the giveaway that something went wrong.</li>
-    <li><b>Reading |0⟩ as the zero vector.</b> |0⟩ is the column (1, 0): a perfectly good arrow of length 1. The label "0" names the outcome, not the size.</li>
-    <li><b>Treating amplitudes as probabilities.</b> |+⟩ has amplitudes 0.7071 each, but the probabilities are 0.7071² = 0.5 each. Always square the size first.</li>
-  </ul>
-</section>
-
-<section aria-labelledby="practice">
-  <h2 id="practice">Check question</h2>
-  <p><strong>Write <span class="m">|+⟩ = (|0⟩ + |1⟩)/√2</span> as a column vector and check it is normalised.</strong></p>
-  <details>
-    <summary>Show answer</summary>
-    <div class="steps">
-      <div>Step 1 · substitute the columns: |0⟩ = (1, 0), |1⟩ = (0, 1)</div>
-      <div>Step 2 · add them: (1, 0) + (0, 1) = (1 + 0, 0 + 1) = (1, 1)</div>
-      <div>Step 3 · divide each entry by √2: |+⟩ = (1/√2, 1/√2) ≈ (0.7071, 0.7071)</div>
-      <div>Step 4 · bra: entries are real, so ⟨+| = (1/√2, 1/√2) (nothing changes)</div>
-      <div>Step 5 · ⟨+|+⟩ = (1/√2)·(1/√2) + (1/√2)·(1/√2)</div>
-      <div>Step 6 · each product: (1·1)/(√2·√2) = 1/2</div>
-      <div>Step 7 · add: 1/2 + 1/2 = 2/2 = 1</div>
-      <div class="note">⟨+|+⟩ = 1, so |+⟩ is normalised <span class="ok">✓</span> Meaning: measuring |+⟩ gives 0 with probability 1/2 and 1 with probability 1/2.</div>
-    </div>
-  </details>
-</section>
-
-<section aria-labelledby="code">
-  <h2 id="code">Check it in NumPy</h2>
-<pre><code>import numpy as np
-plus = np.array([1, 1]) / np.sqrt(2)   <span class="cm"># |+> as a column</span>
-print(plus)                            <span class="cm"># [0.7071 0.7071]</span>
-print(np.vdot(plus, plus))             <span class="cm"># 1.0 -> normalised (vdot conjugates the first vector)</span></code></pre>
-  <p class="aside">You may see 0.9999999999999998 instead of 1.0. That is rounding inside the computer, not a mistake.</p>
-</section>
-
-<section aria-labelledby="deeper">
-  <h2 id="deeper">Go deeper</h2>
-  <ul class="links">
-    <li><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/quantum-foundations/concepts/08-qubits-and-dirac-notation/notebook.ipynb">Tutorial notebook: 07 Qubits and Dirac notation</a></li>
-    <li><a href="notebook.html">The same tutorial as a web page</a></li>
-    <li><a href="../../reference/reading-maths-symbols.html">Symbol dictionary: how to read maths aloud</a></li>
-  </ul>
-</section>
-
-<!-- from-class:start --><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&family=Spectral:wght@500;700&display=swap"><style>
-.fc{
-  --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4; --grid:#e6ebf2;
-  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --okbg:#e5f4ec; --soft:#f5f7fb; --code:#f2f4f8;
-  --f-display:"Spectral",Georgia,serif; --f-body:"Atkinson Hyperlegible",system-ui,sans-serif; --f-math:"JetBrains Mono",ui-monospace,Menlo,monospace;}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .fc{
-  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
-  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}}
-:root[data-theme="dark"] .fc{
-  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
-  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}
-.fc{color:var(--ink);font:17px/1.6 var(--f-body);display:flex;flex-direction:column;gap:28px;border-top:2px solid var(--rule);padding-top:22px;margin-top:8px;text-align:left}
-.fc h1{font-size:clamp(1.8rem,6vw,2.3rem)}
-.fc h2{font-size:1.5rem;padding-bottom:6px;border-bottom:1px solid var(--rule)}
-.fc h3{font-size:1.2rem}
-.fc section,.fc article{display:flex;flex-direction:column;gap:12px;min-width:0}
-.fc p{margin:0;max-width:65ch}
-.fc .eyebrow{font:600 .78rem/1 var(--f-math);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.fc .m{font-family:var(--f-math);font-size:.92em;white-space:nowrap}
-.fc .re{color:var(--re)} .im{color:var(--im)}
-.fc .bar{text-decoration:overline;text-decoration-thickness:1.5px}
-.fc .box{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
-.fc .scroll{overflow-x:auto}
-.fc table{border-collapse:collapse;width:100%;font-size:.95rem}
-.fc th,.fc td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
-.fc th{font:600 .75rem var(--f-math);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.fc .sym td:first-child{font-family:var(--f-math);font-weight:600;white-space:nowrap}
-.fc .key{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:8px}
-.fc .key a{display:flex;justify-content:space-between;align-items:baseline;gap:6px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:7px 10px;font-family:var(--f-math);font-variant-numeric:tabular-nums}
-.fc .key a b{color:var(--ok)}
-.fc .key a span{color:var(--muted);font-size:.85rem}
-.fc .qcard{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
-.fc .qhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
-.fc .qhead .qn{font:700 .85rem var(--f-math);color:var(--muted)}
-.fc .qtext{font-size:1.05rem}
-.fc .opts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:6px}
-.fc .opts li{border:1px solid var(--rule);border-radius:8px;padding:6px 10px;font-family:var(--f-math);font-size:.92rem;min-width:0;overflow-wrap:anywhere}
-.fc .opts li .l{color:var(--muted);margin-right:6px}
-.fc .show .opts li.ok,.fc .revealed .opts li.ok{border-color:var(--ok);background:var(--okbg);color:var(--ink)}
-.fc .show .opts li.ok .l,.fc .revealed .opts li.ok .l{color:var(--ok);font-weight:700}
-.fc .badge{font:700 .82rem var(--f-math);color:var(--ok);background:var(--okbg);border-radius:999px;padding:3px 10px;white-space:nowrap}
-.fc body:not(.show) .qcard:not(.revealed) .badge{visibility:hidden}
-.fc .steps{font-family:var(--f-math);font-size:.93rem;background:var(--code);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
-.fc .steps span{white-space:pre-wrap}
-.fc .steps .note{color:var(--muted);font-family:var(--f-body);font-size:.88rem;white-space:normal}
-.fc .steps .ok{color:var(--ok);font-weight:600}
-.fc figure{margin:0;background:var(--soft);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
-.fc figure svg{width:100%;height:auto;max-width:360px;align-self:center;display:block}
-.fc figcaption{font-size:.9rem;color:var(--muted)}
-.fc figcaption b{color:var(--ink)}
-.fc svg text{font-family:var(--f-math);font-size:12px;fill:var(--ink)}
-.fc svg .lab{font-size:13px;font-weight:600}
-.fc svg .mut{fill:var(--muted)}
-.fc svg .grid{stroke:var(--grid);stroke-width:1}
-.fc svg .axis{stroke:var(--muted);stroke-width:1.3}
-.fc svg .reS{stroke:var(--re)} svg .imS{stroke:var(--im)} svg .inkS{stroke:var(--ink)} svg .okS{stroke:var(--ok)} svg .mutS{stroke:var(--muted)}
-.fc svg .reF{fill:var(--re)} svg .imF{fill:var(--im)} svg .inkF{fill:var(--ink)} svg .okF{fill:var(--ok)} svg .bgF{fill:var(--paper)} svg .none{fill:none}
-.fc svg .okT{fill:var(--ok)} svg .reT{fill:var(--re)} svg .imT{fill:var(--im)}
-.fc .why{font-size:.95rem;color:var(--muted)}
-.fc .why b{color:var(--ink)}
-.fc .ql{background:var(--soft);border-left:3px solid var(--im);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
-.fc .ql b{color:var(--im)}
-.fc .warn{background:var(--soft);border-left:3px solid var(--re);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
-.fc details.sol{border-top:1px dashed var(--rule);padding-top:10px}
-.fc details.sol>summary{cursor:pointer;font-weight:700;color:var(--re);list-style-position:inside}
-.fc details.sol[open]>summary{margin-bottom:10px}
-.fc details.sol>div{display:flex;flex-direction:column;gap:12px}
-.fc .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.fc button{font:600 .9rem var(--f-body);color:var(--re);background:var(--paper);border:1px solid var(--re);border-radius:8px;padding:8px 14px;cursor:pointer}
-.fc button:hover{background:var(--soft)}
-.fc button:focus-visible,.fc summary:focus-visible,.fc a:focus-visible{outline:2px solid var(--re);outline-offset:3px}
-.fc ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;max-width:65ch}
-.fc pre.code{margin:0;background:var(--code);border-radius:8px;padding:14px 16px;overflow-x:auto;font:.85rem/1.55 var(--f-math)}
-.fc a{color:var(--re)}
-.fc footer{border-top:1px solid var(--rule);padding-top:14px;color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
-@media (prefers-reduced-motion:reduce){.fc *{transition:none!important}}
-.fc .tag{font:600 .72rem var(--f-math);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
-.fc .tag.new{color:var(--ok);background:var(--okbg)} .tag.have{color:var(--re);background:var(--soft)} .tag.next{color:var(--im);background:var(--soft)}
-.fc .cov td:nth-child(2){white-space:nowrap}
-.fc .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:12px}
-.fc .grid2>div{min-width:0}
-</style><div class="fc" id="from-class"><section><span class="eyebrow">From class · Week 2 · Sat 24 Oct 2026 · morning</span><h2>What class added</h2><p>The first quantum lecture. The promise was "no mathematics beyond last week": the vectors in ℂ² and the inner product from the refresher, now with physics attached. These are the parts that belong on this page: the ket as a name tag, a light experiment that <i>is</i> a qubit, the Born rule, and what measuring does. The sphere pictures are on <a href="../09-bloch-sphere/#from-class">the Bloch sphere</a> page and the gates on <a href="../10-gates/#from-class">gates as matrices</a>.</p></section>
-
-<article class="qcard" id="ket-tag">
-  <div class="qhead"><span class="qn">From class, Week 2 · slide 2</span></div>
-  <h3>A ket is just a name tag</h3>
-  <p>Whatever is written inside |&nbsp;⟩ is a label, not a number. |0⟩, |+⟩, |ψ⟩ are all names for column vectors with two complex entries. Dirac invented the bracket so that long multi-qubit expressions stay readable.</p>
-  <div class="steps">
-    <span>|ψ⟩ = α|0⟩ + β|1⟩ = column (α, β)</span>
-    <span>|+⟩ = (1/√2)(|0⟩ + |1⟩) = column (1/√2, 1/√2)</span>
-    <span>|−⟩ = (1/√2)(|0⟩ − |1⟩) = column (1/√2, −1/√2)</span>
-    <span class="note">Read aloud: "ket psi equals alpha ket zero plus beta ket one".</span>
-  </div>
-  <p class="why">Class uses kets from now on. Bras ⟨·|, inner products in bra-ket form and outer products are formalised in the third lecture (Sat 31 Oct). This page already covers them, so you are ahead.</p>
-</article>
-
-<article class="qcard" id="filters">
-  <div class="qhead"><span class="qn">From class, Week 2 · slides 3–4, 23–28</span></div>
-  <h3>The three-filter puzzle</h3>
-  <p>A polarising filter lets through light whose "wobble direction" lines up with it. Two filters at 0° and 90° (crossed) block all light. Now slide a third filter at 45° <b>between</b> them, and light gets through again. Adding a filter lets <i>more</i> light pass. How?</p>
-  <figure>
-    <svg viewBox="0 0 340 150" role="img" aria-label="Light passes a vertical filter, then a 45 degree filter, then a horizontal filter; one quarter of the light after the first filter comes out">
-      <line x1="10" y1="75" x2="330" y2="75" class="mutS" stroke-dasharray="4 4"/>
-      <rect x="60" y="25" width="16" height="100" rx="3" class="bgF reS" stroke-width="2"/><line x1="68" y1="35" x2="68" y2="115" class="reS" stroke-width="2"/>
-      <rect x="160" y="25" width="16" height="100" rx="3" class="bgF okS" stroke-width="2"/><line x1="160" y1="115" x2="176" y2="35" class="okS" stroke-width="2"/>
-      <rect x="260" y="25" width="16" height="100" rx="3" class="bgF imS" stroke-width="2"/><line x1="262" y1="75" x2="274" y2="75" class="imS" stroke-width="2"/>
-      <text x="52" y="142" class="reT">0° → |0⟩</text>
-      <text x="146" y="142" class="okT">45° → |+⟩</text>
-      <text x="246" y="142" class="imT">90° → |1⟩</text>
-      <text x="96" y="66" class="mut">× ½</text><text x="196" y="66" class="mut">× ½</text>
-      <text x="292" y="66" class="lab">¼</text>
-    </svg>
-    <figcaption><b>Each filter is a measurement in its own basis.</b> Half survive the middle filter, half of those survive the last: ½ × ½ = ¼ of the light that passed the first filter.</figcaption>
-  </figure>
-  <div class="steps">
-    <span>After the 0° filter the photon is |0⟩ (vertical).</span>
-    <span>45° filter measures in {|+⟩, |−⟩}. Pass chance = |⟨+|0⟩|²</span>
-    <span>  ⟨+|0⟩ = (1/√2)(1) + (1/√2)(0) = 1/√2   →   |1/√2|² = 1/2</span>
-    <span>A photon that passed is now |+⟩. The "vertical" record is gone.</span>
-    <span>90° filter: pass chance = |⟨1|+⟩|² = |1/√2|² = 1/2</span>
-    <span class="ok">Total: 1/2 × 1/2 = 1/4 = 25% ✓</span>
-    <span>Without the middle filter: |⟨1|0⟩|² = 0² = 0. Nothing passes.</span>
-  </div>
-  <p class="why">Shot one photon at a time, each one passes or is absorbed at random. Only the <b>probability</b> is fixed: the counter in the class animation settles at ¼. The lecturer's homework: <b>re-derive this 25% yourself</b> with pen and paper.</p>
-</article>
-
-<article class="qcard" id="polarisation">
-  <div class="qhead"><span class="qn">From class, Week 2 · slides 5, 28</span></div>
-  <h3>Polarisation <i>is</i> a qubit (not an analogy)</h3>
-  <div class="scroll"><table>
-    <thead><tr><th>Physical state</th><th>Notation</th></tr></thead>
-    <tbody>
-      <tr><td>Vertical, |V⟩</td><td class="m">|0⟩</td></tr>
-      <tr><td>Horizontal, |H⟩</td><td class="m">|1⟩</td></tr>
-      <tr><td>45° diagonal</td><td class="m">|+⟩ = (|0⟩ + |1⟩)/√2</td></tr>
-    </tbody>
-  </table></div>
-  <p>Other real qubits: electron spin up/down, energy levels of a superconducting circuit, internal states of a trapped ion, defects ("NV centres") in diamond.</p>
-  <div class="ql"><b>Caveat: angles double.</b> 0° and 90° light are perpendicular, so as qubit states they are orthogonal: opposite poles of the Bloch sphere, 180° apart. A 45° filter is halfway in the lab but lands on the equator, 90° from each pole.</div>
-  <p class="why"><b>One line to remember:</b> a polariser is a measurement, and Malus's law (light passing = cos² of the angle between filters) is the Born rule. cos²(45°) = (1/√2)² = 1/2.</p>
-</article>
-
-<article class="qcard" id="superposition">
-  <div class="qhead"><span class="qn">From class, Week 2 · slides 6–8</span></div>
-  <h3>Bit vs qubit, and two pictures of superposition</h3>
-  <div class="grid2">
-    <div class="box"><b>Classical bit</b><p>Exactly two isolated states, 0 and 1. Operations are fixed maps {0,1} → {0,1}, such as NOT. Everything a classical computer does is sequences of these.</p></div>
-    <div class="box"><b>Qubit</b><p>A unit vector in ℂ²: |ψ⟩ = α|0⟩ + β|1⟩ with |α|² + |β|² = 1. Infinitely many states, but one measurement still returns exactly one bit.</p></div>
-  </div>
-  <ul>
-    <li><b>The spinning coin:</b> while it spins it is neither heads nor tails; landing forces one answer.</li>
-    <li><b>The compass needle:</b> it can point in any direction, not just north or south. Measuring asks "north or south?" and the needle's direction sets the odds.</li>
-  </ul>
-  <div class="warn">Superposition is <b>not</b> "being in two places at once". It is one definite, specific state, just not a classical one.</div>
-</article>
-
-<article class="qcard" id="born">
-  <div class="qhead"><span class="qn">From class, Week 2 · slides 22–24</span></div>
-  <h3>The Born rule and what measuring does</h3>
-  <div class="box">
+<section class="xt" id="born">
+  <h2>The Born rule and what measuring does</h2>
+<div class="box">
     <div class="steps"><span>For |ψ⟩ = α|0⟩ + β|1⟩:</span><span>P(0) = |α|²,   P(1) = |β|²</span></div>
     <p class="why">Read aloud: "the probability of outcome zero is mod alpha squared". Linked to the inner product: P(0) = |⟨0|ψ⟩|² = |α|².</p>
   </div>
@@ -530,10 +462,88 @@ print(np.vdot(plus, plus))             <span class="cm"># 1.0 -> normalised (vdo
       <span class="ok">1/4 + 3/4 = 1 ✓ a valid state</span>
     </div>
   </div></details>
-</article>
+</section>
 
-<section><p>Every number above is re-computed by <a href="../../reference/checks/week-02-lecture-check.py">week-02-lecture-check.py</a> (NumPy). Class reading: Mermin §1.1–1.3 (do this one first), Nielsen &amp; Chuang §1.2 and §2.1.1–2.1.4, and Wong ch. 3–4 (free online).</p></section>
-</div><!-- from-class:end -->
+<section class="xt" id="filters">
+  <h2>The three-filter puzzle</h2>
+<p>A polarising filter lets through light whose "wobble direction" lines up with it. Two filters at 0° and 90° (crossed) block all light. Now slide a third filter at 45° <b>between</b> them, and light gets through again. Adding a filter lets <i>more</i> light pass. How?</p>
+  <figure>
+    <svg viewBox="0 0 340 150" role="img" aria-label="Light passes a vertical filter, then a 45 degree filter, then a horizontal filter; one quarter of the light after the first filter comes out">
+      <line x1="10" y1="75" x2="330" y2="75" class="mutS" stroke-dasharray="4 4"/>
+      <rect x="60" y="25" width="16" height="100" rx="3" class="bgF reS" stroke-width="2"/><line x1="68" y1="35" x2="68" y2="115" class="reS" stroke-width="2"/>
+      <rect x="160" y="25" width="16" height="100" rx="3" class="bgF okS" stroke-width="2"/><line x1="160" y1="115" x2="176" y2="35" class="okS" stroke-width="2"/>
+      <rect x="260" y="25" width="16" height="100" rx="3" class="bgF imS" stroke-width="2"/><line x1="262" y1="75" x2="274" y2="75" class="imS" stroke-width="2"/>
+      <text x="52" y="142" class="reT">0° → |0⟩</text>
+      <text x="146" y="142" class="okT">45° → |+⟩</text>
+      <text x="246" y="142" class="imT">90° → |1⟩</text>
+      <text x="96" y="66" class="mut">× ½</text><text x="196" y="66" class="mut">× ½</text>
+      <text x="292" y="66" class="lab">¼</text>
+    </svg>
+    <figcaption><b>Each filter is a measurement in its own basis.</b> Half survive the middle filter, half of those survive the last: ½ × ½ = ¼ of the light that passed the first filter.</figcaption>
+  </figure>
+  <div class="steps">
+    <span>After the 0° filter the photon is |0⟩ (vertical).</span>
+    <span>45° filter measures in {|+⟩, |−⟩}. Pass chance = |⟨+|0⟩|²</span>
+    <span>  ⟨+|0⟩ = (1/√2)(1) + (1/√2)(0) = 1/√2   →   |1/√2|² = 1/2</span>
+    <span>A photon that passed is now |+⟩. The "vertical" record is gone.</span>
+    <span>90° filter: pass chance = |⟨1|+⟩|² = |1/√2|² = 1/2</span>
+    <span class="ok">Total: 1/2 × 1/2 = 1/4 = 25% ✓</span>
+    <span>Without the middle filter: |⟨1|0⟩|² = 0² = 0. Nothing passes.</span>
+  </div>
+  <p class="why">Send one photon at a time and each one passes or is absorbed at random. Only the <b>probability</b> is fixed: a counter of photons that make it through settles at ¼. Try re-deriving the 25% yourself with pen and paper before reading the steps.</p>
+</section>
+
+<section aria-labelledby="mist">
+  <h2 id="mist">Common mistakes</h2>
+  <ul class="mistakes">
+    <li><b>Forgetting to conjugate the bra.</b> With the example above, skipping it gives 9/25 + (4i/5)·(4i/5) = 9/25 + 16i²/25 = 9/25 − 16/25 = −7/25. A negative "length squared" is the giveaway that something went wrong.</li>
+    <li><b>Reading |0⟩ as the zero vector.</b> |0⟩ is the column (1, 0): a perfectly good arrow of length 1. The label "0" names the outcome, not the size.</li>
+    <li><b>Treating amplitudes as probabilities.</b> |+⟩ has amplitudes 0.7071 each, but the probabilities are 0.7071² = 0.5 each. Always square the size first.</li>
+      <li><b>"Superposition means it is 0 and 1 at the same time."</b> A superposition is one definite state. Measuring gives one answer, with odds set by the amplitudes.</li>
+    <li><b>"|+⟩ is just a fair coin."</b> It gives 50/50, but apply H and it becomes |0⟩ every time. A hidden coin would stay 50/50. The difference is phase (<a href="../01-complex-numbers/#phase">phase and interference</a>).</li>
+    <li><b>Expecting more filters to block more light.</b> A filter is a measurement, not a sieve. The middle 45° filter re-prepares the photon as |+⟩, which gives the last filter something to pass.</li>
+  </ul>
+</section>
+
+<section aria-labelledby="practice">
+  <h2 id="practice">Check question</h2>
+  <p><strong>Write <span class="m">|+⟩ = (|0⟩ + |1⟩)/√2</span> as a column vector and check it is normalised.</strong></p>
+  <details>
+    <summary>Show answer</summary>
+    <div class="steps">
+      <div>Step 1 · substitute the columns: |0⟩ = (1, 0), |1⟩ = (0, 1)</div>
+      <div>Step 2 · add them: (1, 0) + (0, 1) = (1 + 0, 0 + 1) = (1, 1)</div>
+      <div>Step 3 · divide each entry by √2: |+⟩ = (1/√2, 1/√2) ≈ (0.7071, 0.7071)</div>
+      <div>Step 4 · bra: entries are real, so ⟨+| = (1/√2, 1/√2) (nothing changes)</div>
+      <div>Step 5 · ⟨+|+⟩ = (1/√2)·(1/√2) + (1/√2)·(1/√2)</div>
+      <div>Step 6 · each product: (1·1)/(√2·√2) = 1/2</div>
+      <div>Step 7 · add: 1/2 + 1/2 = 2/2 = 1</div>
+      <div class="note">⟨+|+⟩ = 1, so |+⟩ is normalised <span class="ok">✓</span> Meaning: measuring |+⟩ gives 0 with probability 1/2 and 1 with probability 1/2.</div>
+    </div>
+  </details>
+</section>
+
+<section aria-labelledby="code">
+  <h2 id="code">Check it in NumPy</h2>
+<pre><code>import numpy as np
+plus = np.array([1, 1]) / np.sqrt(2)   <span class="cm"># |+> as a column</span>
+print(plus)                            <span class="cm"># [0.7071 0.7071]</span>
+print(np.vdot(plus, plus))             <span class="cm"># 1.0 -> normalised (vdot conjugates the first vector)</span></code></pre>
+  <p class="aside">You may see 0.9999999999999998 instead of 1.0. That is rounding inside the computer, not a mistake.</p>
+</section>
+
+<section aria-labelledby="deeper">
+  <h2 id="deeper">Go deeper</h2>
+  <ul class="links">
+    <li><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/quantum-foundations/concepts/08-qubits-and-dirac-notation/notebook.ipynb">Tutorial notebook (.ipynb, to run yourself)</a></li>
+    <li><a href="notebook.html">The same tutorial as a web page</a></li>
+    <li><a href="../../reference/reading-maths-symbols.html">Symbol dictionary: how to read maths aloud</a></li>
+      <li>Reading: Mermin, <i>Quantum Computer Science</i> §1.1–1.3 (start here); Nielsen &amp; Chuang §1.2 and §2.1.1–2.1.4; Wong, <i>Introduction to Classical and Quantum Computing</i> ch. 3–4 (free online).</li>
+    <li><a href="../../reference/checks/quantum-basics-check.py">quantum-basics-check.py</a>: NumPy re-check of the Born-rule table and the three-filter result.</li>
+  </ul>
+</section>
+
+
 <footer>
   <span>Study time: <strong>30 min</strong> · next concept: Gates as matrices</span>
   <a href="../../../">All concepts</a>

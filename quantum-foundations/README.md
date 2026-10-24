@@ -10,7 +10,7 @@ Material is organised by concept, in learning order. Each concept folder holds:
 
 | File | What it is |
 | --- | --- |
-| `index.html` | The illustrated page: symbols read aloud, back-to-basics, diagrams, a worked example, common mistakes, a practice question. Concepts taught in class also have a **"What class added"** section. |
+| `index.html` | The illustrated page: symbols read aloud, back-to-basics, diagrams, a worked example, common mistakes, a practice question. Each page reads top to bottom in learning order, from basics to the deeper ideas. |
 | `practice.html` | Worked solutions to the class quiz questions on this concept (concepts taught so far) |
 | `notebook.html` | The tutorial notebook as a web page, with all results and plots (built by `tools/build_tutorials.py`) |
 | `notebook.ipynb` | The same tutorial to run yourself: explanations, plots, exercises, hidden solutions, automatic checks |
@@ -25,27 +25,27 @@ Material is organised by concept, in learning order. Each concept folder holds:
 | 06 | Probability and expectation | | [page](concepts/06-probability/index.html) | | [tutorial](concepts/06-probability/notebook.html) | [notebook](concepts/06-probability/notebook.ipynb) |
 | 07 | AI/ML maths bridge | | [page](concepts/07-ml-maths-bridge/index.html) | | [tutorial](concepts/07-ml-maths-bridge/notebook.html) | [notebook](concepts/07-ml-maths-bridge/notebook.ipynb) |
 | 08 | Qubits and Dirac notation | Week 2 | [page](concepts/08-qubits-and-dirac-notation/index.html) | | [tutorial](concepts/08-qubits-and-dirac-notation/notebook.html) | [notebook](concepts/08-qubits-and-dirac-notation/notebook.ipynb) |
-| 09 | Gates as matrices | Week 2 | [page](concepts/10-gates/index.html) | [puzzles 1, 3](concepts/10-gates/index.html#puzzles) | [tutorial](concepts/10-gates/notebook.html) | [notebook](concepts/10-gates/notebook.ipynb) |
-| 10 | Two qubits and tensor products | Week 2 | [page](concepts/11-tensor-products/index.html) | | [tutorial](concepts/11-tensor-products/notebook.html) | [notebook](concepts/11-tensor-products/notebook.ipynb) |
-| 11 | Entanglement and your first Qiskit circuit | Week 2 | [page](concepts/12-entanglement-and-qiskit/index.html) | [puzzle 2](concepts/12-entanglement-and-qiskit/index.html#puzzle2) | [tutorial](concepts/12-entanglement-and-qiskit/notebook.html) | [notebook](concepts/12-entanglement-and-qiskit/notebook.ipynb) |
-| 12 | The Bloch sphere | Week 2 | [page](concepts/09-bloch-sphere/index.html) | | [tutorial](concepts/09-bloch-sphere/notebook.html) | [notebook](concepts/09-bloch-sphere/notebook.ipynb) |
-| 13 | Deutsch's algorithm | Week 2 | [page](concepts/13-deutsch-algorithm/index.html) | [sandbox](concepts/13-deutsch-algorithm/index.html#practice) | – | – |
+| 09 | The Bloch sphere | Week 2 | [page](concepts/09-bloch-sphere/index.html) | | [tutorial](concepts/09-bloch-sphere/notebook.html) | [notebook](concepts/09-bloch-sphere/notebook.ipynb) |
+| 10 | Gates as matrices | Week 2 | [page](concepts/10-gates/index.html) | [puzzles](concepts/10-gates/index.html#puzzles) | [tutorial](concepts/10-gates/notebook.html) | [notebook](concepts/10-gates/notebook.ipynb) |
+| 11 | Two qubits and tensor products | Week 2 | [page](concepts/11-tensor-products/index.html) | | [tutorial](concepts/11-tensor-products/notebook.html) | [notebook](concepts/11-tensor-products/notebook.ipynb) |
+| 12 | Entanglement and your first Qiskit circuit | Week 2 | [page](concepts/12-entanglement-and-qiskit/index.html) | [puzzle](concepts/12-entanglement-and-qiskit/index.html#puzzle2) | [tutorial](concepts/12-entanglement-and-qiskit/notebook.html) | [notebook](concepts/12-entanglement-and-qiskit/notebook.ipynb) |
+| 13 | Deutsch's algorithm | Week 2 | [page](concepts/13-deutsch-algorithm/index.html) | [mystery boxes](concepts/13-deutsch-algorithm/index.html#practice) | – | – |
 
-Concepts 01–07 are Module 1's maths. Concepts 08–12 started as picture-first previews; Week 2's lectures covered them, and each now has a "What class added" section. Concept 13 is the first quantum algorithm. New concepts get the next number as classes reach them.
+Concepts 01–07 are the maths. Concepts 08–12 are the quantum basics, in the order they build on each other, and 13 is the first quantum algorithm. New concepts get the next number as classes reach them.
 
 ## Reference
 
 | File | What it is |
 | --- | --- |
 | [reading-maths-symbols.html](reference/reading-maths-symbols.html) / [.ipynb](reference/reading-maths-symbols.ipynb) | Symbol dictionary with how to say each one aloud, plus a refresher on powers, roots, fractions, angles, sin/cos, Σ and slopes. Keep it open while you work. |
-| [checks/](reference/checks/) | NumPy scripts that verify the worked answers: `week-01-quiz-check.py` (20/20) and `week-02-lecture-check.py` (37/37, concepts 08–13) |
+| [checks/](reference/checks/) | NumPy scripts that verify the worked answers: `week-01-quiz-check.py` (quiz, 20/20), `foundations-check.py` (concepts 01–04, 24/24) and `quantum-basics-check.py` (concepts 08–13, 41/41) |
 | [prep-plan.md](reference/prep-plan.md) | The original 11-day pre-course plan (historical) |
 
 ## Each week
 
 1. Drop the class recordings and slides into `class-material/week-NN/`. That folder is never committed: the repo is public.
 2. Double-click `transcribe-new-recordings.bat` in the repo root ([how it works](../tools/class-pipeline/)).
-3. Ask Claude to "process week NN class material". Claude adds a "What class added" section to each concept taught, new concept folders where needed, and practice pages for the quiz. After any notebook change, `python tools/build_tutorials.py` rebuilds the tutorial pages.
+3. Ask Claude to "process week NN class material". Claude works the new material into the concept pages where it belongs in learning order (no separate class sections), adds new concept folders where needed, practice pages for quizzes, and checks every number in `reference/checks/`. After any notebook change, `python tools/build_tutorials.py` rebuilds the tutorial pages.
 
 ## How to work through a notebook
 

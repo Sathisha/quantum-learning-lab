@@ -92,13 +92,102 @@ footer{border-top:1px solid var(--line);padding-top:16px;font-size:.92rem;color:
 .tally{font-family:var(--mono);font-size:.9rem;color:var(--muted);font-variant-numeric:tabular-nums}
 </style>
 
+<style id="xt-style">
+.xt{
+  --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4; --grid:#e6ebf2;
+  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --okbg:#e5f4ec; --soft:#f5f7fb; --code:#f2f4f8;
+  --f-math:ui-monospace,"IBM Plex Mono","JetBrains Mono",Menlo,Consolas,monospace;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .xt{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}}
+:root[data-theme="dark"] .xt{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}
+.xt{color:inherit;font:inherit;display:flex;flex-direction:column;gap:12px;min-width:0;text-align:left}
+.xt h3{margin:10px 0 0}
+.xt section,.xt article{display:flex;flex-direction:column;gap:12px;min-width:0}
+.xt p{margin:0;max-width:65ch}
+.xt .eyebrow{font:600 .78rem/1 var(--f-math);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.xt .m{font-family:var(--f-math);font-size:.92em;white-space:nowrap}
+.xt .re{color:var(--re)} .im{color:var(--im)}
+.xt .bar{text-decoration:overline;text-decoration-thickness:1.5px}
+.xt .box{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.xt .scroll{overflow-x:auto}
+.xt table{border-collapse:collapse;width:100%;font-size:.95rem}
+.xt th,.xt td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+.xt th{font:600 .75rem var(--f-math);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.xt .sym td:first-child{font-family:var(--f-math);font-weight:600;white-space:nowrap}
+.xt .key{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:8px}
+.xt .key a{display:flex;justify-content:space-between;align-items:baseline;gap:6px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:7px 10px;font-family:var(--f-math);font-variant-numeric:tabular-nums}
+.xt .key a b{color:var(--ok)}
+.xt .key a span{color:var(--muted);font-size:.85rem}
+.xt .qcard{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
+.xt .qhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.xt .qhead .qn{font:700 .85rem var(--f-math);color:var(--muted)}
+.xt .qtext{font-size:1.05rem}
+.xt .opts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:6px}
+.xt .opts li{border:1px solid var(--rule);border-radius:8px;padding:6px 10px;font-family:var(--f-math);font-size:.92rem;min-width:0;overflow-wrap:anywhere}
+.xt .opts li .l{color:var(--muted);margin-right:6px}
+.xt .show .opts li.ok,.xt .revealed .opts li.ok{border-color:var(--ok);background:var(--okbg);color:var(--ink)}
+.xt .show .opts li.ok .l,.xt .revealed .opts li.ok .l{color:var(--ok);font-weight:700}
+.xt .badge{font:700 .82rem var(--f-math);color:var(--ok);background:var(--okbg);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.xt body:not(.show) .qcard:not(.revealed) .badge{visibility:hidden}
+.xt .steps{font-family:var(--f-math);font-size:.93rem;background:var(--code);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.xt .steps span{white-space:pre-wrap}
+.xt .steps .note{color:var(--muted);font-family:var(--f-body);font-size:.88rem;white-space:normal}
+.xt .steps .ok{color:var(--ok);font-weight:600}
+.xt figure{margin:0;background:var(--soft);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.xt figure svg{width:100%;height:auto;max-width:360px;align-self:center;display:block}
+.xt figcaption{font-size:.9rem;color:var(--muted)}
+.xt figcaption b{color:var(--ink)}
+.xt svg text{font-family:var(--f-math);font-size:12px;fill:var(--ink)}
+.xt svg .lab{font-size:13px;font-weight:600}
+.xt svg .mut{fill:var(--muted)}
+.xt svg .grid{stroke:var(--grid);stroke-width:1}
+.xt svg .axis{stroke:var(--muted);stroke-width:1.3}
+.xt svg .reS{stroke:var(--re)} svg .imS{stroke:var(--im)} svg .inkS{stroke:var(--ink)} svg .okS{stroke:var(--ok)} svg .mutS{stroke:var(--muted)}
+.xt svg .reF{fill:var(--re)} svg .imF{fill:var(--im)} svg .inkF{fill:var(--ink)} svg .okF{fill:var(--ok)} svg .bgF{fill:var(--paper)} svg .none{fill:none}
+.xt svg .okT{fill:var(--ok)} svg .reT{fill:var(--re)} svg .imT{fill:var(--im)}
+.xt .why{font-size:.95rem;color:var(--muted)}
+.xt .why b{color:var(--ink)}
+.xt .ql{background:var(--soft);border-left:3px solid var(--im);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.xt .ql b{color:var(--im)}
+.xt .warn{background:var(--soft);border-left:3px solid var(--re);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.xt details.sol{border-top:1px dashed var(--rule);padding-top:10px}
+.xt details.sol>summary{cursor:pointer;font-weight:700;color:var(--re);list-style-position:inside}
+.xt details.sol[open]>summary{margin-bottom:10px}
+.xt details.sol>div{display:flex;flex-direction:column;gap:12px}
+.xt .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.xt button{font:600 .9rem var(--f-body);color:var(--re);background:var(--paper);border:1px solid var(--re);border-radius:8px;padding:8px 14px;cursor:pointer}
+.xt button:hover{background:var(--soft)}
+.xt button:focus-visible,.xt summary:focus-visible,.xt a:focus-visible{outline:2px solid var(--re);outline-offset:3px}
+.xt ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;max-width:65ch}
+.xt pre.code{margin:0;background:var(--code);border-radius:8px;padding:14px 16px;overflow-x:auto;font:.85rem/1.55 var(--f-math)}
+.xt a{color:var(--re)}
+.xt footer{border-top:1px solid var(--rule);padding-top:14px;color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+@media (prefers-reduced-motion:reduce){.xt *{transition:none!important}}
+.xt .tag{font:600 .72rem var(--f-math);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.xt .tag.new{color:var(--ok);background:var(--okbg)} .tag.have{color:var(--re);background:var(--soft)} .tag.next{color:var(--im);background:var(--soft)}
+.xt .cov td:nth-child(2){white-space:nowrap}
+.xt .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:12px}
+.xt .grid2>div{min-width:0}
+
+.xt .formula{text-align:center}
+.xt>p,.xt>ul{margin:0}
+.xt .fml{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:18px 12px;text-align:center;font:600 clamp(1.05rem,4.4vw,1.5rem)/1.4 var(--f-math);overflow-x:auto}
+.xt .say{color:var(--muted);font-size:.95rem}
+.xt .say b{color:var(--ink)}
+.xt thead{display:table-header-group}.xt tbody tr{display:table-row;padding:0}.xt tbody td{display:table-cell;padding:7px 10px;border-bottom:1px solid var(--rule);color:inherit}
+.xt .steps{font-size:.86rem}
+@media (max-width:560px){.xt table.symt thead{display:none}.xt table.symt tbody tr{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;padding:9px 6px;border-bottom:1px solid var(--rule)}.xt table.symt tbody td{display:block;border:0;padding:0}.xt table.symt td:nth-child(3){grid-column:1/-1;color:var(--muted)}}
+.xt .steps .note{background:none;border:0;padding:0;margin:0;border-radius:0;font-size:.85rem}
+</style>
 <div class="wrap">
 
 <header>
-  <div class="eyebrow">Concept 12</div>
+  <div class="eyebrow">Concept 12 · Quantum basics</div>
   <h1>Entanglement and your first Qiskit circuit</h1>
   <p class="lede">Two qubits whose results always agree, built from one H gate and one CNOT, then run on a simulator in about a dozen lines of Python.</p>
-  <p class="lede"><a href="#from-class">What class added in Week 2 ↓</a></p>
 </header>
 
 <section>
@@ -122,7 +211,9 @@ footer{border-top:1px solid var(--line);padding-top:16px;font-size:.92rem;color:
         <tr><td class="sym">a, b, c, d</td><td class="say">"a, b, c, d"</td><td>The four amplitudes of a two-qubit state, for 00, 01, 10, 11 in that order.</td></tr>
         <tr><td class="sym">≈, ≠</td><td class="say">"about", "is not equal to"</td><td>Roughly equal; definitely different.</td></tr>
         <tr><td class="sym">→</td><td class="say">"becomes"</td><td>What a state turns into after a gate.</td></tr>
-      </tbody>
+              <tr><td class="sym">CNOT</td><td class="say">"see-not" (controlled NOT)</td><td>Two-qubit gate: flip the target if the control is 1.</td></tr>
+        <tr><td class="sym">|Ψ⁺⟩</td><td class="say">"ket psi plus"</td><td>The Bell state (|01⟩ + |10⟩)/√2.</td></tr>
+</tbody>
     </table>
   </div>
 </section>
@@ -148,6 +239,25 @@ other corners:     6 × 1 = 6
 <section>
   <h2>The idea</h2>
   <p>Some two-qubit states are just "qubit A's state ⊗ qubit B's state": their amplitude grid is a times table, and each qubit has its own story. These are <b>product states</b>. Other states cannot be split that way at all: the grid fails the corner test, so the only honest description is of the pair together. These are <b>entangled</b>. The Bell state is the simplest one: each qubit alone looks like a fair coin, yet the two always land the same way.</p>
+</section>
+
+<section class="xt" id="cnot">
+  <h2>CNOT: "if the control is 1, flip the target"</h2>
+<div class="grid2">
+    <div class="scroll"><table>
+      <thead><tr><th>In: control, target</th><th>Out</th></tr></thead>
+      <tbody>
+        <tr><td class="m">0 0</td><td class="m">0 0</td></tr>
+        <tr><td class="m">0 1</td><td class="m">0 1</td></tr>
+        <tr><td class="m">1 0</td><td class="m">1 1</td></tr>
+        <tr><td class="m">1 1</td><td class="m">1 0</td></tr>
+      </tbody>
+    </table></div>
+    <div><p>Kets here are written |control target⟩. The target flips only in the rows where the control is 1. Because CNOT is linear, on a superposition it acts on every basis state at once:</p>
+    <div class="steps"><span>(|00⟩ + |10⟩)/√2</span><span>→ (|00⟩ + |11⟩)/√2</span><span class="note">Only the |10⟩ part had control = 1, so only it changed.</span></div></div>
+  </div>
+
+  <p class="why">As a matrix (basis order 00, 01, 10, 11): CNOT = [1 0 0 0; 0 1 0 0; 0 0 0 1; 0 0 1 0]. The bottom-right 2 × 2 block is X.</p>
 </section>
 
 <section>
@@ -316,12 +426,31 @@ P(11) = (1/√2)² = 1/2</div>
   </figure>
 </section>
 
+<section class="xt" id="spooky">
+  <h2>"Spooky" correlations, and what they are not</h2>
+<ul>
+    <li>Measure either qubit: 0 or 1, each with probability ½.</li>
+    <li>Get 0, and the other qubit is now |0⟩. Get 1, and it is |1⟩. Perfectly correlated, however far apart they are.</li>
+  </ul>
+  <div class="warn"><b>Not telepathy.</b> The correlations are real but cannot send a message faster than light: each side on its own sees a fair random coin. This is the "no-signalling" rule.</div>
+  <div class="steps">
+    <span class="note">Why each side alone sees a fair coin: the chance that the first qubit reads 0 adds up both cases of the second qubit.</span>
+    <span>P(first = 0) = |α₀₀|² + |α₀₁|²</span>
+    <span>= |1/√2|² + 0 = 1/2</span>
+    <span class="note">Nothing done to the second qubit changes this number, so no message gets through.</span>
+  </div>
+  <p class="why"><b>History:</b> Einstein called it "spooky action at a distance". Bell (1964) showed these correlations are stronger than any classical explanation allows. Experiments by Aspect, Clauser and Zeilinger confirmed it (Nobel Prize in Physics 2022).</p>
+</section>
+
+
 <section>
   <h2>Common mistakes</h2>
   <ul class="mist">
     <li><b>"50/50 results mean entangled."</b> Not by itself. |+⟩⊗|+⟩ gives all four outcomes at 1/4 each and is a plain product state. Entanglement shows up in how the two results <i>agree</i>, not in either result alone.</li>
     <li><b>Expecting exactly 500 and 500.</b> Counts come from random shots, so a run like 488 / 512 is normal. With 1000 shots the typical wobble is about 16 either side of 500.</li>
     <li><b>Mixing up Qiskit's bit order.</b> Qiskit prints labels with q0 on the <i>right</i>: '01' means q1 = 0, q0 = 1. For the Bell state it makes no difference (00 and 11 read the same both ways), but it will matter on other circuits.</li>
+      <li><b>"Entanglement lets you send a message instantly."</b> Each qubit on its own gives a fair 50/50, whatever happens to the other one. The correlation only shows up when you compare both records afterwards.</li>
+    <li><b>Reading Qiskit counts left to right.</b> "01" means qubit 1 = 0 and qubit 0 = 1. The rightmost character is qubit 0.</li>
   </ul>
 </section>
 
@@ -345,6 +474,25 @@ P(11) = (1/√2)² = 1/2</div>
   </details>
 </section>
 
+<section class="xt" id="puzzle2">
+  <h2>Puzzle: make (|01⟩ + |10⟩)/√2</h2>
+<p>Change the Bell circuit to produce (|01⟩ + |10⟩)/√2 instead of (|00⟩ + |11⟩)/√2. Hint: one extra gate, on the target wire.</p>
+  <details class="sol"><summary>Show solution</summary><div>
+    <div class="steps">
+      <span>Add an X on the target wire, before or after the CNOT.</span>
+      <span class="note">X before:</span>
+      <span>|00⟩ —X on target→ |01⟩</span>
+      <span>—H on control→ (|01⟩ + |11⟩)/√2</span>
+      <span>—CNOT→ (|01⟩ + |10⟩)/√2</span>
+      <span class="note">(CNOT turned 11 into 10.) X after:</span>
+      <span>(|00⟩ + |11⟩)/√2 —X on target→ (|01⟩ + |10⟩)/√2</span>
+      <span class="ok">Both give |Ψ⁺⟩ = (|01⟩ + |10⟩)/√2 ✓ ("ket psi plus")</span>
+    </div>
+    <p class="why">Now the qubits always <i>disagree</i> when measured: still perfectly correlated, just anti-correlated.</p>
+  </div></details>
+</section>
+
+
 <section>
   <h2>Your first Qiskit circuit</h2>
   <p>In a terminal, install once: <span class="m">pip install qiskit qiskit-aer</span>. Then run this script. Tested today with Qiskit 2.5 and Qiskit Aer 0.17.</p>
@@ -364,169 +512,28 @@ print(counts)                    # e.g. {'11': 512, '00': 488}
 assert set(counts) <= {"00", "11"}   # no 01 or 10</pre>
 </section>
 
+<section class="xt" id="qubit-order">
+  <h2>Qubit order in Qiskit and Quirk</h2>
+<div class="ql"><b>Little-endian.</b> Qiskit prints bit strings right to left: in the count "01", qubit 0 is the right-hand 1 and qubit 1 is the left-hand 0. <a href="https://algassert.com/quirk">Quirk</a>, a drag-and-drop simulator in the browser, draws qubit 0 as the top wire. For (|00⟩ + |11⟩)/√2 it doesn't matter, since 00 and 11 read the same both ways, but for most other states it does.</div>
+  <div class="steps">
+    <span>qc.x(0) then measure both, starting from |00⟩</span>
+    <span>Qiskit count: "01"</span>
+    <span class="note">q1 = 0 is on the left, q0 = 1 on the right.</span>
+  </div>
+</section>
+
+
 <section>
   <h2>Go deeper</h2>
   <ul class="links">
-    <li><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/quantum-foundations/concepts/12-entanglement-and-qiskit/notebook.ipynb">Tutorial notebook: 10 Entanglement and your first Qiskit circuit</a></li>
+    <li><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/quantum-foundations/concepts/12-entanglement-and-qiskit/notebook.ipynb">Tutorial notebook (.ipynb, to run yourself)</a></li>
     <li><a href="notebook.html">The same tutorial as a web page</a></li>
     <li><a href="../../reference/reading-maths-symbols.html">Symbol dictionary: reading maths symbols</a></li>
+      <li><a href="../../reference/checks/quantum-basics-check.py">quantum-basics-check.py</a>: NumPy check of the CNOT table, the Bell state, the entanglement test and the puzzle.</li>
   </ul>
 </section>
 
-<!-- from-class:start --><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&family=Spectral:wght@500;700&display=swap"><style>
-.fc{
-  --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4; --grid:#e6ebf2;
-  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --okbg:#e5f4ec; --soft:#f5f7fb; --code:#f2f4f8;
-  --f-display:"Spectral",Georgia,serif; --f-body:"Atkinson Hyperlegible",system-ui,sans-serif; --f-math:"JetBrains Mono",ui-monospace,Menlo,monospace;}
-@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .fc{
-  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
-  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}}
-:root[data-theme="dark"] .fc{
-  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
-  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}
-.fc{color:var(--ink);font:17px/1.6 var(--f-body);display:flex;flex-direction:column;gap:28px;border-top:2px solid var(--rule);padding-top:22px;margin-top:8px;text-align:left}
-.fc h1{font-size:clamp(1.8rem,6vw,2.3rem)}
-.fc h2{font-size:1.5rem;padding-bottom:6px;border-bottom:1px solid var(--rule)}
-.fc h3{font-size:1.2rem}
-.fc section,.fc article{display:flex;flex-direction:column;gap:12px;min-width:0}
-.fc p{margin:0;max-width:65ch}
-.fc .eyebrow{font:600 .78rem/1 var(--f-math);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.fc .m{font-family:var(--f-math);font-size:.92em;white-space:nowrap}
-.fc .re{color:var(--re)} .im{color:var(--im)}
-.fc .bar{text-decoration:overline;text-decoration-thickness:1.5px}
-.fc .box{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
-.fc .scroll{overflow-x:auto}
-.fc table{border-collapse:collapse;width:100%;font-size:.95rem}
-.fc th,.fc td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
-.fc th{font:600 .75rem var(--f-math);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
-.fc .sym td:first-child{font-family:var(--f-math);font-weight:600;white-space:nowrap}
-.fc .key{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:8px}
-.fc .key a{display:flex;justify-content:space-between;align-items:baseline;gap:6px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:7px 10px;font-family:var(--f-math);font-variant-numeric:tabular-nums}
-.fc .key a b{color:var(--ok)}
-.fc .key a span{color:var(--muted);font-size:.85rem}
-.fc .qcard{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
-.fc .qhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
-.fc .qhead .qn{font:700 .85rem var(--f-math);color:var(--muted)}
-.fc .qtext{font-size:1.05rem}
-.fc .opts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:6px}
-.fc .opts li{border:1px solid var(--rule);border-radius:8px;padding:6px 10px;font-family:var(--f-math);font-size:.92rem;min-width:0;overflow-wrap:anywhere}
-.fc .opts li .l{color:var(--muted);margin-right:6px}
-.fc .show .opts li.ok,.fc .revealed .opts li.ok{border-color:var(--ok);background:var(--okbg);color:var(--ink)}
-.fc .show .opts li.ok .l,.fc .revealed .opts li.ok .l{color:var(--ok);font-weight:700}
-.fc .badge{font:700 .82rem var(--f-math);color:var(--ok);background:var(--okbg);border-radius:999px;padding:3px 10px;white-space:nowrap}
-.fc body:not(.show) .qcard:not(.revealed) .badge{visibility:hidden}
-.fc .steps{font-family:var(--f-math);font-size:.93rem;background:var(--code);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
-.fc .steps span{white-space:pre-wrap}
-.fc .steps .note{color:var(--muted);font-family:var(--f-body);font-size:.88rem;white-space:normal}
-.fc .steps .ok{color:var(--ok);font-weight:600}
-.fc figure{margin:0;background:var(--soft);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
-.fc figure svg{width:100%;height:auto;max-width:360px;align-self:center;display:block}
-.fc figcaption{font-size:.9rem;color:var(--muted)}
-.fc figcaption b{color:var(--ink)}
-.fc svg text{font-family:var(--f-math);font-size:12px;fill:var(--ink)}
-.fc svg .lab{font-size:13px;font-weight:600}
-.fc svg .mut{fill:var(--muted)}
-.fc svg .grid{stroke:var(--grid);stroke-width:1}
-.fc svg .axis{stroke:var(--muted);stroke-width:1.3}
-.fc svg .reS{stroke:var(--re)} svg .imS{stroke:var(--im)} svg .inkS{stroke:var(--ink)} svg .okS{stroke:var(--ok)} svg .mutS{stroke:var(--muted)}
-.fc svg .reF{fill:var(--re)} svg .imF{fill:var(--im)} svg .inkF{fill:var(--ink)} svg .okF{fill:var(--ok)} svg .bgF{fill:var(--paper)} svg .none{fill:none}
-.fc svg .okT{fill:var(--ok)} svg .reT{fill:var(--re)} svg .imT{fill:var(--im)}
-.fc .why{font-size:.95rem;color:var(--muted)}
-.fc .why b{color:var(--ink)}
-.fc .ql{background:var(--soft);border-left:3px solid var(--im);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
-.fc .ql b{color:var(--im)}
-.fc .warn{background:var(--soft);border-left:3px solid var(--re);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
-.fc details.sol{border-top:1px dashed var(--rule);padding-top:10px}
-.fc details.sol>summary{cursor:pointer;font-weight:700;color:var(--re);list-style-position:inside}
-.fc details.sol[open]>summary{margin-bottom:10px}
-.fc details.sol>div{display:flex;flex-direction:column;gap:12px}
-.fc .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
-.fc button{font:600 .9rem var(--f-body);color:var(--re);background:var(--paper);border:1px solid var(--re);border-radius:8px;padding:8px 14px;cursor:pointer}
-.fc button:hover{background:var(--soft)}
-.fc button:focus-visible,.fc summary:focus-visible,.fc a:focus-visible{outline:2px solid var(--re);outline-offset:3px}
-.fc ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;max-width:65ch}
-.fc pre.code{margin:0;background:var(--code);border-radius:8px;padding:14px 16px;overflow-x:auto;font:.85rem/1.55 var(--f-math)}
-.fc a{color:var(--re)}
-.fc footer{border-top:1px solid var(--rule);padding-top:14px;color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
-@media (prefers-reduced-motion:reduce){.fc *{transition:none!important}}
-.fc .tag{font:600 .72rem var(--f-math);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
-.fc .tag.new{color:var(--ok);background:var(--okbg)} .tag.have{color:var(--re);background:var(--soft)} .tag.next{color:var(--im);background:var(--soft)}
-.fc .cov td:nth-child(2){white-space:nowrap}
-.fc .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:12px}
-.fc .grid2>div{min-width:0}
-</style><div class="fc" id="from-class"><section><span class="eyebrow">From class · Week 2 · Sat 24 Oct 2026 · morning</span><h2>What class added</h2><p>Class built the Bell pair exactly as this page does (H, then CNOT), watched it in the Quirk simulator, then showed the same circuit in Qiskit. New here: the CNOT truth table in class notation, what the correlations do and don't mean, the history, and take-home puzzle 2.</p></section>
 
-<article class="qcard" id="cnot">
-  <div class="qhead"><span class="qn">From class, Week 2 · slide 32</span></div>
-  <h3>CNOT: "if the control is 1, flip the target"</h3>
-  <div class="grid2">
-    <div class="scroll"><table>
-      <thead><tr><th>In q1 q0</th><th>Out q1 q0</th></tr></thead>
-      <tbody>
-        <tr><td class="m">0 0</td><td class="m">0 0</td></tr>
-        <tr><td class="m">0 1</td><td class="m">0 1</td></tr>
-        <tr><td class="m">1 0</td><td class="m">1 1</td></tr>
-        <tr><td class="m">1 1</td><td class="m">1 0</td></tr>
-      </tbody>
-    </table></div>
-    <div><p>q1 is the <b>control</b>, q0 the <b>target</b>. Because CNOT is linear, on a superposition it acts on every basis state at once:</p>
-    <p class="m">(|00⟩ + |10⟩)/√2  →  (|00⟩ + |11⟩)/√2</p></div>
-  </div>
-</article>
-
-<article class="qcard" id="bell-build">
-  <div class="qhead"><span class="qn">From class, Week 2 · slide 33</span></div>
-  <h3>Building the Bell pair, step by step</h3>
-  <div class="steps">
-    <span>Start   |00⟩ = |0⟩ ⊗ |0⟩</span>
-    <span>Step 1  H on the control:  (H ⊗ I)|00⟩ = (|0⟩+|1⟩)/√2 ⊗ |0⟩ = (|00⟩ + |10⟩)/√2</span>
-    <span>Step 2  CNOT flips the target in the |10⟩ part only:</span>
-    <span>        (|00⟩ + |10⟩)/√2  →  (|00⟩ + |11⟩)/√2</span>
-    <span class="ok">Result |Φ⁺⟩ = (|00⟩ + |11⟩)/√2   ("ket phi plus")</span>
-  </div>
-  <p class="why">No choice of single-qubit |a⟩ and |b⟩ gives |a⟩ ⊗ |b⟩ = |Φ⁺⟩: it is entangled. (The slides write the symbol as β⁺ in one place and Φ⁺ in another; it is the same state.)</p>
-</article>
-
-<article class="qcard" id="spooky">
-  <div class="qhead"><span class="qn">From class, Week 2 · slide 34</span></div>
-  <h3>"Spooky" correlations, and what they are not</h3>
-  <ul>
-    <li>Measure either qubit: 0 or 1, each with probability ½.</li>
-    <li>Get 0, and the other qubit is now |0⟩. Get 1, and it is |1⟩. Perfectly correlated, however far apart they are.</li>
-  </ul>
-  <div class="warn"><b>Not telepathy.</b> The correlations are real but cannot send a message faster than light: each side on its own sees a fair random coin. The proof comes in the fourth lecture.</div>
-  <p class="why"><b>History:</b> Einstein called it "spooky action at a distance". Bell (1964) showed these correlations are stronger than any classical explanation allows. Aspect's experiments confirmed it (Nobel Prize 2022).</p>
-</article>
-
-<article class="qcard" id="quirk-qiskit">
-  <div class="qhead"><span class="qn">From class, Week 2 · slide 35</span></div>
-  <h3>From Quirk to Qiskit</h3>
-  <pre class="code">from qiskit import QuantumCircuit
-qc = QuantumCircuit(2)
-qc.h(0)       # H on qubit 0 (the control)
-qc.cx(0, 1)   # CNOT: control 0, target 1</pre>
-  <p>Same circuit as the one you drag together in <a href="https://algassert.com/quirk">Quirk</a>. Both produce |Φ⁺⟩ = (|00⟩ + |11⟩)/√2. You will write Qiskit in every lab and the capstone.</p>
-  <div class="ql"><b>Qubit order.</b> Qiskit prints bit strings right to left ("little-endian"): in "01", qubit 0 is the right-hand 1. Quirk draws qubit 0 as the top wire. For |Φ⁺⟩ it doesn't matter (00 and 11 read the same both ways), but for most other states it does.</div>
-</article>
-
-<article class="qcard" id="puzzle2">
-  <div class="qhead"><span class="qn">From class, Week 2 · slide 36 · take-home puzzle 2</span></div>
-  <h3>Make (|01⟩ + |10⟩)/√2 instead</h3>
-  <p>Hint from class: one extra gate, on the bottom (target) wire.</p>
-  <details class="sol"><summary>Show solution</summary><div>
-    <div class="steps">
-      <span>Add an X on the target wire, before or after the CNOT.</span>
-      <span>Before:  |00⟩ —X on target→ |01⟩ —H on control→ (|01⟩ + |11⟩)/√2</span>
-      <span>         —CNOT→ (|01⟩ + |10⟩)/√2      (11 → 10)</span>
-      <span>After:   (|00⟩ + |11⟩)/√2 —X on target→ (|01⟩ + |10⟩)/√2</span>
-      <span class="ok">Both give |Ψ⁺⟩ = (|01⟩ + |10⟩)/√2 ✓ ("ket psi plus")</span>
-    </div>
-    <p class="why">Now the qubits always <i>disagree</i> when measured: still perfectly correlated, just anti-correlated.</p>
-  </div></details>
-</article>
-
-<section><p>All of the above is verified in <a href="../../reference/checks/week-02-lecture-check.py">week-02-lecture-check.py</a>. The next idea that uses CNOT, phase kickback, is in <a href="../13-deutsch-algorithm/">Deutsch's algorithm</a>.</p></section>
-</div><!-- from-class:end -->
 <footer>
   <span>Study time: 30 min</span>
   <a href="../../../">All concepts</a>
