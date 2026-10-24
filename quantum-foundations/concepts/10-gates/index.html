@@ -9,7 +9,7 @@
 .cnav a:focus-visible{outline:2px solid var(--cn-a);outline-offset:2px}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}}
 :root[data-theme="dark"] .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}
-</style><nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 09 of 13</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../08-qubits-and-dirac-notation/">← Qubits and Dirac notation</a> · <a href="../10-tensor-products/">Two qubits and tensor products →</a></div></nav>
+</style><nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 10 of 13</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../09-bloch-sphere/">← The Bloch sphere</a> · <a href="../11-tensor-products/">Two qubits and tensor products →</a></div></nav>
 <title>Gates as matrices</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
@@ -107,7 +107,7 @@ footer{border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font
 
 <main>
 <header>
-  <div class="eyebrow">Concept 09 · <b>Intro</b></div>
+  <div class="eyebrow">Concept 10</div>
   <h1>Gates as matrices</h1>
   <p>A quantum gate is a 2×2 matrix. Running the gate means multiplying it by the qubit's column vector, the same row-times-column move from the matrices concept.</p>
   <p class="lede"><a href="#from-class">What class added in Week 2 ↓</a></p>
@@ -345,7 +345,7 @@ print(np.allclose(H.conj().T @ H, np.eye(2)))    # True: H is unitary</pre>
 <section>
   <h2>Go deeper</h2>
   <ul class="links">
-    <li><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/quantum-foundations/concepts/09-gates/notebook.ipynb">Tutorial notebook: 08 Gates as matrices</a></li>
+    <li><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/quantum-foundations/concepts/10-gates/notebook.ipynb">Tutorial notebook: 08 Gates as matrices</a></li>
     <li><a href="notebook.html">The same tutorial as a web page</a></li>
     <li><a href="../../reference/reading-maths-symbols.html">Symbol dictionary: how to read maths symbols</a></li>
   </ul>
@@ -432,7 +432,7 @@ print(np.allclose(H.conj().T @ H, np.eye(2)))    # True: H is unitary</pre>
 .fc .cov td:nth-child(2){white-space:nowrap}
 .fc .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:12px}
 .fc .grid2>div{min-width:0}
-</style><div class="fc" id="from-class"><section><span class="eyebrow">From class · Week 2 · Sat 24 Oct 2026 · morning</span><h2>What class added</h2><p>Class used gates <i>visually</i>: each of X, Z and H is a half-turn of the Bloch sphere about some axis. Linear maps as matrices are formalised in the third lecture (Sat 31 Oct). Below: the three rules a gate must obey, the rotation picture with full input/output tables, the HZH poll, and two of the three take-home puzzles (puzzle 2 is on <a href="../11-entanglement-and-qiskit/#from-class">entanglement</a>).</p></section>
+</style><div class="fc" id="from-class"><section><span class="eyebrow">From class · Week 2 · Sat 24 Oct 2026 · morning</span><h2>What class added</h2><p>Class used gates <i>visually</i>: each of X, Z and H is a half-turn of the Bloch sphere about some axis. Linear maps as matrices are formalised in the third lecture (Sat 31 Oct). Below: the three rules a gate must obey, the rotation picture with full input/output tables, the HZH poll, and two of the three take-home puzzles (puzzle 2 is on <a href="../12-entanglement-and-qiskit/#from-class">entanglement</a>).</p></section>
 
 <article class="qcard" id="gate-rules">
   <div class="qhead"><span class="qn">From class, Week 2 · slide 15</span></div>
@@ -589,4 +589,4 @@ print(np.allclose(H.conj().T @ H, np.eye(2)))    # True: H is unitary</pre>
 })();
 </script>
 
-<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 09 of 13</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../08-qubits-and-dirac-notation/">← Qubits and Dirac notation</a> · <a href="../10-tensor-products/">Two qubits and tensor products →</a></div></nav></body></html>
+<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 10 of 13</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../09-bloch-sphere/">← The Bloch sphere</a> · <a href="../11-tensor-products/">Two qubits and tensor products →</a></div></nav></body></html>
