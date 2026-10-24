@@ -1,0 +1,402 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body><style>
+.cnav{--cn-ink:#1b2430;--cn-mut:#566275;--cn-bg:#f5f7fb;--cn-rule:#d3dae4;--cn-a:#1d5bbd;
+ display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 18px;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+ color:var(--cn-mut);background:var(--cn-bg);border-bottom:1px solid var(--cn-rule);
+ padding-block:9px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.cnav:not(.bottom){margin-bottom:22px}
+.cnav.bottom{border-bottom:0;border-top:1px solid var(--cn-rule);margin-top:32px}
+.cnav a{color:var(--cn-a);text-decoration:none}.cnav a:hover{text-decoration:underline}
+.cnav a:focus-visible{outline:2px solid var(--cn-a);outline-offset:2px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}}
+:root[data-theme="dark"] .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}
+</style><nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 12 of 12</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../11-entanglement-and-qiskit/">← Entanglement and your first Qiskit circuit</a></div></nav>
+<title>The Bloch sphere</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column (~68ch); wide figures scroll in their own frame. θ = blue, φ = amber, state arrow = teal, throughout. */
+:root{
+  --bg:#f5f7f8; --surface:#ffffff; --fg:#17212b; --muted:#566573; --line:#d5dde3;
+  --accent:#0f6b72; --th:#2459b8; --ph:#b86a12; --thsoft:#e3ecfb; --phsoft:#fbeedd; --code:#eef2f4; --ball:#e9f1f3;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Literata", Georgia, "Times New Roman", serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10161c; --surface:#18212a; --fg:#e4eaef; --muted:#9aa8b4; --line:#2c3a46;
+  --accent:#4fc1c8; --th:#7fa8f5; --ph:#f0aa5a; --thsoft:#1d2c48; --phsoft:#3a2a16; --code:#1d2731; --ball:#15232b; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10161c; --surface:#18212a; --fg:#e4eaef; --muted:#9aa8b4; --line:#2c3a46;
+  --accent:#4fc1c8; --th:#7fa8f5; --ph:#f0aa5a; --thsoft:#1d2c48; --phsoft:#3a2a16; --code:#1d2731; --ball:#15232b; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.65}
+.wrap{max-width:46rem;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 48px;display:flex;flex-direction:column;gap:34px}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:2.3rem}
+h2{font-size:1.4rem;margin-bottom:10px}
+p{margin:0 0 .8em}
+section>*:last-child{margin-bottom:0}
+.eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.lede{color:var(--muted);margin-top:10px}
+.m{font-family:var(--mono);font-size:.92em;white-space:nowrap}
+.th{color:var(--th);font-weight:500}.ph{color:var(--ph);font-weight:500}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td.sym{font-family:var(--mono);font-size:1.02rem;white-space:nowrap}
+td.say{font-style:italic;white-space:nowrap}
+.steps{font-family:var(--mono);font-size:.95rem;background:var(--code);border-radius:8px;padding:12px 14px;margin:0 0 .8em;line-height:1.9;overflow-x:auto;white-space:pre}
+.formula{font-family:var(--mono);font-size:clamp(1.05rem,4.2vw,1.55rem);text-align:center;padding:22px 10px;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow-x:auto;white-space:nowrap}
+.aloud{margin-top:10px;color:var(--muted)}
+.aloud b{color:var(--fg)}
+figure{margin:0;display:flex;flex-direction:column;gap:10px}
+figcaption{font-size:.92rem;color:var(--muted)}
+svg{display:block;width:100%;height:auto}
+svg.sphere{max-width:430px;margin:0 auto}
+svg.slice{max-width:400px;margin:0 auto}
+svg text{font-family:var(--mono);fill:var(--fg)}
+.mut{fill:var(--muted)}
+.controls{display:flex;flex-direction:column;gap:12px;font-size:.95rem}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px}
+.row label{font-family:var(--mono);min-width:7.5em}
+.row input[type=range]{flex:1 1 180px;min-width:0}
+#thR{accent-color:var(--th)} #phR{accent-color:var(--ph)}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{font:inherit;font-family:var(--mono);background:var(--surface);color:var(--fg);border:0;padding:6px 12px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--bg)}
+.readout{font-family:var(--mono);font-size:.9rem;background:var(--code);border-radius:8px;padding:10px 14px;line-height:1.8;overflow-x:auto;white-space:pre}
+button:focus-visible,summary:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+ul.mist{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:8px}
+details{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 16px}
+summary{cursor:pointer;font-family:var(--display);font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:10px}
+pre.code{font-family:var(--mono);font-size:.9rem;background:var(--code);border-radius:8px;padding:14px;overflow-x:auto;margin:0}
+a{color:var(--accent)}
+.links{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+footer{border-top:1px solid var(--line);padding-top:16px;font-size:.92rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 20px;justify-content:space-between}
+.check{color:var(--accent);font-weight:600}
+.ready{background:var(--thsoft);border-radius:10px;padding:18px 20px}
+.ready h2{margin-bottom:8px}
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Concept 12 · Intro</div>
+  <h1>The Bloch sphere</h1>
+  <p class="lede">Every single-qubit state is one point on a ball. Two angles say where the point is, the same way latitude and longitude say where a city is on a globe.</p>
+</header>
+
+<section>
+  <h2>Symbols on this page</h2>
+  <div class="box scroll">
+    <table>
+      <thead><tr><th>Symbol</th><th>Say it</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td class="sym">|ψ⟩</td><td class="say">"ket psi"</td><td>A qubit state (a column of two numbers, from the qubits concept)</td></tr>
+        <tr><td class="sym">|0⟩, |1⟩</td><td class="say">"ket zero", "ket one"</td><td>The two basis states: north and south pole</td></tr>
+        <tr><td class="sym">|+⟩, |−⟩</td><td class="say">"ket plus", "ket minus"</td><td>(|0⟩ + |1⟩)/√2 and (|0⟩ − |1⟩)/√2: two points on the equator</td></tr>
+        <tr><td class="sym">θ</td><td class="say">"theta"</td><td>Angle measured down from the north pole, 0 to π</td></tr>
+        <tr><td class="sym">φ</td><td class="say">"phi" (rhymes with "fly")</td><td>Angle around the equator, measured from the +x axis, 0 to 2π</td></tr>
+        <tr><td class="sym">θ/2</td><td class="say">"theta over two"</td><td>Half of θ. The formula uses half the angle</td></tr>
+        <tr><td class="sym">π</td><td class="say">"pi"</td><td>≈ 3.1416. As an angle, π radians = 180°</td></tr>
+        <tr><td class="sym">°</td><td class="say">"degrees"</td><td>The everyday angle unit; a full turn is 360°</td></tr>
+        <tr><td class="sym">cos, sin</td><td class="say">"cos", "sine"</td><td>Cosine and sine of an angle (the complex numbers concept unit circle)</td></tr>
+        <tr><td class="sym">e^(iφ)</td><td class="say">"e to the i phi"</td><td>cos φ + i sin φ: a length-1 complex number pointing at angle φ (the complex numbers concept)</td></tr>
+        <tr><td class="sym">i</td><td class="say">"i"</td><td>The number with i² = −1</td></tr>
+        <tr><td class="sym">√2</td><td class="say">"root two"</td><td>≈ 1.4142, the number that squares to 2</td></tr>
+        <tr><td class="sym">x²</td><td class="say">"x squared"</td><td>x times x</td></tr>
+        <tr><td class="sym">|a|²</td><td class="say">"mod a squared"</td><td>Size of a complex number, squared: gives a probability (the probability concept)</td></tr>
+        <tr><td class="sym">P(0)</td><td class="say">"P of zero"</td><td>Probability that measuring gives 0</td></tr>
+        <tr><td class="sym">≤</td><td class="say">"is less than or equal to"</td><td>0 ≤ θ ≤ π: θ is between 0 and π, ends included</td></tr>
+        <tr><td class="sym">≈</td><td class="say">"is approximately"</td><td>Rounded value</td></tr>
+        <tr><td class="sym">x, y, z</td><td class="say">"x, y, z axes"</td><td>The three directions of the ball; z points up to |0⟩</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Back to basics: angles in radians, and cos² + sin² = 1</h2>
+  <p>Maths measures angles in <b>radians</b>. A half turn is π radians, which is 180°. So to turn radians into degrees, multiply by 180 and divide by π. Useful landmarks: π/4 = 45°, π/2 = 90°, π = 180°, 2π = 360°.</p>
+  <p>The two facts you need from the unit circle (the complex numbers concept): cos 0 = 1 and sin 0 = 0; cos(π/2) = 0 and sin(π/2) = 1; cos(π/4) = sin(π/4) = 1/√2. And for every angle, cos² + sin² = 1 (Pythagoras on the unit circle).</p>
+  <p><b>Tiny example:</b> turn π/4 into degrees, and check cos² + sin² = 1 there.</p>
+  <div class="steps">π/4 radians × (180° / π)
+= 180° / 4
+= 45°
+
+cos(45°) = 1/√2 ≈ 0.7071
+sin(45°) = 1/√2 ≈ 0.7071
+cos² + sin² = (1/√2)² + (1/√2)²
+            = 1/2 + 1/2
+            = 1   <span class="check">✓</span></div>
+</section>
+
+<section>
+  <h2>The idea</h2>
+  <p>A qubit is two complex numbers, but they must have total probability 1, and an overall phase on the whole state changes nothing you can measure. After those two rules, only two real numbers are left over. Two angles are exactly what you need to pick a point on the surface of a ball. So every single-qubit state is a point on a sphere: |0⟩ at the north pole, |1⟩ at the south pole, and equal superpositions such as |+⟩ and |−⟩ around the equator.</p>
+  <div class="box scroll">
+    <table>
+      <thead><tr><th>On a globe</th><th>On the Bloch sphere</th></tr></thead>
+      <tbody>
+        <tr><td>North pole</td><td>|0⟩ (θ = 0)</td></tr>
+        <tr><td>South pole</td><td>|1⟩ (θ = π)</td></tr>
+        <tr><td>Latitude, measured from the equator</td><td><span class="th">θ</span>, measured from the north pole instead (0 at the top, π/2 on the equator)</td></tr>
+        <tr><td>Longitude, measured from Greenwich</td><td><span class="ph">φ</span>, measured from the +x axis (where |+⟩ sits)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Diagrams</h2>
+  <figure>
+    <div class="box">
+      <svg class="sphere" id="bloch" viewBox="0 0 360 340" role="img" aria-label="Bloch sphere with a state arrow and angles theta and phi">
+        <circle cx="180" cy="170" r="130" fill="var(--ball)" stroke="var(--muted)" stroke-width="1.4"/>
+        <g id="static"></g>
+        <g id="dyn"></g>
+      </svg>
+      <div class="controls">
+        <div class="row"><label for="thR" class="th">θ = <span id="thV">60°</span></label><input type="range" id="thR" min="0" max="180" step="1" value="60"></div>
+        <div class="row"><label for="phR" class="ph">φ = <span id="phV">45°</span></label><input type="range" id="phR" min="0" max="360" step="1" value="45"></div>
+        <div class="row"><span style="font-family:var(--mono)">Jump to:</span>
+          <div class="seg" id="presets">
+            <button type="button" data-t="0" data-p="0" aria-pressed="false">|0⟩</button>
+            <button type="button" data-t="180" data-p="0" aria-pressed="false">|1⟩</button>
+            <button type="button" data-t="90" data-p="0" aria-pressed="false">|+⟩</button>
+            <button type="button" data-t="90" data-p="180" aria-pressed="false">|−⟩</button>
+          </div>
+        </div>
+        <div class="readout" id="read"></div>
+      </div>
+    </div>
+    <figcaption>The Bloch sphere, seen from slightly above. The teal arrow is the state. <span class="th">θ</span> (blue arc) is measured down from |0⟩ at the north pole. <span class="ph">φ</span> (amber arc) is measured around the equator, starting from the +x axis where |+⟩ sits; the dotted line drops the point straight down onto the equator so you can see where φ is read. Dashed lines are on the far side of the ball. Move the sliders: θ changes the measurement odds, φ does not.</figcaption>
+  </figure>
+
+  <figure style="margin-top:22px">
+    <div class="box">
+      <svg class="slice" viewBox="0 0 400 330" role="img" aria-label="Slice through the sphere showing 0, 1, plus and minus states">
+        <line x1="200" y1="30" x2="200" y2="300" stroke="var(--line)" stroke-width="1"/>
+        <line x1="70" y1="165" x2="330" y2="165" stroke="var(--line)" stroke-width="1"/>
+        <circle cx="200" cy="165" r="120" fill="none" stroke="var(--muted)" stroke-width="1.4"/>
+        <!-- theta arc from north pole (200,45) clockwise to +x (320,165), radius 40 -->
+        <path d="M200 125 A40 40 0 0 1 240 165" fill="none" stroke="var(--th)" stroke-width="2.2"/>
+        <text x="232" y="132" style="fill:var(--th)" font-size="13">θ = π/2</text>
+        <line x1="200" y1="165" x2="320" y2="165" stroke="var(--accent)" stroke-width="2.6"/>
+        <line x1="200" y1="165" x2="200" y2="45" stroke="var(--fg)" stroke-width="1.6"/>
+        <line x1="200" y1="165" x2="200" y2="285" stroke="var(--fg)" stroke-width="1.6"/>
+        <line x1="200" y1="165" x2="80" y2="165" stroke="var(--fg)" stroke-width="1.6"/>
+        <circle cx="200" cy="45" r="5" fill="var(--fg)"/>
+        <circle cx="200" cy="285" r="5" fill="var(--fg)"/>
+        <circle cx="320" cy="165" r="5" fill="var(--accent)"/>
+        <circle cx="80" cy="165" r="5" fill="var(--fg)"/>
+        <text x="200" y="30" text-anchor="middle" font-size="15">|0⟩  θ = 0</text>
+        <text x="200" y="312" text-anchor="middle" font-size="15">|1⟩  θ = π</text>
+        <text x="328" y="160" font-size="15">|+⟩</text>
+        <text x="328" y="182" font-size="11" class="mut">φ = 0</text>
+        <text x="72" y="160" text-anchor="end" font-size="15">|−⟩</text>
+        <text x="72" y="182" text-anchor="end" font-size="11" class="mut">φ = π</text>
+        <text x="345" y="200" font-size="12" class="mut">+x</text>
+        <text x="40" y="200" font-size="12" class="mut">−x</text>
+        <text x="208" y="62" font-size="12" class="mut">+z</text>
+      </svg>
+    </div>
+    <figcaption>A slice through the ball along the x–z plane (right half φ = 0, left half φ = π). Going from |0⟩ to |+⟩ is a quarter turn on the sphere (θ = π/2), but inside the formula only half of that, π/4, is used. That is why opposite points, |0⟩ and |1⟩, are states that never overlap: they are a half turn apart on the sphere, a quarter turn (90°) apart as the qubits concept arrows.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Key formula</h2>
+  <div class="formula">|ψ⟩ = cos(<span class="th">θ</span>/2) |0⟩ + e^(i<span class="ph">φ</span>) sin(<span class="th">θ</span>/2) |1⟩</div>
+  <p class="aloud"><b>Read it aloud:</b> "ket psi equals cos of theta over two, times ket zero, plus e to the i phi times sine of theta over two, times ket one." Here 0 ≤ θ ≤ π ("theta is between zero and pi") and 0 ≤ φ &lt; 2π ("phi is from zero up to, but not including, two pi").</p>
+  <p>The probabilities come from the probability concept: P(0) = cos²(θ/2) and P(1) = sin²(θ/2). The factor e^(iφ) has size 1, so φ never changes those probabilities. It only changes the phase, which matters once gates mix |0⟩ and |1⟩ together.</p>
+</section>
+
+<section>
+  <h2>Worked example: θ = π/2, φ = π/2</h2>
+  <p>Where is this point, and what is the state?</p>
+  <div class="steps">Step 1. Halve θ.
+  θ/2 = (π/2) / 2
+      = π/4            (= 45°)
+
+Step 2. First amplitude.
+  cos(π/4) = 1/√2 ≈ 0.7071
+
+Step 3. Sine part of the second amplitude.
+  sin(π/4) = 1/√2 ≈ 0.7071
+
+Step 4. The phase factor (Euler, the complex numbers concept).
+  e^(iπ/2) = cos(π/2) + i sin(π/2)
+           = 0 + i × 1
+           = i
+
+Step 5. Put it together.
+  |ψ⟩ = (1/√2)|0⟩ + i × (1/√2)|1⟩
+      = (|0⟩ + i|1⟩)/√2
+
+Step 6. Where is it?  θ = π/2 → on the equator.
+  φ = π/2 → a quarter turn from +x → on the +y axis.
+
+Check: probabilities add to 1.
+  P(0) = |1/√2|²  = 1/2
+  P(1) = |i/√2|²  = (i/√2) × (−i/√2)
+                  = −i² / 2
+                  = −(−1) / 2
+                  = 1/2
+  P(0) + P(1) = 1/2 + 1/2 = 1   <span class="check">✓</span></div>
+  <p>Set the sliders to θ = 90°, φ = 90° to see this point on the right-hand side of the equator (the +y axis).</p>
+</section>
+
+<section>
+  <h2>Common mistakes</h2>
+  <ul class="mist">
+    <li><b>Forgetting the half.</b> The formula uses θ/2, not θ. |1⟩ is at θ = π (the south pole), because cos(π/2) = 0 and sin(π/2) = 1. Putting |1⟩ at θ = π/2 lands you on the equator instead.</li>
+    <li><b>Measuring θ like latitude.</b> On a map, latitude starts at the equator. Here θ starts at the north pole: θ = 0 is |0⟩, θ = π/2 is the equator.</li>
+    <li><b>Thinking φ changes the odds.</b> Spinning around the equator (changing φ) leaves P(0) = cos²(θ/2) unchanged. |+⟩ and |−⟩ both give 50/50 when measured in 0/1; only φ tells them apart.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Practice question</h2>
+  <p>Give θ and φ for |0⟩, |1⟩, |+⟩ = (|0⟩ + |1⟩)/√2 and |−⟩ = (|0⟩ − |1⟩)/√2.</p>
+  <details>
+    <summary>Show answer</summary>
+    <p>Match each state to cos(θ/2)|0⟩ + e^(iφ) sin(θ/2)|1⟩.</p>
+    <div class="steps">|0⟩ = 1|0⟩ + 0|1⟩
+  cos(θ/2) = 1   →  θ/2 = 0    →  θ = 0
+  sin(θ/2) = 0, so φ multiplies 0: any φ works (write φ = 0)
+  Answer: θ = 0  (north pole)
+
+|1⟩ = 0|0⟩ + 1|1⟩
+  cos(θ/2) = 0   →  θ/2 = π/2  →  θ = π
+  e^(iφ) × sin(π/2) = e^(iφ) × 1 = e^(iφ)
+  e^(iφ) is only an overall phase here, so any φ (write φ = 0)
+  Answer: θ = π  (south pole)
+
+|+⟩ = (1/√2)|0⟩ + (1/√2)|1⟩
+  cos(θ/2) = 1/√2  →  θ/2 = π/4  →  θ = π/2
+  e^(iφ) × sin(π/4) = e^(iφ) × (1/√2) must equal 1/√2
+  so e^(iφ) = 1  →  cos φ = 1, sin φ = 0  →  φ = 0
+  Answer: θ = π/2, φ = 0  (equator, +x)
+
+|−⟩ = (1/√2)|0⟩ − (1/√2)|1⟩
+  cos(θ/2) = 1/√2  →  θ = π/2  (same as above)
+  e^(iφ) × (1/√2) must equal −1/√2
+  so e^(iφ) = −1  →  cos φ = −1, sin φ = 0  →  φ = π
+  Answer: θ = π/2, φ = π  (equator, −x)
+
+Check |−⟩:  cos(π/4)|0⟩ + e^(iπ) sin(π/4)|1⟩
+         = (1/√2)|0⟩ + (−1)(1/√2)|1⟩
+         = (|0⟩ − |1⟩)/√2   <span class="check">✓</span></div>
+  </details>
+</section>
+
+<section>
+  <h2>Check it in NumPy</h2>
+  <pre class="code">import numpy as np
+ket = lambda t, p: np.array([np.cos(t/2), np.exp(1j*p) * np.sin(t/2)])
+for name, t, p in [("|0>", 0, 0), ("|1>", np.pi, 0), ("|+>", np.pi/2, 0), ("|->", np.pi/2, np.pi)]:
+    print(name, np.round(ket(t, p), 4))
+# |0> [1, 0]   |1> [0, 1]   |+> [0.7071, 0.7071]   |-> [0.7071, -0.7071]</pre>
+</section>
+
+<section>
+  <h2>Go deeper</h2>
+  <ul class="links">
+    <li><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/quantum-foundations/concepts/12-bloch-sphere/notebook.ipynb">Tutorial notebook: 11_bloch_sphere.ipynb</a></li>
+    <li><a href="notebook.html">The same tutorial as a web page</a></li>
+    <li><a href="../../reference/reading-maths-symbols.html">Symbol dictionary: how to read maths symbols</a></li>
+  </ul>
+</section>
+
+
+<footer>
+  <span>Study time: 30 min</span>
+  <a href="../../../">All concepts</a>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  const NS="http://www.w3.org/2000/svg", cx=180, cy=170, R=130;
+  const A=30*Math.PI/180, E=20*Math.PI/180, sa=Math.sin(A), ca=Math.cos(A), se=Math.sin(E), ce=Math.cos(E);
+  const P=(x,y,z)=>[cx+R*(-x*sa+y*ca), cy-R*(z*ce-(x*ca+y*sa)*se)];
+  const depth=(x,y,z)=>(x*ca+y*sa)*ce+z*se;
+  const el=(t,a,parent)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(parent)parent.appendChild(e);return e;};
+  const txt=(s,x,y,a,parent)=>{const e=el("text",Object.assign({x:x,y:y},a),parent);e.textContent=s;return e;};
+  // draw a curve f(t) for t in [t0,t1], solid where in front, dashed behind
+  function curve(f,t0,t1,n,style,parent){
+    let seg=[],front=null;
+    const flush=()=>{if(seg.length>1){el("polyline",Object.assign({points:seg.join(" "),fill:"none"},style,front?{}:{"stroke-dasharray":"4 4",opacity:"0.6"}),parent);}};
+    for(let i=0;i<=n;i++){const t=t0+(t1-t0)*i/n,p=f(t),fr=depth(...p)>=-1e-9,q=P(...p).map(v=>v.toFixed(1)).join(",");
+      if(front===null)front=fr;
+      if(fr!==front){seg.push(q);flush();seg=[q];front=fr;}else seg.push(q);}
+    flush();
+  }
+  const S=document.getElementById("static"), D=document.getElementById("dyn");
+  // equator and the x-z meridian
+  curve(t=>[Math.cos(t),Math.sin(t),0],0,2*Math.PI,180,{stroke:"var(--muted)","stroke-width":"1.2"},S);
+  curve(t=>[Math.sin(t),0,Math.cos(t)],0,2*Math.PI,180,{stroke:"var(--line)","stroke-width":"1"},S);
+  // axes
+  [[1,0,0,"+x"],[-1,0,0,""],[0,1,0,"+y"],[0,-1,0,""],[0,0,1,""],[0,0,-1,""]].forEach(([x,y,z,l])=>{
+    const p=P(x,y,z),fr=depth(x,y,z)>=0;
+    el("line",{x1:cx,y1:cy,x2:p[0].toFixed(1),y2:p[1].toFixed(1),stroke:"var(--muted)","stroke-width":"1","stroke-dasharray":fr?"":"3 3"},S);
+  });
+  const lab=(x,y,z,s,dx,dy,anchor,size,cls)=>{const p=P(x,y,z);txt(s,(p[0]+dx).toFixed(1),(p[1]+dy).toFixed(1),{"text-anchor":anchor,"font-size":size,class:cls||""},S);};
+  [[0,0,1],[0,0,-1],[1,0,0],[-1,0,0]].forEach(v=>{const p=P(...v);el("circle",{cx:p[0].toFixed(1),cy:p[1].toFixed(1),r:3.5,fill:"var(--fg)"},S);});
+  lab(0,0,1,"|0⟩",0,-12,"middle",16); lab(0,0,-1,"|1⟩",0,26,"middle",16);
+  lab(1,0,0,"|+⟩",-10,18,"end",16); lab(-1,0,0,"|−⟩",10,-8,"start",16);
+  lab(1,0,0,"+x",-14,34,"end",11,"mut"); lab(0,1,0,"+y",10,4,"start",11,"mut");
+  lab(0,0,1,"+z",10,14,"start",11,"mut");
+
+  const thR=document.getElementById("thR"), phR=document.getElementById("phR");
+  function piForm(deg){for(const d of [1,2,3,4,6,12,36,180]){const n=deg*d/180;if(Math.abs(n-Math.round(n))<1e-9){const k=Math.round(n);if(k===0)return "0";const num=(k===1?"":k)+"π";return d===1?num:num+"/"+d;}}return (deg*Math.PI/180).toFixed(3);}
+  const f3=v=>(Math.abs(v)<5e-4?0:v).toFixed(3);
+  function draw(){
+    const td=+thR.value, pd=+phR.value, t=td*Math.PI/180, p=pd*Math.PI/180;
+    document.getElementById("thV").textContent=td+"°"; document.getElementById("phV").textContent=pd+"°";
+    while(D.firstChild)D.removeChild(D.firstChild);
+    const x=Math.sin(t)*Math.cos(p), y=Math.sin(t)*Math.sin(p), z=Math.cos(t);
+    const s=P(x,y,z), g=P(x,y,0), o=[cx,cy];
+    // drop line to equator plane and the projected radius
+    if(Math.sin(t)>0.02){
+      el("line",{x1:s[0],y1:s[1],x2:g[0],y2:g[1],stroke:"var(--ph)","stroke-width":"1.2","stroke-dasharray":"2 3"},D);
+      el("line",{x1:cx,y1:cy,x2:g[0],y2:g[1],stroke:"var(--ph)","stroke-width":"1.2","stroke-dasharray":"2 3"},D);
+    }
+    // phi arc on the equator, radius 0.38
+    if(pd>0 && Math.sin(t)>0.02){
+      curve(u=>[0.38*Math.cos(u),0.38*Math.sin(u),0],0,p,Math.max(4,Math.round(pd/3)),{stroke:"var(--ph)","stroke-width":"2.4"},D);
+      const m=P(0.52*Math.cos(p/2),0.52*Math.sin(p/2),0);
+      txt("φ",m[0].toFixed(1),(m[1]+5).toFixed(1),{"text-anchor":"middle","font-size":16,style:"fill:var(--ph)"},D);
+    }
+    // theta arc from the north pole toward the state, radius 0.3
+    if(td>0){
+      curve(u=>[0.3*Math.sin(u)*Math.cos(p),0.3*Math.sin(u)*Math.sin(p),0.3*Math.cos(u)],0,t,Math.max(4,Math.round(td/3)),{stroke:"var(--th)","stroke-width":"2.4"},D);
+      const m=P(0.45*Math.sin(t/2)*Math.cos(p),0.45*Math.sin(t/2)*Math.sin(p),0.45*Math.cos(t/2));
+      txt("θ",m[0].toFixed(1),(m[1]+5).toFixed(1),{"text-anchor":"middle","font-size":16,style:"fill:var(--th)"},D);
+    }
+    const fr=depth(x,y,z)>=0;
+    el("line",{x1:cx,y1:cy,x2:s[0],y2:s[1],stroke:"var(--accent)","stroke-width":"3","stroke-linecap":"round",opacity:fr?"1":"0.55"},D);
+    el("circle",{cx:s[0],cy:s[1],r:6.5,fill:"var(--accent)",stroke:"var(--surface)","stroke-width":"1.5",opacity:fr?"1":"0.6"},D);
+    el("circle",{cx:cx,cy:cy,r:2.5,fill:"var(--fg)"},D);
+    const c=Math.cos(t/2), sn=Math.sin(t/2), re=Math.cos(p)*sn, im=Math.sin(p)*sn;
+    const imS=(im<0?" − ":" + ")+f3(Math.abs(im))+"i";
+    document.getElementById("read").textContent=
+      "θ = "+td+"° = "+piForm(td)+"    φ = "+pd+"° = "+piForm(pd)+"\n"+
+      "cos(θ/2) = "+f3(c)+"\n"+
+      "e^(iφ)·sin(θ/2) = "+f3(re)+imS+"\n"+
+      "P(0) = cos²(θ/2) = "+f3(c*c)+"    P(1) = sin²(θ/2) = "+f3(sn*sn);
+    document.querySelectorAll("#presets button").forEach(b=>b.setAttribute("aria-pressed",String(+b.dataset.t===td && +b.dataset.p===pd)));
+  }
+  thR.addEventListener("input",draw); phR.addEventListener("input",draw);
+  document.querySelectorAll("#presets button").forEach(b=>b.addEventListener("click",()=>{thR.value=b.dataset.t;phR.value=b.dataset.p;draw();}));
+  draw();
+})();
+</script>
+
+<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 12 of 12</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../11-entanglement-and-qiskit/">← Entanglement and your first Qiskit circuit</a></div></nav></body></html>

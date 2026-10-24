@@ -9,8 +9,8 @@ Needs:  pip install nbconvert
 import glob, os, re, subprocess, sys
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-COURSE = os.path.join(REPO, "iitd-cep-applied-quantum-ai")
-GH = "https://github.com/Sathisha/quantum-learning-lab/blob/main/iitd-cep-applied-quantum-ai/"
+COURSE = os.path.join(REPO, "quantum-foundations")
+GH = "https://github.com/Sathisha/quantum-learning-lab/blob/main/quantum-foundations/"
 
 BAR = """<nav style="font:14px/1.5 system-ui,-apple-system,'Segoe UI',sans-serif;background:#f5f7fb;border-bottom:1px solid #d3dae4;
 padding:9px max(16px,env(safe-area-inset-left,0px));display:flex;flex-wrap:wrap;gap:4px 18px;justify-content:space-between">

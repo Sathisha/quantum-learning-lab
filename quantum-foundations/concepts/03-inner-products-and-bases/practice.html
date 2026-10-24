@@ -1,0 +1,202 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Inner products and bases: Practice</title><meta name="description" content="Worked solutions to the Week 1 quiz questions on inner products and bases."><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&family=Spectral:wght@500;700&display=swap"><style>
+/* Layout: same graph-paper notebook column as the concept pages; maths in mono, real = blue, imaginary = magenta, correct answer = green */
+:root{
+  --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4; --grid:#e6ebf2;
+  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --okbg:#e5f4ec; --soft:#f5f7fb; --code:#f2f4f8;
+  --f-display:"Spectral",Georgia,serif; --f-body:"Atkinson Hyperlegible",system-ui,sans-serif; --f-math:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:17px/1.6 var(--f-body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px}
+main{max-width:46rem;margin:0 auto;display:flex;flex-direction:column;gap:30px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.2}
+h1{font-size:clamp(1.8rem,6vw,2.3rem)}
+h2{font-size:1.5rem;padding-bottom:6px;border-bottom:1px solid var(--rule)}
+h3{font-size:1.2rem}
+section,article{display:flex;flex-direction:column;gap:12px;min-width:0}
+p{margin:0;max-width:65ch}
+.eyebrow{font:600 .78rem/1 var(--f-math);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.m{font-family:var(--f-math);font-size:.92em;white-space:nowrap}
+.re{color:var(--re)} .im{color:var(--im)}
+.bar{text-decoration:overline;text-decoration-thickness:1.5px}
+.box{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font:600 .75rem var(--f-math);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sym td:first-child{font-family:var(--f-math);font-weight:600;white-space:nowrap}
+.key{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:8px}
+.key a{display:flex;justify-content:space-between;align-items:baseline;gap:6px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:7px 10px;font-family:var(--f-math);font-variant-numeric:tabular-nums}
+.key a b{color:var(--ok)}
+.key a span{color:var(--muted);font-size:.85rem}
+.qcard{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
+.qhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.qhead .qn{font:700 .85rem var(--f-math);color:var(--muted)}
+.qtext{font-size:1.05rem}
+.opts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:6px}
+.opts li{border:1px solid var(--rule);border-radius:8px;padding:6px 10px;font-family:var(--f-math);font-size:.92rem;min-width:0;overflow-wrap:anywhere}
+.opts li .l{color:var(--muted);margin-right:6px}
+.show .opts li.ok,.revealed .opts li.ok{border-color:var(--ok);background:var(--okbg);color:var(--ink)}
+.show .opts li.ok .l,.revealed .opts li.ok .l{color:var(--ok);font-weight:700}
+.badge{font:700 .82rem var(--f-math);color:var(--ok);background:var(--okbg);border-radius:999px;padding:3px 10px;white-space:nowrap}
+body:not(.show) .qcard:not(.revealed) .badge{visibility:hidden}
+.steps{font-family:var(--f-math);font-size:.93rem;background:var(--code);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.steps span{white-space:pre-wrap}
+.steps .note{color:var(--muted);font-family:var(--f-body);font-size:.88rem;white-space:normal}
+.steps .ok{color:var(--ok);font-weight:600}
+figure{margin:0;background:var(--soft);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+figure svg{width:100%;height:auto;max-width:360px;align-self:center;display:block}
+figcaption{font-size:.9rem;color:var(--muted)}
+figcaption b{color:var(--ink)}
+svg text{font-family:var(--f-math);font-size:12px;fill:var(--ink)}
+svg .lab{font-size:13px;font-weight:600}
+svg .mut{fill:var(--muted)}
+svg .grid{stroke:var(--grid);stroke-width:1}
+svg .axis{stroke:var(--muted);stroke-width:1.3}
+svg .reS{stroke:var(--re)} svg .imS{stroke:var(--im)} svg .inkS{stroke:var(--ink)} svg .okS{stroke:var(--ok)} svg .mutS{stroke:var(--muted)}
+svg .reF{fill:var(--re)} svg .imF{fill:var(--im)} svg .inkF{fill:var(--ink)} svg .okF{fill:var(--ok)} svg .bgF{fill:var(--paper)} svg .none{fill:none}
+svg .okT{fill:var(--ok)} svg .reT{fill:var(--re)} svg .imT{fill:var(--im)}
+.why{font-size:.95rem;color:var(--muted)}
+.why b{color:var(--ink)}
+.ql{background:var(--soft);border-left:3px solid var(--im);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.ql b{color:var(--im)}
+.warn{background:var(--soft);border-left:3px solid var(--re);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+details.sol{border-top:1px dashed var(--rule);padding-top:10px}
+details.sol>summary{cursor:pointer;font-weight:700;color:var(--re);list-style-position:inside}
+details.sol[open]>summary{margin-bottom:10px}
+details.sol>div{display:flex;flex-direction:column;gap:12px}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+button{font:600 .9rem var(--f-body);color:var(--re);background:var(--paper);border:1px solid var(--re);border-radius:8px;padding:8px 14px;cursor:pointer}
+button:hover{background:var(--soft)}
+button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--re);outline-offset:3px}
+ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;max-width:65ch}
+pre.code{margin:0;background:var(--code);border-radius:8px;padding:14px 16px;overflow-x:auto;font:.85rem/1.55 var(--f-math)}
+a{color:var(--re)}
+footer{border-top:1px solid var(--rule);padding-top:14px;color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+.tag{font:600 .72rem var(--f-math);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.tag.new{color:var(--ok);background:var(--okbg)} .tag.have{color:var(--re);background:var(--soft)} .tag.next{color:var(--im);background:var(--soft)}
+.cov td:nth-child(2){white-space:nowrap}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:12px}
+.grid2>div{min-width:0}
+</style>
+</head><body><style>
+.cnav{--cn-ink:#1b2430;--cn-mut:#566275;--cn-bg:#f5f7fb;--cn-rule:#d3dae4;--cn-a:#1d5bbd;
+ display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 18px;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+ color:var(--cn-mut);background:var(--cn-bg);border-bottom:1px solid var(--cn-rule);
+ padding-block:9px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.cnav:not(.bottom){margin-bottom:22px}
+.cnav.bottom{border-bottom:0;border-top:1px solid var(--cn-rule);margin-top:32px}
+.cnav a{color:var(--cn-a);text-decoration:none}.cnav a:hover{text-decoration:underline}
+.cnav a:focus-visible{outline:2px solid var(--cn-a);outline-offset:2px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}}
+:root[data-theme="dark"] .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}
+</style><nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 03 of 12</span> · <a href="./">Inner products and bases page</a> · <a href="notebook.html">Tutorial</a></div><div><a href="../02-vector-spaces/">← Vector spaces</a> · <a href="../04-matrices-and-linear-maps/">Matrices and linear maps →</a></div></nav>
+<main id="top">
+<header style="display:flex;flex-direction:column;gap:10px">
+  <span class="eyebrow">Concept 03 · Practice · from the Week 1 maths-foundation quiz</span>
+  <h1>Inner products and bases: practice</h1>
+  <p>Questions 14–17 of the 20-question Week 1 quiz, each with a full worked solution and a link to where the idea shows up in quantum computing. Hide the answers to test yourself first. All answers are checked in <a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/quantum-foundations/reference/checks/week-01-quiz-check.py">week-01-quiz-check.py</a>.</p>
+  <div class="toolbar">
+    <button type="button" id="toggle">Hide answers (practise mode)</button>
+    <span class="why" id="mode">Answers are showing. Tap a question number below to jump to it.</span>
+  </div>
+</header>
+<section><h2>Answer key</h2><nav class="key" aria-label="Answer key"><a href="#q14">Q14 <b>A</b><span>3</span></a><a href="#q15">Q15 <b>C</b><span>1/√7</span></a><a href="#q16">Q16 <b>B</b><span></span></a><a href="#q17">Q17 <b>D</b><span></span></a></nav></section>
+<article class="qcard" id="q14">
+  <div class="qhead"><span class="qn">Q14</span><span class="badge">Answer (A) 3</span></div>
+  <p class="qtext">For u = (1, i)<sup>T</sup> and v = (2, i)<sup>T</sup>, the inner product ⟨u, v⟩ equals</p>
+  <ul class="opts"><li class="ok"><span class="l">A</span>3</li><li><span class="l">B</span>1</li><li><span class="l">C</span>2 + i</li><li><span class="l">D</span>3i</li></ul>
+  <details class="sol" open><summary>Solution</summary><div>
+    <div class="steps">
+      <span>⟨u, v⟩ = conj(u₁)·v₁ + conj(u₂)·v₂     <span class="note">(conjugate the first vector)</span></span>
+      <span>      = conj(1)·2 + conj(i)·i</span>
+      <span>      = 1·2 + (−i)·i = 2 − i² = 2 + 1</span>
+      <span class="ok">      = 3   (A)</span>
+      <span class="note">Forgetting the conjugate gives 2 + i·i = 2 − 1 = 1, which is trap (B).</span>
+    </div>
+    <p class="ql"><b>Quantum link:</b> ⟨φ|ψ⟩ is exactly this computation. The probability of measuring state φ when the system is in ψ is |⟨φ|ψ⟩|².</p>
+  </div></details>
+</article>
+<article class="qcard" id="q15">
+  <div class="qhead"><span class="qn">Q15</span><span class="badge">Answer (C) 1/√7</span></div>
+  <p class="qtext">For which c &gt; 0 is c·(1 + i, 2, i)<sup>T</sup> a unit vector?</p>
+  <ul class="opts"><li><span class="l">A</span>1/√5</li><li><span class="l">B</span>1/7</li><li class="ok"><span class="l">C</span>1/√7</li><li><span class="l">D</span>1/√3</li></ul>
+  <details class="sol" open><summary>Solution</summary><div>
+    <div class="steps">
+      <span>‖x‖² = |1+i|² + |2|² + |i|²    <span class="note">(use the modulus squared of each entry, not the square)</span></span>
+      <span>     = (1² + 1²) + 4 + 1 = 2 + 4 + 1 = 7</span>
+      <span>‖x‖ = √7, so c = 1/‖x‖</span>
+      <span class="ok">c = 1/√7   (C)</span>
+      <span class="note">Trap: squaring entries directly gives (1+i)² + 4 + i² = 2i + 4 − 1, which isn't even real.</span>
+    </div>
+    <p class="ql"><b>Quantum link:</b> this is normalising a 3-level state (a "qutrit"). The squared moduli 2/7, 4/7, 1/7 are the measurement probabilities and add to 1.</p>
+  </div></details>
+</article>
+<article class="qcard" id="q16">
+  <div class="qhead"><span class="qn">Q16</span><span class="badge">Answer (B) −2 − 4i</span></div>
+  <p class="qtext">Suppose ⟨u, v⟩ = 2 − i. Then ⟨iu, 2v⟩ equals</p>
+  <ul class="opts"><li><span class="l">A</span>2 + 4i</li><li class="ok"><span class="l">B</span>−2 − 4i</li><li><span class="l">C</span>−2 + 4i</li><li><span class="l">D</span>4 − 2i</li></ul>
+  <details class="sol" open><summary>Solution</summary><div>
+    <p><b>Rule:</b> a scalar pulled out of the <b>first</b> slot gets conjugated; a scalar pulled out of the second slot comes out as is: ⟨au, bv⟩ = ā·b·⟨u, v⟩.</p>
+    <div class="steps">
+      <span>⟨iu, 2v⟩ = conj(i) · 2 · ⟨u, v⟩ = (−i)(2)(2 − i)</span>
+      <span>          = −2i(2 − i) = −4i + 2i² = −4i − 2</span>
+      <span class="ok">          = −2 − 4i   (B)</span>
+      <span class="note">Not conjugating gives 2i(2 − i) = 2 + 4i, which is trap (A).</span>
+    </div>
+  </div></details>
+</article>
+<article class="qcard" id="q17">
+  <div class="qhead"><span class="qn">Q17</span><span class="badge">Answer (D) (2√2, √2)</span></div>
+  <p class="qtext">The coordinates of v = (3, 1)<sup>T</sup> in the orthonormal basis {h₊, h₋} are</p>
+  <ul class="opts"><li><span class="l">A</span>(3, 1)</li><li><span class="l">B</span>(4, 2)</li><li><span class="l">C</span>(√2, 2√2)</li><li class="ok"><span class="l">D</span>(2√2, √2)</li></ul>
+  <details class="sol" open><summary>Solution</summary><div>
+    <p><b>Idea:</b> in an orthonormal basis, each coordinate is just an inner product with that basis vector. No equations to solve.</p>
+    <div class="steps">
+      <span>h₊ = (1/√2)(1, 1),   h₋ = (1/√2)(1, −1)</span>
+      <span>c₊ = ⟨h₊, v⟩ = (1/√2)(3 + 1) = 4/√2 = 2√2</span>
+      <span>c₋ = ⟨h₋, v⟩ = (1/√2)(3 − 1) = 2/√2 = √2</span>
+      <span class="ok">(c₊, c₋) = (2√2, √2)   (D)</span>
+      <span>Check: 2√2·h₊ + √2·h₋ = (2, 2) + (1, −1) = (3, 1) ✓</span>
+    </div>
+    <figure>
+      <svg viewBox="0 0 260 260" role="img" aria-label="Vector (3,1) split along the diagonal basis: 2 root 2 along h plus and root 2 along h minus">
+        <line class="grid" x1="0" y1="90" x2="260" y2="90"/><line class="grid" x1="0" y1="210" x2="260" y2="210"/><line class="grid" x1="100" y1="0" x2="100" y2="260"/><line class="grid" x1="140" y1="0" x2="140" y2="260"/><line class="grid" x1="180" y1="0" x2="180" y2="260"/>
+        <line class="axis" x1="10" y1="170" x2="250" y2="170"/><line class="axis" x1="60" y1="20" x2="60" y2="250"/>
+        <line x1="10" y1="220" x2="200" y2="30" class="mutS" stroke-dasharray="2 4"/><line x1="10" y1="120" x2="140" y2="250" class="mutS" stroke-dasharray="2 4"/>
+        <polygon points="60,170 140,90 180,130 100,210" class="none mutS" stroke-dasharray="4 3"/>
+        <line x1="60" y1="170" x2="140" y2="90" class="reS" stroke-width="2.5"/><text x="88" y="82" class="lab reT">2√2·h₊</text>
+        <line x1="60" y1="170" x2="100" y2="210" class="imS" stroke-width="2.5"/><text x="22" y="230" class="lab imT">√2·h₋</text>
+        <line x1="60" y1="170" x2="180" y2="130" class="okS" stroke-width="3"/><circle cx="180" cy="130" r="5" class="okF"/><text x="186" y="126" class="lab okT">v = (3,1)</text>
+        <text x="190" y="44" class="mut">h₊ axis</text><text x="140" y="246" class="mut">h₋ axis</text>
+      </svg>
+      <figcaption><b>Same arrow, new axes.</b> Tilt the axes by 45°; v is 2√2 units along h₊ and √2 units along h₋.</figcaption>
+    </figure>
+    <p class="ql"><b>Quantum link:</b> h₊ and h₋ are the |+⟩ and |−⟩ states (the X basis). Changing basis like this is what "measuring in the X basis" means; H converts between |0⟩,|1⟩ and |+⟩,|−⟩.</p>
+  </div></details>
+</article>
+<footer><span>Practice for <a href="./">Inner products and bases</a></span><a href="#top">Back to top</a></footer>
+</main>
+<script>
+(function(){
+  var btn=document.getElementById('toggle'), mode=document.getElementById('mode'), body=document.body;
+  var sols=[].slice.call(document.querySelectorAll('details.sol'));
+  body.classList.add('show');
+  btn.addEventListener('click',function(){
+    var showing=body.classList.toggle('show');
+    sols.forEach(function(d){d.open=showing; d.closest('.qcard').classList.remove('revealed');});
+    btn.textContent=showing?'Hide answers (practise mode)':'Show all answers';
+    mode.textContent=showing?'Answers are showing. Tap a question number below to jump to it.':'Practise mode: answers hidden. Open "Solution" under a question to check it.';
+  });
+  document.querySelectorAll('details.sol').forEach(function(d){
+    d.addEventListener('toggle',function(){ if(d.open) d.closest('.qcard').classList.add('revealed'); });
+  });
+})();
+</script>
+<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 03 of 12</span> · <a href="./">Inner products and bases page</a> · <a href="notebook.html">Tutorial</a></div><div><a href="../02-vector-spaces/">← Vector spaces</a> · <a href="../04-matrices-and-linear-maps/">Matrices and linear maps →</a></div></nav></body></html>

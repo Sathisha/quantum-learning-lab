@@ -1,0 +1,385 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body><style>
+.cnav{--cn-ink:#1b2430;--cn-mut:#566275;--cn-bg:#f5f7fb;--cn-rule:#d3dae4;--cn-a:#1d5bbd;
+ display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 18px;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+ color:var(--cn-mut);background:var(--cn-bg);border-bottom:1px solid var(--cn-rule);
+ padding-block:9px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.cnav:not(.bottom){margin-bottom:22px}
+.cnav.bottom{border-bottom:0;border-top:1px solid var(--cn-rule);margin-top:32px}
+.cnav a{color:var(--cn-a);text-decoration:none}.cnav a:hover{text-decoration:underline}
+.cnav a:focus-visible{outline:2px solid var(--cn-a);outline-offset:2px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}}
+:root[data-theme="dark"] .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}
+</style><nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 07 of 12</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../06-probability/">← Probability and expectation</a> · <a href="../08-qubits-and-dirac-notation/">Qubits and Dirac notation →</a></div></nav>
+<title>AI/ML maths bridge</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,750&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column of numbered study steps; diagrams sit in framed "lab bench" panels that may scroll sideways on phones. */
+:root{
+  --bg:#f3f6f8; --panel:#ffffff; --ink:#15212b; --muted:#566673; --line:#d5dde3;
+  --accent:#0f6b7d; --accent-soft:#e0eff2; --warm:#b5650b; --warm-soft:#f8ead8; --good:#2f7a3d;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --f-math:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f161c; --panel:#162129; --ink:#e3eaef; --muted:#9aabb7; --line:#2b3a45;
+  --accent:#5cc0d3; --accent-soft:#16343c; --warm:#f0a54a; --warm-soft:#3a2a16; --good:#7bc98a; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f161c; --panel:#162129; --ink:#e3eaef; --muted:#9aabb7; --line:#2b3a45;
+  --accent:#5cc0d3; --accent-soft:#16343c; --warm:#f0a54a; --warm-soft:#3a2a16; --good:#7bc98a; color-scheme:dark}
+body{background:var(--bg);color:var(--ink);font:16px/1.6 var(--f-body)}
+.wrap{max-width:46rem;margin:0 auto;padding-inline:16px;padding-block:28px 48px;display:flex;flex-direction:column;gap:30px}
+h1,h2{font-family:var(--f-display);text-wrap:balance;line-height:1.15;margin:0}
+h1{font-size:clamp(1.9rem,6vw,2.6rem);font-weight:750}
+h2{font-size:1.35rem;font-weight:600;display:flex;gap:.55rem;align-items:baseline}
+h2 .n{font-family:var(--f-math);font-size:.8rem;color:var(--accent);font-weight:500}
+h3{font-size:1rem;margin:0 0 .3rem}
+p{margin:0}
+section{display:flex;flex-direction:column;gap:12px;min-width:0}
+.eyebrow{font-family:var(--f-math);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.tag{background:var(--accent-soft);color:var(--accent);padding:1px 8px;border-radius:4px}
+.lede{color:var(--muted);font-size:1.05rem}
+.m{font-family:var(--f-math);font-size:.95em;white-space:nowrap}
+.box{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:14px 16px;min-width:0}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.92rem}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-size:.75rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600}
+td:first-child{font-family:var(--f-math);font-size:1rem;color:var(--accent);width:26%}
+td:nth-child(2){font-style:italic;width:28%}
+.steps{font-family:var(--f-math);font-size:.93rem;line-height:1.85;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 16px;overflow-x:auto;white-space:pre;margin:0}
+.steps .c{color:var(--muted)}
+.steps .ok{color:var(--good);font-weight:500}
+figure{margin:0;display:flex;flex-direction:column;gap:8px}
+figcaption{font-size:.88rem;color:var(--muted)}
+svg{display:block;max-width:100%;height:auto}
+svg text{font-family:var(--f-math);fill:var(--ink)}
+.svg-muted, .svg-muted text, svg text.svg-muted{fill:var(--muted)}
+.formula{background:var(--panel);border:2px solid var(--accent);border-radius:12px;padding:20px 16px;text-align:center;display:flex;flex-direction:column;gap:10px}
+.formula .big{font-family:var(--f-math);font-size:clamp(1.5rem,6vw,2.1rem);font-weight:500;color:var(--accent)}
+.aloud{font-size:.95rem;color:var(--ink)}
+.aloud b{color:var(--warm)}
+ul,ol{margin:0;padding-left:1.25rem;display:flex;flex-direction:column;gap:6px}
+details{background:var(--warm-soft);border-radius:10px;padding:12px 16px}
+summary{cursor:pointer;font-weight:600;color:var(--warm)}
+details[open] summary{margin-bottom:10px}
+details .steps{margin-top:8px}
+pre.code{font-family:var(--f-math);font-size:.88rem;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:12px 16px;overflow-x:auto;margin:0}
+.q{font-size:1.05rem;border-left:3px solid var(--warm);padding-left:12px}
+a{color:var(--accent)}
+a:focus-visible,summary:focus-visible,input:focus-visible{outline:2px solid var(--warm);outline-offset:2px}
+.ctrl{display:flex;gap:12px;align-items:center;flex-wrap:wrap;font-family:var(--f-math);font-size:.9rem}
+.ctrl input{flex:1;min-width:140px;accent-color:var(--accent)}
+.readout{font-family:var(--f-math);font-size:.85rem;color:var(--muted);white-space:pre-wrap}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:14px}
+footer{border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font-size:.92rem;display:flex;flex-direction:column;gap:4px}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+
+<header style="display:flex;flex-direction:column;gap:10px">
+  <div class="eyebrow">Concept 07 · <span class="tag">Prep</span></div>
+  <h1>The AI/ML maths bridge</h1>
+  <p class="lede">Slopes, feature vectors, a neural-network layer, gradient descent and softmax. Everything here reuses concepts 03–06: vectors, dot products, matrices and probabilities.</p>
+</header>
+
+<section>
+  <h2><span class="n">01</span>Symbols on this page</h2>
+  <div class="box scroll">
+    <table>
+      <thead><tr><th>Symbol</th><th>Say it</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>x = (x₁, x₂, x₃)</td><td>"x is x-one, x-two, x-three"</td><td>A feature vector: a list of numbers describing one data point. The small ₁ ₂ ₃ are just position labels.</td></tr>
+        <tr><td>W</td><td>"capital W"</td><td>The weight matrix of a layer (rows × columns, as on the matrices concept).</td></tr>
+        <tr><td>b</td><td>"b"</td><td>The bias vector: a fixed number added to each output.</td></tr>
+        <tr><td>y = Wx + b</td><td>"y equals W x plus b"</td><td>Multiply the matrix W by the vector x, then add b.</td></tr>
+        <tr><td>a · b</td><td>"a dot b"</td><td>Dot product: multiply matching entries, then add them up. Between plain numbers, · just means "times".</td></tr>
+        <tr><td>‖a‖</td><td>"the length of a" / "norm of a"</td><td>Length of the arrow, by Pythagoras (the inner products concept).</td></tr>
+        <tr><td>θ</td><td>"theta"</td><td>An angle.</td></tr>
+        <tr><td>cos θ</td><td>"cos theta"</td><td>Cosine of the angle: 1 when two arrows point the same way, 0 at a right angle.</td></tr>
+        <tr><td>L(w)</td><td>"L of w"</td><td>The loss: a score of how wrong the model is when its weight is w. Smaller is better.</td></tr>
+        <tr><td>dL/dw</td><td>"d L by d w"</td><td>The derivative (the gradient, for one weight): the slope of the loss curve at the current w.</td></tr>
+        <tr><td>η</td><td>"eta" (AY-tuh)</td><td>Learning rate: how big a step to take.</td></tr>
+        <tr><td>←</td><td>"becomes" / "is replaced by"</td><td>Update the value on the left. Not an equation.</td></tr>
+        <tr><td>w²</td><td>"w squared"</td><td>w × w.</td></tr>
+        <tr><td>e, eˣ</td><td>"e", "e to the x"</td><td>e ≈ 2.718, a fixed number. eˣ is e multiplied by itself x times (and is always positive).</td></tr>
+        <tr><td>Σ</td><td>"sum of" (capital sigma)</td><td>Add up everything that follows.</td></tr>
+        <tr><td>≈</td><td>"is approximately"</td><td>Rounded value.</td></tr>
+        <tr><td>√</td><td>"square root of"</td><td>The number that, times itself, gives what is inside.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">02</span>Back to basics: slope and the derivative</h2>
+  <p><b>Slope</b> = rise ÷ run. Pick two points on a straight line; the slope is how much it goes up divided by how far it goes across. A positive slope climbs to the right, a negative slope falls to the right, zero slope is flat.</p>
+  <p>A curve has a different slope at every point. The <b>derivative</b> is the slope at one exact point: zoom in until the curve looks like a straight line, and measure that line's slope. Two rules are all you need today:</p>
+  <ul>
+    <li>The slope of <span class="m">w²</span> at any point is <span class="m">2w</span>.</li>
+    <li>The slope of <span class="m">(w − 3)²</span> is <span class="m">2(w − 3)</span>. It is the same bowl shifted 3 to the right, so the rule shifts too.</li>
+  </ul>
+  <p><b>Tiny worked example.</b> Slope of the line through (1, 3) and (3, 7), then the slope of w² at w = 3, checked with a tiny step:</p>
+<pre class="steps">rise = 7 − 3 = 4
+run  = 3 − 1 = 2
+slope = 4 ÷ 2 = 2
+
+slope of w² at w = 3:  2 × 3 = 6
+<span class="c">check with a tiny step from 3 to 3.01:</span>
+3.01² = 3.01 × 3.01 = 9.0601
+3²    = 9
+rise  = 9.0601 − 9 = 0.0601
+run   = 3.01 − 3   = 0.01
+slope ≈ 0.0601 ÷ 0.01 = 6.01   <span class="ok">✓ close to 6</span></pre>
+</section>
+
+<section>
+  <h2><span class="n">03</span>The idea</h2>
+  <p>A machine-learning model sees every data point as a <b>vector of features</b> (a house might be <span class="m">(area, rooms, age)</span>). A layer of a neural network is just the matrices concept's matrix-times-vector plus a bias: <span class="m">y = Wx + b</span>. Training means finding the numbers in W that make a <b>loss</b> small, and the tool for that is the slope: step <i>downhill</i>, a little at a time. At the end, <b>softmax</b> turns raw scores into probabilities that add to 1, just like the probability concept.</p>
+</section>
+
+<section>
+  <h2><span class="n">04</span>Diagrams</h2>
+
+  <figure class="box">
+    <h3>A. "How alike?" Dot product and cosine similarity</h3>
+    <svg viewBox="0 0 360 240" role="img" aria-label="Two vectors (3,4) and (4,3) from the origin with the small angle between them">
+      <g stroke="var(--line)" stroke-width="1">
+        <line x1="75" y1="20" x2="75" y2="200"/><line x1="110" y1="20" x2="110" y2="200"/><line x1="145" y1="20" x2="145" y2="200"/><line x1="180" y1="20" x2="180" y2="200"/>
+        <line x1="40" y1="165" x2="220" y2="165"/><line x1="40" y1="130" x2="220" y2="130"/><line x1="40" y1="95" x2="220" y2="95"/><line x1="40" y1="60" x2="220" y2="60"/>
+      </g>
+      <g stroke="var(--muted)" stroke-width="1.5"><line x1="40" y1="200" x2="225" y2="200"/><line x1="40" y1="200" x2="40" y2="15"/></g>
+      <g font-size="11" class="svg-muted" text-anchor="middle"><text x="75" y="215">1</text><text x="110" y="215">2</text><text x="145" y="215">3</text><text x="180" y="215">4</text><text x="232" y="204">x₁</text></g>
+      <g font-size="11" class="svg-muted" text-anchor="end"><text x="34" y="169">1</text><text x="34" y="134">2</text><text x="34" y="99">3</text><text x="34" y="64">4</text><text x="46" y="12" text-anchor="start">x₂</text></g>
+      <defs>
+        <marker id="ha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--accent)"/></marker>
+        <marker id="hw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="var(--warm)"/></marker>
+      </defs>
+      <line x1="40" y1="200" x2="145" y2="60" stroke="var(--accent)" stroke-width="2.5" marker-end="url(#ha)"/>
+      <line x1="40" y1="200" x2="180" y2="95" stroke="var(--warm)" stroke-width="2.5" marker-end="url(#hw)"/>
+      <path d="M72 176 A40 40 0 0 0 64 168" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+      <text x="82" y="168" font-size="12">θ</text>
+      <text x="126" y="50" font-size="13" fill="var(--accent)" style="fill:var(--accent)">a = (3, 4)</text>
+      <text x="186" y="92" font-size="13" style="fill:var(--warm)">c = (4, 3)</text>
+      <text x="236" y="130" font-size="12">a · c = 24</text>
+      <text x="236" y="150" font-size="12">‖a‖ = ‖c‖ = 5</text>
+      <text x="236" y="170" font-size="12">cos θ = 0.96</text>
+      <text x="236" y="190" font-size="12">θ ≈ 16°</text>
+    </svg>
+    <figcaption>cos θ = (a · c) ÷ (‖a‖ × ‖c‖). Close to 1 means "very alike", 0 means "unrelated", −1 means "opposite". Search engines and recommenders compare items this way.</figcaption>
+  </figure>
+
+  <figure class="box">
+    <h3>B. A layer: 3 inputs → 2 outputs, and its W matrix</h3>
+    <div class="two">
+      <svg viewBox="0 0 300 220" role="img" aria-label="Three input nodes each connected to two output nodes; edge weights listed">
+        <g stroke-width="2" fill="none">
+          <line x1="62" y1="40" x2="218" y2="75" stroke="var(--accent)"/>
+          <line x1="62" y1="110" x2="218" y2="75" stroke="var(--accent)" stroke-dasharray="4 4"/>
+          <line x1="62" y1="180" x2="218" y2="75" stroke="var(--accent)"/>
+          <line x1="62" y1="40" x2="218" y2="145" stroke="var(--warm)"/>
+          <line x1="62" y1="110" x2="218" y2="145" stroke="var(--warm)"/>
+          <line x1="62" y1="180" x2="218" y2="145" stroke="var(--warm)" stroke-dasharray="4 4"/>
+        </g>
+        <g fill="var(--panel)" stroke="var(--ink)" stroke-width="1.5">
+          <circle cx="45" cy="40" r="17"/><circle cx="45" cy="110" r="17"/><circle cx="45" cy="180" r="17"/>
+          <circle cx="235" cy="75" r="17"/><circle cx="235" cy="145" r="17"/>
+        </g>
+        <g font-size="13" text-anchor="middle">
+          <text x="45" y="45">x₁</text><text x="45" y="115">x₂</text><text x="45" y="185">x₃</text>
+          <text x="235" y="80">y₁</text><text x="235" y="150">y₂</text>
+        </g>
+        <g font-size="11" text-anchor="start">
+          <text x="256" y="72" style="fill:var(--accent)">+b₁</text>
+          <text x="256" y="150" style="fill:var(--warm)">+b₂</text>
+        </g>
+        <g font-size="11" text-anchor="middle" class="svg-muted">
+          <text x="45" y="14">inputs</text><text x="235" y="200">outputs</text>
+        </g>
+        <text x="140" y="214" font-size="10" text-anchor="middle" class="svg-muted">dashed = weight 0</text>
+      </svg>
+      <svg viewBox="0 0 260 220" role="img" aria-label="The weight matrix W with two rows, and a worked y = Wx + b">
+        <text x="10" y="30" font-size="12" class="svg-muted">row 1 → y₁, row 2 → y₂</text>
+        <text x="10" y="82" font-size="18">W =</text>
+        <path d="M62 52 h-6 v52 h6 M196 52 h6 v52 h-6" fill="none" stroke="var(--ink)" stroke-width="1.5"/>
+        <g font-size="16" text-anchor="middle">
+          <text x="84" y="72" style="fill:var(--accent)">1</text><text x="128" y="72" style="fill:var(--accent)">0</text><text x="172" y="72" style="fill:var(--accent)">−1</text>
+          <text x="84" y="98" style="fill:var(--warm)">2</text><text x="128" y="98" style="fill:var(--warm)">1</text><text x="172" y="98" style="fill:var(--warm)">0</text>
+        </g>
+        <g font-size="10" text-anchor="middle" class="svg-muted"><text x="84" y="120">from x₁</text><text x="128" y="120">from x₂</text><text x="172" y="120">from x₃</text></g>
+        <text x="10" y="152" font-size="13">b = (0.5, −1)</text>
+        <text x="10" y="174" font-size="13">x = (1, 2, 3)</text>
+        <text x="10" y="200" font-size="13">y = Wx + b = (−1.5, 3)</text>
+      </svg>
+    </div>
+    <figcaption>W has 2 rows (one per output) and 3 columns (one per input), so it is 2 × 3. y₁ = 1·1 + 0·2 + (−1)·3 + 0.5 = 1 + 0 − 3 + 0.5 = −1.5. y₂ = 2·1 + 1·2 + 0·3 − 1 = 2 + 2 + 0 − 1 = 3. Each output is a dot product of one row with x, plus its bias.</figcaption>
+  </figure>
+
+  <figure class="box">
+    <h3>C. Gradient descent walking down the loss L(w) = (w − 1)²</h3>
+    <div class="scroll"><svg id="gd" viewBox="0 0 360 250" role="img" aria-label="Parabola with gradient descent steps; slider changes learning rate"></svg></div>
+    <div class="ctrl"><label for="eta">η =</label><input id="eta" type="range" min="0.05" max="1" step="0.05" value="0.25"><span id="etaval">0.25</span></div>
+    <div class="readout" id="gdread"></div>
+    <figcaption>Start at w = 5. Each step: find the slope 2(w − 1), then move w the opposite way by η × slope. Small η crawls; η = 0.5 lands on the bottom in one step; η near 1 overshoots and bounces from side to side.</figcaption>
+  </figure>
+
+  <figure class="box">
+    <h3>D. Softmax: scores (3, 1, 0) become probabilities</h3>
+    <svg viewBox="0 0 360 200" role="img" aria-label="Bar charts: raw scores 3,1,0 and softmax probabilities 0.84, 0.11, 0.04">
+      <g stroke="var(--muted)" stroke-width="1.5"><line x1="20" y1="160" x2="160" y2="160"/><line x1="200" y1="160" x2="340" y2="160"/></g>
+      <g style="fill:var(--muted)" opacity=".55">
+        <rect x="32" y="40" width="30" height="120"/><rect x="75" y="120" width="30" height="40"/><rect x="118" y="158" width="30" height="2"/>
+      </g>
+      <g style="fill:var(--accent)">
+        <rect x="212" y="58.7" width="30" height="101.3"/><rect x="255" y="146.3" width="30" height="13.7"/><rect x="298" y="155" width="30" height="5"/>
+      </g>
+      <g font-size="12" text-anchor="middle">
+        <text x="47" y="34">3</text><text x="90" y="114">1</text><text x="133" y="152">0</text>
+        <text x="227" y="52">0.84</text><text x="270" y="140">0.11</text><text x="313" y="149">0.04</text>
+      </g>
+      <g font-size="11" text-anchor="middle" class="svg-muted">
+        <text x="47" y="176">cat</text><text x="90" y="176">dog</text><text x="133" y="176">fox</text>
+        <text x="227" y="176">cat</text><text x="270" y="176">dog</text><text x="313" y="176">fox</text>
+        <text x="90" y="196">raw scores</text><text x="270" y="196">softmax (sum = 1)</text>
+      </g>
+      <text x="180" y="105" font-size="18" text-anchor="middle" style="fill:var(--warm)">→</text>
+    </svg>
+    <figcaption>e³ ≈ 20.09, e¹ ≈ 2.72, e⁰ = 1, total ≈ 23.80. Divide each by the total: 0.844, 0.114, 0.042 (they add to 1). The biggest score wins most of the probability.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2><span class="n">05</span>Key formula: one gradient-descent step</h2>
+  <div class="formula">
+    <div class="big">w ← w − η · dL/dw</div>
+    <p class="aloud"><b>Read it aloud:</b> "w becomes w minus eta times d L by d w."</p>
+    <p class="aloud" style="color:var(--muted)">New weight = old weight − (learning rate × slope of the loss here). The minus sign means: go against the slope, which is downhill.</p>
+  </div>
+</section>
+
+<section>
+  <h2><span class="n">06</span>Worked example</h2>
+  <p>Loss <span class="m">L(w) = (w − 1)²</span>, start at <span class="m">w = 5</span>, learning rate <span class="m">η = 0.25</span>. Take two steps (this is diagram C at its default setting).</p>
+<pre class="steps"><span class="c">Slope rule:  dL/dw = 2(w − 1)</span>
+
+<span class="c">Step 1, w = 5</span>
+dL/dw = 2 × (5 − 1)
+      = 2 × 4
+      = 8
+η × slope = 0.25 × 8 = 2
+new w = 5 − 2 = 3
+
+<span class="c">Step 2, w = 3</span>
+dL/dw = 2 × (3 − 1)
+      = 2 × 2
+      = 4
+η × slope = 0.25 × 4 = 1
+new w = 3 − 1 = 2
+
+<span class="c">Check: is the loss going down?</span>
+L(5) = (5 − 1)² = 4² = 16
+L(3) = (3 − 1)² = 2² = 4
+L(2) = (2 − 1)² = 1² = 1
+16 → 4 → 1   <span class="ok">✓ falling towards the minimum at w = 1</span></pre>
+</section>
+
+<section>
+  <h2><span class="n">07</span>Common mistakes</h2>
+  <ul>
+    <li><b>Adding the gradient instead of subtracting it.</b> <span class="m">w + η·slope</span> walks uphill and the loss grows. The rule is always minus.</li>
+    <li><b>Losing a minus sign inside the slope.</b> If w is left of the minimum, the slope is negative, and "minus a negative" becomes plus: w moves right. Write <span class="m">0 − 0.1 × (−6)</span> out in full before simplifying.</li>
+    <li><b>Softmax on the raw scores.</b> Dividing 2, 1, 0 by their sum (3) is not softmax. Take eˣ of each score first, then divide by the total of those.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span class="n">08</span>Practice</h2>
+  <p class="q">Take one gradient-descent step on <span class="m">f(w) = (w − 3)²</span> starting from <span class="m">w = 0</span> with learning rate <span class="m">η = 0.1</span>. <b>Bonus:</b> compute softmax of the scores <span class="m">(2, 1, 0)</span>.</p>
+  <details>
+    <summary>Show answer</summary>
+<pre class="steps"><span class="c">Slope rule:  df/dw = 2(w − 3)</span>
+df/dw at w = 0 = 2 × (0 − 3)
+               = 2 × (−3)
+               = −6
+η × slope = 0.1 × (−6) = −0.6
+new w = 0 − (−0.6)
+      = 0 + 0.6
+      = 0.6
+
+<span class="c">Check:</span>
+f(0)   = (0 − 3)²   = (−3)²   = 9
+f(0.6) = (0.6 − 3)² = (−2.4)² = 5.76
+9 → 5.76   <span class="ok">✓ loss went down; w moved towards 3</span>
+
+<span class="c">Bonus: softmax(2, 1, 0)</span>
+e² ≈ 7.389
+e¹ ≈ 2.718
+e⁰ = 1
+total = 7.389 + 2.718 + 1 = 11.107
+p₁ = 7.389 ÷ 11.107 ≈ 0.665
+p₂ = 2.718 ÷ 11.107 ≈ 0.245
+p₃ = 1     ÷ 11.107 ≈ 0.090
+<span class="c">Check:</span> 0.665 + 0.245 + 0.090 = 1.000   <span class="ok">✓</span></pre>
+  </details>
+</section>
+
+<section>
+  <h2><span class="n">09</span>Check it in NumPy</h2>
+<pre class="code">import numpy as np
+w, eta = 0.0, 0.1
+grad = 2 * (w - 3)
+print(grad, round(w - eta * grad, 4))                # -6.0 0.6
+s = np.array([2, 1, 0]); print(np.exp(s) / np.exp(s).sum())  # [0.665 0.245 0.09]</pre>
+  <p style="color:var(--muted);font-size:.92rem">Why this matters for the course: a quantum support vector machine (QSVM) and quantum kernels do the same "how alike?" job as diagram A, but compute the inner product between data points after encoding them as quantum states.</p>
+</section>
+
+<section>
+  <h2><span class="n">10</span>Go deeper</h2>
+  <ul>
+    <li><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/quantum-foundations/concepts/07-ml-maths-bridge/notebook.ipynb">Tutorial notebook: 06_ai_ml_maths_bridge</a></li>
+    <li><a href="notebook.html">The same tutorial as a web page</a></li>
+    <li><a href="../../reference/reading-maths-symbols.html">Symbol dictionary: how to read maths symbols</a></li>
+  </ul>
+</section>
+
+<footer>
+  <div><b>Study time:</b> 60 min</div>
+  <div><a href="../../../">All concepts</a></div>
+</footer>
+</div>
+
+<script>
+(function(){
+  var svg=document.getElementById('gd'), slider=document.getElementById('eta'), out=document.getElementById('etaval'), read=document.getElementById('gdread');
+  var X0=40, X1=340, Y0=210, Y1=20, WMIN=-3, WMAX=5, LMAX=16;
+  function sx(w){return X0+(w-WMIN)*(X1-X0)/(WMAX-WMIN);}
+  function sy(L){return Y0-L*(Y0-Y1)/LMAX;}
+  function L(w){return (w-1)*(w-1);}
+  function f(n){return (Math.round(n*1000)/1000).toString().replace('-','−');}
+  function draw(){
+    var eta=parseFloat(slider.value); out.textContent=eta.toFixed(2);
+    var h='';
+    for(var t=0;t<=16;t+=4){h+='<line x1="'+X0+'" y1="'+sy(t)+'" x2="'+X1+'" y2="'+sy(t)+'" stroke="var(--line)"/>';
+      h+='<text x="'+(X0-6)+'" y="'+(sy(t)+4)+'" font-size="11" text-anchor="end" class="svg-muted">'+t+'</text>';}
+    for(var w=WMIN;w<=WMAX;w++){h+='<text x="'+sx(w)+'" y="'+(Y0+16)+'" font-size="11" text-anchor="middle" class="svg-muted">'+String(w).replace('-','−')+'</text>';}
+    h+='<line x1="'+X0+'" y1="'+Y0+'" x2="'+X1+'" y2="'+Y0+'" stroke="var(--muted)" stroke-width="1.5"/>';
+    h+='<line x1="'+X0+'" y1="'+Y0+'" x2="'+X0+'" y2="'+Y1+'" stroke="var(--muted)" stroke-width="1.5"/>';
+    h+='<text x="'+X1+'" y="'+(Y0+32)+'" font-size="11" text-anchor="end" class="svg-muted">w (weight)</text>';
+    h+='<text x="'+(X0+4)+'" y="'+(Y1-6)+'" font-size="11" class="svg-muted">L(w)</text>';
+    var d='';for(var i=0;i<=160;i++){var ww=WMIN+i*(WMAX-WMIN)/160;d+=(i?'L':'M')+sx(ww).toFixed(1)+' '+sy(L(ww)).toFixed(1);}
+    h+='<path d="'+d+'" fill="none" stroke="var(--accent)" stroke-width="2.5"/>';
+    h+='<text x="'+sx(1)+'" y="'+(Y0-6)+'" font-size="10" text-anchor="middle" class="svg-muted">min</text>';
+    var w=5, pts=[w], lines=['step 0: w = 5, L = 16'];
+    for(var k=1;k<=6;k++){var g=2*(w-1);w=w-eta*g;pts.push(w);if(k<=3)lines.push('step '+k+': slope '+f(g)+', w = '+f(w)+', L = '+f(L(w)));}
+    for(var j=0;j<pts.length-1;j++){h+='<line x1="'+sx(pts[j])+'" y1="'+sy(L(pts[j]))+'" x2="'+sx(pts[j+1])+'" y2="'+sy(L(pts[j+1]))+'" stroke="var(--warm)" stroke-width="1.5" stroke-dasharray="4 3"/>';}
+    pts.forEach(function(p,j){h+='<circle cx="'+sx(p)+'" cy="'+sy(L(p))+'" r="'+(j?4:5.5)+'" fill="'+(j?'var(--warm)':'var(--panel)')+'" stroke="var(--warm)" stroke-width="2"/>';});
+    svg.innerHTML=h;
+    read.textContent=lines.join('\n')+(eta===0.5?'\n(η = 0.5 jumps straight to the bottom)':eta>0.5?'\n(overshoots: w hops across the minimum)':'');
+  }
+  slider.addEventListener('input',draw); draw();
+})();
+</script>
+
+<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 07 of 12</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../06-probability/">← Probability and expectation</a> · <a href="../08-qubits-and-dirac-notation/">Qubits and Dirac notation →</a></div></nav></body></html>

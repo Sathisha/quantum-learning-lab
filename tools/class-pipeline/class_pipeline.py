@@ -41,7 +41,7 @@ VIDEO = {".mp4", ".mkv", ".mov", ".webm"}
 
 # Words Whisper might otherwise mishear; it uses this as context, not as a script.
 COURSE_PROMPT = (
-    "IIT Delhi lecture on quantum computing and linear algebra. Terms: qubit, ket, bra, Dirac notation, "
+    "Lecture on quantum computing and linear algebra. Terms: qubit, ket, bra, Dirac notation, "
     "Hadamard, Hermitian, unitary, eigenvalue, eigenvector, orthonormal basis, inner product, norm, "
     "Cauchy-Schwarz, Parseval, tensor product, Kronecker, Bloch sphere, superposition, entanglement, "
     "CNOT, Pauli X Y Z, Qiskit, Grover, Shor, Deutsch-Jozsa, quantum Fourier transform, QAOA, VQE, NISQ."
@@ -172,7 +172,7 @@ def notes(out: Path, url: str, model: str | None, chunk_chars: int) -> None:
     for i, ch in enumerate(chunks, 1):
         print(f"    notes: part {i}/{len(chunks)}", flush=True)
         parts.append(lmstudio(
-            "You are taking study notes from part of a recorded university lecture (IIT Delhi, quantum computing "
+            "You are taking study notes from part of a recorded lecture (quantum computing "
             "and linear algebra). Speech-to-text errors are likely; fix obvious ones. From the transcript below, write:\n"
             "1. Topics covered, in order, with the timestamp where each starts.\n"
             "2. Every definition, formula and worked example the lecturer gave, with each step.\n"

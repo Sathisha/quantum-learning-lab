@@ -1,6 +1,6 @@
 # Quantum Learning Lab
 
-My workspace for learning quantum computing: course material, notebooks and experiments.
+My workspace for learning quantum computing: study notes, notebooks and experiments.
 
 **Read on a phone:** https://sathisha.github.io/quantum-learning-lab/ (the HTML pages rendered, via GitHub Pages)
 
@@ -8,7 +8,7 @@ My workspace for learning quantum computing: course material, notebooks and expe
 
 | Folder | What it is | Status |
 | --- | --- | --- |
-| [iitd-cep-applied-quantum-ai](iitd-cep-applied-quantum-ai/) | IIT Delhi CEP Certification in Applied Quantum Computing & AI (Oct 2026 – Apr 2027), organised by concept | In progress: Week 1 done |
+| [quantum-foundations](quantum-foundations/) | Maths and quantum computing foundations, organised by concept | In progress |
 
 New projects get their own top-level folder.
 
