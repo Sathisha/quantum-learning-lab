@@ -9,7 +9,7 @@
 .cnav a:focus-visible{outline:2px solid var(--cn-a);outline-offset:2px}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}}
 :root[data-theme="dark"] .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}
-</style><nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 12 of 12</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../11-entanglement-and-qiskit/">← Entanglement and your first Qiskit circuit</a></div></nav>
+</style><nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 12 of 13</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../11-entanglement-and-qiskit/">← Entanglement and your first Qiskit circuit</a> · <a href="../13-deutsch-algorithm/">Deutsch's algorithm →</a></div></nav>
 <title>The Bloch sphere</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -88,6 +88,7 @@ footer{border-top:1px solid var(--line);padding-top:16px;font-size:.92rem;color:
   <div class="eyebrow">Concept 12 · Intro</div>
   <h1>The Bloch sphere</h1>
   <p class="lede">Every single-qubit state is one point on a ball. Two angles say where the point is, the same way latitude and longitude say where a city is on a globe.</p>
+  <p class="lede"><a href="#from-class">What class added in Week 2 ↓</a></p>
 </header>
 
 <section>
@@ -314,6 +315,178 @@ for name, t, p in [("|0>", 0, 0), ("|1>", np.pi, 0), ("|+>", np.pi/2, 0), ("|->"
 </section>
 
 
+<!-- from-class:start --><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&family=Spectral:wght@500;700&display=swap"><style>
+.fc{
+  --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4; --grid:#e6ebf2;
+  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --okbg:#e5f4ec; --soft:#f5f7fb; --code:#f2f4f8;
+  --f-display:"Spectral",Georgia,serif; --f-body:"Atkinson Hyperlegible",system-ui,sans-serif; --f-math:"JetBrains Mono",ui-monospace,Menlo,monospace;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .fc{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}}
+:root[data-theme="dark"] .fc{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}
+.fc{color:var(--ink);font:17px/1.6 var(--f-body);display:flex;flex-direction:column;gap:28px;border-top:2px solid var(--rule);padding-top:22px;margin-top:8px;text-align:left}
+.fc h1{font-size:clamp(1.8rem,6vw,2.3rem)}
+.fc h2{font-size:1.5rem;padding-bottom:6px;border-bottom:1px solid var(--rule)}
+.fc h3{font-size:1.2rem}
+.fc section,.fc article{display:flex;flex-direction:column;gap:12px;min-width:0}
+.fc p{margin:0;max-width:65ch}
+.fc .eyebrow{font:600 .78rem/1 var(--f-math);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.fc .m{font-family:var(--f-math);font-size:.92em;white-space:nowrap}
+.fc .re{color:var(--re)} .im{color:var(--im)}
+.fc .bar{text-decoration:overline;text-decoration-thickness:1.5px}
+.fc .box{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.fc .scroll{overflow-x:auto}
+.fc table{border-collapse:collapse;width:100%;font-size:.95rem}
+.fc th,.fc td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+.fc th{font:600 .75rem var(--f-math);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.fc .sym td:first-child{font-family:var(--f-math);font-weight:600;white-space:nowrap}
+.fc .key{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:8px}
+.fc .key a{display:flex;justify-content:space-between;align-items:baseline;gap:6px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:7px 10px;font-family:var(--f-math);font-variant-numeric:tabular-nums}
+.fc .key a b{color:var(--ok)}
+.fc .key a span{color:var(--muted);font-size:.85rem}
+.fc .qcard{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
+.fc .qhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.fc .qhead .qn{font:700 .85rem var(--f-math);color:var(--muted)}
+.fc .qtext{font-size:1.05rem}
+.fc .opts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:6px}
+.fc .opts li{border:1px solid var(--rule);border-radius:8px;padding:6px 10px;font-family:var(--f-math);font-size:.92rem;min-width:0;overflow-wrap:anywhere}
+.fc .opts li .l{color:var(--muted);margin-right:6px}
+.fc .show .opts li.ok,.fc .revealed .opts li.ok{border-color:var(--ok);background:var(--okbg);color:var(--ink)}
+.fc .show .opts li.ok .l,.fc .revealed .opts li.ok .l{color:var(--ok);font-weight:700}
+.fc .badge{font:700 .82rem var(--f-math);color:var(--ok);background:var(--okbg);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.fc body:not(.show) .qcard:not(.revealed) .badge{visibility:hidden}
+.fc .steps{font-family:var(--f-math);font-size:.93rem;background:var(--code);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.fc .steps span{white-space:pre-wrap}
+.fc .steps .note{color:var(--muted);font-family:var(--f-body);font-size:.88rem;white-space:normal}
+.fc .steps .ok{color:var(--ok);font-weight:600}
+.fc figure{margin:0;background:var(--soft);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.fc figure svg{width:100%;height:auto;max-width:360px;align-self:center;display:block}
+.fc figcaption{font-size:.9rem;color:var(--muted)}
+.fc figcaption b{color:var(--ink)}
+.fc svg text{font-family:var(--f-math);font-size:12px;fill:var(--ink)}
+.fc svg .lab{font-size:13px;font-weight:600}
+.fc svg .mut{fill:var(--muted)}
+.fc svg .grid{stroke:var(--grid);stroke-width:1}
+.fc svg .axis{stroke:var(--muted);stroke-width:1.3}
+.fc svg .reS{stroke:var(--re)} svg .imS{stroke:var(--im)} svg .inkS{stroke:var(--ink)} svg .okS{stroke:var(--ok)} svg .mutS{stroke:var(--muted)}
+.fc svg .reF{fill:var(--re)} svg .imF{fill:var(--im)} svg .inkF{fill:var(--ink)} svg .okF{fill:var(--ok)} svg .bgF{fill:var(--paper)} svg .none{fill:none}
+.fc svg .okT{fill:var(--ok)} svg .reT{fill:var(--re)} svg .imT{fill:var(--im)}
+.fc .why{font-size:.95rem;color:var(--muted)}
+.fc .why b{color:var(--ink)}
+.fc .ql{background:var(--soft);border-left:3px solid var(--im);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.fc .ql b{color:var(--im)}
+.fc .warn{background:var(--soft);border-left:3px solid var(--re);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.fc details.sol{border-top:1px dashed var(--rule);padding-top:10px}
+.fc details.sol>summary{cursor:pointer;font-weight:700;color:var(--re);list-style-position:inside}
+.fc details.sol[open]>summary{margin-bottom:10px}
+.fc details.sol>div{display:flex;flex-direction:column;gap:12px}
+.fc .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fc button{font:600 .9rem var(--f-body);color:var(--re);background:var(--paper);border:1px solid var(--re);border-radius:8px;padding:8px 14px;cursor:pointer}
+.fc button:hover{background:var(--soft)}
+.fc button:focus-visible,.fc summary:focus-visible,.fc a:focus-visible{outline:2px solid var(--re);outline-offset:3px}
+.fc ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;max-width:65ch}
+.fc pre.code{margin:0;background:var(--code);border-radius:8px;padding:14px 16px;overflow-x:auto;font:.85rem/1.55 var(--f-math)}
+.fc a{color:var(--re)}
+.fc footer{border-top:1px solid var(--rule);padding-top:14px;color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+@media (prefers-reduced-motion:reduce){.fc *{transition:none!important}}
+.fc .tag{font:600 .72rem var(--f-math);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.fc .tag.new{color:var(--ok);background:var(--okbg)} .tag.have{color:var(--re);background:var(--soft)} .tag.next{color:var(--im);background:var(--soft)}
+.fc .cov td:nth-child(2){white-space:nowrap}
+.fc .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:12px}
+.fc .grid2>div{min-width:0}
+</style><div class="fc" id="from-class"><section><span class="eyebrow">From class · Week 2 · Sat 24 Oct 2026 · morning</span><h2>What class added</h2><p>The lecture built the sphere the same way this page does, then added three things worth keeping: a classical warm-up for "phase", the argument for why exactly two angles are enough, and a reference table of six key states. The big message: <b>latitude sets the measurement odds, longitude sets the interference</b>.</p></section>
+
+<article class="qcard" id="phase-warmup">
+  <div class="qhead"><span class="qn">From class, Week 2 · slide 9</span></div>
+  <h3>Phase: a classical warm-up with two waves</h3>
+  <p>A phase is just an angle φ on a circle, written as the length-1 complex number e^(iφ) = cos φ + i sin φ. Picture two identical waves:</p>
+  <ul>
+    <li><b>Shift one wave relative to the other</b> and the pattern they make together changes. φ = 0: they reinforce. φ = π (half a turn): they cancel. That is how noise-cancelling headphones work.</li>
+    <li><b>Slide both waves by the same amount</b> and nothing you can observe changes.</li>
+  </ul>
+  <div class="ql"><b>The rule carried into quantum:</b> only <i>relative</i> phase is observable. A <i>global</i> phase, multiplying the whole state, is invisible.</div>
+</article>
+
+<article class="qcard" id="two-angles">
+  <div class="qhead"><span class="qn">From class, Week 2 · slides 10–11</span></div>
+  <h3>Why two angles are enough: 4 → 3 → 2</h3>
+  <div class="steps">
+    <span>|ψ⟩ = α|0⟩ + β|1⟩, α and β complex  →  2 + 2 = 4 real numbers</span>
+    <span class="note">Fact 1, normalisation: |α|² + |β|² = 1. One equation removes one number.</span>
+    <span>4 → 3</span>
+    <span class="note">Fact 2, global phase is invisible: multiply the whole state by e^(−i·arg α) (spin α back to the positive real axis). Nothing measurable changes, so we may take α real and ≥ 0.</span>
+    <span>3 → 2</span>
+    <span class="note">Now set α = cos(θ/2) with θ in [0, π]. Normalisation forces |β| = sin(θ/2). The one phase left rides on β:</span>
+    <span class="ok">|ψ⟩ = cos(θ/2)|0⟩ + e^(iφ) sin(θ/2)|1⟩</span>
+  </div>
+  <p class="why"><b>θ</b> ("theta") = latitude, measured down from the north pole. <b>φ</b> ("phi") = longitude, the relative phase. Two angles = one point on a sphere. Same count in words: ℂ² has 4 real dimensions; normalisation takes one, global phase another.</p>
+</article>
+
+<article class="qcard" id="lat-long">
+  <div class="qhead"><span class="qn">From class, Week 2 · slides 12–13</span></div>
+  <h3>Latitude controls probability, longitude controls phase</h3>
+  <div class="grid2">
+    <div><div class="scroll"><table>
+      <thead><tr><th>State</th><th>θ</th><th>P(0) = cos²(θ/2)</th></tr></thead>
+      <tbody>
+        <tr><td class="m">|0⟩</td><td class="m">0</td><td>1</td></tr>
+        <tr><td class="m">equator</td><td class="m">π/2</td><td>1/2</td></tr>
+        <tr><td class="m">|1⟩</td><td class="m">π</td><td>0</td></tr>
+      </tbody>
+    </table></div><p class="why">Closer to the north pole = higher P(0). On the equator, exactly 50/50.</p></div>
+    <div><div class="scroll"><table>
+      <thead><tr><th>State</th><th>φ</th><th>|1⟩ coefficient</th></tr></thead>
+      <tbody>
+        <tr><td class="m">|+⟩</td><td class="m">0</td><td class="m">1/√2</td></tr>
+        <tr><td class="m">|i⟩</td><td class="m">π/2</td><td class="m">i/√2</td></tr>
+        <tr><td class="m">|−⟩</td><td class="m">π</td><td class="m">−1/√2</td></tr>
+        <tr><td class="m">|−i⟩</td><td class="m">3π/2</td><td class="m">−i/√2</td></tr>
+      </tbody>
+    </table></div><p class="why">All four sit on the equator: same odds, different interference. Longitude is a rotation in the complex plane.</p></div>
+  </div>
+</article>
+
+<article class="qcard" id="six-states">
+  <div class="qhead"><span class="qn">From class, Week 2 · slide 14</span></div>
+  <h3>Six key states</h3>
+  <div class="scroll"><table>
+    <thead><tr><th>State</th><th>(θ, φ)</th><th>Column</th><th>Where</th></tr></thead>
+    <tbody>
+      <tr><td class="m">|0⟩</td><td class="m">(0, any)</td><td class="m">(1, 0)</td><td>north pole, +z</td></tr>
+      <tr><td class="m">|1⟩</td><td class="m">(π, any)</td><td class="m">(0, 1)</td><td>south pole, −z</td></tr>
+      <tr><td class="m">|+⟩</td><td class="m">(π/2, 0)</td><td class="m">(1, 1)/√2</td><td>equator, +x</td></tr>
+      <tr><td class="m">|−⟩</td><td class="m">(π/2, π)</td><td class="m">(1, −1)/√2</td><td>equator, −x</td></tr>
+      <tr><td class="m">|i⟩</td><td class="m">(π/2, π/2)</td><td class="m">(1, i)/√2</td><td>equator, +y</td></tr>
+      <tr><td class="m">|−i⟩</td><td class="m">(π/2, 3π/2)</td><td class="m">(1, −i)/√2</td><td>equator, −y</td></tr>
+    </tbody>
+  </table></div>
+  <p class="why">At the poles φ can be anything: the |1⟩ part is 0 at the north pole and the |0⟩ part is 0 at the south pole, so there is no relative phase to speak of. |i⟩ and |−i⟩ are last week's circular basis c₊, c₋.</p>
+</article>
+
+<article class="qcard" id="relative-phase">
+  <div class="qhead"><span class="qn">From class, Week 2 · slide 27</span></div>
+  <h3>Relative phase is real; global phase is not</h3>
+  <div class="steps">
+    <span>|+⟩ = (|0⟩ + |1⟩)/√2   and   |−⟩ = (|0⟩ − |1⟩)/√2</span>
+    <span>Measured directly: both give P(0) = P(1) = 1/2. Indistinguishable.</span>
+    <span>Apply H first:  H|+⟩ = |0⟩,  H|−⟩ = |1⟩</span>
+    <span class="ok">Now perfectly distinguishable: 100% vs 0% for outcome 0.</span>
+  </div>
+  <p>The sign between the |0⟩ and |1⟩ parts is a <b>relative phase</b>: physically real, visible through interference. But e^(iθ)|ψ⟩ and |ψ⟩ give identical results in every experiment. That overall factor is a <b>global phase</b> and you can always drop it.</p>
+  <details class="sol"><summary>Try it: where on the sphere is ½|0⟩ + (√3/2)|1⟩?</summary><div>
+    <div class="steps">
+      <span>cos(θ/2) = 1/2  →  θ/2 = 60° = π/3  →  θ = 2π/3 (120°)</span>
+      <span>β = √3/2 is real and positive  →  φ = 0</span>
+      <span>Point: 120° down from north, on the +x side (southern hemisphere)</span>
+      <span class="ok">P(0) = cos²(60°) = 1/4 ✓ matches the Born-rule table</span>
+    </div>
+  </div></details>
+</article>
+
+<section><p>Checked in <a href="../../reference/checks/week-02-lecture-check.py">week-02-lecture-check.py</a>. How gates move points around this sphere: <a href="../09-gates/#from-class">gates as matrices → what class added</a>.</p></section>
+</div><!-- from-class:end -->
 <footer>
   <span>Study time: 30 min</span>
   <a href="../../../">All concepts</a>
@@ -399,4 +572,4 @@ for name, t, p in [("|0>", 0, 0), ("|1>", np.pi, 0), ("|+>", np.pi/2, 0), ("|->"
 })();
 </script>
 
-<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 12 of 12</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../11-entanglement-and-qiskit/">← Entanglement and your first Qiskit circuit</a></div></nav></body></html>
+<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 12 of 13</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../11-entanglement-and-qiskit/">← Entanglement and your first Qiskit circuit</a> · <a href="../13-deutsch-algorithm/">Deutsch's algorithm →</a></div></nav></body></html>

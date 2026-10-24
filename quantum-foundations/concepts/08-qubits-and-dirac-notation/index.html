@@ -9,7 +9,7 @@
 .cnav a:focus-visible{outline:2px solid var(--cn-a);outline-offset:2px}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}}
 :root[data-theme="dark"] .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}
-</style><nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 08 of 12</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../07-ml-maths-bridge/">← AI/ML maths bridge</a> · <a href="../09-gates/">Gates as matrices →</a></div></nav>
+</style><nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 08 of 13</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../07-ml-maths-bridge/">← AI/ML maths bridge</a> · <a href="../09-gates/">Gates as matrices →</a></div></nav>
 <title>Qubits and Dirac notation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -108,6 +108,7 @@ footer strong { color: var(--ink); }
   <div class="eyebrow">Concept 08 · <span class="tag">Intro</span></div>
   <h1>Qubits and Dirac notation</h1>
   <p>New spelling for the vectors you met on the inner products concept. Nothing here is new maths: a qubit's state is a length‑1 arrow, and the brackets are just a compact way to write it.</p>
+  <p class="lede"><a href="#from-class">What class added in Week 2 ↓</a></p>
 </header>
 
 <section aria-labelledby="sym">
@@ -336,6 +337,203 @@ print(np.vdot(plus, plus))             <span class="cm"># 1.0 -> normalised (vdo
   </ul>
 </section>
 
+<!-- from-class:start --><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&family=Spectral:wght@500;700&display=swap"><style>
+.fc{
+  --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4; --grid:#e6ebf2;
+  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --okbg:#e5f4ec; --soft:#f5f7fb; --code:#f2f4f8;
+  --f-display:"Spectral",Georgia,serif; --f-body:"Atkinson Hyperlegible",system-ui,sans-serif; --f-math:"JetBrains Mono",ui-monospace,Menlo,monospace;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .fc{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}}
+:root[data-theme="dark"] .fc{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}
+.fc{color:var(--ink);font:17px/1.6 var(--f-body);display:flex;flex-direction:column;gap:28px;border-top:2px solid var(--rule);padding-top:22px;margin-top:8px;text-align:left}
+.fc h1{font-size:clamp(1.8rem,6vw,2.3rem)}
+.fc h2{font-size:1.5rem;padding-bottom:6px;border-bottom:1px solid var(--rule)}
+.fc h3{font-size:1.2rem}
+.fc section,.fc article{display:flex;flex-direction:column;gap:12px;min-width:0}
+.fc p{margin:0;max-width:65ch}
+.fc .eyebrow{font:600 .78rem/1 var(--f-math);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.fc .m{font-family:var(--f-math);font-size:.92em;white-space:nowrap}
+.fc .re{color:var(--re)} .im{color:var(--im)}
+.fc .bar{text-decoration:overline;text-decoration-thickness:1.5px}
+.fc .box{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.fc .scroll{overflow-x:auto}
+.fc table{border-collapse:collapse;width:100%;font-size:.95rem}
+.fc th,.fc td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+.fc th{font:600 .75rem var(--f-math);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.fc .sym td:first-child{font-family:var(--f-math);font-weight:600;white-space:nowrap}
+.fc .key{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:8px}
+.fc .key a{display:flex;justify-content:space-between;align-items:baseline;gap:6px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:7px 10px;font-family:var(--f-math);font-variant-numeric:tabular-nums}
+.fc .key a b{color:var(--ok)}
+.fc .key a span{color:var(--muted);font-size:.85rem}
+.fc .qcard{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
+.fc .qhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.fc .qhead .qn{font:700 .85rem var(--f-math);color:var(--muted)}
+.fc .qtext{font-size:1.05rem}
+.fc .opts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:6px}
+.fc .opts li{border:1px solid var(--rule);border-radius:8px;padding:6px 10px;font-family:var(--f-math);font-size:.92rem;min-width:0;overflow-wrap:anywhere}
+.fc .opts li .l{color:var(--muted);margin-right:6px}
+.fc .show .opts li.ok,.fc .revealed .opts li.ok{border-color:var(--ok);background:var(--okbg);color:var(--ink)}
+.fc .show .opts li.ok .l,.fc .revealed .opts li.ok .l{color:var(--ok);font-weight:700}
+.fc .badge{font:700 .82rem var(--f-math);color:var(--ok);background:var(--okbg);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.fc body:not(.show) .qcard:not(.revealed) .badge{visibility:hidden}
+.fc .steps{font-family:var(--f-math);font-size:.93rem;background:var(--code);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.fc .steps span{white-space:pre-wrap}
+.fc .steps .note{color:var(--muted);font-family:var(--f-body);font-size:.88rem;white-space:normal}
+.fc .steps .ok{color:var(--ok);font-weight:600}
+.fc figure{margin:0;background:var(--soft);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.fc figure svg{width:100%;height:auto;max-width:360px;align-self:center;display:block}
+.fc figcaption{font-size:.9rem;color:var(--muted)}
+.fc figcaption b{color:var(--ink)}
+.fc svg text{font-family:var(--f-math);font-size:12px;fill:var(--ink)}
+.fc svg .lab{font-size:13px;font-weight:600}
+.fc svg .mut{fill:var(--muted)}
+.fc svg .grid{stroke:var(--grid);stroke-width:1}
+.fc svg .axis{stroke:var(--muted);stroke-width:1.3}
+.fc svg .reS{stroke:var(--re)} svg .imS{stroke:var(--im)} svg .inkS{stroke:var(--ink)} svg .okS{stroke:var(--ok)} svg .mutS{stroke:var(--muted)}
+.fc svg .reF{fill:var(--re)} svg .imF{fill:var(--im)} svg .inkF{fill:var(--ink)} svg .okF{fill:var(--ok)} svg .bgF{fill:var(--paper)} svg .none{fill:none}
+.fc svg .okT{fill:var(--ok)} svg .reT{fill:var(--re)} svg .imT{fill:var(--im)}
+.fc .why{font-size:.95rem;color:var(--muted)}
+.fc .why b{color:var(--ink)}
+.fc .ql{background:var(--soft);border-left:3px solid var(--im);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.fc .ql b{color:var(--im)}
+.fc .warn{background:var(--soft);border-left:3px solid var(--re);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.fc details.sol{border-top:1px dashed var(--rule);padding-top:10px}
+.fc details.sol>summary{cursor:pointer;font-weight:700;color:var(--re);list-style-position:inside}
+.fc details.sol[open]>summary{margin-bottom:10px}
+.fc details.sol>div{display:flex;flex-direction:column;gap:12px}
+.fc .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fc button{font:600 .9rem var(--f-body);color:var(--re);background:var(--paper);border:1px solid var(--re);border-radius:8px;padding:8px 14px;cursor:pointer}
+.fc button:hover{background:var(--soft)}
+.fc button:focus-visible,.fc summary:focus-visible,.fc a:focus-visible{outline:2px solid var(--re);outline-offset:3px}
+.fc ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;max-width:65ch}
+.fc pre.code{margin:0;background:var(--code);border-radius:8px;padding:14px 16px;overflow-x:auto;font:.85rem/1.55 var(--f-math)}
+.fc a{color:var(--re)}
+.fc footer{border-top:1px solid var(--rule);padding-top:14px;color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+@media (prefers-reduced-motion:reduce){.fc *{transition:none!important}}
+.fc .tag{font:600 .72rem var(--f-math);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.fc .tag.new{color:var(--ok);background:var(--okbg)} .tag.have{color:var(--re);background:var(--soft)} .tag.next{color:var(--im);background:var(--soft)}
+.fc .cov td:nth-child(2){white-space:nowrap}
+.fc .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:12px}
+.fc .grid2>div{min-width:0}
+</style><div class="fc" id="from-class"><section><span class="eyebrow">From class · Week 2 · Sat 24 Oct 2026 · morning</span><h2>What class added</h2><p>The first quantum lecture. The promise was "no mathematics beyond last week": the vectors in ℂ² and the inner product from the refresher, now with physics attached. These are the parts that belong on this page: the ket as a name tag, a light experiment that <i>is</i> a qubit, the Born rule, and what measuring does. The sphere pictures are on <a href="../12-bloch-sphere/#from-class">the Bloch sphere</a> page and the gates on <a href="../09-gates/#from-class">gates as matrices</a>.</p></section>
+
+<article class="qcard" id="ket-tag">
+  <div class="qhead"><span class="qn">From class, Week 2 · slide 2</span></div>
+  <h3>A ket is just a name tag</h3>
+  <p>Whatever is written inside |&nbsp;⟩ is a label, not a number. |0⟩, |+⟩, |ψ⟩ are all names for column vectors with two complex entries. Dirac invented the bracket so that long multi-qubit expressions stay readable.</p>
+  <div class="steps">
+    <span>|ψ⟩ = α|0⟩ + β|1⟩ = column (α, β)</span>
+    <span>|+⟩ = (1/√2)(|0⟩ + |1⟩) = column (1/√2, 1/√2)</span>
+    <span>|−⟩ = (1/√2)(|0⟩ − |1⟩) = column (1/√2, −1/√2)</span>
+    <span class="note">Read aloud: "ket psi equals alpha ket zero plus beta ket one".</span>
+  </div>
+  <p class="why">Class uses kets from now on. Bras ⟨·|, inner products in bra-ket form and outer products are formalised in the third lecture (Sat 31 Oct). This page already covers them, so you are ahead.</p>
+</article>
+
+<article class="qcard" id="filters">
+  <div class="qhead"><span class="qn">From class, Week 2 · slides 3–4, 23–28</span></div>
+  <h3>The three-filter puzzle</h3>
+  <p>A polarising filter lets through light whose "wobble direction" lines up with it. Two filters at 0° and 90° (crossed) block all light. Now slide a third filter at 45° <b>between</b> them, and light gets through again. Adding a filter lets <i>more</i> light pass. How?</p>
+  <figure>
+    <svg viewBox="0 0 340 150" role="img" aria-label="Light passes a vertical filter, then a 45 degree filter, then a horizontal filter; one quarter of the light after the first filter comes out">
+      <line x1="10" y1="75" x2="330" y2="75" class="mutS" stroke-dasharray="4 4"/>
+      <rect x="60" y="25" width="16" height="100" rx="3" class="bgF reS" stroke-width="2"/><line x1="68" y1="35" x2="68" y2="115" class="reS" stroke-width="2"/>
+      <rect x="160" y="25" width="16" height="100" rx="3" class="bgF okS" stroke-width="2"/><line x1="160" y1="115" x2="176" y2="35" class="okS" stroke-width="2"/>
+      <rect x="260" y="25" width="16" height="100" rx="3" class="bgF imS" stroke-width="2"/><line x1="262" y1="75" x2="274" y2="75" class="imS" stroke-width="2"/>
+      <text x="52" y="142" class="reT">0° → |0⟩</text>
+      <text x="146" y="142" class="okT">45° → |+⟩</text>
+      <text x="246" y="142" class="imT">90° → |1⟩</text>
+      <text x="96" y="66" class="mut">× ½</text><text x="196" y="66" class="mut">× ½</text>
+      <text x="292" y="66" class="lab">¼</text>
+    </svg>
+    <figcaption><b>Each filter is a measurement in its own basis.</b> Half survive the middle filter, half of those survive the last: ½ × ½ = ¼ of the light that passed the first filter.</figcaption>
+  </figure>
+  <div class="steps">
+    <span>After the 0° filter the photon is |0⟩ (vertical).</span>
+    <span>45° filter measures in {|+⟩, |−⟩}. Pass chance = |⟨+|0⟩|²</span>
+    <span>  ⟨+|0⟩ = (1/√2)(1) + (1/√2)(0) = 1/√2   →   |1/√2|² = 1/2</span>
+    <span>A photon that passed is now |+⟩. The "vertical" record is gone.</span>
+    <span>90° filter: pass chance = |⟨1|+⟩|² = |1/√2|² = 1/2</span>
+    <span class="ok">Total: 1/2 × 1/2 = 1/4 = 25% ✓</span>
+    <span>Without the middle filter: |⟨1|0⟩|² = 0² = 0. Nothing passes.</span>
+  </div>
+  <p class="why">Shot one photon at a time, each one passes or is absorbed at random. Only the <b>probability</b> is fixed: the counter in the class animation settles at ¼. The lecturer's homework: <b>re-derive this 25% yourself</b> with pen and paper.</p>
+</article>
+
+<article class="qcard" id="polarisation">
+  <div class="qhead"><span class="qn">From class, Week 2 · slides 5, 28</span></div>
+  <h3>Polarisation <i>is</i> a qubit (not an analogy)</h3>
+  <div class="scroll"><table>
+    <thead><tr><th>Physical state</th><th>Notation</th></tr></thead>
+    <tbody>
+      <tr><td>Vertical, |V⟩</td><td class="m">|0⟩</td></tr>
+      <tr><td>Horizontal, |H⟩</td><td class="m">|1⟩</td></tr>
+      <tr><td>45° diagonal</td><td class="m">|+⟩ = (|0⟩ + |1⟩)/√2</td></tr>
+    </tbody>
+  </table></div>
+  <p>Other real qubits: electron spin up/down, energy levels of a superconducting circuit, internal states of a trapped ion, defects ("NV centres") in diamond.</p>
+  <div class="ql"><b>Caveat: angles double.</b> 0° and 90° light are perpendicular, so as qubit states they are orthogonal: opposite poles of the Bloch sphere, 180° apart. A 45° filter is halfway in the lab but lands on the equator, 90° from each pole.</div>
+  <p class="why"><b>One line to remember:</b> a polariser is a measurement, and Malus's law (light passing = cos² of the angle between filters) is the Born rule. cos²(45°) = (1/√2)² = 1/2.</p>
+</article>
+
+<article class="qcard" id="superposition">
+  <div class="qhead"><span class="qn">From class, Week 2 · slides 6–8</span></div>
+  <h3>Bit vs qubit, and two pictures of superposition</h3>
+  <div class="grid2">
+    <div class="box"><b>Classical bit</b><p>Exactly two isolated states, 0 and 1. Operations are fixed maps {0,1} → {0,1}, such as NOT. Everything a classical computer does is sequences of these.</p></div>
+    <div class="box"><b>Qubit</b><p>A unit vector in ℂ²: |ψ⟩ = α|0⟩ + β|1⟩ with |α|² + |β|² = 1. Infinitely many states, but one measurement still returns exactly one bit.</p></div>
+  </div>
+  <ul>
+    <li><b>The spinning coin:</b> while it spins it is neither heads nor tails; landing forces one answer.</li>
+    <li><b>The compass needle:</b> it can point in any direction, not just north or south. Measuring asks "north or south?" and the needle's direction sets the odds.</li>
+  </ul>
+  <div class="warn">Superposition is <b>not</b> "being in two places at once". It is one definite, specific state, just not a classical one.</div>
+</article>
+
+<article class="qcard" id="born">
+  <div class="qhead"><span class="qn">From class, Week 2 · slides 22–24</span></div>
+  <h3>The Born rule and what measuring does</h3>
+  <div class="box">
+    <div class="steps"><span>For |ψ⟩ = α|0⟩ + β|1⟩:</span><span>P(0) = |α|²,   P(1) = |β|²</span></div>
+    <p class="why">Read aloud: "the probability of outcome zero is mod alpha squared". Linked to the inner product: P(0) = |⟨0|ψ⟩|² = |α|².</p>
+  </div>
+  <div class="scroll"><table>
+    <thead><tr><th>State</th><th>P(0)</th><th>P(1)</th></tr></thead>
+    <tbody>
+      <tr><td class="m">|0⟩</td><td>1</td><td>0</td></tr>
+      <tr><td class="m">|1⟩</td><td>0</td><td>1</td></tr>
+      <tr><td class="m">|+⟩</td><td>1/2</td><td>1/2</td></tr>
+      <tr><td class="m">½|0⟩ + (√3/2)|1⟩</td><td>1/4</td><td>3/4</td></tr>
+    </tbody>
+  </table></div>
+  <div class="steps">
+    <span>Worked example: measure |+⟩ = (1/√2)|0⟩ + (1/√2)|1⟩</span>
+    <span>Step 1  α = 1/√2, β = 1/√2</span>
+    <span>Step 2  P(0) = |1/√2|² = 1/2,  P(1) = |1/√2|² = 1/2</span>
+    <span>Step 3  50% outcome 0, 50% outcome 1</span>
+    <span>Step 4  after outcome 0 the state has collapsed to |0⟩</span>
+  </div>
+  <p><b>The shadow analogy.</b> Measuring is like a 3-D object casting a 2-D shadow: a continuous state is forced onto a one-bit answer.</p>
+  <ul>
+    <li>The outcome is random, and the odds are set by the state (on the sphere: by the latitude).</li>
+    <li>Measurement destroys the superposition. Measure again and you get the same answer.</li>
+    <li>The state was not "secretly 0 or 1" before. The randomness is fundamental, not ignorance.</li>
+  </ul>
+  <div class="ql"><b>Trap: |+⟩ is not a coin flip.</b> It gives 50/50 outcomes, but it is a definite quantum state. The difference shows up in interference: apply H and |+⟩ returns to |0⟩ every time. A coin you can't see would not.</div>
+  <details class="sol"><summary>Try it: check the last table row</summary><div>
+    <div class="steps">
+      <span>α = 1/2, β = √3/2</span>
+      <span>P(0) = (1/2)² = 1/4,  P(1) = (√3/2)² = 3/4</span>
+      <span class="ok">1/4 + 3/4 = 1 ✓ a valid state</span>
+    </div>
+  </div></details>
+</article>
+
+<section><p>Every number above is re-computed by <a href="../../reference/checks/week-02-lecture-check.py">week-02-lecture-check.py</a> (NumPy). Class reading: Mermin §1.1–1.3 (do this one first), Nielsen &amp; Chuang §1.2 and §2.1.1–2.1.4, and Wong ch. 3–4 (free online).</p></section>
+</div><!-- from-class:end -->
 <footer>
   <span>Study time: <strong>30 min</strong> · next concept: Gates as matrices</span>
   <a href="../../../">All concepts</a>
@@ -367,4 +565,4 @@ print(np.vdot(plus, plus))             <span class="cm"># 1.0 -> normalised (vdo
 })();
 </script>
 
-<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 08 of 12</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../07-ml-maths-bridge/">← AI/ML maths bridge</a> · <a href="../09-gates/">Gates as matrices →</a></div></nav></body></html>
+<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 08 of 13</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../07-ml-maths-bridge/">← AI/ML maths bridge</a> · <a href="../09-gates/">Gates as matrices →</a></div></nav></body></html>

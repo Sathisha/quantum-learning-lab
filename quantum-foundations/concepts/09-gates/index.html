@@ -9,7 +9,7 @@
 .cnav a:focus-visible{outline:2px solid var(--cn-a);outline-offset:2px}
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}}
 :root[data-theme="dark"] .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}
-</style><nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 09 of 12</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../08-qubits-and-dirac-notation/">← Qubits and Dirac notation</a> · <a href="../10-tensor-products/">Two qubits and tensor products →</a></div></nav>
+</style><nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 09 of 13</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../08-qubits-and-dirac-notation/">← Qubits and Dirac notation</a> · <a href="../10-tensor-products/">Two qubits and tensor products →</a></div></nav>
 <title>Gates as matrices</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
@@ -110,6 +110,7 @@ footer{border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font
   <div class="eyebrow">Concept 09 · <b>Intro</b></div>
   <h1>Gates as matrices</h1>
   <p>A quantum gate is a 2×2 matrix. Running the gate means multiplying it by the qubit's column vector, the same row-times-column move from the matrices concept.</p>
+  <p class="lede"><a href="#from-class">What class added in Week 2 ↓</a></p>
 </header>
 
 <section>
@@ -350,6 +351,175 @@ print(np.allclose(H.conj().T @ H, np.eye(2)))    # True: H is unitary</pre>
   </ul>
 </section>
 
+<!-- from-class:start --><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&family=Spectral:wght@500;700&display=swap"><style>
+.fc{
+  --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4; --grid:#e6ebf2;
+  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --okbg:#e5f4ec; --soft:#f5f7fb; --code:#f2f4f8;
+  --f-display:"Spectral",Georgia,serif; --f-body:"Atkinson Hyperlegible",system-ui,sans-serif; --f-math:"JetBrains Mono",ui-monospace,Menlo,monospace;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .fc{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}}
+:root[data-theme="dark"] .fc{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}
+.fc{color:var(--ink);font:17px/1.6 var(--f-body);display:flex;flex-direction:column;gap:28px;border-top:2px solid var(--rule);padding-top:22px;margin-top:8px;text-align:left}
+.fc h1{font-size:clamp(1.8rem,6vw,2.3rem)}
+.fc h2{font-size:1.5rem;padding-bottom:6px;border-bottom:1px solid var(--rule)}
+.fc h3{font-size:1.2rem}
+.fc section,.fc article{display:flex;flex-direction:column;gap:12px;min-width:0}
+.fc p{margin:0;max-width:65ch}
+.fc .eyebrow{font:600 .78rem/1 var(--f-math);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.fc .m{font-family:var(--f-math);font-size:.92em;white-space:nowrap}
+.fc .re{color:var(--re)} .im{color:var(--im)}
+.fc .bar{text-decoration:overline;text-decoration-thickness:1.5px}
+.fc .box{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.fc .scroll{overflow-x:auto}
+.fc table{border-collapse:collapse;width:100%;font-size:.95rem}
+.fc th,.fc td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+.fc th{font:600 .75rem var(--f-math);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.fc .sym td:first-child{font-family:var(--f-math);font-weight:600;white-space:nowrap}
+.fc .key{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:8px}
+.fc .key a{display:flex;justify-content:space-between;align-items:baseline;gap:6px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:7px 10px;font-family:var(--f-math);font-variant-numeric:tabular-nums}
+.fc .key a b{color:var(--ok)}
+.fc .key a span{color:var(--muted);font-size:.85rem}
+.fc .qcard{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
+.fc .qhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.fc .qhead .qn{font:700 .85rem var(--f-math);color:var(--muted)}
+.fc .qtext{font-size:1.05rem}
+.fc .opts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:6px}
+.fc .opts li{border:1px solid var(--rule);border-radius:8px;padding:6px 10px;font-family:var(--f-math);font-size:.92rem;min-width:0;overflow-wrap:anywhere}
+.fc .opts li .l{color:var(--muted);margin-right:6px}
+.fc .show .opts li.ok,.fc .revealed .opts li.ok{border-color:var(--ok);background:var(--okbg);color:var(--ink)}
+.fc .show .opts li.ok .l,.fc .revealed .opts li.ok .l{color:var(--ok);font-weight:700}
+.fc .badge{font:700 .82rem var(--f-math);color:var(--ok);background:var(--okbg);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.fc body:not(.show) .qcard:not(.revealed) .badge{visibility:hidden}
+.fc .steps{font-family:var(--f-math);font-size:.93rem;background:var(--code);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.fc .steps span{white-space:pre-wrap}
+.fc .steps .note{color:var(--muted);font-family:var(--f-body);font-size:.88rem;white-space:normal}
+.fc .steps .ok{color:var(--ok);font-weight:600}
+.fc figure{margin:0;background:var(--soft);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.fc figure svg{width:100%;height:auto;max-width:360px;align-self:center;display:block}
+.fc figcaption{font-size:.9rem;color:var(--muted)}
+.fc figcaption b{color:var(--ink)}
+.fc svg text{font-family:var(--f-math);font-size:12px;fill:var(--ink)}
+.fc svg .lab{font-size:13px;font-weight:600}
+.fc svg .mut{fill:var(--muted)}
+.fc svg .grid{stroke:var(--grid);stroke-width:1}
+.fc svg .axis{stroke:var(--muted);stroke-width:1.3}
+.fc svg .reS{stroke:var(--re)} svg .imS{stroke:var(--im)} svg .inkS{stroke:var(--ink)} svg .okS{stroke:var(--ok)} svg .mutS{stroke:var(--muted)}
+.fc svg .reF{fill:var(--re)} svg .imF{fill:var(--im)} svg .inkF{fill:var(--ink)} svg .okF{fill:var(--ok)} svg .bgF{fill:var(--paper)} svg .none{fill:none}
+.fc svg .okT{fill:var(--ok)} svg .reT{fill:var(--re)} svg .imT{fill:var(--im)}
+.fc .why{font-size:.95rem;color:var(--muted)}
+.fc .why b{color:var(--ink)}
+.fc .ql{background:var(--soft);border-left:3px solid var(--im);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.fc .ql b{color:var(--im)}
+.fc .warn{background:var(--soft);border-left:3px solid var(--re);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.fc details.sol{border-top:1px dashed var(--rule);padding-top:10px}
+.fc details.sol>summary{cursor:pointer;font-weight:700;color:var(--re);list-style-position:inside}
+.fc details.sol[open]>summary{margin-bottom:10px}
+.fc details.sol>div{display:flex;flex-direction:column;gap:12px}
+.fc .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.fc button{font:600 .9rem var(--f-body);color:var(--re);background:var(--paper);border:1px solid var(--re);border-radius:8px;padding:8px 14px;cursor:pointer}
+.fc button:hover{background:var(--soft)}
+.fc button:focus-visible,.fc summary:focus-visible,.fc a:focus-visible{outline:2px solid var(--re);outline-offset:3px}
+.fc ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;max-width:65ch}
+.fc pre.code{margin:0;background:var(--code);border-radius:8px;padding:14px 16px;overflow-x:auto;font:.85rem/1.55 var(--f-math)}
+.fc a{color:var(--re)}
+.fc footer{border-top:1px solid var(--rule);padding-top:14px;color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+@media (prefers-reduced-motion:reduce){.fc *{transition:none!important}}
+.fc .tag{font:600 .72rem var(--f-math);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.fc .tag.new{color:var(--ok);background:var(--okbg)} .tag.have{color:var(--re);background:var(--soft)} .tag.next{color:var(--im);background:var(--soft)}
+.fc .cov td:nth-child(2){white-space:nowrap}
+.fc .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:12px}
+.fc .grid2>div{min-width:0}
+</style><div class="fc" id="from-class"><section><span class="eyebrow">From class · Week 2 · Sat 24 Oct 2026 · morning</span><h2>What class added</h2><p>Class used gates <i>visually</i>: each of X, Z and H is a half-turn of the Bloch sphere about some axis. Linear maps as matrices are formalised in the third lecture (Sat 31 Oct). Below: the three rules a gate must obey, the rotation picture with full input/output tables, the HZH poll, and two of the three take-home puzzles (puzzle 2 is on <a href="../11-entanglement-and-qiskit/#from-class">entanglement</a>).</p></section>
+
+<article class="qcard" id="gate-rules">
+  <div class="qhead"><span class="qn">From class, Week 2 · slide 15</span></div>
+  <h3>A gate is a linear function from ℂ² to ℂ²</h3>
+  <div class="steps">
+    <span>U|ψ⟩ = [u₀₀ u₀₁; u₁₀ u₁₁] (α, β) = (u₀₀α + u₀₁β,  u₁₀α + u₁₁β)</span>
+  </div>
+  <ul>
+    <li><b>Unitary:</b> it maps unit vectors to unit vectors, so probabilities still add up to 1.</li>
+    <li><b>Always reversible:</b> every gate can be undone. (This matters a lot in <a href="../13-deutsch-algorithm/">Deutsch's algorithm</a>.)</li>
+    <li><b>Linear:</b> U(α|0⟩ + β|1⟩) = αU|0⟩ + βU|1⟩. Know what U does to |0⟩ and |1⟩, and you know everything.</li>
+  </ul>
+</article>
+
+<article class="qcard" id="rotations">
+  <div class="qhead"><span class="qn">From class, Week 2 · slides 15–20</span></div>
+  <h3>X, Z and H are half-turns of the sphere</h3>
+  <div class="scroll"><table>
+    <thead><tr><th>Gate</th><th>Half-turn (180°) about</th><th>|0⟩</th><th>|1⟩</th><th>|+⟩</th><th>|−⟩</th></tr></thead>
+    <tbody>
+      <tr><td class="m">X</td><td>the x-axis: poles swap</td><td class="m">|1⟩</td><td class="m">|0⟩</td><td class="m">|+⟩ fixed</td><td class="m">−|−⟩</td></tr>
+      <tr><td class="m">Z</td><td>the z-axis: poles fixed</td><td class="m">|0⟩</td><td class="m">−|1⟩</td><td class="m">|−⟩</td><td class="m">|+⟩</td></tr>
+      <tr><td class="m">H</td><td>the axis halfway between x and z</td><td class="m">|+⟩</td><td class="m">|−⟩</td><td class="m">|0⟩</td><td class="m">|1⟩</td></tr>
+    </tbody>
+  </table></div>
+  <ul>
+    <li><b>X</b> is the quantum NOT: X|0⟩ = [0 1; 1 0](1, 0) = (0, 1) = |1⟩. |+⟩ lies <i>on</i> the x-axis, so the turn doesn't move it; |−⟩ also lies on that axis and only picks up a minus sign.</li>
+    <li><b>Z</b> is the "phase flip": it leaves the poles alone and twists the equator by 180°, so |+⟩ ↔ |−⟩. On |1⟩ it only adds a sign, which on its own is a global phase.</li>
+    <li><b>H</b> is the "superposition machine": it takes the poles to the equator and back.</li>
+  </ul>
+  <div class="warn"><b>Watch the minus signs.</b> X|−⟩ = −|−⟩ and Z|1⟩ = −|1⟩ are the "same point on the sphere" (a global sign), but once that state is part of a bigger superposition the sign becomes relative and matters. This is exactly the "phase kickback" trick of the afternoon lecture.</div>
+</article>
+
+<article class="qcard" id="hh">
+  <div class="qhead"><span class="qn">From class, Week 2 · slides 18–19</span></div>
+  <h3>H twice: interference in action</h3>
+  <div class="steps">
+    <span>|0⟩  —H→  |+⟩ (superposition)  —H→  |0⟩ (back!)</span>
+    <span>Why?  H|+⟩ = (H|0⟩ + H|1⟩)/√2      (linearity)</span>
+    <span>           = (|+⟩ + |−⟩)/√2</span>
+    <span>           = [(|0⟩+|1⟩) + (|0⟩−|1⟩)] / 2</span>
+    <span>           = (2|0⟩ + 0|1⟩) / 2 = |0⟩</span>
+  </div>
+  <p>The two |1⟩ parts cancel (<b>destructive interference</b>); the two |0⟩ parts add up (<b>constructive interference</b>). In matrix terms H·H = I.</p>
+</article>
+
+<article class="qcard revealed" id="hzh">
+  <div class="qhead"><span class="qn">From class, Week 2 · slide 21 (poll)</span></div>
+  <h3>Where does HZH|0⟩ land?</h3>
+  <ul class="opts"><li><span class="l">A</span>|0⟩</li><li class="ok"><span class="l">B</span>|1⟩</li><li><span class="l">C</span>|+⟩</li><li><span class="l">D</span>|−⟩</li></ul>
+  <div class="steps">
+    <span>Apply right to left: H first, then Z, then H.</span>
+    <span>|0⟩  —H→  |+⟩  —Z→  |−⟩  —H→  |1⟩</span>
+    <span>Check with matrices: HZH = ½[1 1; 1 −1][1 0; 0 −1][1 1; 1 −1]</span>
+    <span>   [1 0; 0 −1][1 1; 1 −1] = [1 1; −1 1]</span>
+    <span>   ½[1 1; 1 −1][1 1; −1 1] = ½[0 2; 2 0] = [0 1; 1 0] = X</span>
+    <span class="ok">Answer B. HZH = X ✓</span>
+  </div>
+  <p class="why"><b>Hadamard conjugation:</b> sandwiching a gate between two H's swaps the roles of the z- and x-axes, turning a z-rotation (Z) into an x-rotation (X). "You will see this pattern throughout the course."</p>
+</article>
+
+<article class="qcard" id="puzzles">
+  <div class="qhead"><span class="qn">From class, Week 2 · slide 36 · take-home puzzles</span></div>
+  <h3>Puzzles 1 and 3</h3>
+  <p><b>Puzzle 1.</b> Start from |0⟩. Reach |1⟩ with 100% certainty using only H and Z gates (no X).</p>
+  <details class="sol"><summary>Show solution</summary><div>
+    <div class="steps">
+      <span>Use H, then Z, then H: the poll above.</span>
+      <span>|0⟩ → |+⟩ → |−⟩ → |1⟩, and P(1) = |1|² = 1</span>
+      <span class="ok">HZH acts exactly like X.</span>
+    </div>
+  </div></details>
+  <p><b>Puzzle 3 (stretch).</b> What single-gate circuit returns |+⟩ to |0⟩? Explain it with interference.</p>
+  <details class="sol"><summary>Show solution</summary><div>
+    <div class="steps">
+      <span>One H.  H|+⟩ = (H|0⟩ + H|1⟩)/√2</span>
+      <span>Amplitude on |1⟩: from |0⟩ the route gives +½, from |1⟩ it gives −½</span>
+      <span>  +½ − ½ = 0   (destructive: |1⟩ vanishes)</span>
+      <span>Amplitude on |0⟩: +½ + ½ = 1   (constructive)</span>
+      <span class="ok">H|+⟩ = |0⟩ ✓</span>
+    </div>
+    <p class="why">Geometrically: H is a half-turn about the axis between x and z, which carries +x back to +z.</p>
+  </div></details>
+</article>
+
+<section><p>All gate facts and puzzle answers are verified in <a href="../../reference/checks/week-02-lecture-check.py">week-02-lecture-check.py</a>. Class reading: Mermin §1.4–1.5, Nielsen &amp; Chuang §2.2.1 and §2.2.3. Try every gate live in <a href="https://algassert.com/quirk">Quirk</a> (drag-and-drop circuits in the browser).</p></section>
+</div><!-- from-class:end -->
 <footer>
   <span>Study time: <strong>30 min</strong></span>
   <a href="../../../">All concepts</a>
@@ -419,4 +589,4 @@ print(np.allclose(H.conj().T @ H, np.eye(2)))    # True: H is unitary</pre>
 })();
 </script>
 
-<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 09 of 12</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../08-qubits-and-dirac-notation/">← Qubits and Dirac notation</a> · <a href="../10-tensor-products/">Two qubits and tensor products →</a></div></nav></body></html>
+<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Concept 09 of 13</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../08-qubits-and-dirac-notation/">← Qubits and Dirac notation</a> · <a href="../10-tensor-products/">Two qubits and tensor products →</a></div></nav></body></html>
