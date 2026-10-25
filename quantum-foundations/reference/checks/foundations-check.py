@@ -61,6 +61,44 @@ check("03 Parseval, ± basis", np.isclose(abs(ip(hp, w)) ** 2, 5 / 6) and np.isc
 cp, cm = np.array([1, 1j]) / np.sqrt(2), np.array([1, -1j]) / np.sqrt(2)
 check("03 circular basis ⊥", np.isclose(ip(cp, cm), 0) and np.isclose(cp @ cm, 1), "with conjugate 0, without 1")
 
+# ---------- 03 orthonormal bases, more deeply ----------
+U = np.column_stack([cp, cm])
+check("03 U†U = I (circular)", close(U.conj().T @ U, np.eye(2)), "matrix test for an ONB")
+Bn = np.array([[1, 1], [0, 1]])             # b1 = (1, 0), b2 = (1, 1): not orthogonal
+vv = np.array([3, 1])
+check("03 non-ONB: solve vs shortcut", close(np.linalg.solve(Bn, vv), [2, 1]) and close(Bn.T @ vv, [3, 4]),
+      "right (2, 1); naive inner products (3, 4) are wrong")
+def gram_schmidt(*vs):
+    out = []
+    for a in vs:
+        w = np.array(a, dtype=complex) - sum(np.vdot(e, a) * e for e in out)
+        out.append(w / np.linalg.norm(w))
+    return out
+g1, g2 = gram_schmidt([1, 1], [1, 0])
+check("03 Gram-Schmidt real -> h±", close(g1, hp) and close(g2, hm), "(1,1),(1,0) -> h+, h-")
+g1, g2 = gram_schmidt([1, 1j], [1, 0])
+check("03 Gram-Schmidt complex -> c±", close(g1, cp) and close(g2, cm), "(1,i),(1,0) -> c+, c-")
+g1, g2 = gram_schmidt([1, 1j], [0, 1])
+check("03 Gram-Schmidt (0,1) -> i c-", close(g2, 1j * cm), "e2 = (i, 1)/√2")
+check("03 completeness, both bases", close(np.outer(hp, hp.conj()) + np.outer(hm, hm.conj()), np.eye(2))
+      and close(np.outer([1, 0], [1, 0]) + np.outer([0, 1], [0, 1]), np.eye(2)), "Σ e e† = I")
+al = np.radians(np.arange(0, 181))
+c1, c2 = 3 * np.cos(al) + np.sin(al), -3 * np.sin(al) + np.cos(al)
+check("03 spin the basis", close(c1**2 + c2**2, 10) and np.isclose(c1[45], 2*np.sqrt(2)) and np.isclose(c2[45], -np.sqrt(2)),
+      "squares always 10; at 45°: (2√2, -√2)")
+
+# ---------- 03 Hadamard basis ----------
+H = np.column_stack([hp, hm])
+check("03 H·H = I, det H = -1", close(H @ H, np.eye(2)) and np.isclose(np.linalg.det(H), -1), "reflection, self-inverse")
+check("03 Hadamard coords of (3,1)", close(H.conj().T @ vv, [2*np.sqrt(2), np.sqrt(2)]), "(2√2, √2), squares 8 + 2 = 10")
+std = [np.array([1, 0]), np.array([0, 1])]
+mub = all(np.isclose(abs(np.vdot(x, y))**2, .5) for A, Bb in [(std, [hp, hm]), (std, [cp, cm]), ([hp, hm], [cp, cm])] for x in A for y in Bb)
+check("03 mutually unbiased", mub, "every |⟨·,·⟩|² across the three bases = 1/2")
+check("03 H twice = e1", close(H @ (H @ [1, 0]), [1, 0]), "the e2 parts cancel")
+check("03 c+ in Hadamard basis", np.isclose(np.vdot(hp, cp), (1+1j)/2) and np.isclose(np.vdot(hm, cp), (1-1j)/2), "P(+) = P(-) = 1/2")
+HH = np.kron(H, H)
+check("03 H⊗H", close(HH @ [1, 0, 0, 0], [.5]*4) and close(HH.T @ HH, np.eye(4)), "|00> -> uniform; columns orthonormal")
+
 # ---------- 04 matrices ----------
 L = np.array([[2, 1], [1j, 3]])
 check("04 column rule", close(L @ [1, 0], [2, 1j]) and close(L @ [0, 1], [1, 3]), "columns = images of e1, e2")

@@ -217,6 +217,14 @@ footer b { color: var(--ink); }
         <tr><td class="sym">ONB</td><td class="say">"orthonormal basis"</td><td>A basis of unit-length vectors that are all perpendicular to each other.</td></tr>
         <tr><td class="sym">h₊, h₋</td><td class="say">"h plus", "h minus"</td><td>The Hadamard basis (1, ±1)/√2, later written |+⟩, |−⟩.</td></tr>
         <tr><td class="sym">c₊, c₋</td><td class="say">"c plus", "c minus"</td><td>The circular basis (1, ±i)/√2, later written |+i⟩, |−i⟩.</td></tr>
+        <tr><td class="sym">⊥</td><td class="say">"is perpendicular to"</td><td>Inner product 0: the two vectors meet at a right angle.</td></tr>
+        <tr><td class="sym">U†</td><td class="say">"U dagger"</td><td>Conjugate transpose: swap rows and columns, then conjugate every entry.</td></tr>
+        <tr><td class="sym">I</td><td class="say">"the identity"</td><td>The matrix with 1s on the diagonal and 0s elsewhere; it leaves every vector unchanged.</td></tr>
+        <tr><td class="sym">⟺</td><td class="say">"if and only if"</td><td>Each side implies the other.</td></tr>
+        <tr><td class="sym">e e†</td><td class="say">"e times e dagger" (outer product)</td><td>Column times row: a matrix. For a unit vector e it projects onto e.</td></tr>
+        <tr><td class="sym">H</td><td class="say">"H" or "Hadamard"</td><td>The matrix (1/√2)[[1, 1], [1, −1]] whose columns are h₊ and h₋.</td></tr>
+        <tr><td class="sym">α</td><td class="say">"alpha"</td><td>A Greek letter, used here for a coefficient or an angle.</td></tr>
+        <tr><td class="sym">⊗</td><td class="say">"tensor"</td><td>Combines two qubits' vectors into one (tensor products concept).</td></tr>
 </tbody>
     </table>
   </div>
@@ -472,6 +480,306 @@ footer b { color: var(--ink); }
   </div></details>
 </section>
 
+<section class="xt" id="onb-deep">
+  <h2>Orthonormal bases, more deeply</h2>
+  <p>If the end of the inner-product lecture felt slippery, the gap is usually one level down: what a basis is and why perpendicular vectors are independent. This section rebuilds orthonormal bases from those pieces, then shows the tools you will use all course: the matrix test, projections, completeness and Gram–Schmidt.</p>
+
+  <h3>1. What the name promises</h3>
+  <div class="box">
+    <ul>
+      <li><b>Ortho</b> (perpendicular): ⟨eᵢ, eⱼ⟩ = 0 whenever i ≠ j.</li>
+      <li><b>Normal</b> (length 1): ⟨eᵢ, eᵢ⟩ = 1, so ‖eᵢ‖ = 1.</li>
+      <li><b>Basis</b>: every vector is exactly one mix α₁e₁ + … + αₙeₙ (see <a href="../02-vector-spaces/">vector spaces</a>).</li>
+    </ul>
+  </div>
+  <div class="fml">⟨eᵢ, eⱼ⟩ = δᵢⱼ</div>
+  <p class="say"><b>Read it aloud:</b> "the inner product of e-i and e-j is delta i j": 1 when i and j are the same vector, 0 when they are different. One line packs both the "ortho" and the "normal" conditions.</p>
+
+  <h3>2. Perpendicular gives you "basis" for free</h3>
+  <p>Independence means the only mix that gives the zero vector is the all-zero mix. For orthonormal vectors this takes one inner product per coefficient:</p>
+  <div class="steps">
+    <span>Suppose α₁e₁ + α₂e₂ + … + αₙeₙ = 0.</span>
+    <span>Take the inner product of both sides with e₁:</span>
+    <span>⟨e₁, α₁e₁ + α₂e₂ + … + αₙeₙ⟩ = ⟨e₁, 0⟩ = 0</span>
+    <span class="note">Linear in the second slot, so the coefficients come out:</span>
+    <span>α₁⟨e₁, e₁⟩ + α₂⟨e₁, e₂⟩ + … + αₙ⟨e₁, eₙ⟩ = 0</span>
+    <span>α₁ · 1 + α₂ · 0 + … + αₙ · 0 = 0</span>
+    <span>α₁ = 0</span>
+    <span>Repeat with e₂, e₃, …: every αⱼ = 0.</span>
+    <span class="ok">So orthonormal vectors are always independent.</span>
+  </div>
+  <p>Then the dimension shortcut from class finishes the job: n independent vectors in an n-dimensional space are a basis. <b>So n orthonormal vectors in ℂⁿ are automatically an orthonormal basis.</b> You only ever check lengths and perpendicularity, never "spanning".</p>
+
+  <h3>3. One matrix test does every check at once</h3>
+  <p>Put the vectors in as the columns of a matrix U. The conjugate transpose U† has the same vectors, conjugated, as its rows. Entry (i, j) of U†U is "row i of U† times column j of U", which is exactly ⟨eᵢ, eⱼ⟩. So:</p>
+  <div class="fml">orthonormal columns ⟺ U†U = I</div>
+  <p class="say"><b>Read it aloud:</b> "the columns are orthonormal exactly when U-dagger times U equals the identity." The diagonal 1s are the lengths, the off-diagonal 0s are the right angles. ⟺ reads "if and only if".</p>
+  <p>Test it on the circular basis c₊ = (1, i)/√2, c₋ = (1, −i)/√2, where the conjugate matters:</p>
+  <div class="steps">
+    <span>U = (1/√2) [[1, 1], [i, −i]]   (columns c₊, c₋)</span>
+    <span>U† = (1/√2) [[1, −i], [1, i]]   (transpose, then conjugate every entry)</span>
+    <span>U†U = ½ [[1·1 + (−i)(i),  1·1 + (−i)(−i)], [1·1 + (i)(i),  1·1 + (i)(−i)]]</span>
+    <span class="note">The four products of i's: (−i)(i) = −i² = 1, (−i)(−i) = i² = −1, (i)(i) = −1, (i)(−i) = −i² = 1</span>
+    <span>U†U = ½ [[1 + 1, 1 − 1], [1 − 1, 1 + 1]] = ½ [[2, 0], [0, 2]] = [[1, 0], [0, 1]] = I</span>
+    <span class="ok">✓ orthonormal basis</span>
+  </div>
+  <p class="ql"><b>Quantum link:</b> a square matrix with U†U = I is called <b>unitary</b>. Every quantum gate is one (<a href="../10-gates/">gates</a>). So "a gate" and "an orthonormal basis written as columns" are the same object.</p>
+
+  <h3>4. Why orthonormal is the easy kind of basis</h3>
+  <p>Take a basis that is <i>not</i> orthogonal: b₁ = (1, 0), b₂ = (1, 1). They are independent, but ⟨b₁, b₂⟩ = 1·1 + 0·1 = 1, not 0. Find the coordinates of v = (3, 1).</p>
+  <div class="grid2">
+    <div class="steps">
+      <span><b>Right way: solve</b></span>
+      <span>α(1, 0) + β(1, 1) = (3, 1)</span>
+      <span>second entries: 0 + β = 1, so β = 1</span>
+      <span>first entries: α + β = 3, so α = 2</span>
+      <span>check: 2(1, 0) + 1(1, 1) = (3, 1) <span class="ok">✓</span></span>
+    </div>
+    <div class="steps">
+      <span><b>Shortcut used wrongly</b></span>
+      <span>⟨b₁, v⟩ = 3,  ⟨b₂, v⟩ = 3 + 1 = 4</span>
+      <span>3(1, 0) + 4(1, 1) = (7, 4) ≠ (3, 1) ✗</span>
+      <span>Parseval fails too:</span>
+      <span>2² + 1² = 5, but ‖v‖² = 10 ✗</span>
+    </div>
+  </div>
+  <p>Why the shortcut works only for an orthonormal basis: write v = α₁e₁ + … + αₙeₙ and take the inner product with one basis vector eⱼ.</p>
+  <div class="steps">
+    <span>⟨eⱼ, v⟩ = α₁⟨eⱼ, e₁⟩ + … + αⱼ⟨eⱼ, eⱼ⟩ + … + αₙ⟨eⱼ, eₙ⟩</span>
+    <span>       = α₁·0 + … + αⱼ·1 + … + αₙ·0</span>
+    <span class="ok">       = αⱼ   (every other term is killed by a 0)</span>
+  </div>
+  <p>With b₁, b₂ the cross term ⟨b₁, b₂⟩ = 1 survives and pollutes the answer. Perpendicular axes don't "leak" into each other; slanted ones do.</p>
+
+  <h3>5. Projections: the shadow on each axis</h3>
+  <div class="fml">projection of v onto unit e<br>= ⟨e, v⟩ e</div>
+  <p class="say"><b>Read it aloud:</b> "the inner product of e with v, times e": how far v reaches along e, as a vector pointing along e.</p>
+  <p>What's left over, v − ⟨e, v⟩e, is perpendicular to e:</p>
+  <div class="steps">
+    <span>⟨e, v − ⟨e, v⟩e⟩ = ⟨e, v⟩ − ⟨e, v⟩⟨e, e⟩ = ⟨e, v⟩ − ⟨e, v⟩ · 1 = 0 ✓</span>
+  </div>
+  <p>In an orthonormal basis, v is the sum of its projections onto every eᵢ, and those pieces meet at right angles. Pythagoras on right-angled pieces is exactly Parseval: ‖v‖² = Σ |⟨eᵢ, v⟩|².</p>
+  <p>Written as a matrix, the projection onto e is the column e times the row e†: <span class="m">P = e e†</span> (an "outer product"). Adding the projections for a whole orthonormal basis gives back the identity, because together they rebuild every vector:</p>
+  <div class="fml">e₁e₁† + e₂e₂† + … + eₙeₙ† = I</div>
+  <div class="steps">
+    <span>Standard basis of ℂ²:</span>
+    <span>e₁e₁† = (1, 0)ᵀ(1, 0) = [[1, 0], [0, 0]]</span>
+    <span>e₂e₂† = (0, 1)ᵀ(0, 1) = [[0, 0], [0, 1]]</span>
+    <span class="ok">sum = [[1, 0], [0, 1]] = I ✓</span>
+  </div>
+  <p class="ql"><b>Quantum link:</b> in Dirac notation this "completeness relation" is written Σ |i⟩⟨i| = I, and each |i⟩⟨i| is the projector a measurement uses. The Hadamard version is worked out in the next section.</p>
+
+  <h3>6. Spin the basis; the length stays</h3>
+  <figure>
+    <svg id="rb-svg" viewBox="0 0 300 280" role="img" aria-label="The vector v = (3, 1) with a rotating orthonormal basis e1-prime, e2-prime and the two projections of v onto it">
+      <line class="grid" x1="6" y1="140" x2="294" y2="140"/><line class="grid" x1="150" y1="4" x2="150" y2="276"/>
+      <line id="rb-ax1" class="reS" stroke-width="1" stroke-dasharray="3 4"/>
+      <line id="rb-ax2" class="imS" stroke-width="1" stroke-dasharray="3 4"/>
+      <line id="rb-p1" class="reS" stroke-width="7" stroke-linecap="round" opacity=".4"/>
+      <line id="rb-p2" class="imS" stroke-width="7" stroke-linecap="round" opacity=".4"/>
+      <line id="rb-d1" class="mutS" stroke-width="1.2" stroke-dasharray="4 3"/>
+      <line id="rb-d2" class="mutS" stroke-width="1.2" stroke-dasharray="4 3"/>
+      <line id="rb-e1" class="reS" stroke-width="3"/><circle id="rb-e1t" r="4" class="reF"/><text id="rb-e1l" class="lab reT">e₁′</text>
+      <line id="rb-e2" class="imS" stroke-width="3"/><circle id="rb-e2t" r="4" class="imF"/><text id="rb-e2l" class="lab imT">e₂′</text>
+      <line x1="150" y1="140" x2="246" y2="108" class="okS" stroke-width="3"/><circle cx="246" cy="108" r="5" class="okF"/><text x="294" y="96" text-anchor="end" class="lab okT">v = (3, 1)</text>
+    </svg>
+    <div class="ctrl"><label for="rb-ang">Turn the basis by α</label><input id="rb-ang" type="range" min="0" max="180" value="30" step="1"><span id="rb-angv" class="m">30°</span></div>
+    <div class="readout" id="rb-out"></div>
+    <figcaption><b>The coordinates change; the sum of their squares never does.</b> e₁′ = (cos α, sin α) and e₂′ = (−sin α, cos α) are an orthonormal basis for every α. The shaded bars are v's projections onto them. At α = 0 you get the standard coordinates (3, 1). At α = 45°, e₁′ = h₊ and e₂′ = −h₋ (see the next section).</figcaption>
+  </figure>
+
+  <h3>7. Gram–Schmidt: making any basis orthonormal</h3>
+  <p>Given any basis a₁, a₂, …, you can build an orthonormal one that spans the same space:</p>
+  <div class="box">
+    <ul>
+      <li><b>Step 1.</b> Normalise the first: e₁ = a₁ / ‖a₁‖.</li>
+      <li><b>Step 2.</b> From a₂, subtract its shadow on e₁: w = a₂ − ⟨e₁, a₂⟩e₁. What's left is perpendicular to e₁. Normalise it: e₂ = w / ‖w‖.</li>
+      <li><b>Step 3 onwards.</b> From each next aₖ, subtract its shadows on <i>all</i> earlier e's, then normalise.</li>
+    </ul>
+  </div>
+  <p>Worked example: a₁ = (1, 1), a₂ = (1, 0).</p>
+  <div class="steps">
+    <span>‖a₁‖ = √(1² + 1²) = √2,  so e₁ = (1, 1)/√2</span>
+    <span>⟨e₁, a₂⟩ = (1·1 + 1·0)/√2 = 1/√2</span>
+    <span>shadow = ⟨e₁, a₂⟩ e₁ = (1/√2) · (1, 1)/√2 = (1, 1)/2 = (½, ½)</span>
+    <span>w = a₂ − shadow = (1, 0) − (½, ½) = (½, −½)</span>
+    <span>check w ⊥ e₁: (1·½ + 1·(−½))/√2 = 0 ✓</span>
+    <span>‖w‖ = √(¼ + ¼) = √½ = 1/√2</span>
+    <span>e₂ = w / ‖w‖ = (½, −½) · √2 = (√2/2, −√2/2) = (1, −1)/√2</span>
+    <span class="ok">Result: e₁ = h₊, e₂ = h₋. Gram–Schmidt on (1, 1), (1, 0) builds the Hadamard basis.</span>
+  </div>
+  <details class="sol"><summary>Practice: run Gram–Schmidt on a₁ = (1, i), a₂ = (1, 0)</summary><div>
+    <div class="steps">
+      <span>‖a₁‖² = |1|² + |i|² = 1 + 1 = 2,  so e₁ = (1, i)/√2</span>
+      <span>⟨e₁, a₂⟩ = conj(1/√2)·1 + conj(i/√2)·0 = 1/√2   (conjugate the first vector)</span>
+      <span>shadow = (1/√2) · (1, i)/√2 = (1, i)/2 = (½, i/2)</span>
+      <span>w = (1, 0) − (½, i/2) = (½, −i/2)</span>
+      <span>‖w‖² = |½|² + |−i/2|² = ¼ + ¼ = ½,  so ‖w‖ = 1/√2</span>
+      <span>e₂ = (½, −i/2) · √2 = (1, −i)/√2</span>
+      <span class="ok">Result: e₁ = c₊, e₂ = c₋, the circular basis.</span>
+      <span class="note">Here the conjugate made no difference only because a₂'s second entry is 0. With a₂ = (0, 1) it matters:</span>
+      <span>⟨e₁, a₂⟩ = conj(i/√2)·1 = −i/√2;  shadow = (−i/√2)(1, i)/√2 = (−i, 1)/2</span>
+      <span>w = (0, 1) − (−i/2, ½) = (i/2, ½);  ‖w‖ = 1/√2;  e₂ = (i, 1)/√2 = i · (1, −i)/√2 = i · c₋ ✓</span>
+      <span>Without the conjugate: shadow = (i/√2)(1, i)/√2 = (i, −1)/2, w = (−i/2, 3/2), and ⟨e₁, w⟩ = (−i/2 − 3i/2)/√2 = −√2 i ≠ 0 ✗</span>
+      <span class="note">i · c₋ is c₋ times a phase. A basis vector is only fixed up to a phase, so this is the same answer.</span>
+    </div>
+  </div></details>
+  <p class="ql"><b>Quantum link:</b> choosing a measurement means choosing an orthonormal basis. The probabilities are |⟨eᵢ, ψ⟩|², and Parseval is why they always add up to 1, whichever basis you pick.</p>
+</section>
+
+<section class="xt" id="hadamard">
+  <h2>The Hadamard basis in depth</h2>
+  <p>The basis you will meet more than any other after the standard one. Named after the French mathematician Jacques Hadamard; say "HAD-a-mar".</p>
+  <div class="fml">h₊ = (1, 1)/√2<br>h₋ = (1, −1)/√2</div>
+  <p class="say"><b>Read it aloud:</b> "h plus is one, one, over root two; h minus is one, minus one, over root two." In Dirac notation: |+⟩ = (|0⟩ + |1⟩)/√2 and |−⟩ = (|0⟩ − |1⟩)/√2: equal parts of 0 and 1, with the same sign or opposite signs.</p>
+
+  <h3>1. Check it is orthonormal, every step</h3>
+  <div class="steps">
+    <span>⟨h₊, h₊⟩ = (1·1 + 1·1)/2 = 2/2 = 1 ✓</span>
+    <span>⟨h₋, h₋⟩ = (1·1 + (−1)·(−1))/2 = (1 + 1)/2 = 1 ✓</span>
+    <span>⟨h₊, h₋⟩ = (1·1 + 1·(−1))/2 = (1 − 1)/2 = 0 ✓</span>
+    <span class="note">Each inner product has a 1/√2 from each vector: (1/√2)(1/√2) = 1/2. The entries are real, so conjugating changes nothing. Without the 1/√2, (1, 1) would have length √2, not 1.</span>
+  </div>
+
+  <h3>2. The picture</h3>
+  <figure>
+    <svg viewBox="0 0 300 250" role="img" aria-label="Standard basis e1 along x and e2 along y; Hadamard basis h-plus at 45 degrees and h-minus at minus 45 degrees; a dashed mirror line at 22.5 degrees">
+      <line class="grid" x1="20" y1="140" x2="290" y2="140"/><line class="grid" x1="70" y1="10" x2="70" y2="245"/>
+      <line x1="70" y1="140" x2="250" y2="65.4" class="mutS" stroke-dasharray="5 4"/><text x="186" y="112" class="mut">mirror, 22.5°</text>
+      <line x1="70" y1="140" x2="180" y2="140" class="reS" stroke-width="3"/><circle cx="180" cy="140" r="4.5" class="reF"/><text x="184" y="156" class="lab reT">e₁ = |0⟩</text>
+      <line x1="70" y1="140" x2="70" y2="30" class="reS" stroke-width="3"/><circle cx="70" cy="30" r="4.5" class="reF"/><text x="78" y="26" class="lab reT">e₂ = |1⟩</text>
+      <line x1="70" y1="140" x2="147.8" y2="62.2" class="imS" stroke-width="3"/><circle cx="147.8" cy="62.2" r="4.5" class="imF"/><text x="112" y="52" class="lab imT">h₊ = |+⟩</text>
+      <line x1="70" y1="140" x2="147.8" y2="217.8" class="imS" stroke-width="3"/><circle cx="147.8" cy="217.8" r="4.5" class="imF"/><text x="154" y="226" class="lab imT">h₋ = |−⟩</text>
+      <path d="M 100 140 A 30 30 0 0 0 91.2 118.8" class="none mutS"/><text x="106" y="134" class="mut">45°</text>
+    </svg>
+    <figcaption><b>The same right angle, tipped by 45°.</b> h₊ points at 45°, h₋ at −45°. One subtle point: the Hadamard pair is the standard pair <i>reflected</i> in the dashed line at 22.5°, not rotated. e₁ at 0° lands on 45° (h₊); e₂ at 90° lands on −45° (h₋). A 45° rotation would send e₂ to 135°, which is −h₋. Overall signs like this never change a probability.</figcaption>
+  </figure>
+
+  <h3>3. Coordinates are a sum and a difference</h3>
+  <p>For any v = (a, b), the two inner products are:</p>
+  <div class="fml">⟨h₊, v⟩ = (a + b)/√2<br>⟨h₋, v⟩ = (a − b)/√2</div>
+  <p class="say"><b>Read it aloud:</b> "the plus-coordinate is a plus b over root two; the minus-coordinate is a minus b over root two." The Hadamard basis measures how much the two entries agree and how much they differ.</p>
+  <div class="steps">
+    <span>v = (3, 1)</span>
+    <span>⟨h₊, v⟩ = (3 + 1)/√2 = 4/√2 = 4√2/2 = 2√2 ≈ 2.828</span>
+    <span>⟨h₋, v⟩ = (3 − 1)/√2 = 2/√2 = √2 ≈ 1.414</span>
+    <span>Rebuild: 2√2 · (1, 1)/√2 + √2 · (1, −1)/√2 = 2(1, 1) + 1(1, −1) = (2 + 1, 2 − 1) = (3, 1) ✓</span>
+    <span class="ok">Parseval: (2√2)² + (√2)² = 8 + 2 = 10 = 3² + 1² ✓ (the figure above)</span>
+  </div>
+  <p>Going back the other way uses the same sum-and-difference rule:</p>
+  <div class="steps">
+    <span>e₁ = (h₊ + h₋)/√2:  h₊ + h₋ = ((1, 1) + (1, −1))/√2 = (2, 0)/√2;  divide by √2: (2, 0)/2 = (1, 0) ✓</span>
+    <span>e₂ = (h₊ − h₋)/√2:  h₊ − h₋ = ((1, 1) − (1, −1))/√2 = (0, 2)/√2;  divide by √2: (0, 2)/2 = (0, 1) ✓</span>
+  </div>
+
+  <h3>4. The Hadamard matrix H</h3>
+  <p>Put h₊ and h₋ in as columns:</p>
+  <div class="fml">H = (1/√2) [[1, 1], [1, −1]]</div>
+  <div class="box">
+    <ul>
+      <li><b>It builds the basis.</b> H e₁ = first column = h₊, and H e₂ = second column = h₋ (the column rule from <a href="../04-matrices-and-linear-maps/">matrices</a>).</li>
+      <li><b>It passes the orthonormal test.</b> H is real and symmetric, so H† = H, and H†H = H·H.</li>
+      <li><b>It converts coordinates.</b> The coordinates of v in the Hadamard basis are H†v, which is just Hv. The same matrix builds the new basis and translates into it.</li>
+    </ul>
+  </div>
+  <div class="steps">
+    <span>H·H = ½ [[1·1 + 1·1,  1·1 + 1·(−1)], [1·1 + (−1)·1,  1·1 + (−1)·(−1)]]</span>
+    <span>    = ½ [[2, 0], [0, 2]] = I ✓</span>
+    <span>H(3, 1) = (1/√2)(3 + 1, 3 − 1) = (4, 2)/√2 = (2√2, √2) ✓ same coordinates as above</span>
+    <span>det H = (1·(−1) − 1·1)/2 = −2/2 = −1   (a reflection, matching the picture)</span>
+  </div>
+  <p>Completeness in the Hadamard basis: the two projectors add up to the identity.</p>
+  <div class="steps">
+    <span>h₊h₊† = ½ [[1, 1], [1, 1]]</span>
+    <span>h₋h₋† = ½ [[1·1, 1·(−1)], [(−1)·1, (−1)·(−1)]] = ½ [[1, −1], [−1, 1]]</span>
+    <span class="ok">sum = ½ [[2, 0], [0, 2]] = I ✓  (in Dirac: |+⟩⟨+| + |−⟩⟨−| = I)</span>
+  </div>
+
+  <h3>5. Mutually unbiased: why |0⟩ is 50/50 in the ± basis</h3>
+  <p>Square every inner product between a standard vector and a Hadamard vector:</p>
+  <div class="scroll"><table>
+    <thead><tr><th></th><th>h₊</th><th>h₋</th></tr></thead>
+    <tbody>
+      <tr><td><b>e₁</b></td><td class="m">|1/√2|² = 1/2</td><td class="m">|1/√2|² = 1/2</td></tr>
+      <tr><td><b>e₂</b></td><td class="m">|1/√2|² = 1/2</td><td class="m">|−1/√2|² = 1/2</td></tr>
+    </tbody>
+  </table></div>
+  <p>Every entry is 1/2. Knowing a state is e₁ tells you <i>nothing</i> about whether a ± measurement gives + or −, and the other way round. Two bases with this property are called <b>mutually unbiased</b>. The circular basis is unbiased to both of them as well: for example |⟨h₊, c₊⟩|² = |(1 + i)/2|² = (1² + 1²)/4 = 2/4 = 1/2. That is why the three bases sit on three perpendicular axes of the <a href="../09-bloch-sphere/">Bloch sphere</a>.</p>
+  <p class="ql"><b>Quantum link:</b> quantum key distribution (BB84, later in the course) switches at random between the standard and the Hadamard basis. An eavesdropper who measures in the wrong one gets pure coin flips, and disturbs the state in a way that can be detected.</p>
+
+  <h3>6. Hadamard twice: a first look at interference</h3>
+  <div class="steps">
+    <span>H e₁ = h₊ = (e₁ + e₂)/√2</span>
+    <span>H h₊ = (H e₁ + H e₂)/√2 = (h₊ + h₋)/√2</span>
+    <span>     = (1/√2) [ (e₁ + e₂)/√2 + (e₁ − e₂)/√2 ]</span>
+    <span>     = ½ [ e₁ + e₂ + e₁ − e₂ ]</span>
+    <span>     = ½ [ 2e₁ + (1 − 1)e₂ ] = e₁</span>
+    <span class="ok">The two e₂ pieces arrive with opposite signs (+½ and −½) and cancel.</span>
+  </div>
+  <p>|+⟩ and a fair coin both give 50/50 when measured, but a coin can't be "un-flipped". The hidden signs in the Hadamard basis can cancel. That cancellation is the engine of <a href="../13-deutsch-algorithm/">Deutsch's algorithm</a> and the <a href="../10-gates/">H gate</a>.</p>
+
+  <h3>7. Hadamard on many qubits</h3>
+  <p>Apply H to each of n qubits starting from all zeros and you get every one of the 2ⁿ basis states with equal amplitude 1/√2ⁿ. For two qubits (⊗ is the tensor product from <a href="../11-tensor-products/">tensor products</a>):</p>
+  <div class="steps">
+    <span>(H ⊗ H)|00⟩ = h₊ ⊗ h₊ = (1/√2)(1, 1) ⊗ (1/√2)(1, 1) = ½ (1, 1, 1, 1)</span>
+    <span>             = ½ (|00⟩ + |01⟩ + |10⟩ + |11⟩)</span>
+    <span>H ⊗ H = ½ [[1, 1, 1, 1], [1, −1, 1, −1], [1, 1, −1, −1], [1, −1, −1, 1]]</span>
+    <span class="ok">Its four columns are again an orthonormal basis, now of ℂ⁴: each has length √(4 · ¼) = 1, and any two share two + and two − products, which cancel.</span>
+  </div>
+
+  <div class="warn"><b>Common slips with the Hadamard basis.</b>
+    <ul>
+      <li>Writing h₋ as (−1, 1)/√2. That is −h₋: same axis, opposite arrow. Either is a valid basis vector, but stay consistent inside one calculation.</li>
+      <li>Calling H "a 45° rotation". It is a reflection (det H = −1), which is why H·H = I. Two 45° rotations would make a 90° rotation, not the identity.</li>
+      <li>Dropping the 1/√2 from H. Then H·H = 2I, and lengths double at every step.</li>
+    </ul>
+  </div>
+
+  <details class="sol"><summary>Practice: write c₊ = (1, i)/√2 in the Hadamard basis. What are the ± probabilities?</summary><div>
+    <div class="steps">
+      <span>⟨h₊, c₊⟩ = (1·1 + 1·i)/2 = (1 + i)/2</span>
+      <span>⟨h₋, c₊⟩ = (1·1 + (−1)·i)/2 = (1 − i)/2</span>
+      <span>P(+) = |1 + i|²/4 = (1² + 1²)/4 = 2/4 = 1/2</span>
+      <span>P(−) = |1 − i|²/4 = (1² + (−1)²)/4 = 2/4 = 1/2</span>
+      <span>Parseval: 1/2 + 1/2 = 1 ✓</span>
+      <span>Rebuild: (1+i)/2 · (1, 1)/√2 + (1−i)/2 · (1, −1)/√2 = (1/(2√2)) (1+i+1−i, 1+i−1+i) = (1/(2√2)) (2, 2i) = (1, i)/√2 ✓</span>
+      <span class="ok">50/50 again: the circular and Hadamard bases are mutually unbiased.</span>
+    </div>
+  </div></details>
+  <details class="sol"><summary>Quick check: are (1, 1)/√2 and (1, −1)/2 an orthonormal basis?</summary><div>
+    <div class="steps">
+      <span>Perpendicular: (1·1 + 1·(−1))/(2√2) = 0 ✓</span>
+      <span>Length of the second: √((1 + 1)/4) = √(1/2) = 1/√2 ≈ 0.707 ✗</span>
+      <span class="ok">Orthogonal but not normalised, so not orthonormal. "Coordinate = inner product" would give wrong answers with it.</span>
+    </div>
+  </div></details>
+</section>
+
+<script>
+(function () {
+  var O = { x: 150, y: 140 }, S = 32;
+  function P(x, y) { return { x: O.x + S * x, y: O.y - S * y }; }
+  function ln(id, a, b) { var e = document.getElementById(id); e.setAttribute('x1', a.x); e.setAttribute('y1', a.y); e.setAttribute('x2', b.x); e.setAttribute('y2', b.y); }
+  function pt(id, p, dx, dy) { var e = document.getElementById(id); if (e.tagName === 'circle') { e.setAttribute('cx', p.x); e.setAttribute('cy', p.y); } else { e.setAttribute('x', p.x + (dx || 0)); e.setAttribute('y', p.y + (dy || 0)); } }
+  function f(n) { return (Math.abs(n) < 0.0005 ? 0 : n).toFixed(3); }
+  var input = document.getElementById('rb-ang'), v = { x: 3, y: 1 };
+  function draw() {
+    var a = +input.value * Math.PI / 180, c = Math.cos(a), s = Math.sin(a);
+    var c1 = 3 * c + 1 * s, c2 = -3 * s + 1 * c;
+    ln('rb-ax1', P(-4.2 * c, -4.2 * s), P(4.2 * c, 4.2 * s));
+    ln('rb-ax2', P(4.2 * s, -4.2 * c), P(-4.2 * s, 4.2 * c));
+    ln('rb-e1', O, P(c, s)); pt('rb-e1t', P(c, s)); pt('rb-e1l', P(1.45 * c, 1.45 * s), -8, 5);
+    ln('rb-e2', O, P(-s, c)); pt('rb-e2t', P(-s, c)); pt('rb-e2l', P(-1.45 * s, 1.45 * c), -8, 5);
+    var f1 = P(c1 * c, c1 * s), f2 = P(-c2 * s, c2 * c), tip = P(v.x, v.y);
+    ln('rb-p1', O, f1); ln('rb-p2', O, f2); ln('rb-d1', tip, f1); ln('rb-d2', tip, f2);
+    document.getElementById('rb-angv').textContent = input.value + '°';
+    document.getElementById('rb-out').textContent =
+      '⟨e₁′, v⟩ = ' + f(c1) + ',  ⟨e₂′, v⟩ = ' + f(c2) + ',  squares: ' + f(c1 * c1) + ' + ' + f(c2 * c2) + ' = ' + f(c1 * c1 + c2 * c2);
+  }
+  input.addEventListener('input', draw); draw();
+})();
+</script>
+
 <section class="xt" id="circ">
   <h2>The three standard bases of ℂ², including the circular one</h2>
 <div class="scroll"><table>
@@ -572,7 +880,12 @@ footer b { color: var(--ink); }
 v = np.array([1, 1j, 1])
 v_hat = v / np.linalg.norm(v)              # divide by √3
 print(np.linalg.norm(v), np.linalg.norm(v_hat))   # 1.732..., 1.0
-print(np.vdot(v_hat, [1, 0, 0]))           # vdot conjugates the first: (0.577+0j)</code></pre>
+print(np.vdot(v_hat, [1, 0, 0]))           # vdot conjugates the first: (0.577+0j)
+
+H = np.array([[1, 1], [1, -1]]) / np.sqrt(2)   # columns h+, h-
+print(np.allclose(H.conj().T @ H, np.eye(2)))  # True: orthonormal basis
+print(H @ [3, 1])                              # Hadamard coordinates (2.828, 1.414) = (2√2, √2)
+print(np.round(H @ H, 12))                     # identity: H twice undoes itself</code></pre>
 </section>
 
 <section>
@@ -593,7 +906,7 @@ print(np.vdot(v_hat, [1, 0, 0]))           # vdot conjugates the first: (0.577+0
 
 
 <footer>
-  <span>Study time: <b>45 min</b></span>
+  <span>Study time: <b>75 min</b> (45 core + 30 for the two in-depth sections)</span>
   <span><a href="../../../">All concepts</a></span>
 </footer>
 
