@@ -224,6 +224,11 @@ footer{border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font
       <tr><td>x²</td><td>"x squared"</td><td>x times x.</td></tr>
       <tr><td>≈</td><td>"is about"</td><td>Approximately equal (rounded).</td></tr>
       <tr><td>→</td><td>"goes to", "becomes"</td><td>The left side turns into the right side.</td></tr>
+        <tr><td>S, S†</td><td>"S gate", "S dagger"</td><td>The phase gate [[1,0],[0,i]] (a quarter-turn) and its undo [[1,0],[0,−i]].</td></tr>
+        <tr><td>|+i⟩, |−i⟩</td><td>"ket plus i", "ket minus i"</td><td>(|0⟩ + i|1⟩)/√2 and (|0⟩ − i|1⟩)/√2: the two ends of the y-axis.</td></tr>
+        <tr><td>i</td><td>"i"</td><td>The imaginary unit, i² = −1. Multiplying by i turns a complex number 90°.</td></tr>
+        <tr><td>α, β</td><td>"alpha", "beta"</td><td>The two amplitudes of a state (α, β) = α|0⟩ + β|1⟩.</td></tr>
+        <tr><td>φ, θ</td><td>"phi", "theta"</td><td>Longitude (relative phase) and latitude on the Bloch sphere.</td></tr>
             <tr><td>HZH</td><td>"H Z H"</td><td>Three gates in a row. Read right to left: H acts first.</td></tr>
         <tr><td>↔</td><td>"swaps with"</td><td>|+⟩ ↔ |−⟩: each turns into the other.</td></tr>
 </tbody>
@@ -364,17 +369,18 @@ footer{border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font
 </section>
 
 <section class="xt" id="rotations">
-  <h2>X, Z and H as half-turns of the Bloch sphere</h2>
-<p>Picture each gate on <a href="../09-bloch-sphere/">the Bloch sphere</a>: it turns the whole ball by 180° about an axis, carrying every state along.</p>
+  <h2>X, Z, H and S as turns of the Bloch sphere</h2>
+<p>Picture each gate on <a href="../09-bloch-sphere/">the Bloch sphere</a>: it turns the whole ball about an axis, carrying every state along. X, Z and H turn by 180°; S turns by 90°. The <a href="#playground">gate playground</a> below animates every one of these.</p>
   <div class="scroll"><table>
     <thead><tr><th>Gate</th><th>Axis</th><th>|0⟩</th><th>|1⟩</th><th>|+⟩</th><th>|−⟩</th></tr></thead>
     <tbody>
       <tr><td class="m">X</td><td>x</td><td class="m">|1⟩</td><td class="m">|0⟩</td><td class="m">|+⟩</td><td class="m">−|−⟩</td></tr>
       <tr><td class="m">Z</td><td>z</td><td class="m">|0⟩</td><td class="m">−|1⟩</td><td class="m">|−⟩</td><td class="m">|+⟩</td></tr>
       <tr><td class="m">H</td><td>x+z</td><td class="m">|+⟩</td><td class="m">|−⟩</td><td class="m">|0⟩</td><td class="m">|1⟩</td></tr>
+      <tr><td class="m">S</td><td>z, 90°</td><td class="m">|0⟩</td><td class="m">i|1⟩</td><td class="m">|+i⟩</td><td class="m">|−i⟩</td></tr>
     </tbody>
   </table></div>
-  <p class="why">"x+z" is the diagonal axis halfway between x and z. Every turn is 180°.</p>
+  <p class="why">"x+z" is the diagonal axis halfway between x and z. X, Z and H turn 180°; S turns a quarter, 90°. |±i⟩ = (|0⟩ ± i|1⟩)/√2 are the two points on the y-axis.</p>
   <ul>
     <li><b>X</b> is the quantum NOT: X|0⟩ = [0 1; 1 0](1, 0) = (0, 1) = |1⟩. |+⟩ lies <i>on</i> the x-axis, so the turn doesn't move it; |−⟩ also lies on that axis and only picks up a minus sign.</li>
     <li><b>Z</b> is the "phase flip": it leaves the poles alone and twists the equator by 180°, so |+⟩ ↔ |−⟩. On |1⟩ it only adds a sign, which on its own is a global phase.</li>
@@ -382,6 +388,402 @@ footer{border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font
   </ul>
   <div class="warn"><b>Watch the minus signs.</b> X|−⟩ = −|−⟩ and Z|1⟩ = −|1⟩ are the "same point on the sphere" (a global sign), but once that state is part of a bigger superposition the sign becomes relative and matters. This is the "phase kickback" trick behind <a href="../13-deutsch-algorithm/">Deutsch's algorithm</a>.</div>
 </section>
+
+<section class="xt" id="s-gate">
+  <h2>The S gate: a quarter-turn</h2>
+  <p>X, Z and H are half-turns. S is the first gate that turns by less: a quarter-turn (90°) about the z-axis. It is also called the <b>phase gate</b>, because it never changes a probability; it only turns the phase of the |1⟩ part.</p>
+  <div class="fml">S = [[1, 0], [0, i]]</div>
+  <p class="say"><b>Read it aloud:</b> "S is the matrix with rows one, zero and zero, i." On a column it does S(α, β) = (α, iβ): the |0⟩ amount stays, the |1⟩ amount is multiplied by i, which turns it 90° anticlockwise on its own complex plane (<a href="../01-complex-numbers/">complex numbers</a>: multiplying by i is a quarter-turn).</p>
+
+  <h3>Worked example: S|+⟩</h3>
+  <div class="steps">
+    <span>|+⟩ = (1/√2, 1/√2)</span>
+    <span>top    = 1·(1/√2) + 0·(1/√2) = 1/√2</span>
+    <span>bottom = 0·(1/√2) + i·(1/√2) = i/√2</span>
+    <span>S|+⟩ = (1/√2, i/√2) = (|0⟩ + i|1⟩)/√2</span>
+    <span class="ok">= |+i⟩: the point on the equator a quarter-turn round from |+⟩</span>
+    <span class="note">Probabilities before: 1/2 and 1/2. After: |1/√2|² = 1/2 and |i/√2|² = |i|²/2 = 1/2. Unchanged, as promised; only the relative phase moved from 0° to 90°.</span>
+  </div>
+
+  <h3>Two S's make a Z</h3>
+  <div class="steps">
+    <span>S·S = [[1·1 + 0·0, 1·0 + 0·i], [0·1 + i·0, 0·0 + i·i]]</span>
+    <span>    = [[1, 0], [0, i²]] = [[1, 0], [0, −1]] = Z ✓</span>
+    <span class="note">Two quarter-turns are a half-turn. So S is "the square root of Z". (Later you'll meet T, an eighth-turn of 45°, with T·T = S.)</span>
+  </div>
+
+  <h3>Undoing S needs S†, not S</h3>
+  <div class="steps">
+    <span>S† = [[1, 0], [0, −i]]   (transpose changes nothing here; conjugate turns i into −i)</span>
+    <span>S†S = [[1, 0], [0, (−i)·i]] = [[1, 0], [0, −i²]] = [[1, 0], [0, 1]] = I ✓</span>
+    <span>S·S = Z ≠ I</span>
+    <span class="note">X, Z and H are half-turns, so doing one twice is a full 360° turn and each is its own undo. A quarter-turn needs the opposite quarter-turn, S†, to come back.</span>
+  </div>
+
+  <div class="scroll"><table>
+    <thead><tr><th>State</th><th>|0⟩</th><th>|1⟩</th><th>|+⟩</th><th>|−⟩</th><th>|+i⟩</th><th>|−i⟩</th></tr></thead>
+    <tbody>
+      <tr><td><b>after S</b></td><td class="m">|0⟩</td><td class="m">i|1⟩</td><td class="m">|+i⟩</td><td class="m">|−i⟩</td><td class="m">|−⟩</td><td class="m">|+⟩</td></tr>
+    </tbody>
+  </table></div>
+  <p class="why">The poles stay where they are (|1⟩ only picks up the global factor i). The equator steps round by a quarter: |+⟩ → |+i⟩ → |−⟩ → |−i⟩ → |+⟩. Check one: S|+i⟩ = (1/√2, i·i/√2) = (1/√2, −1/√2) = |−⟩ ✓.</p>
+</section>
+
+<section class="xt gp" id="playground">
+  <h2>Gate playground: watch X, Z, H and S turn the sphere</h2>
+  <p>Every one-qubit gate is a turn of the whole <a href="../09-bloch-sphere/">Bloch sphere</a> about some axis. Pick a starting state, then tap gates and watch the turn happen. The dashed line is the axis the gate turns about; the faint dots labelled 0, 1, +, −, +i, −i show where each of the six key states is carried. <b>Drag sideways on the sphere</b> to look at it from another side.</p>
+
+  <div class="gp-panel">
+    <div class="gp-row" id="gp-start" role="group" aria-label="Starting state">
+      <span class="gp-lab">Start at</span>
+      <button data-s="0" aria-pressed="true">|0⟩</button><button data-s="1">|1⟩</button><button data-s="+">|+⟩</button><button data-s="−">|−⟩</button><button data-s="+i">|+i⟩</button><button data-s="−i">|−i⟩</button>
+    </div>
+
+    <div class="gp-stage">
+      <svg id="gp-sphere" viewBox="0 0 320 300" role="img" aria-label="Bloch sphere showing the current state as an arrow; gates animate as rotations"></svg>
+      <div class="gp-circuit" id="gp-circ" aria-live="polite"></div>
+    </div>
+
+    <div class="gp-gates" id="gp-gates" role="group" aria-label="Apply a gate">
+      <button data-g="X" style="--c:var(--gx)">X</button>
+      <button data-g="Z" style="--c:var(--gz)">Z</button>
+      <button data-g="H" style="--c:var(--gh)">H</button>
+      <button data-g="S" style="--c:var(--gs)">S</button>
+      <button data-g="Sd" style="--c:var(--gs)">S†</button>
+      <span class="gp-sp"></span>
+      <button class="gp-plain" id="gp-undo">Undo</button>
+      <button class="gp-plain" id="gp-reset">Reset</button>
+    </div>
+    <div class="gp-row gp-opts">
+      <label><input type="checkbox" id="gp-ghost" checked> Show where the six key states go</label>
+      <label><input type="checkbox" id="gp-slow"> Slow motion</label>
+    </div>
+
+    <div class="gp-info" id="gp-info"></div>
+
+    <div class="gp-amps">
+      <div class="gp-dial"><svg id="gp-da" viewBox="0 0 120 120" role="img" aria-label="Amplitude alpha on the complex plane"></svg><div id="gp-ta"></div></div>
+      <div class="gp-dial"><svg id="gp-db" viewBox="0 0 120 120" role="img" aria-label="Amplitude beta on the complex plane"></svg><div id="gp-tb"></div></div>
+    </div>
+    <p class="gp-phase" id="gp-phase"></p>
+    <div class="steps" id="gp-calc" aria-live="polite"></div>
+  </div>
+
+  <h3>How to read the two views together</h3>
+  <ul>
+    <li><b>Height on the sphere = the odds.</b> The top is |0⟩ for certain, the bottom |1⟩, the equator 50/50. The bars under the dials show the same numbers, |α|² and |β|².</li>
+    <li><b>Direction around the equator = the relative phase.</b> The angle of β's arrow minus the angle of α's arrow is the longitude φ. That's why Z and S, which only turn β's arrow, move the state around the equator but never up or down.</li>
+    <li><b>Turning both arrows together changes nothing on the sphere.</b> Try X on |−⟩: both dials flip, the result is −|−⟩, and the sphere doesn't move. That overall factor is a global phase.</li>
+  </ul>
+  <p class="why"><b>H looked like a reflection on the flat picture; why is it a turn here?</b> H = i × (a matrix with determinant 1, which is a pure rotation). The extra factor i is a global phase, and the sphere can't see global phases, so on the sphere H is exactly a half-turn about the diagonal axis between x and z.</p>
+
+  <h3>Try these</h3>
+  <details class="sol"><summary>1. From |0⟩, which two taps reach |+i⟩?</summary><div>
+    <div class="steps"><span>H then S: |0⟩ —H→ |+⟩ —S→ |+i⟩</span><span class="note">H drops the state from the pole to the front of the equator; S turns it a quarter round to the side. The circuit reads |0⟩ ─H─S─, and the matrix product is S·H (right to left).</span></div>
+  </div></details>
+  <details class="sol"><summary>2. Tap H, Z, H from |0⟩. Then Reset and tap X. Same place?</summary><div>
+    <div class="steps"><span>|0⟩ —H→ |+⟩ —Z→ |−⟩ —H→ |1⟩, and X|0⟩ = |1⟩ ✓</span><span class="note">Watch the ghost dots: after H, Z, H every key state ends exactly where X puts it. H swaps the x- and z-axes, so "a half-turn about z, viewed through H" is a half-turn about x: HZH = X.</span></div>
+  </div></details>
+  <details class="sol"><summary>3. From |+⟩, tap S twice. Then Reset to |+⟩ and tap Z once.</summary><div>
+    <div class="steps"><span>|+⟩ —S→ |+i⟩ —S→ |−⟩, and Z|+⟩ = |−⟩ ✓</span><span class="ok">Two quarter-turns = one half-turn: S·S = Z.</span></div>
+  </div></details>
+  <details class="sol"><summary>4. Tap X on |+⟩, then on |−⟩. Why does nothing move?</summary><div>
+    <div class="steps"><span>X turns the sphere about the x-axis, and |+⟩, |−⟩ sit on that axis: the axle of the turn.</span><span>X|+⟩ = (1/√2, 1/√2) = |+⟩;  X|−⟩ = (−1/√2, 1/√2) = −|−⟩</span><span class="note">The dials show both arrows flipping for |−⟩, but a sign on the whole state is a global phase. It becomes visible only when |−⟩ is part of a bigger superposition: that's phase kickback in <a href="../13-deutsch-algorithm/">Deutsch's algorithm</a>.</span></div>
+  </div></details>
+  <details class="sol"><summary>5. Starting at |0⟩, reach |−i⟩ in two taps. Can you also do it in three, without S†?</summary><div>
+    <div class="steps"><span>Two taps: H, S†:  |0⟩ → |+⟩ → |−i⟩</span><span>Three taps: H, Z, S:  |0⟩ → |+⟩ → |−⟩ → |−i⟩   (or H, S, Z)</span><span class="note">Also H, S, S, S: three quarter-turns forward land on the same spot as one quarter-turn back.</span></div>
+  </div></details>
+  <details class="sol"><summary>6. Tap H, S, H from |0⟩. What single turn is that?</summary><div>
+    <div class="steps">
+      <span>|0⟩ —H→ |+⟩ —S→ |+i⟩ —H→ ?</span>
+      <span>H|+i⟩ = (1/√2)·(1/√2)·(1 + i, 1 − i) = ((1 + i)/2, (1 − i)/2)</span>
+      <span>Bloch vector: 2·conj(α)β = 2·(1 − i)(1 − i)/4 = (1 − 2i + i²)/2 = −2i/2 = −i  →  x = 0, y = −1</span>
+      <span class="ok">It lands on |−i⟩ (with a global phase).</span>
+      <span class="note">Watch the ghosts: |+⟩ and |−⟩ stay put and everything else turns a quarter about the x-axis. Just as HZH = X, HSH is "S but about the x-axis": a quarter-turn about x, the square root of X.</span>
+    </div>
+  </div></details>
+</section>
+
+<style>
+.gp{--gx:#1d5bbd;--gz:#b02c68;--gh:#b5530f;--gs:#0b7480;--st:#1e7a4a}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .gp{--gx:#7eb0ff;--gz:#f28ab9;--gh:#f2a05e;--gs:#53c2cc;--st:#6fd39d}}
+:root[data-theme="dark"] .gp{--gx:#7eb0ff;--gz:#f28ab9;--gh:#f2a05e;--gs:#53c2cc;--st:#6fd39d}
+.gp .gp-panel{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:14px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.gp .gp-row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.gp .gp-lab{font-size:.85rem;color:var(--muted);margin-right:4px}
+.gp #gp-start button{font:600 .95rem var(--f-math);padding:6px 10px;border-radius:999px;border:1px solid var(--rule);background:var(--soft);color:var(--ink)}
+.gp #gp-start button[aria-pressed="true"]{border-color:var(--st);color:var(--st);background:var(--paper);box-shadow:inset 0 0 0 1px var(--st)}
+.gp .gp-stage{position:relative}
+.gp #gp-sphere{display:block;width:100%;max-width:440px;height:auto;margin:0 auto;touch-action:pan-y;cursor:grab;user-select:none}
+.gp #gp-sphere:active{cursor:grabbing}
+.gp .gp-circuit{font:600 .95rem var(--f-math);text-align:center;color:var(--ink);overflow-x:auto;white-space:nowrap;padding:4px 0}
+.gp .gp-circuit b{color:var(--st)}
+.gp .gp-gates{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.gp .gp-gates button[data-g]{font:700 1.15rem var(--f-math);min-width:3.1rem;min-height:2.8rem;border-radius:10px;border:0;background:var(--c);color:var(--paper);padding:6px 12px}
+.gp .gp-gates button[data-g]:hover{filter:brightness(1.08)}
+.gp .gp-gates button.gp-plain{font:600 .9rem var(--f-body,inherit);border:1px solid var(--rule);background:var(--soft);color:var(--ink);border-radius:10px;padding:8px 12px}
+.gp .gp-sp{flex:1 1 0}
+.gp .gp-opts{font-size:.9rem;color:var(--muted);gap:6px 18px}
+.gp .gp-opts input{accent-color:var(--st)}
+.gp .gp-info{background:var(--soft);border-radius:10px;padding:12px 14px;border-left:4px solid var(--ic,var(--rule));display:flex;flex-direction:column;gap:8px;font-size:.95rem}
+.gp .gp-info h4{margin:0;font-size:1rem}
+.gp .gp-info .mx{font:600 .95rem var(--f-math)}
+.gp .gp-map{display:grid;grid-template-columns:repeat(auto-fill,minmax(8.5rem,1fr));gap:4px 12px;font:.88rem var(--f-math)}
+.gp .gp-amps{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.gp .gp-dial{display:flex;flex-direction:column;align-items:center;gap:4px;font:.85rem var(--f-math);text-align:center;min-width:0}
+.gp .gp-dial svg{width:100%;max-width:150px;height:auto}
+.gp .gp-bar{width:100%;max-width:150px;height:8px;border-radius:4px;background:var(--grid);overflow:hidden}
+.gp .gp-bar i{display:block;height:100%;background:var(--st);transition:width .3s}
+.gp .gp-phase{font-size:.92rem;color:var(--muted);margin:0}
+.gp .gp-phase b{color:var(--ink)}
+.gp svg text{font-family:var(--f-math)}
+@media (prefers-reduced-motion:reduce){.gp .gp-bar i{transition:none}}
+</style>
+
+<script>
+(function () {
+  var r2 = Math.SQRT1_2, PI = Math.PI;
+  function C(re, im) { return { re: re, im: im || 0 }; }
+  function mul(a, b) { return C(a.re * b.re - a.im * b.im, a.re * b.im + a.im * b.re); }
+  function add(a, b) { return C(a.re + b.re, a.im + b.im); }
+  function conj(a) { return C(a.re, -a.im); }
+  function abs2(a) { return a.re * a.re + a.im * a.im; }
+
+  var G = {
+    X: { name: 'X', title: 'X · the quantum NOT', m: [[C(0), C(1)], [C(1), C(0)]], mx: 'X = [[0, 1], [1, 0]]', ax: [1, 0, 0], ang: PI, col: 'var(--gx)',
+      turn: 'Half-turn (180°) about the x-axis, the line through |+⟩ and |−⟩.',
+      txt: 'The poles swap: |0⟩ ↔ |1⟩, and so do |+i⟩ ↔ |−i⟩. |+⟩ and |−⟩ sit on the axle, so they stay put (|−⟩ only picks up a sign). On |0⟩ and |1⟩ it is the classical NOT.' },
+    Z: { name: 'Z', title: 'Z · the phase flip', m: [[C(1), C(0)], [C(0), C(-1)]], mx: 'Z = [[1, 0], [0, −1]]', ax: [0, 0, 1], ang: PI, col: 'var(--gz)',
+      turn: 'Half-turn (180°) about the z-axis, the line through |0⟩ and |1⟩.',
+      txt: 'The poles stay put; the equator spins halfway round: |+⟩ ↔ |−⟩ and |+i⟩ ↔ |−i⟩. Height never changes, so the odds of 0 and 1 never change. Only the relative phase flips by 180°.' },
+    H: { name: 'H', title: 'H · Hadamard', m: [[C(r2), C(r2)], [C(r2), C(-r2)]], mx: 'H = (1/√2) [[1, 1], [1, −1]]', ax: [r2, 0, r2], ang: PI, col: 'var(--gh)',
+      turn: 'Half-turn (180°) about the diagonal axis halfway between x and z.',
+      txt: 'It swaps the z- and x-axes: |0⟩ ↔ |+⟩ and |1⟩ ↔ |−⟩, carrying the poles to the equator and back. The y-axis gets flipped: |+i⟩ ↔ |−i⟩. Twice is a full turn, so H·H = I.' },
+    S: { name: 'S', title: 'S · the phase gate', m: [[C(1), C(0)], [C(0), C(0, 1)]], mx: 'S = [[1, 0], [0, i]]', ax: [0, 0, 1], ang: PI / 2, col: 'var(--gs)',
+      turn: 'Quarter-turn (90°) about the z-axis, anticlockwise seen from |0⟩.',
+      txt: 'The poles stay put; the equator steps a quarter round: |+⟩ → |+i⟩ → |−⟩ → |−i⟩ → |+⟩. It multiplies the |1⟩ amount by i. Two S\'s make one Z.' },
+    Sd: { name: 'S†', title: 'S† · S undone', m: [[C(1), C(0)], [C(0), C(0, -1)]], mx: 'S† = [[1, 0], [0, −i]]', ax: [0, 0, 1], ang: -PI / 2, col: 'var(--gs)',
+      turn: 'Quarter-turn (90°) about the z-axis, clockwise seen from |0⟩.',
+      txt: 'The reverse of S: |+⟩ → |−i⟩ → |−⟩ → |+i⟩ → |+⟩. It multiplies the |1⟩ amount by −i, and S†S = I.' }
+  };
+  var KEYS = ['0', '1', '+', '−', '+i', '−i'];
+  var ST = { '0': [C(1), C(0)], '1': [C(0), C(1)], '+': [C(r2), C(r2)], '−': [C(r2), C(-r2)], '+i': [C(r2), C(0, r2)], '−i': [C(r2), C(0, -r2)] };
+  var HOME = { '0': [0, 0, 1], '1': [0, 0, -1], '+': [1, 0, 0], '−': [-1, 0, 0], '+i': [0, 1, 0], '−i': [0, -1, 0] };
+
+  function apply(m, s) { return [add(mul(m[0][0], s[0]), mul(m[0][1], s[1])), add(mul(m[1][0], s[0]), mul(m[1][1], s[1]))]; }
+  function bloch(s) { var p = mul(conj(s[0]), s[1]); return [2 * p.re, 2 * p.im, abs2(s[0]) - abs2(s[1])]; }
+  function rot(v, n, t) {
+    var c = Math.cos(t), s = Math.sin(t), d = n[0] * v[0] + n[1] * v[1] + n[2] * v[2];
+    var cr = [n[1] * v[2] - n[2] * v[1], n[2] * v[0] - n[0] * v[2], n[0] * v[1] - n[1] * v[0]];
+    return [0, 1, 2].map(function (k) { return v[k] * c + cr[k] * s + n[k] * d * (1 - c); });
+  }
+  function inner(a, b) { return add(mul(conj(a[0]), b[0]), mul(conj(a[1]), b[1])); }
+
+  function fr(x) {
+    var s = x < 0 ? '−' : '', a = Math.abs(x);
+    var known = [[0, '0'], [1, '1'], [r2, '1/√2'], [0.5, '1/2'], [Math.sqrt(3) / 2, '√3/2']];
+    for (var k = 0; k < known.length; k++) if (Math.abs(a - known[k][0]) < 1e-6) return known[k][0] === 0 ? '0' : s + known[k][1];
+    return s + a.toFixed(3);
+  }
+  function fc(z) {
+    var re = Math.abs(z.re) < 1e-6 ? 0 : z.re, im = Math.abs(z.im) < 1e-6 ? 0 : z.im;
+    if (im === 0) return fr(re);
+    var t = fr(Math.abs(im)), it = t === '1' ? 'i' : (t.indexOf('1/') === 0 ? 'i' + t.slice(1) : t + 'i');
+    if (re === 0) return (im < 0 ? '−' : '') + it;
+    return '(' + fr(re) + (im < 0 ? ' − ' : ' + ') + it + ')';
+  }
+  function fcp(z) { var t = fc(z); return t.charAt(0) === '−' ? '(' + t + ')' : t; }
+  function ket(k) { return '|' + k + '⟩'; }
+  function nameOf(s) {
+    for (var j = 0; j < KEYS.length; j++) {
+      var c = inner(ST[KEYS[j]], s);
+      if (abs2(c) > 1 - 1e-6) {
+        var f = fc(c);
+        return { k: KEYS[j], c: c, txt: (f === '1' ? '' : f === '−1' ? '−' : f) + ket(KEYS[j]), global: f !== '1' };
+      }
+    }
+    return null;
+  }
+
+  var svg = document.getElementById('gp-sphere');
+  if (!svg) return;
+  var yaw = -35 * PI / 180, pitch = 18 * PI / 180, R = 112, CX = 160, CY = 150;
+  function proj(v) {
+    var ca = Math.cos(yaw), sa = Math.sin(yaw), ce = Math.cos(pitch), se = Math.sin(pitch);
+    var x1 = v[0] * ca - v[1] * sa, y1 = v[0] * sa + v[1] * ca, z1 = v[2];
+    return { x: CX + R * y1, y: CY - R * (z1 * ce - x1 * se), d: x1 * ce + z1 * se };
+  }
+  function f1(n) { return n.toFixed(1); }
+  function circle(fn) {
+    var front = '', back = '', prev = null;
+    for (var k = 0; k <= 96; k++) {
+      var q = proj(fn(k / 96 * 2 * PI));
+      if (prev) { var seg = 'M' + f1(prev.x) + ' ' + f1(prev.y) + 'L' + f1(q.x) + ' ' + f1(q.y); if (prev.d + q.d >= 0) front += seg; else back += seg; }
+      prev = q;
+    }
+    return [front, back];
+  }
+
+  var state = ST['0'].slice(), startKey = '0', history = [], stack = [], vec = bloch(state);
+  var ghosts = KEYS.map(function (k) { return HOME[k].slice(); });
+  var lastGate = null, trail = [], anim = null, queue = [];
+  var ghostOn = document.getElementById('gp-ghost'), slow = document.getElementById('gp-slow');
+
+  function draw() {
+    var o = '';
+    var p0 = proj([0, 0, 0]);
+    o += '<circle cx="' + CX + '" cy="' + CY + '" r="' + R + '" fill="var(--soft)" stroke="var(--muted)" stroke-width="1.3"/>';
+    var circles = [
+      circle(function (t) { return [Math.cos(t), Math.sin(t), 0]; }),
+      circle(function (t) { return [Math.cos(t), 0, Math.sin(t)]; }),
+      circle(function (t) { return [0, Math.cos(t), Math.sin(t)]; })
+    ];
+    circles.forEach(function (c, i) {
+      o += '<path d="' + c[1] + '" fill="none" stroke="var(--muted)" stroke-width="1" stroke-dasharray="2 4" opacity=".55"/>';
+      o += '<path d="' + c[0] + '" fill="none" stroke="var(--muted)" stroke-width="' + (i === 0 ? 1.3 : 0.9) + '" opacity="' + (i === 0 ? 0.9 : 0.55) + '"/>';
+    });
+    KEYS.forEach(function (k) {
+      var e = proj(HOME[k].map(function (x) { return x * 1.0; })), lp = proj(HOME[k].map(function (x) { return x * 1.2; }));
+      o += '<line x1="' + f1(p0.x) + '" y1="' + f1(p0.y) + '" x2="' + f1(e.x) + '" y2="' + f1(e.y) + '" stroke="var(--muted)" stroke-width="1" ' + (e.d < 0 ? 'stroke-dasharray="3 3" opacity=".6"' : 'opacity=".8"') + '/>';
+      o += '<text x="' + f1(lp.x) + '" y="' + f1(lp.y + 4) + '" text-anchor="middle" font-size="12.5" font-weight="600" fill="var(--' + (lp.d < 0 ? 'muted' : 'ink') + ')">' + ket(k) + '</text>';
+    });
+    if (lastGate) {
+      var g = G[lastGate], a1 = proj(g.ax.map(function (x) { return x * 1.32; })), a2 = proj(g.ax.map(function (x) { return -x * 1.32; }));
+      o += '<line x1="' + f1(a1.x) + '" y1="' + f1(a1.y) + '" x2="' + f1(a2.x) + '" y2="' + f1(a2.y) + '" stroke="' + g.col + '" stroke-width="2.4" stroke-dasharray="7 5" stroke-linecap="round"/>';
+      o += '<text x="' + f1(a1.x + 6) + '" y="' + f1(a1.y - 4) + '" font-size="13" font-weight="700" fill="' + g.col + '">' + g.name + ' axis</text>';
+    }
+    if (ghostOn.checked) {
+      ghosts.forEach(function (gv, i) {
+        var q = proj(gv), col = lastGate ? G[lastGate].col : 'var(--muted)';
+        o += '<circle cx="' + f1(q.x) + '" cy="' + f1(q.y) + '" r="4.5" fill="var(--paper)" stroke="' + col + '" stroke-width="1.8" opacity="' + (q.d < 0 ? 0.5 : 1) + '"/>';
+        o += '<text x="' + f1(q.x + 6) + '" y="' + f1(q.y + 13) + '" font-size="10.5" font-weight="700" fill="' + col + '" opacity="' + (q.d < 0 ? 0.55 : 1) + '">' + KEYS[i] + '</text>';
+      });
+    }
+    if (trail.length > 1) {
+      o += '<polyline points="' + trail.map(function (v) { var q = proj(v); return f1(q.x) + ',' + f1(q.y); }).join(' ') + '" fill="none" stroke="var(--st)" stroke-width="2.5" stroke-linecap="round" opacity=".45"/>';
+    }
+    var t = proj(vec);
+    o += '<line x1="' + f1(p0.x) + '" y1="' + f1(p0.y) + '" x2="' + f1(t.x) + '" y2="' + f1(t.y) + '" stroke="var(--st)" stroke-width="3.5" stroke-linecap="round" opacity="' + (t.d < 0 ? 0.6 : 1) + '"/>';
+    o += '<circle cx="' + f1(t.x) + '" cy="' + f1(t.y) + '" r="' + (t.d < 0 ? 6 : 8) + '" fill="var(--st)" stroke="var(--paper)" stroke-width="2"/>';
+    o += '<circle cx="' + f1(p0.x) + '" cy="' + f1(p0.y) + '" r="2.5" fill="var(--muted)"/>';
+    svg.innerHTML = o;
+  }
+
+  function dial(id, z, label) {
+    var x = 60 + 44 * z.re, y = 60 - 44 * z.im, o = '';
+    o += '<circle cx="60" cy="60" r="44" fill="none" stroke="var(--rule)" stroke-width="1.2"/>';
+    o += '<line x1="8" y1="60" x2="112" y2="60" stroke="var(--rule)"/><line x1="60" y1="8" x2="60" y2="112" stroke="var(--rule)"/>';
+    o += '<text x="113" y="56" text-anchor="end" font-size="9" fill="var(--muted)">Re</text><text x="64" y="15" font-size="9" fill="var(--muted)">Im</text>';
+    if (abs2(z) > 1e-9) {
+      o += '<line x1="60" y1="60" x2="' + f1(x) + '" y2="' + f1(y) + '" stroke="var(--st)" stroke-width="3" stroke-linecap="round"/><circle cx="' + f1(x) + '" cy="' + f1(y) + '" r="4" fill="var(--st)"/>';
+    } else {
+      o += '<circle cx="60" cy="60" r="4" fill="var(--st)"/>';
+    }
+    o += '<text x="6" y="116" font-size="11" font-weight="700" fill="var(--ink)">' + label + '</text>';
+    document.getElementById(id).innerHTML = o;
+  }
+
+  function panels(gk, before) {
+    var a = state[0], b = state[1], nm = nameOf(state);
+    dial('gp-da', a, 'α (on |0⟩)'); dial('gp-db', b, 'β (on |1⟩)');
+    document.getElementById('gp-ta').innerHTML = 'α = ' + fc(a) + '<br>P(0) = |α|² = ' + fr(abs2(a)) + '<div class="gp-bar"><i style="width:' + (abs2(a) * 100).toFixed(1) + '%"></i></div>';
+    document.getElementById('gp-tb').innerHTML = 'β = ' + fc(b) + '<br>P(1) = |β|² = ' + fr(abs2(b)) + '<div class="gp-bar"><i style="width:' + (abs2(b) * 100).toFixed(1) + '%"></i></div>';
+    var ph = '';
+    if (abs2(a) > 1e-9 && abs2(b) > 1e-9) {
+      var d = (Math.atan2(b.im, b.re) - Math.atan2(a.im, a.re)) * 180 / PI;
+      while (d <= -180) d += 360; while (d > 180) d -= 360;
+      if (Math.abs(d) < 1e-6) d = 0;
+      ph = '<b>Relative phase φ = ' + String(Math.abs(d - Math.round(d)) < 1e-6 ? Math.round(d) : d.toFixed(1)).replace('-', '−') + '°</b> (angle of β minus angle of α): the state\'s longitude around the equator.';
+    } else {
+      ph = '<b>At a pole:</b> one amplitude is 0, so there is no relative phase to speak of.';
+    }
+    var th = Math.acos(Math.max(-1, Math.min(1, vec[2]))) * 180 / PI;
+    ph += ' Latitude: θ = ' + (Math.abs(th - Math.round(th)) < 1e-6 ? Math.round(th) : th.toFixed(1)) + '° down from |0⟩.';
+    document.getElementById('gp-phase').innerHTML = ph;
+
+    var circ = ket(startKey) + ' ' + history.map(function (h) { return '─ ' + G[h].name + ' '; }).join('') + '─  =  <b>' + (nm ? nm.txt : '(' + fc(a) + ', ' + fc(b) + ')') + '</b>';
+    document.getElementById('gp-circ').innerHTML = circ;
+
+    var info = document.getElementById('gp-info'), calc = document.getElementById('gp-calc');
+    if (!gk) {
+      info.style.setProperty('--ic', 'var(--rule)');
+      info.innerHTML = '<h4>Tap a gate</h4><p>Each button turns the sphere. X, Z and H are half-turns; S and S† are quarter-turns. Undo steps back one gate.</p>';
+      calc.innerHTML = '<span>Current state: (' + fc(a) + ', ' + fc(b) + ')' + (nm ? ' = ' + nm.txt : '') + '</span>';
+      return;
+    }
+    var g = G[gk];
+    info.style.setProperty('--ic', g.col);
+    var map = KEYS.map(function (k) { var o = nameOf(apply(g.m, ST[k])); return ket(k) + ' → ' + (o ? o.txt : '?'); }).join('</span><span>');
+    info.innerHTML = '<h4 style="color:' + g.col + '">' + g.title + '</h4><div class="mx">' + g.mx + '</div><p><b>' + g.turn + '</b> ' + g.txt + '</p><div class="gp-map"><span>' + map + '</span></div>';
+    var m = g.m, L = [];
+    L.push('<span>' + g.name + ' · (' + fc(before[0]) + ', ' + fc(before[1]) + ')</span>');
+    L.push('<span>top    = ' + fcp(m[0][0]) + '·' + fcp(before[0]) + ' + ' + fcp(m[0][1]) + '·' + fcp(before[1]) + ' = ' + fc(a) + '</span>');
+    L.push('<span>bottom = ' + fcp(m[1][0]) + '·' + fcp(before[0]) + ' + ' + fcp(m[1][1]) + '·' + fcp(before[1]) + ' = ' + fc(b) + '</span>');
+    L.push('<span class="ok">= (' + fc(a) + ', ' + fc(b) + ')' + (nm ? ' = ' + nm.txt : '') + '</span>');
+    L.push('<span class="note">squares: ' + fr(abs2(a)) + ' + ' + fr(abs2(b)) + ' = ' + fr(abs2(a) + abs2(b)) + '</span>');
+    if (nm && nm.global) L.push('<span class="note">The factor ' + fc(nm.c) + ' multiplies the whole state: a global phase. Same point on the sphere, same probabilities.</span>');
+    calc.innerHTML = L.join('');
+  }
+
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function run(gk) {
+    if (anim) { queue.push(gk); return; }
+    var g = G[gk], before = state.slice(), v0 = vec.slice(), g0 = KEYS.map(function (k) { return HOME[k].slice(); });
+    lastGate = gk; trail = [v0];
+    var dur = reduce ? 0 : (slow.checked ? 2600 : 1000) * Math.abs(g.ang) / PI, t0 = null;
+    function finish() {
+      stack.push({ s: before, h: history.slice(), g: lastGate });
+      state = apply(g.m, before); history.push(gk); vec = bloch(state);
+      ghosts = g0.map(function (v) { return rot(v, g.ax, g.ang); });
+      anim = null; draw(); panels(gk, before);
+      if (queue.length) run(queue.shift());
+    }
+    if (!dur) { finish(); return; }
+    function frame(ts) {
+      if (t0 === null) t0 = ts;
+      var u = Math.min(1, (ts - t0) / dur), e = (1 - Math.cos(PI * u)) / 2, ang = g.ang * e;
+      vec = rot(v0, g.ax, ang); trail.push(vec);
+      ghosts = g0.map(function (v) { return rot(v, g.ax, ang); });
+      draw();
+      if (u < 1) anim = requestAnimationFrame(frame); else finish();
+    }
+    anim = requestAnimationFrame(frame);
+  }
+  function setStart(k) {
+    if (anim) { cancelAnimationFrame(anim); anim = null; queue = []; }
+    startKey = k; state = ST[k].slice(); vec = bloch(state); history = []; stack = []; lastGate = null; trail = [];
+    ghosts = KEYS.map(function (kk) { return HOME[kk].slice(); });
+    document.querySelectorAll('#gp-start button').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.s === k ? 'true' : 'false'); });
+    draw(); panels(null);
+  }
+  document.getElementById('gp-start').addEventListener('click', function (e) { var b = e.target.closest('button'); if (b) setStart(b.dataset.s); });
+  document.getElementById('gp-gates').addEventListener('click', function (e) {
+    var b = e.target.closest('button[data-g]'); if (b) run(b.dataset.g);
+  });
+  document.getElementById('gp-reset').addEventListener('click', function () { setStart(startKey); });
+  document.getElementById('gp-undo').addEventListener('click', function () {
+    if (anim || !stack.length) return;
+    var p = stack.pop(); state = p.s; history = p.h; vec = bloch(state); trail = [];
+    lastGate = null; ghosts = KEYS.map(function (k) { return HOME[k].slice(); });
+    draw(); panels(null);
+  });
+  ghostOn.addEventListener('change', draw);
+
+  var drag = null;
+  svg.addEventListener('pointerdown', function (e) { drag = { x: e.clientX, y: e.clientY, yaw: yaw, pitch: pitch }; });
+  window.addEventListener('pointermove', function (e) {
+    if (!drag) return;
+    var k = 0.012 * 320 / (svg.getBoundingClientRect().width || 320);
+    yaw = drag.yaw - (e.clientX - drag.x) * k;
+    if (e.pointerType === 'mouse') pitch = Math.max(-0.2, Math.min(1.1, drag.pitch + (e.clientY - drag.y) * k));
+    if (!anim) draw();
+  });
+  ['pointerup', 'pointercancel'].forEach(function (ev) { window.addEventListener(ev, function () { drag = null; }); });
+
+  setStart('0');
+})();
+</script>
+
 
 <section>
   <h2>Key definition</h2>
@@ -522,7 +924,10 @@ footer{border-top:1px solid var(--line);padding-top:16px;color:var(--muted);font
 H = np.array([[1, 1], [1, -1]]) / np.sqrt(2)
 ket0 = np.array([1, 0])
 print(H @ ket0)                                  # [0.7071 0.7071]  = |+⟩
-print(np.allclose(H.conj().T @ H, np.eye(2)))    # True: H is unitary</pre>
+print(np.allclose(H.conj().T @ H, np.eye(2)))    # True: H is unitary
+S = np.array([[1, 0], [0, 1j]])
+print(S @ H @ ket0)                              # [0.7071 0.7071j] = |+i⟩
+print(np.allclose(S @ S, [[1, 0], [0, -1]]))     # True: S·S = Z</pre>
   <p style="font-size:.9rem;color:var(--muted)"><code>@</code> is NumPy's "matrix times"; <code>.conj().T</code> is the dagger; <code>np.eye(2)</code> is I.</p>
 </section>
 
@@ -540,7 +945,7 @@ print(np.allclose(H.conj().T @ H, np.eye(2)))    # True: H is unitary</pre>
 
 
 <footer>
-  <span>Study time: <strong>30 min</strong></span>
+  <span>Study time: <strong>55 min</strong> (30 core + 25 for S and the playground)</span>
   <a href="../../../">All concepts</a>
 </footer>
 </main>

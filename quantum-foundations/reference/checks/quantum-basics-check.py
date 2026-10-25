@@ -165,4 +165,26 @@ for n in (1, 2, 3):
     ok &= np.isclose(sum(1 for x in range(2 ** n)) / 2 ** n, 1)
 check("13 amp(0…0) = Σ(-1)^f(x)/2^n", ok, "matches the simulated circuit for every balanced f, n = 2, 3")
 
+# ---------- 10 S gate and the gate playground ----------
+S = np.array([[1, 0], [0, 1j]]); Sd = S.conj().T
+kpi, kmi = np.array([1, 1j]) / s2, np.array([1, -1j]) / s2
+check("10 S|+> = |+i>, S|+i> = |->", close(S @ kp, kpi) and close(S @ kpi, km), "equator steps a quarter")
+check("10 S·S = Z, S†S = I, S·S != I", close(S @ S, Z) and close(Sd @ S, I) and not close(S @ S, I), "quarter-turn needs S† to undo")
+bl = lambda v: np.array([2 * (v[0].conj() * v[1]).real, 2 * (v[0].conj() * v[1]).imag, abs(v[0])**2 - abs(v[1])**2])
+def rod(v, n, t):
+    n = np.array(n) / np.linalg.norm(n)
+    return v * np.cos(t) + np.cross(n, v) * np.sin(t) + n * (n @ v) * (1 - np.cos(t))
+rng = np.random.default_rng(7); ok = True
+for U, n, t in [(X, [1, 0, 0], np.pi), (Z, [0, 0, 1], np.pi), (H, [1, 0, 1], np.pi), (S, [0, 0, 1], np.pi / 2), (Sd, [0, 0, 1], -np.pi / 2)]:
+    for _ in range(50):
+        v = rng.normal(size=2) + 1j * rng.normal(size=2); v /= np.linalg.norm(v)
+        ok &= close(bl(U @ v), rod(bl(v), n, t))
+check("10 playground rotation model", ok, "Bloch(Uψ) = axis-angle turn of Bloch(ψ) for X, Z, H, S, S†, 50 random states each")
+out = H @ S @ H @ k0
+check("10 HSH|0> = phase·|−i>", np.isclose(abs(np.vdot(kmi, out))**2, 1) and np.isclose(np.vdot(kmi, out), (1 + 1j) / s2), "global factor (1+i)/√2")
+check("10 HSH = quarter-turn about x", close(H @ S @ H, np.exp(1j * np.pi / 4) * np.array([[np.cos(np.pi/4), -1j*np.sin(np.pi/4)], [-1j*np.sin(np.pi/4), np.cos(np.pi/4)]])),
+      "e^(iπ/4)·Rx(π/2)")
+check("10 H = i × (det-1 matrix)", np.isclose(np.linalg.det(-1j * H), 1), "H is a rotation up to the global phase i")
+check("10 reach |−i> from |0>", all(np.isclose(abs(np.vdot(kmi, M @ k0))**2, 1) for M in (Sd @ H, S @ Z @ H, Z @ S @ H, S @ S @ S @ H)), "H,S† · H,Z,S · H,S,Z · H,S,S,S")
+
 print(f"\n{sum(checks)}/{len(checks)} checks passed")

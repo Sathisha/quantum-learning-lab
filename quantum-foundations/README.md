@@ -38,7 +38,7 @@ Concepts 01–07 are the maths. Concepts 08–12 are the quantum basics, in the 
 | File | What it is |
 | --- | --- |
 | [reading-maths-symbols.html](reference/reading-maths-symbols.html) / [.ipynb](reference/reading-maths-symbols.ipynb) | Symbol dictionary with how to say each one aloud, plus a refresher on powers, roots, fractions, angles, sin/cos, Σ and slopes. Keep it open while you work. |
-| [checks/](reference/checks/) | NumPy scripts that verify the worked answers: `week-01-quiz-check.py` (quiz, 20/20), `foundations-check.py` (concepts 01–04, 37/37) and `quantum-basics-check.py` (concepts 08–13, 41/41) |
+| [checks/](reference/checks/) | NumPy scripts that verify the worked answers: `week-01-quiz-check.py` (quiz, 20/20), `foundations-check.py` (concepts 01–04, 37/37) and `quantum-basics-check.py` (concepts 08–13, 48/48) |
 | [prep-plan.md](reference/prep-plan.md) | The original 11-day pre-course plan (historical) |
 
 ## Each week
