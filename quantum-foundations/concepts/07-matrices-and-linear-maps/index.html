@@ -1,0 +1,851 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body><style>
+.cnav{--cn-ink:#1b2430;--cn-mut:#566275;--cn-bg:#f5f7fb;--cn-rule:#d3dae4;--cn-a:#1d5bbd;
+ display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 18px;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+ color:var(--cn-mut);background:var(--cn-bg);border-bottom:1px solid var(--cn-rule);
+ padding-block:9px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.cnav:not(.bottom){margin-bottom:22px}
+.cnav.bottom{border-bottom:0;border-top:1px solid var(--cn-rule);margin-top:32px}
+.cnav a{color:var(--cn-a);text-decoration:none}.cnav a:hover{text-decoration:underline}
+.cnav a:focus-visible{outline:2px solid var(--cn-a);outline-offset:2px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}}
+:root[data-theme="dark"] .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}
+</style><nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Part B · Concept 07 of 17</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../06-inner-products-and-bases/">← Inner products and orthonormal bases</a> · <a href="../08-eigenvalues/">Eigenvalues and eigenvectors →</a></div></nav>
+<title>Linear algebra 2: matrices</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column on graph-paper ground; matrices set as bracketed grids; amber = rows, teal = columns throughout */
+:root{
+  --bg:#f4f7fb; --paper:#ffffff; --fg:#17202e; --muted:#566275; --line:#d5dde8; --grid:#e6ecf3;
+  --accent:#2747b8; --row:#c27a00; --row-soft:#fbe9c7; --col:#0f8a7e; --col-soft:#cdeee9;
+  --e1:#c0392b; --e2:#2747b8; --code-bg:#eef2f8;
+  --f-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f141c; --paper:#161d28; --fg:#e4e9f1; --muted:#9aa6b8; --line:#2c3646; --grid:#222b38;
+  --accent:#8ea6ff; --row:#f0b44c; --row-soft:#4a3612; --col:#4fd1c2; --col-soft:#123f3b;
+  --e1:#ff8a7a; --e2:#8ea6ff; --code-bg:#1c2533; color-scheme:dark }}
+:root[data-theme="dark"]{
+  --bg:#0f141c; --paper:#161d28; --fg:#e4e9f1; --muted:#9aa6b8; --line:#2c3646; --grid:#222b38;
+  --accent:#8ea6ff; --row:#f0b44c; --row-soft:#4a3612; --col:#4fd1c2; --col-soft:#123f3b;
+  --e1:#ff8a7a; --e2:#8ea6ff; --code-bg:#1c2533; color-scheme:dark }
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--f-body);font-size:17px;line-height:1.6;
+  background-image:linear-gradient(var(--grid) 1px,transparent 1px),linear-gradient(90deg,var(--grid) 1px,transparent 1px);
+  background-size:28px 28px;padding-inline:16px;padding-block:24px 48px}
+main{max-width:720px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+section{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:20px 18px;min-width:0}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;line-height:1.2;margin:0}
+h1{font-size:clamp(1.8rem,6vw,2.6rem);font-weight:800;letter-spacing:-.01em}
+h2{font-size:1.3rem;font-weight:700;margin-bottom:10px}
+h3{font-size:1.05rem;margin:16px 0 6px}
+p{margin:0 0 10px;max-width:65ch}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+header{padding:8px 2px 0;display:flex;flex-direction:column;gap:8px}
+header .sub{color:var(--muted);max-width:60ch}
+.m{font-family:var(--f-mono);font-size:.95em;white-space:nowrap}
+.say{color:var(--muted);font-style:italic}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+.tablewrap{overflow-x:auto}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.07em;text-transform:uppercase;color:var(--muted);font-weight:600}
+td:first-child{font-family:var(--f-mono);white-space:nowrap;font-weight:600}
+/* matrix component */
+.mat{display:inline-grid;grid-template-columns:repeat(var(--c,2),auto);column-gap:.9em;row-gap:.1em;
+  padding:.15em .55em;border-left:2px solid currentColor;border-right:2px solid currentColor;border-radius:5px;
+  font-family:var(--f-mono);vertical-align:middle;text-align:center;line-height:1.35}
+.eq{display:flex;flex-wrap:wrap;align-items:center;gap:.6em;font-family:var(--f-mono);margin:10px 0}
+.steps{font-family:var(--f-mono);font-size:.92rem;background:var(--code-bg);border-radius:8px;padding:12px 14px;overflow-x:auto;line-height:1.75;margin:8px 0}
+.steps div{white-space:pre}
+.steps .c{color:var(--muted)}
+.ok{color:var(--col);font-weight:600}
+.keybox{border:2px solid var(--accent);background:var(--paper)}
+.big{font-family:var(--f-mono);font-size:clamp(1.05rem,4.4vw,1.5rem);display:flex;flex-wrap:wrap;align-items:center;gap:.5em;margin:10px 0 14px}
+.readaloud{border-top:1px dashed var(--line);padding-top:10px}
+.readaloud b{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--accent)}
+figure{margin:14px 0 4px}
+figcaption{font-size:.9rem;color:var(--muted);margin-top:6px;max-width:65ch}
+.figwrap{overflow-x:auto}
+svg{display:block;max-width:100%;height:auto}
+svg text{font-family:var(--f-mono);fill:var(--fg)}
+.panels{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+.panel{min-width:0;border:1px solid var(--line);border-radius:8px;padding:8px}
+.panel .lab{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 10px}
+button{font:inherit;font-size:.9rem;font-family:var(--f-mono);padding:6px 11px;border-radius:999px;border:1px solid var(--line);background:var(--paper);color:var(--fg);cursor:pointer}
+button[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+button:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+ul,ol{margin:0;padding-left:1.25em;display:flex;flex-direction:column;gap:6px;max-width:65ch}
+details{border:1px solid var(--line);border-radius:8px;padding:10px 14px;margin-top:12px}
+summary{cursor:pointer;font-weight:700;color:var(--accent)}
+pre.code{font-family:var(--f-mono);font-size:.86rem;background:var(--code-bg);border-radius:8px;padding:12px 14px;overflow-x:auto;margin:6px 0;line-height:1.55}
+.q{font-size:1.05rem;border-left:4px solid var(--row);padding-left:12px;margin:8px 0}
+a{color:var(--accent)}
+.row-hl{background:var(--row-soft);border-radius:4px;padding:0 .2em}
+.col-hl{background:var(--col-soft);border-radius:4px;padding:0 .2em}
+footer{color:var(--muted);font-size:.92rem;text-align:left;padding:0 2px;display:flex;flex-direction:column;gap:4px}
+.mini{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:6px}
+.mini>div{min-width:0;border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.mini h3{margin-top:0}
+@media (prefers-reduced-motion: no-preference){ svg .anim{transition:all .35s ease} }
+</style>
+
+<style id="xt-style">
+.xt{
+  --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4; --grid:#e6ebf2;
+  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --okbg:#e5f4ec; --soft:#f5f7fb; --code:#f2f4f8;
+  --f-math:ui-monospace,"IBM Plex Mono","JetBrains Mono",Menlo,Consolas,monospace;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .xt{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}}
+:root[data-theme="dark"] .xt{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}
+.xt{color:inherit;font:inherit;display:flex;flex-direction:column;gap:12px;min-width:0;text-align:left}
+.xt h3{margin:10px 0 0}
+.xt section,.xt article{display:flex;flex-direction:column;gap:12px;min-width:0}
+.xt p{margin:0;max-width:65ch}
+.xt .eyebrow{font:600 .78rem/1 var(--f-math);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.xt .m{font-family:var(--f-math);font-size:.92em;white-space:nowrap}
+.xt .re{color:var(--re)} .im{color:var(--im)}
+.xt .bar{text-decoration:overline;text-decoration-thickness:1.5px}
+.xt .box{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.xt .scroll{overflow-x:auto}
+.xt table{border-collapse:collapse;width:100%;font-size:.95rem}
+.xt th,.xt td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+.xt th{font:600 .75rem var(--f-math);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.xt .sym td:first-child{font-family:var(--f-math);font-weight:600;white-space:nowrap}
+.xt .key{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:8px}
+.xt .key a{display:flex;justify-content:space-between;align-items:baseline;gap:6px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:7px 10px;font-family:var(--f-math);font-variant-numeric:tabular-nums}
+.xt .key a b{color:var(--ok)}
+.xt .key a span{color:var(--muted);font-size:.85rem}
+.xt .qcard{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
+.xt .qhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.xt .qhead .qn{font:700 .85rem var(--f-math);color:var(--muted)}
+.xt .qtext{font-size:1.05rem}
+.xt .opts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:6px}
+.xt .opts li{border:1px solid var(--rule);border-radius:8px;padding:6px 10px;font-family:var(--f-math);font-size:.92rem;min-width:0;overflow-wrap:anywhere}
+.xt .opts li .l{color:var(--muted);margin-right:6px}
+.xt .show .opts li.ok,.xt .revealed .opts li.ok{border-color:var(--ok);background:var(--okbg);color:var(--ink)}
+.xt .show .opts li.ok .l,.xt .revealed .opts li.ok .l{color:var(--ok);font-weight:700}
+.xt .badge{font:700 .82rem var(--f-math);color:var(--ok);background:var(--okbg);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.xt body:not(.show) .qcard:not(.revealed) .badge{visibility:hidden}
+.xt .steps{font-family:var(--f-math);font-size:.93rem;background:var(--code);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.xt .steps span{white-space:pre-wrap}
+.xt .steps .note{color:var(--muted);font-family:var(--f-body);font-size:.88rem;white-space:normal}
+.xt .steps .ok{color:var(--ok);font-weight:600}
+.xt figure{margin:0;background:var(--soft);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.xt figure svg{width:100%;height:auto;max-width:360px;align-self:center;display:block}
+.xt figcaption{font-size:.9rem;color:var(--muted)}
+.xt figcaption b{color:var(--ink)}
+.xt svg text{font-family:var(--f-math);font-size:12px;fill:var(--ink)}
+.xt svg .lab{font-size:13px;font-weight:600}
+.xt svg .mut{fill:var(--muted)}
+.xt svg .grid{stroke:var(--grid);stroke-width:1}
+.xt svg .axis{stroke:var(--muted);stroke-width:1.3}
+.xt svg .reS{stroke:var(--re)} svg .imS{stroke:var(--im)} svg .inkS{stroke:var(--ink)} svg .okS{stroke:var(--ok)} svg .mutS{stroke:var(--muted)}
+.xt svg .reF{fill:var(--re)} svg .imF{fill:var(--im)} svg .inkF{fill:var(--ink)} svg .okF{fill:var(--ok)} svg .bgF{fill:var(--paper)} svg .none{fill:none}
+.xt svg .okT{fill:var(--ok)} svg .reT{fill:var(--re)} svg .imT{fill:var(--im)}
+.xt .why{font-size:.95rem;color:var(--muted)}
+.xt .why b{color:var(--ink)}
+.xt .ql{background:var(--soft);border-left:3px solid var(--im);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.xt .ql b{color:var(--im)}
+.xt .warn{background:var(--soft);border-left:3px solid var(--re);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.xt details.sol{border-top:1px dashed var(--rule);padding-top:10px}
+.xt details.sol>summary{cursor:pointer;font-weight:700;color:var(--re);list-style-position:inside}
+.xt details.sol[open]>summary{margin-bottom:10px}
+.xt details.sol>div{display:flex;flex-direction:column;gap:12px}
+.xt .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.xt button{font:600 .9rem var(--f-body);color:var(--re);background:var(--paper);border:1px solid var(--re);border-radius:8px;padding:8px 14px;cursor:pointer}
+.xt button:hover{background:var(--soft)}
+.xt button:focus-visible,.xt summary:focus-visible,.xt a:focus-visible{outline:2px solid var(--re);outline-offset:3px}
+.xt ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;max-width:65ch}
+.xt pre.code{margin:0;background:var(--code);border-radius:8px;padding:14px 16px;overflow-x:auto;font:.85rem/1.55 var(--f-math)}
+.xt a{color:var(--re)}
+.xt footer{border-top:1px solid var(--rule);padding-top:14px;color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+@media (prefers-reduced-motion:reduce){.xt *{transition:none!important}}
+.xt .tag{font:600 .72rem var(--f-math);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.xt .tag.new{color:var(--ok);background:var(--okbg)} .tag.have{color:var(--re);background:var(--soft)} .tag.next{color:var(--im);background:var(--soft)}
+.xt .cov td:nth-child(2){white-space:nowrap}
+.xt .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:12px}
+.xt .grid2>div{min-width:0}
+
+.xt .formula{text-align:center}
+.xt>p,.xt>ul{margin:0}
+.xt .fml{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:18px 12px;text-align:center;font:600 clamp(1.05rem,4.4vw,1.5rem)/1.4 var(--f-math);overflow-x:auto}
+.xt .say{color:var(--muted);font-size:.95rem}
+.xt .say b{color:var(--ink)}
+.xt thead{display:table-header-group}.xt tbody tr{display:table-row;padding:0}.xt tbody td{display:table-cell;padding:7px 10px;border-bottom:1px solid var(--rule);color:inherit}
+.xt .steps{font-size:.86rem}
+@media (max-width:560px){.xt table.symt thead{display:none}.xt table.symt tbody tr{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;padding:9px 6px;border-bottom:1px solid var(--rule)}.xt table.symt tbody td{display:block;border:0;padding:0}.xt table.symt td:nth-child(3){grid-column:1/-1;color:var(--muted)}}
+.xt .steps .note{background:none;border:0;padding:0;margin:0;border-radius:0;font-size:.85rem}
+</style>
+<main>
+<header>
+  <div class="eyebrow">Concept 07 · Part B · Linear algebra</div>
+  <h1>Linear algebra 2: matrices</h1>
+  <p class="sub">A matrix is a grid of numbers that moves vectors around. This page shows how to read one, multiply with it, and flip it with the transpose and the dagger. Then it meets the special families quantum computing lives on: projectors, Hermitian matrices and unitary matrices, and what happens to a matrix when you change basis. Every quantum gate you meet later is one of these grids.</p>
+</header>
+
+<section aria-labelledby="sym">
+  <h2 id="sym">Symbols on this page</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Symbol</th><th>Say it</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>A, B, M, X</td><td class="say">"A", "B" …</td><td>A capital letter names a matrix: a rectangular grid of numbers.</td></tr>
+      <tr><td><span class="mat"><span>1</span><span>2</span><span>3</span><span>4</span></span></td><td class="say">"the matrix one, two; three, four"</td><td>Read row by row, left to right. Row 1 is 1 2, row 2 is 3 4.</td></tr>
+      <tr><td>[[1, 2], [3, 4]]</td><td class="say">same as above</td><td>The same matrix typed on one line: each inner bracket is one row.</td></tr>
+      <tr><td>m × n</td><td class="say">"m by n"</td><td>The size: m rows and n columns. Rows always come first.</td></tr>
+      <tr><td>A₁₂</td><td class="say">"A one-two"</td><td>The entry of A in row 1, column 2.</td></tr>
+      <tr><td>(a, b)</td><td class="say">"the vector a, b"</td><td>A column vector, written sideways to save space. It is really a 2 × 1 matrix.</td></tr>
+      <tr><td>·</td><td class="say">"times"</td><td>Multiply. A·v (also written Av) means "apply A to v".</td></tr>
+      <tr><td>I</td><td class="say">"I" or "the identity"</td><td>The do-nothing matrix: 1s on the diagonal, 0s elsewhere. I·v = v.</td></tr>
+      <tr><td>Aᵀ</td><td class="say">"A transpose"</td><td>A with rows turned into columns.</td></tr>
+      <tr><td>i</td><td class="say">"i"</td><td>The imaginary unit from the complex numbers concept: i² = −1.</td></tr>
+      <tr><td>z*</td><td class="say">"z star"</td><td>Complex conjugate: flip the sign of the i part. (3 − i)* = 3 + i.</td></tr>
+      <tr><td>A†</td><td class="say">"A dagger"</td><td>Conjugate transpose: transpose A, then conjugate every entry.</td></tr>
+      <tr><td>≠</td><td class="say">"is not equal to"</td><td>The two sides are different.</td></tr>
+      <tr><td>→</td><td class="say">"goes to"</td><td>Where something ends up after the matrix acts.</td></tr>
+            <tr><td>L</td><td class="say">"L"</td><td>A name for a linear map (a rule that turns vectors into vectors).</td></tr>
+        <tr><td>L(v)</td><td class="say">"L of v"</td><td>The vector you get by applying L to v.</td></tr>
+      <tr><td>e₁, e₂</td><td class="say">"e one, e two"</td><td>The standard basis: e₁ = (1, 0) and e₂ = (0, 1). In qubit language e₁ = |0⟩ and e₂ = |1⟩.</td></tr>
+      <tr><td>h₊, h₋</td><td class="say">"h plus, h minus"</td><td>The Hadamard basis: (1, 1)/√2 and (1, −1)/√2. The same as |+⟩ and |−⟩.</td></tr>
+      <tr><td>c₊, c₋</td><td class="say">"c plus, c minus"</td><td>The circular basis: (1, i)/√2 and (1, −i)/√2.</td></tr>
+      <tr><td>⟨u, v⟩</td><td class="say">"the inner product of u and v"</td><td>Conjugate the entries of u, multiply pairwise with v, add. Gives one number. Same as u†v.</td></tr>
+      <tr><td>u v†</td><td class="say">"u v dagger", "the outer product"</td><td>A column times a row. Gives a whole matrix, not a number.</td></tr>
+      <tr><td>P</td><td class="say">"P"</td><td>Usually a projector: a matrix that flattens onto a line or plane, with P² = P.</td></tr>
+      <tr><td>A⁻¹</td><td class="say">"A inverse"</td><td>The matrix that undoes A: A⁻¹A = I.</td></tr>
+      <tr><td>U</td><td class="say">"U"</td><td>Usually a unitary matrix: U†U = I. Every quantum gate is one.</td></tr>
+      <tr><td>diag(a, b)</td><td class="say">"diag a, b"</td><td>The matrix with a and b on the diagonal and 0 elsewhere.</td></tr>
+      <tr><td>X, Y, Z</td><td class="say">"X", "Y", "Z"</td><td>The three Pauli gates: X = [0 1; 1 0], Y = [0 −i; i 0], Z = [1 0; 0 −1].</td></tr>
+      <tr><td>S</td><td class="say">"S"</td><td>The phase gate diag(1, i): leaves |0⟩ alone, multiplies |1⟩ by i.</td></tr>
+      <tr><td>[A]<sub>new</sub></td><td class="say">"A in the new basis"</td><td>The grid of numbers that describes the same map A, measured against a different basis.</td></tr></tbody>
+  </table></div>
+</section>
+
+<section aria-labelledby="basics">
+  <h2 id="basics">Back to basics</h2>
+  <p>Today rests on two things you already met.</p>
+  <h3>1. Sum of products (the inner products concept's dot product)</h3>
+  <p>Line two lists up, multiply the matching pairs, then add the results. Times before plus: do every multiplication first.</p>
+  <div class="steps">
+    <div class="c">Example: (2, 1) · (1, 3)</div>
+    <div>first pair:   2 · 1 = 2</div>
+    <div>second pair:  1 · 3 = 3</div>
+    <div>add them:     2 + 3 = 5</div>
+    <div class="ok">answer: 5</div>
+  </div>
+  <p>Every entry of a matrix product is one of these sums. If you can do this, you can multiply matrices.</p>
+  <h3>2. The conjugate (the complex numbers concept)</h3>
+  <p>To conjugate, keep the real part and flip the sign in front of i. A plain number with no i stays the same.</p>
+  <div class="steps">
+    <div>(3 − i)*  = 3 + i</div>
+    <div>i*        = −i</div>
+    <div>2*        = 2      <span class="c">(no i part, nothing to flip)</span></div>
+  </div>
+</section>
+
+<section aria-labelledby="idea">
+  <h2 id="idea">The idea</h2>
+  <p>A matrix is a machine that takes a vector in and gives a vector out. Each <strong>column</strong> tells you where one basis arrow lands: column 1 is where (1, 0) goes, column 2 is where (0, 1) goes. To compute the output, you take each <span class="row-hl">row</span> of the matrix and do a sum of products with the <span class="col-hl">column</span> vector. Two matrices can be multiplied only when the sizes line up, and the order matters.</p>
+</section>
+
+<section aria-labelledby="d1">
+  <h2 id="d1">Picture 1: a matrix reshapes the unit square</h2>
+  <p>Pick a matrix. The left panel is the plane before; the right panel is the plane after the matrix acts. Watch where the red arrow (1, 0) and the blue arrow (0, 1) land: they land exactly on the matrix's two columns.</p>
+  <div class="btns" role="group" aria-label="Choose a matrix">
+    <button type="button" id="m-I" data-m="1,0,0,1" data-n="Identity I">I</button>
+    <button type="button" id="m-S" data-m="2,1,0,1" data-n="Stretch and shear" aria-pressed="true">[[2, 1], [0, 1]]</button>
+    <button type="button" id="m-X" data-m="0,1,1,0" data-n="X (swap)">X = [[0, 1], [1, 0]]</button>
+    <button type="button" id="m-R" data-m="0,-1,1,0" data-n="Rotate 90°">[[0, −1], [1, 0]]</button>
+  </div>
+  <div class="panels">
+    <div class="panel"><div class="lab">Before</div><svg id="before" viewBox="0 0 290 185" role="img" aria-label="Unit square with arrows (1,0) and (0,1)"></svg></div>
+    <div class="panel"><div class="lab" id="afterlab">After</div><svg id="after" viewBox="0 0 290 185" role="img" aria-label="Transformed square"></svg></div>
+  </div>
+  <figcaption id="cap1"></figcaption>
+</section>
+
+<section aria-labelledby="d2">
+  <h2 id="d2">Picture 2: row times column</h2>
+  <p>Matrix times vector, laid out. Tap a row to see which sum it makes.</p>
+  <div class="btns" role="group" aria-label="Choose a row">
+    <button type="button" id="r1" aria-pressed="true">Row 1</button>
+    <button type="button" id="r2">Row 2</button>
+  </div>
+  <div class="figwrap"><svg id="rowcol" viewBox="0 0 360 140" role="img" aria-label="[[2,1],[1,3]] times (1,2) equals (2·1+1·2, 1·1+3·2) equals (4,7)">
+    <rect id="rowband" class="anim" x="24" y="31" width="70" height="28" rx="5" fill="var(--row-soft)"/>
+    <rect x="111" y="29" width="30" height="72" rx="5" fill="var(--col-soft)"/>
+    <rect id="resband" class="anim" x="188" y="31" width="96" height="28" rx="5" fill="var(--row-soft)"/>
+    <g fill="none" stroke="var(--fg)" stroke-width="2">
+      <path d="M26 24 h-6 v82 h6"/><path d="M92 24 h6 v82 h-6"/>
+      <path d="M114 24 h-6 v82 h6"/><path d="M138 24 h6 v82 h-6"/>
+      <path d="M192 24 h-6 v82 h6"/><path d="M280 24 h6 v82 h-6"/>
+      <path d="M320 24 h-6 v82 h6"/><path d="M342 24 h6 v82 h-6"/>
+    </g>
+    <g font-size="18" text-anchor="middle">
+      <text x="42" y="51">2</text><text x="76" y="51">1</text>
+      <text x="42" y="91">1</text><text x="76" y="91">3</text>
+      <text x="126" y="51">1</text><text x="126" y="91">2</text>
+      <text x="164" y="71">=</text><text x="300" y="71">=</text>
+      <text x="331" y="51">4</text><text x="331" y="91">7</text>
+    </g>
+    <g font-size="14" text-anchor="middle">
+      <text x="236" y="50">2·1 + 1·2</text><text x="236" y="90">1·1 + 3·2</text>
+    </g>
+    <g font-size="10" text-anchor="middle" style="fill:var(--muted)">
+      <text x="59" y="128">matrix 2 × 2</text><text x="126" y="128">vector 2 × 1</text><text x="236" y="128">sum of products</text><text x="331" y="128">2 × 1</text>
+    </g>
+  </svg></div>
+  <figcaption id="cap2"></figcaption>
+  <h3>When can you multiply? The size check</h3>
+  <p>Write the two sizes side by side. The two inner numbers must match; the two outer numbers give the size of the answer.</p>
+  <div class="steps">
+    <div>(2 × <span class="ok">2</span>) · (<span class="ok">2</span> × 1)  inner 2 = 2  → allowed, answer is 2 × 1</div>
+    <div>(2 × <span class="ok">3</span>) · (<span class="ok">3</span> × 2)  inner 3 = 3  → allowed, answer is 2 × 2</div>
+    <div>(2 × 3) · (2 × 1)  inner 3 ≠ 2  → not allowed</div>
+  </div>
+</section>
+
+<section aria-labelledby="d3">
+  <h2 id="d3">Picture 3: X swaps the axes</h2>
+  <p>The matrix X = [[0, 1], [1, 0]] mirrors the plane across the diagonal line y = x. The two entries of every vector trade places. In quantum computing this same matrix is the NOT gate.</p>
+  <figure>
+    <div class="figwrap"><svg viewBox="0 0 240 215" role="img" aria-label="X maps vector (2,1) to (1,2) by reflecting across the line y = x">
+      <defs>
+        <marker id="ah1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="var(--e1)"/></marker>
+        <marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="var(--e2)"/></marker>
+        <marker id="ahm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="var(--muted)"/></marker>
+        <marker id="aha" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10z" fill="var(--fg)"/></marker>
+      </defs>
+      <g stroke="var(--grid)" stroke-width="1">
+        <line x1="100" y1="10" x2="100" y2="180"/><line x1="160" y1="10" x2="160" y2="180"/><line x1="220" y1="10" x2="220" y2="180"/>
+        <line x1="40" y1="120" x2="225" y2="120"/><line x1="40" y1="60" x2="225" y2="60"/>
+      </g>
+      <line x1="40" y1="180" x2="228" y2="180" stroke="var(--fg)" stroke-width="1.5" marker-end="url(#aha)"/>
+      <line x1="40" y1="180" x2="40" y2="8" stroke="var(--fg)" stroke-width="1.5" marker-end="url(#aha)"/>
+      <line x1="40" y1="180" x2="196" y2="24" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="5 4"/>
+      <text x="168" y="22" font-size="11" style="fill:var(--muted)">y = x</text>
+      <g font-size="10" text-anchor="middle" style="fill:var(--muted)">
+        <text x="100" y="195">1</text><text x="160" y="195">2</text><text x="220" y="195">3</text>
+        <text x="30" y="124">1</text><text x="30" y="64">2</text><text x="30" y="195">0</text>
+        <text x="232" y="196">x</text><text x="48" y="12">y</text>
+      </g>
+      <line x1="40" y1="180" x2="160" y2="120" stroke="var(--e1)" stroke-width="2.5" marker-end="url(#ah1)"/>
+      <line x1="40" y1="180" x2="100" y2="60" stroke="var(--e2)" stroke-width="2.5" marker-end="url(#ah2)"/>
+      <path d="M163 114 Q 170 56 108 58" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#ahm)"/>
+      <text x="164" y="140" font-size="12" style="fill:var(--e1)">v = (2, 1)</text>
+      <text x="48" y="52" font-size="12" style="fill:var(--e2)">X·v = (1, 2)</text>
+      <text x="176" y="84" font-size="11" style="fill:var(--muted)">X</text>
+    </svg></div>
+    <figcaption>Red: v = (2, 1), meaning 2 along x and 1 up. Blue: X·v = (1, 2). The two arrows are mirror images across the dashed line y = x. The same happens to the basis arrows: (1, 0) → (0, 1) and (0, 1) → (1, 0).</figcaption>
+  </figure>
+</section>
+
+<section aria-labelledby="moves">
+  <h2 id="moves">Three special moves</h2>
+  <div class="mini">
+    <div><h3>Identity I</h3>
+      <div class="eq"><span>I =</span><span class="mat"><span>1</span><span>0</span><span>0</span><span>1</span></span></div>
+      <p>The "do nothing" matrix. I·v = v and I·A = A, just as 1 × 7 = 7.</p></div>
+    <div><h3>Transpose Aᵀ</h3>
+      <div class="eq"><span class="mat"><span>1</span><span>2</span><span>3</span><span>4</span></span><span>ᵀ =</span><span class="mat"><span>1</span><span>3</span><span>2</span><span>4</span></span></div>
+      <p>Row 1 becomes column 1, row 2 becomes column 2. The diagonal (1 and 4) stays put; the other two swap.</p></div>
+    <div><h3>Dagger A†</h3>
+      <div class="eq"><span class="mat"><span>1</span><span>i</span><span>0</span><span>2</span></span><span>† =</span><span class="mat"><span>1</span><span>0</span><span>−i</span><span>2</span></span></div>
+      <p>Transpose, then conjugate every entry. Here i moves to the bottom-left and becomes −i.</p></div>
+  </div>
+</section>
+
+<section class="keybox" aria-labelledby="key">
+  <h2 id="key">Key formula: matrix times vector</h2>
+  <div class="big">
+    <span class="mat"><span>a</span><span>b</span><span>c</span><span>d</span></span>
+    <span>·</span>
+    <span class="mat" style="--c:1"><span>x</span><span>y</span></span>
+    <span>=</span>
+    <span class="mat" style="--c:1"><span>a·x + b·y</span><span>c·x + d·y</span></span>
+  </div>
+  <p class="readaloud"><b>Read it aloud:</b> "The matrix a, b; c, d times the vector x, y equals: a times x plus b times y on top, and c times x plus d times y underneath."</p>
+  <p>The general rule, for any sizes: <strong>the entry in row r, column c of A·B is row r of A dotted with column c of B.</strong></p>
+</section>
+
+<section aria-labelledby="we">
+  <h2 id="we">Worked example: A·B, then B·A</h2>
+  <div class="eq"><span>A =</span><span class="mat"><span>1</span><span>2</span><span>3</span><span>4</span></span><span>B =</span><span class="mat"><span>0</span><span>1</span><span>1</span><span>0</span></span></div>
+  <p>B is the swap matrix X from Picture 3.</p>
+  <div class="steps">
+    <div class="c">Step 1: size check</div>
+    <div>A is 2 × 2, B is 2 × 2. Inner numbers: 2 and 2 match.</div>
+    <div>So A·B is allowed and is 2 × 2.</div>
+    <div class="c">Step 2: row 1, column 1  (row 1 of A = (1, 2), column 1 of B = (0, 1))</div>
+    <div>1 · 0 = 0</div>
+    <div>2 · 1 = 2</div>
+    <div>0 + 2 = 2</div>
+    <div class="c">Step 3: row 1, column 2  (row 1 of A = (1, 2), column 2 of B = (1, 0))</div>
+    <div>1 · 1 = 1</div>
+    <div>2 · 0 = 0</div>
+    <div>1 + 0 = 1</div>
+    <div class="c">Step 4: row 2, column 1  (row 2 of A = (3, 4), column 1 of B = (0, 1))</div>
+    <div>3 · 0 = 0</div>
+    <div>4 · 1 = 4</div>
+    <div>0 + 4 = 4</div>
+    <div class="c">Step 5: row 2, column 2  (row 2 of A = (3, 4), column 2 of B = (1, 0))</div>
+    <div>3 · 1 = 3</div>
+    <div>4 · 0 = 0</div>
+    <div>3 + 0 = 3</div>
+    <div class="ok">A·B = [[2, 1], [4, 3]]</div>
+  </div>
+  <p><strong>Check.</strong> Compare with A = [[1, 2], [3, 4]]: the two columns of A have swapped places. That fits, because B sends column 1 to column 2 and back.</p>
+  <p><strong>Now the other order.</strong> Doing the same four sums for B·A:</p>
+  <div class="steps">
+    <div>row 1 of B = (0, 1):  0·1 + 1·3 = 0 + 3 = 3    0·2 + 1·4 = 0 + 4 = 4</div>
+    <div>row 2 of B = (1, 0):  1·1 + 0·3 = 1 + 0 = 1    1·2 + 0·4 = 2 + 0 = 2</div>
+    <div class="ok">B·A = [[3, 4], [1, 2]]</div>
+  </div>
+  <p>This time the <em>rows</em> of A swapped. So A·B ≠ B·A: with matrices, order matters.</p>
+</section>
+
+<section class="xt" id="linear-maps">
+  <h2>Linear maps: why a matrix is enough</h2>
+<p>A <b>linear map</b> L takes vectors to vectors and respects adding and scaling:</p>
+  <div class="fml">L(αu + βv) = αL(u) + βL(v)</div>
+  <p class="say"><b>Read it aloud:</b> "L of alpha u plus beta v equals alpha L of u plus beta L of v". Mixing first and then applying L gives the same as applying L first and then mixing.</p>
+  <p>The consequence is powerful: once you know where L sends the basis vectors, you know where it sends <i>everything</i>, because every vector is a mix of basis vectors. Those landing spots are the columns of its matrix.</p>
+  <div class="steps">
+    <span class="note">Column rule: column k = where the k-th basis vector lands.</span>
+    <span>Suppose L(1, 0) = (2, i) and L(0, 1) = (1, 3).</span>
+    <span>Matrix of L = [2 1; i 3]</span>
+    <span class="note">Use it on v = (1, 2) = 1·(1, 0) + 2·(0, 1):</span>
+    <span>L(v) = 1·(2, i) + 2·(1, 3)</span>
+    <span>= (2 + 2, i + 6) = (4, 6 + i)</span>
+    <span class="note">Same answer by row times column:</span>
+    <span>[2 1; i 3](1, 2) = (2·1 + 1·2, i·1 + 3·2) = (4, 6 + i) ✓</span>
+  </div>
+  <p class="ql"><b>Quantum link:</b> every quantum gate is a linear map on ℂ². That is why gates are matrices, and why knowing what a gate does to |0⟩ and |1⟩ tells you what it does to every state (<a href="../12-gates/">gates as matrices</a>).</p>
+
+  <h3 id="linear-test">Linear or not? Three quick tests</h3>
+  <p>To show a map <i>is</i> linear, check the rule above in general. To show it is <i>not</i>, one counterexample is enough. These three tests catch almost every non-linear map:</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Test</th><th>Fails for</th><th>Counterexample</th></tr></thead>
+    <tbody>
+      <tr><td>Does 0 go to 0?</td><td>v ↦ v + b (a shift, b ≠ 0)</td><td>T(0) = b, not 0. A linear map can never move the origin.</td></tr>
+      <tr><td>Does 2v go to 2T(v)?</td><td>v ↦ length of v; (z₁, z₂) ↦ (z₁z₂, 0)</td><td>(1, 1) ↦ (1, 0), but (2, 2) ↦ (4, 0), not 2·(1, 0) = (2, 0).</td></tr>
+      <tr><td>Does i·v go to i·T(v)?</td><td>conjugation v ↦ v̄ ("v bar")</td><td>T(i·1) = conj(i) = −i, but i·T(1) = i·1 = i. Different.</td></tr>
+    </tbody>
+  </table></div>
+  <p class="why">The third test is the one people forget. Conjugation passes the first two tests (it keeps 0 and real scalings), but over ℂ the scalars include i, and conjugation pulls i out as −i. So conjugation is <b>not</b> a linear map on ℂⁿ, and no matrix can do it. The map "x-part of a vector" (v ↦ v₁) <i>is</i> linear.</p>
+  <p class="why">The "Mixing first and then applying L" rule is exactly why a gate applied to a superposition acts on each term separately: G(α|0⟩ + β|1⟩) = αG|0⟩ + βG|1⟩.</p>
+
+  <h3 id="gallery">A gallery of linear maps of the plane</h3>
+  <p>A linear map keeps 0 fixed, keeps straight lines straight, and keeps the grid evenly spaced. The columns tell you where e₁ and e₂ land; everything else follows.</p>
+  <div class="scroll"><table>
+    <thead><tr><th>Matrix</th><th>What it does</th><th>Keeps lengths?</th></tr></thead>
+    <tbody>
+      <tr><td>[2 0; 0 ½]</td><td>Scaling: stretch x by 2, squash y to half</td><td>No</td></tr>
+      <tr><td>[1 0.5; 0 1]</td><td>Shear: slides each row sideways (e₂ lands on (0.5, 1))</td><td>No</td></tr>
+      <tr><td>[0 −1; 1 0]</td><td>Rotation by 90° anticlockwise</td><td>Yes</td></tr>
+      <tr><td>[cos θ −sin θ; sin θ cos θ]</td><td>Rotation by θ: columns (cos θ, sin θ) and (−sin θ, cos θ)</td><td>Yes</td></tr>
+      <tr><td>Z = [1 0; 0 −1]</td><td>Reflection in the x-axis (an "F" becomes its mirror image)</td><td>Yes</td></tr>
+      <tr><td>X = [0 1; 1 0]</td><td>Reflection in the line y = x: swaps the axes</td><td>Yes</td></tr>
+      <tr><td>H = (1/√2)[1 1; 1 −1]</td><td>Reflection in the line at 22.5° (halfway between x-axis and y = x)</td><td>Yes</td></tr>
+      <tr><td>−I = [−1 0; 0 −1]</td><td>Rotation by 180°, <i>not</i> a reflection: an "F" stays readable, just upside down</td><td>Yes</td></tr>
+      <tr><td>[1 0; 0 0]</td><td>Projection onto the x-axis: flattens the plane onto a line</td><td>No, and it can't be undone</td></tr>
+    </tbody>
+  </table></div>
+  <p class="why">Rotations and reflections keep lengths and angles; these are the <a href="#unitary">unitary</a> ones, and they are the only kind a quantum gate can be. Scaling, shear and projection change lengths.</p>
+</section>
+
+<section class="xt" id="order-rule">
+  <h2>The order rule: the first step sits on the right</h2>
+<p>"Do A, then do B" to a vector v means: first A·v, then B·(A·v). Written as one matrix that is <b>B·A</b>: the step that happens first is written <i>last</i>, nearest the vector.</p>
+  <div class="steps">
+    <span>X = [0 1; 1 0] swaps entries, Z = [1 0; 0 −1] flips the sign of the second.</span>
+    <span class="note">X first, then Z, on v = (1, 0):</span>
+    <span>X·v = (0, 1)</span>
+    <span>Z·(0, 1) = (0, −1)    so Z·X·v = (0, −1)</span>
+    <span class="note">Z first, then X:</span>
+    <span>Z·v = (1, 0)</span>
+    <span>X·(1, 0) = (0, 1)     so X·Z·v = (0, 1)</span>
+    <span class="ok">Different answers: the order matters</span>
+  </div>
+  <p class="why">Quantum circuits are drawn left to right in time, but written right to left as maths. A circuit "H, then Z, then H" is the product H·Z·H.</p>
+  <p>Three gates in a row, A then B then C, become the single matrix <b>C·B·A</b>. A wire carries a vector; a box applies a matrix to it.</p>
+  <div class="steps">
+    <span class="note">Example: H, then X, then H. Write it as H·X·H and multiply right to left.</span>
+    <span>X·H = [0 1; 1 0]·(1/√2)[1 1; 1 −1] = (1/√2)[1 −1; 1 1]     <span class="note">(X swaps H's rows)</span></span>
+    <span>H·(X·H) = (1/2)[1 1; 1 −1]·[1 −1; 1 1]</span>
+    <span>        = (1/2)[1+1  −1+1; 1−1  −1−1]</span>
+    <span>        = (1/2)[2 0; 0 −2]</span>
+    <span class="ok">H·X·H = [1 0; 0 −1] = Z</span>
+    <span class="note">The mirror twin of H·Z·H = X on the <a href="../12-gates/#hzh">gates page</a>. Sandwiching between two H's swaps X and Z.</span>
+  </div>
+  <h3 id="anticommute">X and Z don't just fail to commute: they anticommute</h3>
+  <div class="steps">
+    <span>X·Z = [0 1; 1 0]·[1 0; 0 −1] = [0 −1; 1 0]</span>
+    <span>Z·X = [1 0; 0 −1]·[0 1; 1 0] = [0 1; −1 0]</span>
+    <span class="ok">X·Z = −(Z·X): the same matrix with the sign flipped</span>
+  </div>
+  <p class="why">"Anticommute" means swapping the order only costs a minus sign. In a circuit you may swap an X and a Z past each other as long as you keep track of the −1. That −1 is an overall sign, so on its own it is invisible to measurement.</p>
+</section>
+
+<section class="xt" id="outer">
+  <h2>Matrix entries as inner products, and outer products</h2>
+  <p>With the standard basis, the entry in row i, column j of A is an inner product:</p>
+  <div class="fml">Aᵢⱼ = ⟨eᵢ, A eⱼ⟩ = eᵢ† A eⱼ</div>
+  <p class="say"><b>Read it aloud:</b> "A i j equals the inner product of e i with A e j". In words: send eⱼ through A (that gives column j), then read off its i-th entry.</p>
+  <h3>Outer product: a column times a row</h3>
+  <p>An <b>inner</b> product u†v is a row times a column: a 1 × 1 answer, one number. Turn it round and multiply a column by a row and you get a whole matrix, the <b>outer product</b>:</p>
+  <div class="steps">
+    <span>u v† = (u₁, u₂) as a column  ×  (v̄₁  v̄₂) as a row</span>
+    <span>     = [u₁v̄₁  u₁v̄₂; u₂v̄₁  u₂v̄₂]</span>
+    <span class="note">Every entry is "one number from u times one conjugated number from v".</span>
+    <span>e₁e₁† = [1 0; 0 0]       e₁e₂† = [0 1; 0 0]</span>
+    <span>h₊h₊† = (1/√2)(1, 1) × (1/√2)(1  1) = (1/2)[1 1; 1 1]</span>
+  </div>
+  <p>An outer product acting on a vector just regroups, because matrix multiplication can be bracketed either way:</p>
+  <div class="fml">(u v†) w = u (v† w) = ⟨v, w⟩ u</div>
+  <p class="say"><b>Read it aloud:</b> "u v dagger, applied to w, equals the inner product of v and w, times u". So u v† measures how much w points along v, and outputs that much of u.</p>
+  <h3>Every matrix is a sum of outer products</h3>
+  <div class="fml">A = Σᵢⱼ Aᵢⱼ eᵢ eⱼ†</div>
+  <p class="say"><b>Read it aloud:</b> "A equals the sum over i and j of A i j times e i e j dagger". Each eᵢeⱼ† is a grid with a single 1 in row i, column j; multiplying by Aᵢⱼ and adding them all rebuilds A.</p>
+  <div class="steps">
+    <span>X = e₁e₂† + e₂e₁†        <span class="note">(1s in the two off-diagonal spots)</span></span>
+    <span>Z = e₁e₁† − e₂e₂†</span>
+    <span>I = e₁e₁† + e₂e₂†</span>
+    <span>Y = −i e₁e₂† + i e₂e₁†    <span class="note">(Y = [0 −i; i 0])</span></span>
+  </div>
+  <p class="ql"><b>Quantum link:</b> in ket notation e₁e₂† is written |0⟩⟨1|. So X = |0⟩⟨1| + |1⟩⟨0| reads "send |1⟩ to |0⟩ and |0⟩ to |1⟩". The next QC Foundations lecture builds every gate this way.</p>
+</section>
+
+<section class="xt" id="projector">
+  <h2>Projectors: flatten onto a line</h2>
+  <p>For a unit vector e, the outer product P = e e† is the <b>projector onto e</b>. It keeps only the part of a vector that lies along e:</p>
+  <div class="fml">P v = ⟨e, v⟩ e</div>
+  <div class="steps">
+    <span class="note">Doing it twice changes nothing more (e†e = 1 because e has length 1):</span>
+    <span>P² = e (e†e) e† = e · 1 · e† = P</span>
+    <span class="note">Example: project v = (3, 1) onto the line y = x, i.e. onto h₊ = (1, 1)/√2.</span>
+    <span>P = h₊h₊† = (1/2)[1 1; 1 1]</span>
+    <span>P v = (1/2)(3 + 1, 3 + 1) = (2, 2)</span>
+    <span class="ok">(2, 2) is the point on y = x closest to (3, 1); P(2, 2) = (2, 2) again ✓</span>
+  </div>
+  <p class="ql"><b>Quantum link:</b> measurement is built from projectors. P₀ = e₁e₁† = |0⟩⟨0| picks out the |0⟩ part of a state, and the probability of outcome 0 is the squared length of P₀ψ. A projector throws information away, which is why measurement can't be undone (<a href="#invertible">below</a>).</p>
+</section>
+
+<section class="xt" id="adjoint">
+  <h2>The dagger, properly: the adjoint A†</h2>
+  <p>You already compute A† as "transpose, then conjugate": (A†)ᵢⱼ = conj(Aⱼᵢ). The reason it matters is this property: <b>A† is what A turns into when you move it across an inner product.</b></p>
+  <div class="fml">⟨u, A v⟩ = ⟨A† u, v⟩   for all u, v</div>
+  <p class="say"><b>Read it aloud:</b> "the inner product of u with A v equals the inner product of A dagger u with v".</p>
+  <div class="steps">
+    <span class="note">One-line proof. Write the inner product as u†(Av) and regroup:</span>
+    <span>u†(Av) = (u†A)v = (A†u)†v</span>
+    <span class="note">The last step uses (A†u)† = u†A, the rule (MN)† = N†M† below.</span>
+  </div>
+  <h3>Rules</h3>
+  <div class="steps">
+    <span>(AB)† = B†A†         <span class="note">the order flips</span></span>
+    <span>(A†)† = A            <span class="note">dagger twice is no dagger</span></span>
+    <span>(αA)† = ᾱA†          <span class="note">a number comes out conjugated</span></span>
+    <span>(u v†)† = v u†       <span class="note">an outer product turns round</span></span>
+    <span>(A⁻¹)† = (A†)⁻¹</span>
+  </div>
+  <div class="steps">
+    <span class="note">Examples:</span>
+    <span>Y† = transpose of [0 −i; i 0] = [0 i; −i 0], then conjugate = [0 −i; i 0] = Y</span>
+    <span>S = diag(1, i)  →  S† = diag(1, −i)  ≠ S</span>
+  </div>
+  <p class="why">Why (AB)† = B†A†: the (i, j) entry of (AB)† is conj((AB)ⱼᵢ) = Σₖ conj(Aⱼₖ) conj(Bₖᵢ) = Σₖ (B†)ᵢₖ (A†)ₖⱼ, which is the (i, j) entry of B†A†. It is "socks and shoes" again: to reverse a two-step process, reverse the steps in the opposite order.</p>
+</section>
+
+<section class="xt" id="hermitian">
+  <h2>Hermitian matrices: A† = A</h2>
+  <p>A matrix is <b>Hermitian</b> (also "self-adjoint") when it equals its own dagger. Reading entry by entry:</p>
+  <ul>
+    <li>Every <b>diagonal</b> entry equals its own conjugate, so it is <b>real</b>.</li>
+    <li>Each <b>off-diagonal</b> entry mirrors its partner across the diagonal, conjugated: Aⱼᵢ = conj(Aᵢⱼ).</li>
+    <li>Consequence: ⟨v, Av⟩ is always a <b>real number</b>, for every v.</li>
+  </ul>
+  <div class="steps">
+    <span>[2  1 − i; 1 + i  −1]     <span class="note">diagonal 2, −1 real; 1 − i mirrors to 1 + i ✓ Hermitian</span></span>
+    <span>X, Y, Z, H                <span class="note">all Hermitian</span></span>
+    <span>S = diag(1, i)            <span class="note">not Hermitian: the diagonal entry i isn't real</span></span>
+    <span>[0 i; i 0]                <span class="note">not Hermitian: i should mirror to −i</span></span>
+    <span>[0 i; −i 0]               <span class="note">Hermitian ✓</span></span>
+  </div>
+  <div class="steps">
+    <span class="note">Why ⟨v, Av⟩ is real: use the adjoint rule, then A† = A.</span>
+    <span>⟨v, Av⟩ = ⟨A†v, v⟩ = ⟨Av, v⟩ = conj(⟨v, Av⟩)</span>
+    <span class="note">A number equal to its own conjugate has zero imaginary part.</span>
+    <span>Example: A = [2  1 − i; 1 + i  3], v = (1, i)  →  ⟨v, Av⟩ = 7 ✓ real</span>
+  </div>
+  <p class="ql"><b>Quantum link:</b> Hermitian matrices are the <b>observables</b>, the things you can measure. ⟨v, Av⟩ is the average measured value, and averages of real measurements have to be real numbers. Their eigenvalues are real and their eigenvectors are orthogonal (<a href="../08-eigenvalues/#hermitian-preview">eigenvalues</a>).</p>
+</section>
+
+<section class="xt" id="invertible">
+  <h2>Undoing a map: invertible or not</h2>
+  <p>A square matrix A is <b>invertible</b> when some matrix A⁻¹ undoes it: A⁻¹A = AA⁻¹ = I. Then Av = w can always be solved back: v = A⁻¹w.</p>
+  <div class="grid2">
+    <div class="box"><b>Invertible ✓</b><p>Shear [1 0.5; 0 1]: the grid stays a grid, every output comes from exactly one input.</p><p class="m">X⁻¹ = X, Z⁻¹ = Z, H⁻¹ = H</p><p class="m">S⁻¹ = diag(1, −i)</p><p>every quantum gate</p></div>
+    <div class="box"><b>Not invertible ✗</b><p>Projection [1 0; 0 0]: the plane is squashed onto a line, so different inputs u ≠ w give the same output Pu = Pw. Nothing can tell them apart afterwards.</p><p class="m">projectors such as e₁e₁†</p><p>the zero matrix</p><p>classical AND: 4 inputs, 2 outputs</p></div>
+  </div>
+  <div class="fml">(AB)⁻¹ = B⁻¹A⁻¹</div>
+  <p class="say"><b>Socks and shoes:</b> to undo "A, then B", undo B first, then A. You take your shoes off before your socks.</p>
+  <p class="ql"><b>Quantum link:</b> quantum gates are reversible; measurement (a projector) is not. The classical AND gate throws away information (three different inputs give output 0), which is why quantum circuits use reversible versions such as the Toffoli gate, and why <a href="../16-deutsch-algorithm/">Deutsch's oracle</a> keeps x and flips a helper bit.</p>
+</section>
+
+<section class="xt" id="unitary">
+  <h2>Unitary matrices: the quantum gates</h2>
+  <div class="fml">U†U = UU† = I,  i.e. U⁻¹ = U†</div>
+  <p class="say"><b>Read it aloud:</b> "U dagger U equals U U dagger equals I". The inverse costs nothing to compute: just take the dagger.</p>
+  <p>Unitaries <b>preserve inner products</b>: ⟨Uu, Uv⟩ = ⟨u, U†Uv⟩ = ⟨u, v⟩. So lengths and angles survive: a unitary is a rigid motion, and a unit vector stays a unit vector. That is exactly what a gate needs, because ‖ψ‖ = 1 means "the probabilities add up to 1".</p>
+  <div class="steps">
+    <span class="note">Check: Hadamard is unitary (H is real, so H† = H).</span>
+    <span>H†H = (1/2)[1 1; 1 −1]·[1 1; 1 −1]</span>
+    <span>    = (1/2)[1+1  1−1; 1−1  1+1]</span>
+    <span>    = (1/2)[2 0; 0 2]</span>
+    <span class="ok">    = I ✓</span>
+    <span class="note">Equivalently: its columns h₊, h₋ are orthonormal.</span>
+    <span class="note">Non-example: [1 1; 0 1]. Column 2 is (1, 1), of length √2, and not orthogonal to column 1 = (1, 0).</span>
+    <span>[1 1; 0 1]·e₂ = (1, 1): a unit vector became length √2 ✗ not unitary</span>
+  </div>
+  <p><b>Fast test for small matrices:</b> are the columns unit length and pairwise orthogonal? Then the columns form an orthonormal basis and U is unitary. Examples: X, Y, Z, H, S, and e^(iθ)I (a global phase).</p>
+  <p class="why">If U and V are unitary, so is UV: (UV)†(UV) = V†U†UV = V†V = I. A circuit made of gates is still a gate.</p>
+  <div class="steps">
+    <span class="note">Building a unitary from where the basis goes: e₁ ↦ c₊, e₂ ↦ c₋.</span>
+    <span>columns are the images: (1/√2)[1 1; i −i]</span>
+    <span>c₊ and c₋ are orthonormal, so it is unitary ✓ (it equals S·H: H first, then S)</span>
+  </div>
+</section>
+
+<section class="xt" id="change-basis">
+  <h2>Same map, different basis</h2>
+  <p>The grid of numbers depends on which basis you measure against. If the columns of a unitary U are the new orthonormal basis b₁, …, bₙ, then</p>
+  <div class="fml">[A]<sub>new</sub> = U† A U,   ([A]<sub>new</sub>)ᵢⱼ = ⟨bᵢ, A bⱼ⟩</div>
+  <p class="say"><b>Read it aloud:</b> "A in the new basis equals U dagger A U". Right to left: U turns new-basis coordinates into ordinary ones, A acts, U† turns the answer back into new-basis coordinates.</p>
+  <p><b>Recipe without U:</b> column j of the new matrix = the coordinates of A bⱼ in the new basis. For an orthonormal basis those coordinates are ⟨b₁, w⟩, …, ⟨bₙ, w⟩.</p>
+  <div class="steps">
+    <span class="note">X in the Hadamard basis {h₊, h₋} (here U = H):</span>
+    <span>X h₊ = (1/√2)(1, 1) = h₊       → coordinates (1, 0)</span>
+    <span>X h₋ = (1/√2)(−1, 1) = −h₋     → coordinates (0, −1)</span>
+    <span class="ok">[X]Hadamard = [1 0; 0 −1] = H X H = Z</span>
+    <span class="note">In its own "home" basis, X looks like Z: just a sign flip on the second basis vector.</span>
+  </div>
+  <div class="steps">
+    <span class="note">The three Paulis in the circular basis {c₊, c₋}, c± = (1, ±i)/√2:</span>
+    <span>Z c₊ = c₋, Z c₋ = c₊                  → [Z] = [0 1; 1 0] = X</span>
+    <span>X c₊ = i c₋, X c₋ = −i c₊             → [X] = [0 −i; i 0] = Y</span>
+    <span>Y c₊ = c₊, Y c₋ = −c₋                 → [Y] = [1 0; 0 −1] = Z</span>
+    <span class="ok">They cycle: Z ↦ X, X ↦ Y, Y ↦ Z. Each Pauli is diagonal in its own eigenbasis.</span>
+    <span class="note">Careful with complex coordinates: X c₋ = (−i, 1)/√2 = −i·(1, i)/√2, so −i goes in row 1 of column 2.</span>
+  </div>
+  <div class="steps">
+    <span class="note">Worked example: A = [2 1; 1 2] in {h₊, h₋}.</span>
+    <span>A h₊ = (1/√2)(3, 3) = 3 h₊</span>
+    <span>A h₋ = (1/√2)(1, −1) = 1 h₋</span>
+    <span class="ok">[A]Hadamard = [3 0; 0 1]</span>
+    <span class="note">Check on e₁. Coordinates of e₁: ⟨h₊, e₁⟩ = 1/√2, ⟨h₋, e₁⟩ = 1/√2.</span>
+    <span>[3 0; 0 1](1/√2, 1/√2) = (3/√2, 1/√2)</span>
+    <span>back to standard: (3/√2)h₊ + (1/√2)h₋ = (3/2 + 1/2, 3/2 − 1/2) = (2, 1)</span>
+    <span class="ok">and A e₁ = (2, 1) directly ✓</span>
+  </div>
+  <p class="ql"><b>Preview:</b> h₊ and h₋ are <a href="../08-eigenvalues/">eigenvectors</a> of X and of A. In a basis made of eigenvectors, a matrix becomes <b>diagonal</b>, with the eigenvalues on the diagonal. That is the next lecture's main idea.</p>
+</section>
+
+
+<section class="xt" id="more-facts">
+  <h2>More facts worth knowing</h2>
+  <h3>Permutation matrices are unitary</h3>
+  <div class="steps">
+    <span class="note">The cyclic shift on ℂ³: S e₁ = e₂, S e₂ = e₃, S e₃ = e₁.</span>
+    <span>S = [0 0 1; 1 0 0; 0 1 0],   S(a, b, c) = (c, a, b)</span>
+    <span>S² (a, b, c) = (b, c, a);   S³ = I  (three shifts bring you home)</span>
+    <span>S is real, so S† = Sᵀ = [0 1 0; 0 0 1; 1 0 0] = S²</span>
+    <span class="ok">S†S = S³ = I: unitary, and S† = S² = S⁻¹</span>
+    <span class="note">Any matrix that only relabels the basis (one 1 in each row and column) just shuffles an orthonormal basis, so it is unitary. X is the 2×2 case.</span>
+  </div>
+  <h3>Which matrices commute with X?</h3>
+  <div class="steps">
+    <span>M = [a b; c d]:  M X = [b a; d c]  (columns swapped),  X M = [c d; a b]  (rows swapped)</span>
+    <span>equal ⇔ b = c and a = d</span>
+    <span class="ok">M = [a b; b a] = a·I + b·X</span>
+  </div>
+  <h3>A†A is always Hermitian, and never negative</h3>
+  <div class="steps">
+    <span>(A†A)† = A†(A†)† = A†A ✓     (AA†)† = AA† ✓</span>
+    <span>⟨v, A†A v⟩ = ⟨Av, Av⟩ = ‖Av‖² ≥ 0</span>
+    <span class="note">But A†A and AA† can differ. A = [1 1; 0 1]:</span>
+    <span>A†A = [1 0; 1 1]·[1 1; 0 1] = [1 1; 1 2]</span>
+    <span>AA† = [1 1; 0 1]·[1 0; 1 1] = [2 1; 1 1]</span>
+  </div>
+  <h3>Products of Hermitian matrices, and the commutator</h3>
+  <div class="steps">
+    <span>If A, B are Hermitian: (AB)† = B†A† = BA</span>
+    <span class="ok">so AB is Hermitian exactly when AB = BA</span>
+    <span>Z and diag(2, 3) commute → Z·diag(2, 3) = diag(2, −3), Hermitian ✓</span>
+    <span>X and Z don't → XZ = [0 −1; 1 0], not Hermitian</span>
+    <span class="note">The commutator AB − BA measures how far they are from commuting. i(AB − BA) is always Hermitian:</span>
+    <span>(i(AB − BA))† = −i(BA − AB) = i(AB − BA) ✓</span>
+    <span>i(XZ − ZX) = i[0 −2; 2 0] = [0 −2i; 2i 0] = 2Y</span>
+  </div>
+  <p class="why">One more link between the families: the 90° rotation [0 −1; 1 0] equals −i·Y, the Pauli Y gate up to a global phase. And a dagger proof always uses the same entry-by-entry move: ((AB)†)ᵢⱼ = conj((AB)ⱼᵢ), then expand the sum. From (AB)† = B†A† you also get (ABC)† = C†B†A†.</p>
+</section>
+
+<section aria-labelledby="cm">
+  <h2 id="cm">Common mistakes</h2>
+  <ul>
+    <li><strong>Swapping the order.</strong> A·B and B·A are usually different, as the worked example shows. In a quantum circuit, the gate applied first sits on the right: B·A·v means "A first, then B".</li>
+    <li><strong>Multiplying when the sizes don't fit.</strong> Always write the sizes side by side first. If the inner numbers differ, stop.</li>
+    <li><strong>Half a dagger.</strong> A† needs both steps: transpose <em>and</em> conjugate. Only transposing, or only conjugating, is wrong. Also, conjugating flips only the sign of the i part: (3 − i)* is 3 + i, not −3 + i.</li>
+    <li><strong>Forgetting to flip the order under a dagger or inverse.</strong> (AB)† = B†A† and (AB)⁻¹ = B⁻¹A⁻¹, never A†B† or A⁻¹B⁻¹.</li>
+    <li><strong>Moving A across an inner product unchanged.</strong> ⟨u, Av⟩ equals ⟨A†u, v⟩, not ⟨Au, v⟩. Those two only agree when A is Hermitian.</li>
+    <li><strong>Mixing up Hermitian and unitary.</strong> Hermitian: A† = A (an observable). Unitary: U†U = I (a gate). X, Y, Z and H happen to be both; S is unitary but not Hermitian; [2 1; 1 2] is Hermitian but not unitary.</li>
+    <li><strong>Calling conjugation linear.</strong> v ↦ v̄ fails the "pull out i" test, so no matrix does it.</li>
+  </ul>
+</section>
+
+<section aria-labelledby="pq">
+  <h2 id="pq">Practice</h2>
+  <p class="q"><strong>(a)</strong> Compute X·(a, b) for X = [[0, 1], [1, 0]].<br><strong>(b)</strong> Find A† for A = [[1, i], [2, 3 − i]].</p>
+  <details>
+    <summary>Show answer</summary>
+    <h3>(a) X·(a, b)</h3>
+    <div class="steps">
+      <div class="c">size check: (2 × 2) · (2 × 1), inner 2 = 2, answer is 2 × 1</div>
+      <div class="c">top entry: row 1 of X = (0, 1) with (a, b)</div>
+      <div>0 · a = 0</div>
+      <div>1 · b = b</div>
+      <div>0 + b = b</div>
+      <div class="c">bottom entry: row 2 of X = (1, 0) with (a, b)</div>
+      <div>1 · a = a</div>
+      <div>0 · b = 0</div>
+      <div>a + 0 = a</div>
+      <div class="ok">X·(a, b) = (b, a)</div>
+    </div>
+    <p>Check with numbers: a = 5, b = 7 gives (7, 5). The entries swapped, just like Picture 3.</p>
+    <h3>(b) A† for A = [[1, i], [2, 3 − i]]</h3>
+    <div class="steps">
+      <div class="c">Step 1: transpose (rows become columns)</div>
+      <div>row 1 of A is (1, i)      → becomes column 1</div>
+      <div>row 2 of A is (2, 3 − i)  → becomes column 2</div>
+      <div>Aᵀ = [[1, 2], [i, 3 − i]]</div>
+      <div class="c">Step 2: conjugate every entry (flip the sign of each i part)</div>
+      <div>1*       = 1</div>
+      <div>2*       = 2</div>
+      <div>i*       = −i</div>
+      <div>(3 − i)* = 3 + i</div>
+      <div class="ok">A† = [[1, 2], [−i, 3 + i]]</div>
+    </div>
+    <div class="eq"><span>A† =</span><span class="mat"><span>1</span><span>2</span><span>−i</span><span>3 + i</span></span></div>
+    <p>Check: take the dagger again. Transpose gives [[1, −i], [2, 3 + i]]; conjugating gives [[1, i], [2, 3 − i]], which is A again. Doing the dagger twice always brings you back.</p>
+  </details>
+</section>
+
+<section aria-labelledby="np">
+  <h2 id="np">Check it in NumPy</h2>
+  <p><span class="m">@</span> is NumPy's matrix multiply, <span class="m">1j</span> is how Python writes i, and <span class="m">.conj().T</span> is the dagger.</p>
+<pre class="code">import numpy as np
+X = np.array([[0, 1], [1, 0]])
+print(X @ np.array([5, 7]))        # [7 5]  -> (b, a)
+A = np.array([[1, 1j], [2, 3 - 1j]])
+print(A.conj().T)                  # [[1, 2], [-1j, 3+1j]]
+
+dag = lambda M: M.conj().T
+H = np.array([[1, 1], [1, -1]]) / np.sqrt(2)
+S = np.diag([1, 1j])
+print(np.allclose(dag(H) @ H, np.eye(2)))   # True: H is unitary
+print(np.allclose(dag(S), S))               # False: S is not Hermitian
+h_plus = np.array([1, 1]) / np.sqrt(2)
+print(np.outer(h_plus, h_plus.conj()))      # projector onto h+: [[.5 .5] [.5 .5]]
+print(dag(H) @ np.array([[0, 1], [1, 0]]) @ H)  # X in the Hadamard basis = Z</pre>
+</section>
+
+<section aria-labelledby="gd">
+  <h2 id="gd">Go deeper</h2>
+  <ul>
+    <li><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/quantum-foundations/concepts/07-matrices-and-linear-maps/notebook.ipynb">Tutorial notebook (.ipynb, to run yourself)</a></li>
+    <li><a href="notebook.html">The same tutorial as a web page</a></li>
+    <li><a href="../../reference/reading-maths-symbols.html">Symbol dictionary: how to read maths symbols</a></li>
+  </ul>
+</section>
+
+
+
+
+
+
+
+
+
+<footer>
+  <div><strong>Study time:</strong> about 1½ hours (45 min for the basics, the rest for projectors, adjoints, Hermitian and unitary matrices, and change of basis)</div>
+  <div><a href="../../../">All concepts</a> · Next concept: eigenvalues and eigenvectors</div>
+</footer>
+</main>
+
+<script>
+(function(){
+  var NS="http://www.w3.org/2000/svg";
+  function px(x){return 100+50*x} function py(y){return 140-50*y}
+  function el(tag,attrs,parent){var e=document.createElementNS(NS,tag);for(var k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e}
+  function fmt(n){return n<0?"−"+(-n):String(n)}
+  function draw(svg,m,ghost){
+    while(svg.firstChild)svg.removeChild(svg.firstChild);
+    var d=el("defs",{},svg);
+    [["e1","var(--e1)"],["e2","var(--e2)"],["ax","var(--muted)"]].forEach(function(p){
+      var mk=el("marker",{id:svg.id+p[0],viewBox:"0 0 10 10",refX:"9",refY:"5",markerWidth:"7",markerHeight:"7",orient:"auto-start-reverse"},d);
+      el("path",{d:"M0 0 L10 5 L0 10z",fill:p[1]},mk);
+    });
+    var g=el("g",{stroke:"var(--grid)","stroke-width":"1"},svg);
+    for(var x=-1;x<=3;x++)el("line",{x1:px(x),y1:py(-0.6),x2:px(x),y2:py(2.4)},g);
+    for(var y=0;y<=2;y++)el("line",{x1:px(-1.6),y1:py(y),x2:px(3.6),y2:py(y)},g);
+    el("line",{x1:px(-1.8),y1:py(0),x2:px(3.7),y2:py(0),stroke:"var(--muted)","stroke-width":"1.2","marker-end":"url(#"+svg.id+"ax)"},svg);
+    el("line",{x1:px(0),y1:py(-0.7),x2:px(0),y2:py(2.6),stroke:"var(--muted)","stroke-width":"1.2","marker-end":"url(#"+svg.id+"ax)"},svg);
+    var lab=el("g",{"font-size":"10","text-anchor":"middle",style:"fill:var(--muted)"},svg);
+    [-1,1,2,3].forEach(function(v){el("text",{x:px(v),y:py(0)+14},lab).textContent=fmt(v)});
+    [1,2].forEach(function(v){el("text",{x:px(0)-10,y:py(v)+4},lab).textContent=v});
+    el("text",{x:px(3.7)-4,y:py(0)-6},lab).textContent="x";
+    el("text",{x:px(0)+10,y:py(2.6)+8},lab).textContent="y";
+    var a=m[0],b=m[1],c=m[2],dd=m[3];
+    var pts=[[0,0],[1,0],[1,1],[0,1]].map(function(p){return [a*p[0]+b*p[1],c*p[0]+dd*p[1]]});
+    if(ghost)el("polygon",{points:"100,140 150,140 150,90 100,90",fill:"none",stroke:"var(--muted)","stroke-dasharray":"4 3"},svg);
+    el("polygon",{points:pts.map(function(p){return px(p[0])+","+py(p[1])}).join(" "),fill:"var(--col-soft)",stroke:"var(--col)","stroke-width":"1.5","fill-opacity":"0.85"},svg);
+    var e1=[a,c],e2=[b,dd];
+    el("line",{x1:px(0),y1:py(0),x2:px(e1[0]),y2:py(e1[1]),stroke:"var(--e1)","stroke-width":"2.6","marker-end":"url(#"+svg.id+"e1)"},svg);
+    el("line",{x1:px(0),y1:py(0),x2:px(e2[0]),y2:py(e2[1]),stroke:"var(--e2)","stroke-width":"2.6","marker-end":"url(#"+svg.id+"e2)"},svg);
+    function tag(v,col,dx,dy){var t=el("text",{x:px(v[0])+dx,y:py(v[1])+dy,"font-size":"11","text-anchor":"middle",style:"fill:"+col},svg);t.textContent="("+fmt(v[0])+", "+fmt(v[1])+")"}
+    // place labels away from each other
+    tag(e1,"var(--e1)",e1[0]>=0?18:-18,e1[1]>0?-8:28);
+    tag(e2,"var(--e2)",e2[0]>0?20:(e2[0]<0?-8:-26),e2[1]>0?-8:28);
+  }
+  var before=document.getElementById("before"),after=document.getElementById("after"),cap=document.getElementById("cap1");
+  draw(before,[1,0,0,1],false);
+  var btns=document.querySelectorAll("[data-m]");
+  function pick(btn){
+    btns.forEach(function(b){b.setAttribute("aria-pressed",b===btn?"true":"false")});
+    var m=btn.getAttribute("data-m").split(",").map(Number);
+    draw(after,m,true);
+    document.getElementById("afterlab").textContent="After: "+btn.getAttribute("data-n");
+    cap.textContent="Matrix [["+fmt(m[0])+", "+fmt(m[1])+"], ["+fmt(m[2])+", "+fmt(m[3])+"]]. Column 1 is ("+fmt(m[0])+", "+fmt(m[2])+"), so the red arrow (1, 0) lands there. Column 2 is ("+fmt(m[1])+", "+fmt(m[3])+"), so the blue arrow (0, 1) lands there. The dashed square is where the unit square started.";
+  }
+  btns.forEach(function(b){b.addEventListener("click",function(){pick(b)})});
+  pick(document.getElementById("m-S"));
+
+  var r1=document.getElementById("r1"),r2=document.getElementById("r2"),cap2=document.getElementById("cap2");
+  function row(n){
+    r1.setAttribute("aria-pressed",n===1?"true":"false");r2.setAttribute("aria-pressed",n===2?"true":"false");
+    var y=n===1?31:71;
+    document.getElementById("rowband").setAttribute("y",y);document.getElementById("resband").setAttribute("y",y);
+    cap2.textContent=n===1
+      ?"Row 1 of the matrix is (2, 1). Pair it with the column (1, 2): 2 · 1 = 2, then 1 · 2 = 2, then 2 + 2 = 4. That is the top entry."
+      :"Row 2 of the matrix is (1, 3). Pair it with the column (1, 2): 1 · 1 = 1, then 3 · 2 = 6, then 1 + 6 = 7. That is the bottom entry.";
+  }
+  r1.addEventListener("click",function(){row(1)});r2.addEventListener("click",function(){row(2)});
+  row(1);
+})();
+</script>
+
+<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Part B · Concept 07 of 17</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../06-inner-products-and-bases/">← Inner products and orthonormal bases</a> · <a href="../08-eigenvalues/">Eigenvalues and eigenvectors →</a></div></nav></body></html>

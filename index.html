@@ -4,20 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Quantum Learning Lab</title>
-<meta name="description" content="Sathisha's quantum computing study pages, organised by concept.">
+<meta name="description" content="Sathisha's quantum computing study pages: one learning path in six parts.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=JetBrains+Mono:wght@500;600&family=Spectral:wght@600;700&display=swap">
 <style>
-/* Layout: one phone-first column of tappable rows, one per concept in learning order. Same palette as the concept pages. */
+/* Layout: one phone-first column of tappable rows, grouped into the six parts of the learning path. Same palette as the concept pages. */
 :root{
   --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4;
-  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --soft:#f5f7fb;
+  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --amb:#9a5a0c; --soft:#f5f7fb;
   --f-display:"Spectral",Georgia,serif; --f-body:"Atkinson Hyperlegible",system-ui,sans-serif; --f-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
   color-scheme:light;
 }
 @media (prefers-color-scheme: dark){:root{
   --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644;
-  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --soft:#1b2330; color-scheme:dark}}
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --amb:#f0aa5a; --soft:#1b2330; color-scheme:dark}}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.55 var(--f-body);
@@ -40,11 +40,13 @@ a.main:hover,a.main:focus-visible{color:var(--re);text-decoration:underline}
 .sub{grid-column:2;font-size:.88rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 14px}
 .sub>span{flex-basis:100%}
 .sub a{color:var(--re)}
-.pill{font:600 .7rem var(--f-mono);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:1px 8px;margin-left:6px;vertical-align:2px}
-.prep{color:var(--re);background:var(--soft)} .intro{color:var(--im);background:var(--soft)} .new{color:var(--ok);background:var(--soft)}
+.pill{font:600 .7rem var(--f-mono);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:1px 8px;margin-left:6px;vertical-align:2px;white-space:nowrap;display:inline-block}
+.new{color:var(--ok);background:var(--soft)} .fresh{color:var(--amb);background:var(--soft)}
+.route{background:var(--paper);border:1px solid var(--rule);border-left:4px solid var(--amb);border-radius:0 12px 12px 0;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.route ol{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:4px}
+.route a,footer a{color:var(--re)}
 a:focus-visible{outline:2px solid var(--re);outline-offset:2px;border-radius:4px}
 footer{color:var(--muted);font-size:.88rem;border-top:1px solid var(--rule);padding-top:14px;display:flex;flex-direction:column;gap:6px}
-footer a{color:var(--re)}
 </style>
 </head>
 <body>
@@ -52,60 +54,112 @@ footer a{color:var(--re)}
 <header style="display:flex;flex-direction:column;gap:8px">
   <span class="eyebrow">Quantum computing · Study notes</span>
   <h1>Quantum Learning Lab</h1>
-  <p class="lede">Study material organised by concept, in learning order. Each concept has an illustrated page; most also have a full tutorial and practice questions with worked solutions. A green tag marks what I've covered in class so far.</p>
+  <p class="lede">One learning path in six parts, in the order the ideas build on each other. Each concept has an illustrated page with worked examples, and most have a tutorial notebook. Green tags show which class weeks covered a topic; amber tags mark pages added to fill gaps.</p>
 </header>
 
+<div class="route">
+  <b>Shaky on the basics? Take this route first</b>
+  <ol>
+    <li><a href="quantum-foundations/concepts/01-trigonometry/">01 Trigonometry</a>: unit circle, half-angle formula</li>
+    <li><a href="quantum-foundations/concepts/03-euler-and-phase/">03 e<sup>iθ</sup> and phase</a>: the expression behind every phase</li>
+    <li><a href="quantum-foundations/concepts/04-real-to-complex/">04 Real → complex</a>: the conjugate habits, and bold ↔ ket ↔ NumPy</li>
+    <li><a href="quantum-foundations/concepts/08-eigenvalues/">08 Eigenvalues</a>: recipe, rotations, diagonalisation</li>
+    <li><a href="quantum-foundations/concepts/13-one-qubit-big-picture/">13 One qubit, the whole picture</a>: bases, Bloch sphere, gates and eigenvalues together, plus a recap of weeks 1–3</li>
+  </ol>
+</div>
+
 <section>
-  <h2>Maths foundations</h2>
+  <h2>Part A · Toolkit</h2>
+  <p class="lede">The school maths and the complex-number habits everything else rests on. Start here if anything feels rusty.</p>
   <ul class="list">
     <li class="row"><span class="tag">01</span>
-      <a class="main" href="quantum-foundations/concepts/01-complex-numbers/">Complex numbers<span class="pill new">In class: Week 1</span></a>
-      <span class="sub"><span>i, conjugate, polar form, Euler&#x27;s formula, roots of unity, phase</span><a href="quantum-foundations/concepts/01-complex-numbers/practice.html">practice</a><a href="quantum-foundations/concepts/01-complex-numbers/notebook.html">tutorial</a></span></li>
+      <a class="main" href="quantum-foundations/concepts/01-trigonometry/">Trigonometry refresher<span class="pill fresh">New</span></a>
+      <span class="sub"><span>unit circle, radians, special values, addition and half-angle formulas, the rotation matrix</span></span></li>
     <li class="row"><span class="tag">02</span>
-      <a class="main" href="quantum-foundations/concepts/02-vector-spaces/">Vector spaces<span class="pill new">In class: Week 1</span></a>
-      <span class="sub"><span>span, subspaces, independence, basis, dimension over ℂ vs ℝ</span><a href="quantum-foundations/concepts/02-vector-spaces/practice.html">practice</a></span></li>
+      <a class="main" href="quantum-foundations/concepts/02-complex-numbers/">Complex numbers<span class="pill new">In class: Week 1</span></a>
+      <span class="sub"><span>i, conjugate, polar form, Euler's formula, roots of unity</span><a href="quantum-foundations/concepts/02-complex-numbers/notebook.html">tutorial</a></span></li>
     <li class="row"><span class="tag">03</span>
-      <a class="main" href="quantum-foundations/concepts/03-inner-products-and-bases/">Inner products and bases<span class="pill new">In class: Week 1</span></a>
-      <span class="sub"><span>conjugate-first inner product, norms, Cauchy–Schwarz, orthonormal bases, Parseval</span><a href="quantum-foundations/concepts/03-inner-products-and-bases/practice.html">practice</a><a href="quantum-foundations/concepts/03-inner-products-and-bases/notebook.html">tutorial</a></span></li>
+      <a class="main" href="quantum-foundations/concepts/03-euler-and-phase/">e<sup>iθ</sup> and phase<span class="pill fresh">New</span></a>
+      <span class="sub"><span>multiply = add angles, global vs relative phase, phase gates S and T, unitary eigenvalues</span></span></li>
     <li class="row"><span class="tag">04</span>
-      <a class="main" href="quantum-foundations/concepts/04-matrices-and-linear-maps/">Matrices and linear maps<span class="pill intro">Next class</span></a>
-      <span class="sub"><span>matrix products, transpose, dagger, linear maps as matrices</span><a href="quantum-foundations/concepts/04-matrices-and-linear-maps/practice.html">practice</a><a href="quantum-foundations/concepts/04-matrices-and-linear-maps/notebook.html">tutorial</a></span></li>
-    <li class="row"><span class="tag">05</span>
-      <a class="main" href="quantum-foundations/concepts/05-eigenvalues/">Eigenvalues and eigenvectors</a>
-      <span class="sub"><span>determinant, characteristic equation, eigenbases</span><a href="quantum-foundations/concepts/05-eigenvalues/notebook.html">tutorial</a></span></li>
-    <li class="row"><span class="tag">06</span>
-      <a class="main" href="quantum-foundations/concepts/06-probability/">Probability and expectation</a>
-      <span class="sub"><span>distributions, expected value, amplitudes squared</span><a href="quantum-foundations/concepts/06-probability/notebook.html">tutorial</a></span></li>
-    <li class="row"><span class="tag">07</span>
-      <a class="main" href="quantum-foundations/concepts/07-ml-maths-bridge/">AI/ML maths bridge</a>
-      <span class="sub"><span>dot products as similarity, layers, gradient descent, softmax</span><a href="quantum-foundations/concepts/07-ml-maths-bridge/notebook.html">tutorial</a></span></li>
+      <a class="main" href="quantum-foundations/concepts/04-real-to-complex/">Real → complex: what changes<span class="pill fresh">New</span></a>
+      <span class="sub"><span>dot product → inner product, transpose → dagger, symmetric → Hermitian; bold vs ket vs NumPy</span></span></li>
   </ul>
 </section>
 
 <section>
-  <h2>Quantum computing basics</h2>
+  <h2>Part B · Linear algebra</h2>
+  <p class="lede">The maths of state vectors and gates, in the order the linear-algebra lectures teach it.</p>
   <ul class="list">
+    <li class="row"><span class="tag">05</span>
+      <a class="main" href="quantum-foundations/concepts/05-vector-spaces/">Vector spaces<span class="pill new">In class: Week 1</span></a>
+      <span class="sub"><span>span, subspaces, independence, basis, dimension over ℂ vs ℝ</span></span></li>
+    <li class="row"><span class="tag">06</span>
+      <a class="main" href="quantum-foundations/concepts/06-inner-products-and-bases/">Inner products and orthonormal bases<span class="pill new">In class: Week 1</span></a>
+      <span class="sub"><span>conjugate-first inner product, norms, Cauchy–Schwarz, orthonormal bases, Parseval</span><a href="quantum-foundations/concepts/06-inner-products-and-bases/notebook.html">tutorial</a></span></li>
+    <li class="row"><span class="tag">07</span>
+      <a class="main" href="quantum-foundations/concepts/07-matrices-and-linear-maps/">Matrices and linear maps<span class="pill new">In class: Week 2</span></a>
+      <span class="sub"><span>linear maps as matrices, outer products, projectors, adjoints, Hermitian and unitary, change of basis</span><a href="quantum-foundations/concepts/07-matrices-and-linear-maps/notebook.html">tutorial</a></span></li>
     <li class="row"><span class="tag">08</span>
-      <a class="main" href="quantum-foundations/concepts/08-qubits-and-dirac-notation/">Qubits and Dirac notation<span class="pill new">In class: Week 2</span></a>
-      <span class="sub"><span>kets, bras, superposition, the Born rule, measurement, the three-filter puzzle</span><a href="quantum-foundations/concepts/08-qubits-and-dirac-notation/notebook.html">tutorial</a></span></li>
+      <a class="main" href="quantum-foundations/concepts/08-eigenvalues/">Eigenvalues and eigenvectors<span class="pill new">In class: Weeks 2–3</span></a>
+      <span class="sub"><span>characteristic equation, eigenspaces, rotations → e<sup>±iθ</sup>, diagonalisation, p(A)v = p(λ)v</span><a href="quantum-foundations/concepts/08-eigenvalues/notebook.html">tutorial</a></span></li>
     <li class="row"><span class="tag">09</span>
-      <a class="main" href="quantum-foundations/concepts/09-bloch-sphere/">The Bloch sphere<span class="pill new">In class: Week 2</span></a>
-      <span class="sub"><span>one qubit as a point on a sphere; latitude sets the odds, longitude the phase</span><a href="quantum-foundations/concepts/09-bloch-sphere/notebook.html">tutorial</a></span></li>
-    <li class="row"><span class="tag">10</span>
-      <a class="main" href="quantum-foundations/concepts/10-gates/">Gates as matrices<span class="pill new">In class: Week 2</span></a>
-      <span class="sub"><span>X, Z, H as half-turns, unitary U†U = I, interference, HZH = X</span><a href="quantum-foundations/concepts/10-gates/notebook.html">tutorial</a></span></li>
-    <li class="row"><span class="tag">11</span>
-      <a class="main" href="quantum-foundations/concepts/11-tensor-products/">Two qubits and tensor products<span class="pill new">In class: Week 2</span></a>
-      <span class="sub"><span>Kronecker product, 2ⁿ amplitudes, product vs entangled</span><a href="quantum-foundations/concepts/11-tensor-products/notebook.html">tutorial</a></span></li>
-    <li class="row"><span class="tag">12</span>
-      <a class="main" href="quantum-foundations/concepts/12-entanglement-and-qiskit/">Entanglement and your first Qiskit circuit<span class="pill new">In class: Week 2</span></a>
-      <span class="sub"><span>CNOT, Bell states, no signalling, running a circuit</span><a href="quantum-foundations/concepts/12-entanglement-and-qiskit/notebook.html">tutorial</a></span></li>
-    <li class="row"><span class="tag">13</span>
-      <a class="main" href="quantum-foundations/concepts/13-deutsch-algorithm/">Deutsch's algorithm<span class="pill new">In class: Week 2</span></a>
-      <span class="sub"><span>oracles, phase kickback, interference, Deutsch–Jozsa: one query instead of two</span></span></li>
+      <a class="main" href="quantum-foundations/concepts/09-probability/">Probability and expectation</a>
+      <span class="sub"><span>distributions, expected value, amplitudes squared</span><a href="quantum-foundations/concepts/09-probability/notebook.html">tutorial</a></span></li>
   </ul>
 </section>
 
+<section>
+  <h2>Part C · One qubit</h2>
+  <p class="lede">A single qubit: its state, its picture, its gates, and how they all fit together.</p>
+  <ul class="list">
+    <li class="row"><span class="tag">10</span>
+      <a class="main" href="quantum-foundations/concepts/10-qubits-and-dirac-notation/">Qubits and Dirac notation<span class="pill new">In class: Weeks 2–3</span></a>
+      <span class="sub"><span>kets, bras, the Born rule, measuring in any basis, three polarising filters</span><a href="quantum-foundations/concepts/10-qubits-and-dirac-notation/notebook.html">tutorial</a></span></li>
+    <li class="row"><span class="tag">11</span>
+      <a class="main" href="quantum-foundations/concepts/11-bloch-sphere/">The Bloch sphere<span class="pill new">In class: Weeks 2–3</span></a>
+      <span class="sub"><span>two angles; latitude sets the odds, longitude the phase; why θ/2</span><a href="quantum-foundations/concepts/11-bloch-sphere/notebook.html">tutorial</a></span></li>
+    <li class="row"><span class="tag">12</span>
+      <a class="main" href="quantum-foundations/concepts/12-gates/">Gates as matrices<span class="pill new">In class: Weeks 2–3</span></a>
+      <span class="sub"><span>X, Z, H as half turns, interference, gates as outer products, HZH = X proved</span><a href="quantum-foundations/concepts/12-gates/notebook.html">tutorial</a></span></li>
+    <li class="row"><span class="tag">13</span>
+      <a class="main" href="quantum-foundations/concepts/13-one-qubit-big-picture/">One qubit, the whole picture<span class="pill new">In class: Weeks 1–3</span><span class="pill fresh">New</span></a>
+      <span class="sub"><span>bases = diameters, gates = rotations, eigenvectors = axis, eigenvalues = angle; weeks 1–3 recap</span></span></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Part D · Many qubits</h2>
+  <p class="lede">How qubits combine, and what is new when they do.</p>
+  <ul class="list">
+    <li class="row"><span class="tag">14</span>
+      <a class="main" href="quantum-foundations/concepts/14-tensor-products/">Two qubits and tensor products<span class="pill new">In class: Weeks 2–3</span></a>
+      <span class="sub"><span>Kronecker product, A ⊗ B, product test, gates on wires, CNOT = P₀⊗I + P₁⊗X, H<sup>⊗n</sup> signs</span><a href="quantum-foundations/concepts/14-tensor-products/notebook.html">tutorial</a></span></li>
+    <li class="row"><span class="tag">15</span>
+      <a class="main" href="quantum-foundations/concepts/15-entanglement-and-qiskit/">Entanglement and your first Qiskit circuit<span class="pill new">In class: Weeks 2–3</span></a>
+      <span class="sub"><span>CNOT, Bell states, why they cannot factor, no signalling, running a circuit</span><a href="quantum-foundations/concepts/15-entanglement-and-qiskit/notebook.html">tutorial</a></span></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Part E · Algorithms</h2>
+  <p class="lede">The first quantum speedups.</p>
+  <ul class="list">
+    <li class="row"><span class="tag">16</span>
+      <a class="main" href="quantum-foundations/concepts/16-deutsch-algorithm/">Deutsch's algorithm<span class="pill new">In class: Weeks 2–3</span></a>
+      <span class="sub"><span>oracles as matrices, phase kickback proved, Deutsch–Jozsa: one query instead of two</span></span></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Part F · AI bridge</h2>
+  <p class="lede">The maths shared with machine learning.</p>
+  <ul class="list">
+    <li class="row"><span class="tag">17</span>
+      <a class="main" href="quantum-foundations/concepts/17-ml-maths-bridge/">AI/ML maths bridge</a>
+      <span class="sub"><span>dot products as similarity, layers, gradient descent, softmax</span><a href="quantum-foundations/concepts/17-ml-maths-bridge/notebook.html">tutorial</a></span></li>
+  </ul>
+</section>
 <section>
   <h2>Reference</h2>
   <ul class="list">

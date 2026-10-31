@@ -1,0 +1,600 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body><style>
+.cnav{--cn-ink:#1b2430;--cn-mut:#566275;--cn-bg:#f5f7fb;--cn-rule:#d3dae4;--cn-a:#1d5bbd;
+ display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 18px;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+ color:var(--cn-mut);background:var(--cn-bg);border-bottom:1px solid var(--cn-rule);
+ padding-block:9px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.cnav:not(.bottom){margin-bottom:22px}
+.cnav.bottom{border-bottom:0;border-top:1px solid var(--cn-rule);margin-top:32px}
+.cnav a{color:var(--cn-a);text-decoration:none}.cnav a:hover{text-decoration:underline}
+.cnav a:focus-visible{outline:2px solid var(--cn-a);outline-offset:2px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}}
+:root[data-theme="dark"] .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}
+</style><nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Part C · Concept 10 of 17</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../09-probability/">← Probability and expectation</a> · <a href="../11-bloch-sphere/">The Bloch sphere →</a></div></nav>
+<title>Qubits and Dirac notation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:opsz,wght@8..60,500;8..60,700&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one reading column (~68ch) of study notes; diagrams get full column width, formulas set large in a math face. */
+:root {
+  --bg: #F5F7FA;
+  --surface: #FFFFFF;
+  --ink: #17202C;
+  --muted: #5A6577;
+  --rule: #D9DFE8;
+  --accent: #2B4BCF;      /* |0>,|1> basis + links */
+  --accent-soft: #E6EBFB;
+  --second: #B66A07;      /* |+>,|-> basis */
+  --second-soft: #FBF0DF;
+  --psi: #0E8A6E;         /* the movable state */
+  --bad: #B3261E;
+  --code-bg: #EEF1F6;
+  --f-display: "Source Serif 4", Georgia, "Times New Roman", serif;
+  --f-body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-math: "STIX Two Text", "Cambria Math", "STIX Two Math", "Times New Roman", serif;
+  --f-mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0F141B; --surface: #161D27; --ink: #E3E8F0; --muted: #9AA6B8; --rule: #2A3443;
+    --accent: #8EA5FF; --accent-soft: #1C2647; --second: #F0B04A; --second-soft: #33260F;
+    --psi: #4FD1AE; --bad: #FF8A80; --code-bg: #1B2330; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0F141B; --surface: #161D27; --ink: #E3E8F0; --muted: #9AA6B8; --rule: #2A3443;
+  --accent: #8EA5FF; --accent-soft: #1C2647; --second: #F0B04A; --second-soft: #33260F;
+  --psi: #4FD1AE; --bad: #FF8A80; --code-bg: #1B2330; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--f-body); font-size: 17px; line-height: 1.6; }
+.page { max-width: 46rem; margin: 0 auto; padding-inline: 18px; padding-block: 28px 48px; display: flex; flex-direction: column; gap: 2.2rem; }
+section { display: flex; flex-direction: column; gap: .8rem; min-width: 0; }
+h1, h2 { font-family: var(--f-display); text-wrap: balance; margin: 0; line-height: 1.2; }
+h1 { font-size: clamp(1.9rem, 6vw, 2.6rem); font-weight: 700; }
+h2 { font-size: 1.35rem; font-weight: 700; }
+h3 { font-size: 1rem; margin: 0; }
+p { margin: 0; max-width: 68ch; }
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible, summary:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.eyebrow { font-size: .78rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+.tag { display: inline-block; background: var(--accent-soft); color: var(--accent); border-radius: 4px; padding: 0 .45em; }
+header { display: flex; flex-direction: column; gap: .6rem; border-bottom: 1px solid var(--rule); padding-bottom: 1.4rem; }
+header p { color: var(--muted); }
+.m { font-family: var(--f-math); font-size: 1.12em; white-space: nowrap; }
+.c0 { color: var(--accent); } .cp { color: var(--second); } .cpsi { color: var(--psi); }
+.box { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: 1rem 1.1rem; min-width: 0; }
+.scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: .93rem; }
+th, td { text-align: left; padding: .45rem .6rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th { font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+td:first-child { font-family: var(--f-math); font-size: 1.15rem; white-space: nowrap; }
+td:nth-child(2) { font-style: italic; width: 30%; }
+td:nth-child(3) { width: 48%; }
+tr:last-child td { border-bottom: 0; }
+.steps { font-family: var(--f-math); font-size: 1.1rem; display: flex; flex-direction: column; gap: .15rem; padding: .8rem 1rem; background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; overflow-x: auto; }
+.steps div { white-space: nowrap; }
+.steps .note { font-family: var(--f-body); font-size: .85rem; color: var(--muted); white-space: normal; margin-top: .35rem; }
+.steps .ok { color: var(--psi); font-weight: 600; }
+.key { background: var(--surface); border: 1px solid var(--rule); border-radius: 10px; padding: 1.4rem 1.1rem; display: flex; flex-direction: column; gap: .7rem; align-items: center; text-align: center; }
+.key .big { font-family: var(--f-math); font-size: clamp(1.45rem, 6vw, 2.1rem); line-height: 1.35; }
+.key .read { font-size: .95rem; color: var(--muted); max-width: 52ch; }
+figure { margin: 0; display: flex; flex-direction: column; gap: .5rem; }
+figure svg { width: 100%; height: auto; display: block; }
+figcaption { font-size: .88rem; color: var(--muted); }
+svg text { font-family: var(--f-math); }
+svg .lab { font-family: var(--f-body); font-size: 13px; fill: var(--muted); }
+.control { display: flex; flex-wrap: wrap; gap: .4rem 1rem; align-items: center; font-size: .92rem; }
+.control input[type=range] { flex: 1 1 12rem; accent-color: var(--psi); }
+.readout { font-family: var(--f-math); font-size: 1.05rem; background: var(--code-bg); border-radius: 6px; padding: .5rem .7rem; white-space: pre-line; }
+ul.mistakes { margin: 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: .6rem; max-width: 68ch; }
+ul.mistakes b { color: var(--bad); }
+details { background: var(--surface); border: 1px solid var(--rule); border-radius: 8px; padding: .8rem 1rem; }
+summary { cursor: pointer; font-weight: 700; color: var(--accent); }
+details[open] summary { margin-bottom: .7rem; }
+details .steps { border: 0; padding: 0; background: none; }
+pre { margin: 0; background: var(--code-bg); border-radius: 8px; padding: .9rem 1rem; overflow-x: auto; font-family: var(--f-mono); font-size: .86rem; line-height: 1.55; }
+pre .cm { color: var(--muted); }
+.links { display: flex; flex-direction: column; gap: .4rem; padding-left: 1.2rem; margin: 0; }
+.aside { font-size: .9rem; color: var(--muted); border-left: 3px solid var(--rule); padding-left: .8rem; max-width: 68ch; }
+footer { border-top: 1px solid var(--rule); padding-top: 1.2rem; color: var(--muted); font-size: .92rem; display: flex; flex-wrap: wrap; gap: .4rem 1.4rem; justify-content: space-between; }
+footer strong { color: var(--ink); }
+@media (prefers-reduced-motion: no-preference) { #psiArrow, #psiDot { transition: none; } }
+</style>
+
+<style id="xt-style">
+.xt{
+  --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4; --grid:#e6ebf2;
+  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --okbg:#e5f4ec; --soft:#f5f7fb; --code:#f2f4f8;
+  --f-math:ui-monospace,"IBM Plex Mono","JetBrains Mono",Menlo,Consolas,monospace;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .xt{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}}
+:root[data-theme="dark"] .xt{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}
+.xt{color:inherit;font:inherit;display:flex;flex-direction:column;gap:12px;min-width:0;text-align:left}
+.xt h3{margin:10px 0 0}
+.xt section,.xt article{display:flex;flex-direction:column;gap:12px;min-width:0}
+.xt p{margin:0;max-width:65ch}
+.xt .eyebrow{font:600 .78rem/1 var(--f-math);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.xt .m{font-family:var(--f-math);font-size:.92em;white-space:nowrap}
+.xt .re{color:var(--re)} .im{color:var(--im)}
+.xt .bar{text-decoration:overline;text-decoration-thickness:1.5px}
+.xt .box{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.xt .scroll{overflow-x:auto}
+.xt table{border-collapse:collapse;width:100%;font-size:.95rem}
+.xt th,.xt td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+.xt th{font:600 .75rem var(--f-math);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.xt .sym td:first-child{font-family:var(--f-math);font-weight:600;white-space:nowrap}
+.xt .key{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:8px}
+.xt .key a{display:flex;justify-content:space-between;align-items:baseline;gap:6px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:7px 10px;font-family:var(--f-math);font-variant-numeric:tabular-nums}
+.xt .key a b{color:var(--ok)}
+.xt .key a span{color:var(--muted);font-size:.85rem}
+.xt .qcard{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
+.xt .qhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.xt .qhead .qn{font:700 .85rem var(--f-math);color:var(--muted)}
+.xt .qtext{font-size:1.05rem}
+.xt .opts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:6px}
+.xt .opts li{border:1px solid var(--rule);border-radius:8px;padding:6px 10px;font-family:var(--f-math);font-size:.92rem;min-width:0;overflow-wrap:anywhere}
+.xt .opts li .l{color:var(--muted);margin-right:6px}
+.xt .show .opts li.ok,.xt .revealed .opts li.ok{border-color:var(--ok);background:var(--okbg);color:var(--ink)}
+.xt .show .opts li.ok .l,.xt .revealed .opts li.ok .l{color:var(--ok);font-weight:700}
+.xt .badge{font:700 .82rem var(--f-math);color:var(--ok);background:var(--okbg);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.xt body:not(.show) .qcard:not(.revealed) .badge{visibility:hidden}
+.xt .steps{font-family:var(--f-math);font-size:.93rem;background:var(--code);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.xt .steps span{white-space:pre-wrap}
+.xt .steps .note{color:var(--muted);font-family:var(--f-body);font-size:.88rem;white-space:normal}
+.xt .steps .ok{color:var(--ok);font-weight:600}
+.xt figure{margin:0;background:var(--soft);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.xt figure svg{width:100%;height:auto;max-width:360px;align-self:center;display:block}
+.xt figcaption{font-size:.9rem;color:var(--muted)}
+.xt figcaption b{color:var(--ink)}
+.xt svg text{font-family:var(--f-math);font-size:12px;fill:var(--ink)}
+.xt svg .lab{font-size:13px;font-weight:600}
+.xt svg .mut{fill:var(--muted)}
+.xt svg .grid{stroke:var(--grid);stroke-width:1}
+.xt svg .axis{stroke:var(--muted);stroke-width:1.3}
+.xt svg .reS{stroke:var(--re)} svg .imS{stroke:var(--im)} svg .inkS{stroke:var(--ink)} svg .okS{stroke:var(--ok)} svg .mutS{stroke:var(--muted)}
+.xt svg .reF{fill:var(--re)} svg .imF{fill:var(--im)} svg .inkF{fill:var(--ink)} svg .okF{fill:var(--ok)} svg .bgF{fill:var(--paper)} svg .none{fill:none}
+.xt svg .okT{fill:var(--ok)} svg .reT{fill:var(--re)} svg .imT{fill:var(--im)}
+.xt .why{font-size:.95rem;color:var(--muted)}
+.xt .why b{color:var(--ink)}
+.xt .ql{background:var(--soft);border-left:3px solid var(--im);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.xt .ql b{color:var(--im)}
+.xt .warn{background:var(--soft);border-left:3px solid var(--re);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.xt details.sol{border-top:1px dashed var(--rule);padding-top:10px}
+.xt details.sol>summary{cursor:pointer;font-weight:700;color:var(--re);list-style-position:inside}
+.xt details.sol[open]>summary{margin-bottom:10px}
+.xt details.sol>div{display:flex;flex-direction:column;gap:12px}
+.xt .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.xt button{font:600 .9rem var(--f-body);color:var(--re);background:var(--paper);border:1px solid var(--re);border-radius:8px;padding:8px 14px;cursor:pointer}
+.xt button:hover{background:var(--soft)}
+.xt button:focus-visible,.xt summary:focus-visible,.xt a:focus-visible{outline:2px solid var(--re);outline-offset:3px}
+.xt ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;max-width:65ch}
+.xt pre.code{margin:0;background:var(--code);border-radius:8px;padding:14px 16px;overflow-x:auto;font:.85rem/1.55 var(--f-math)}
+.xt a{color:var(--re)}
+.xt footer{border-top:1px solid var(--rule);padding-top:14px;color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+@media (prefers-reduced-motion:reduce){.xt *{transition:none!important}}
+.xt .tag{font:600 .72rem var(--f-math);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.xt .tag.new{color:var(--ok);background:var(--okbg)} .tag.have{color:var(--re);background:var(--soft)} .tag.next{color:var(--im);background:var(--soft)}
+.xt .cov td:nth-child(2){white-space:nowrap}
+.xt .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:12px}
+.xt .grid2>div{min-width:0}
+
+.xt .formula{text-align:center}
+.xt>p,.xt>ul{margin:0}
+.xt .fml{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:18px 12px;text-align:center;font:600 clamp(1.05rem,4.4vw,1.5rem)/1.4 var(--f-math);overflow-x:auto}
+.xt .say{color:var(--muted);font-size:.95rem}
+.xt .say b{color:var(--ink)}
+.xt thead{display:table-header-group}.xt tbody tr{display:table-row;padding:0}.xt tbody td{display:table-cell;padding:7px 10px;border-bottom:1px solid var(--rule);color:inherit}
+.xt .steps{font-size:.86rem}
+@media (max-width:560px){.xt table.symt thead{display:none}.xt table.symt tbody tr{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;padding:9px 6px;border-bottom:1px solid var(--rule)}.xt table.symt tbody td{display:block;border:0;padding:0}.xt table.symt td:nth-child(3){grid-column:1/-1;color:var(--muted)}}
+.xt .steps .note{background:none;border:0;padding:0;margin:0;border-radius:0;font-size:.85rem}
+</style>
+<main class="page">
+
+<header>
+  <div class="eyebrow">Concept 10 · Part C · One qubit</div>
+  <h1>Qubits and Dirac notation</h1>
+  <p>New spelling for the vectors you met on the inner products concept. Nothing here is new maths: a qubit's state is a length‑1 arrow, and the brackets are just a compact way to write it.</p>
+</header>
+
+<section aria-labelledby="sym">
+  <h2 id="sym">Symbols on this page</h2>
+  <div class="box scroll">
+    <table>
+      <thead><tr><th>Symbol</th><th>Say it</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>|0⟩, |1⟩</td><td>"ket zero", "ket one"</td><td>The two basis states of a qubit: the columns (1, 0) and (0, 1). Not the number zero.</td></tr>
+        <tr><td>|ψ⟩</td><td>"ket psi"</td><td>A state, written as a column of numbers. ψ (psi, "sigh") is just a name, like x.</td></tr>
+        <tr><td>⟨ψ|</td><td>"bra psi"</td><td>The same state written as a row, with every entry conjugated.</td></tr>
+        <tr><td>⟨φ|ψ⟩</td><td>"bra phi, ket psi"</td><td>Inner product of φ and ψ (φ is "phi", "fye"): one number saying how much the two states overlap.</td></tr>
+        <tr><td>|+⟩, |−⟩</td><td>"ket plus", "ket minus"</td><td>The 45° states (|0⟩ + |1⟩)/√2 and (|0⟩ − |1⟩)/√2.</td></tr>
+        <tr><td>α, β</td><td>"alpha", "beta"</td><td>Amplitudes: the two numbers inside a qubit's column. They may be complex.</td></tr>
+        <tr><td>i</td><td>"i"</td><td>The imaginary unit, with i² = −1 (the complex numbers concept).</td></tr>
+        <tr><td>α*</td><td>"alpha star"</td><td>Complex conjugate of α: flip the sign in front of i.</td></tr>
+        <tr><td>|α|²</td><td>"mod alpha, squared"</td><td>Size of α, squared. For a qubit this is a probability.</td></tr>
+        <tr><td>√2</td><td>"root two"</td><td>Square root of 2 ≈ 1.414. √2 × √2 = 2.</td></tr>
+        <tr><td>x²</td><td>"x squared"</td><td>x × x.</td></tr>
+        <tr><td>†</td><td>"dagger"</td><td>Conjugate transpose (the matrices concept): turn a column into a row and conjugate every entry.</td></tr>
+        <tr><td>θ</td><td>"theta"</td><td>An angle (used by the slider). cos θ ("cos theta") and sin θ ("sine theta") are the x and y of the point at that angle on a radius‑1 circle.</td></tr>
+        <tr><td>≈</td><td>"is about"</td><td>Approximately equal.</td></tr>
+        <tr><td>·</td><td>"times"</td><td>Multiply.</td></tr>
+              <tr><td>P(0)</td><td>"P of zero"</td><td>The probability that measuring gives 0.</td></tr>
+        <tr><td>|⟨0|ψ⟩|²</td><td>"mod bra zero ket psi, squared"</td><td>The same P(0), written with the inner product.</td></tr>
+        <tr><td>|V⟩, |H⟩</td><td>"ket V", "ket H"</td><td>Vertical and horizontal polarisation of light: |0⟩ and |1⟩.</td></tr>
+        <tr><td>°</td><td>"degrees"</td><td>Lab angles of a polarising filter.</td></tr>
+</tbody>
+    </table>
+  </div>
+</section>
+
+<section aria-labelledby="basics">
+  <h2 id="basics">Back to basics</h2>
+  <p>Three facts from earlier days carry all of today's arithmetic:</p>
+  <ul class="mistakes" style="list-style: disc">
+    <li><b style="color:var(--ink)">Root two squared is two.</b> <span class="m">√2 · √2 = 2</span>, so <span class="m">(1/√2)² = 1/2</span>. This is why <span class="m">1/√2</span> shows up everywhere in quantum computing: two halves make one.</li>
+    <li><b style="color:var(--ink)">Conjugate flips the sign of i.</b> <span class="m">(3 + 4i)* = 3 − 4i</span>. A real number is its own conjugate: <span class="m">(0.6)* = 0.6</span>.</li>
+    <li><b style="color:var(--ink)">Inner product (the inner products concept):</b> conjugate the first vector, multiply matching entries, add.</li>
+  </ul>
+  <p><strong>Tiny worked example:</strong> square <span class="m">1/√2</span>.</p>
+  <div class="steps">
+    <div>(1/√2)² = (1/√2) · (1/√2)</div>
+    <div>= (1 · 1) / (√2 · √2)</div>
+    <div>= 1 / 2</div>
+    <div>= 0.5</div>
+    <div class="note">Check: 1/√2 ≈ 0.7071, and 0.7071 × 0.7071 ≈ 0.49999 ≈ 0.5 <span class="ok">✓</span></div>
+  </div>
+</section>
+
+<section aria-labelledby="idea">
+  <h2 id="idea">The idea</h2>
+  <p>A qubit's state is a column of two numbers, <span class="m">(α, β)</span>, whose squared sizes add up to 1. Physicists write that column as a <em>ket</em>, <span class="m">|ψ⟩</span>, and name the two basis columns <span class="m c0">|0⟩</span> and <span class="m c0">|1⟩</span>, so any state reads <span class="m">α|0⟩ + β|1⟩</span>. A <em>superposition</em> just means both α and β are non‑zero. Flip a ket into a conjugated row and you get a <em>bra</em>, <span class="m">⟨ψ|</span>; put a bra in front of a ket and the two click into <span class="m">⟨φ|ψ⟩</span>, the inner products concept's inner product.</p>
+</section>
+
+<section class="xt" id="ket-tag">
+  <h2>A ket is just a name tag</h2>
+<p>Whatever is written inside |&nbsp;⟩ is a label, not a number. |0⟩, |+⟩, |ψ⟩ are all names for column vectors with two complex entries. Dirac invented the bracket so that long multi-qubit expressions stay readable.</p>
+  <div class="steps">
+    <span>|ψ⟩ = α|0⟩ + β|1⟩ = column (α, β)</span>
+    <span>|+⟩ = (1/√2)(|0⟩ + |1⟩) = column (1/√2, 1/√2)</span>
+    <span>|−⟩ = (1/√2)(|0⟩ − |1⟩) = column (1/√2, −1/√2)</span>
+    <span class="note">Read aloud: "ket psi equals alpha ket zero plus beta ket one".</span>
+  </div>
+  <p class="why">Kets are used everywhere from here on. Their partner, the bra ⟨·|, is a row instead of a column; it is in the diagrams below.</p>
+</section>
+
+<section class="xt" id="superposition">
+  <h2>Bit vs qubit, and two pictures of superposition</h2>
+<div class="grid2">
+    <div class="box"><b>Classical bit</b><p>Exactly two isolated states, 0 and 1. Operations are fixed maps {0,1} → {0,1}, such as NOT. Everything a classical computer does is sequences of these.</p></div>
+    <div class="box"><b>Qubit</b><p>A unit vector in ℂ²: |ψ⟩ = α|0⟩ + β|1⟩ with |α|² + |β|² = 1. Infinitely many states, but one measurement still returns exactly one bit.</p></div>
+  </div>
+  <ul>
+    <li><b>The spinning coin:</b> while it spins it is neither heads nor tails; landing forces one answer.</li>
+    <li><b>The compass needle:</b> it can point in any direction, not just north or south. Measuring asks "north or south?" and the needle's direction sets the odds.</li>
+  </ul>
+  <div class="warn">Superposition is <b>not</b> "being in two places at once". It is one definite, specific state, just not a classical one.</div>
+</section>
+
+<section class="xt" id="polarisation">
+  <h2>Polarisation <i>is</i> a qubit (not an analogy)</h2>
+<div class="scroll"><table>
+    <thead><tr><th>Physical state</th><th>Notation</th></tr></thead>
+    <tbody>
+      <tr><td>Vertical, |V⟩</td><td class="m">|0⟩</td></tr>
+      <tr><td>Horizontal, |H⟩</td><td class="m">|1⟩</td></tr>
+      <tr><td>45° diagonal</td><td class="m">|+⟩ = (|0⟩ + |1⟩)/√2</td></tr>
+    </tbody>
+  </table></div>
+  <p>Other real qubits: electron spin up/down, energy levels of a superconducting circuit, internal states of a trapped ion, defects ("NV centres") in diamond.</p>
+  <div class="ql"><b>Caveat: angles double.</b> 0° and 90° light are perpendicular, so as qubit states they are orthogonal: opposite poles of the Bloch sphere, 180° apart. A 45° filter is halfway in the lab but lands on the equator, 90° from each pole (<a href="../11-bloch-sphere/">the Bloch sphere</a>, next concept).</div>
+  <p class="why"><b>One line to remember:</b> a polariser is a measurement, and Malus's law (light passing = cos² of the angle between filters) is the Born rule. cos²(45°) = (1/√2)² = 1/2.</p>
+</section>
+
+
+<section aria-labelledby="diag">
+  <h2 id="diag">Diagrams</h2>
+
+  <figure class="box">
+    <h3>1 · Four standard states as arrows</h3>
+    <svg viewBox="0 0 360 372" role="img" aria-labelledby="d1t">
+      <title id="d1t">The amplitude plane: |0⟩ points right, |1⟩ points up, |+⟩ at plus 45 degrees, |−⟩ at minus 45 degrees, all on a circle of radius 1.</title>
+      <defs>
+        <marker id="ah0" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--accent)"/></marker>
+        <marker id="ahp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--second)"/></marker>
+        <marker id="ahs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--psi)"/></marker>
+        <marker id="ahx" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--muted)"/></marker>
+      </defs>
+      <!-- origin (180,180), 1 unit = 130 px -->
+      <circle cx="180" cy="180" r="130" fill="none" style="stroke:var(--rule)" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <line x1="25" y1="180" x2="342" y2="180" style="stroke:var(--muted)" stroke-width="1" marker-end="url(#ahx)"/>
+      <line x1="180" y1="335" x2="180" y2="22" style="stroke:var(--muted)" stroke-width="1" marker-end="url(#ahx)"/>
+      <!-- ticks at ±1 and ±1/√2 -->
+      <g style="stroke:var(--muted)" stroke-width="1">
+        <line x1="310" y1="176" x2="310" y2="184"/><line x1="50" y1="176" x2="50" y2="184"/>
+        <line x1="176" y1="50" x2="184" y2="50"/><line x1="176" y1="310" x2="184" y2="310"/>
+        <line x1="271.9" y1="177" x2="271.9" y2="183"/>
+      </g>
+      <text x="50" y="198" text-anchor="middle" class="lab">−1</text>
+      <text x="166" y="314" text-anchor="end" class="lab">−1</text>
+            <!-- guide lines for |+> showing 1/√2 each way -->
+      <line x1="271.9" y1="88.1" x2="271.9" y2="180" style="stroke:var(--second)" stroke-width="1" stroke-dasharray="3 3" opacity=".7"/>
+      <line x1="180" y1="88.1" x2="271.9" y2="88.1" style="stroke:var(--second)" stroke-width="1" stroke-dasharray="3 3" opacity=".7"/>
+      <text x="172" y="92" text-anchor="end" class="lab">0.71</text>
+      <!-- basis arrows -->
+      <line x1="180" y1="180" x2="308" y2="180" style="stroke:var(--accent)" stroke-width="3" marker-end="url(#ah0)"/>
+      <line x1="180" y1="180" x2="180" y2="52" style="stroke:var(--accent)" stroke-width="3" marker-end="url(#ah0)"/>
+      <line x1="180" y1="180" x2="270.5" y2="89.5" style="stroke:var(--second)" stroke-width="3" marker-end="url(#ahp)"/>
+      <line x1="180" y1="180" x2="270.5" y2="270.5" style="stroke:var(--second)" stroke-width="3" marker-end="url(#ahp)"/>
+      <text x="318" y="170" style="fill:var(--accent)" font-size="19">|0⟩</text>
+      <text x="190" y="48" style="fill:var(--accent)" font-size="19">|1⟩</text>
+      <text x="278" y="84" style="fill:var(--second)" font-size="19">|+⟩</text>
+      <text x="278" y="290" style="fill:var(--second)" font-size="19">|−⟩</text>
+      <!-- movable psi -->
+      <line id="psiArrow" x1="180" y1="180" x2="292.6" y2="115" style="stroke:var(--psi)" stroke-width="2.5" stroke-dasharray="6 3" marker-end="url(#ahs)"/>
+      <text id="psiLab" x="300" y="112" style="fill:var(--psi)" font-size="18">|ψ⟩</text>
+      <text x="342" y="200" text-anchor="end" class="lab">amplitude of |0⟩ (α)</text>
+      <text x="188" y="16" class="lab">amplitude of |1⟩ (β)</text>
+      <text x="180" y="365" text-anchor="middle" class="lab">dashed circle: every point on it has length 1</text>
+    </svg>
+    <div class="control">
+      <label for="theta">Move <span class="m cpsi">|ψ⟩</span>: angle θ = <strong id="thetaVal">30°</strong></label>
+      <input id="theta" type="range" min="-180" max="180" step="5" value="30" aria-describedby="readout">
+    </div>
+    <div class="readout" id="readout" aria-live="polite">|ψ⟩ = 0.866|0⟩ + 0.500|1⟩
+P(0) = 0.750, P(1) = 0.250, total = 1.000</div>
+    <figcaption>Blue: the standard basis. Amber: the "plus/minus" basis, rotated 45°. Each arrow has length 1. Try θ = 45° (you land on |+⟩) and θ = −45° (|−⟩). The probabilities always total 1. This flat picture only works for real amplitudes; the <a href="../11-bloch-sphere/">Bloch sphere</a> handles complex ones, and there |0⟩ and |1⟩ sit at opposite poles instead of at 90°.</figcaption>
+  </figure>
+
+  <figure class="box">
+    <h3>2 · Ket ↔ column ↔ bra ↔ row</h3>
+    <svg viewBox="0 0 420 380" role="img" aria-labelledby="d2t">
+      <title id="d2t">Translation: the ket |ψ⟩ equals the column alpha over beta. Taking the dagger gives the row alpha-star, beta-star, which is the bra ⟨ψ|. A bra times a ket gives one number.</title>
+      <defs>
+        <marker id="ahm" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:var(--muted)"/></marker>
+      </defs>
+      <text x="105" y="22" text-anchor="middle" class="lab">Dirac writes</text>
+      <text x="315" y="22" text-anchor="middle" class="lab">the inner products concept/3 writes</text>
+      <!-- ket box -->
+      <rect x="20" y="36" width="170" height="96" rx="8" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+      <text x="105" y="82" text-anchor="middle" font-size="30" style="fill:var(--ink)">|ψ⟩</text>
+      <text x="105" y="114" text-anchor="middle" class="lab">ket</text>
+      <!-- column box -->
+      <rect x="230" y="36" width="170" height="96" rx="8" style="fill:var(--accent-soft);stroke:var(--accent)"/>
+      <path d="M292,46 h-8 v74 h8" fill="none" style="stroke:var(--ink)" stroke-width="1.6"/>
+      <path d="M338,46 h8 v74 h-8" fill="none" style="stroke:var(--ink)" stroke-width="1.6"/>
+      <text x="315" y="76" text-anchor="middle" font-size="22" style="fill:var(--ink)">α</text>
+      <text x="315" y="108" text-anchor="middle" font-size="22" style="fill:var(--ink)">β</text>
+      <text x="352" y="88" class="lab">column</text>
+      <text x="210" y="90" text-anchor="middle" font-size="22" style="fill:var(--muted)">=</text>
+      <!-- dagger arrow -->
+      <line x1="315" y1="138" x2="315" y2="186" style="stroke:var(--muted)" stroke-width="1.6" marker-end="url(#ahm)"/>
+      <text x="324" y="170" font-size="22" style="fill:var(--ink)">†</text>
+      <text x="306" y="159" text-anchor="end" class="lab">dagger: flip to a row,</text>
+      <text x="306" y="176" text-anchor="end" class="lab">conjugate each entry</text>
+      <!-- bra box -->
+      <rect x="20" y="194" width="170" height="80" rx="8" style="fill:var(--second-soft);stroke:var(--second)"/>
+      <text x="105" y="236" text-anchor="middle" font-size="30" style="fill:var(--ink)">⟨ψ|</text>
+      <text x="105" y="262" text-anchor="middle" class="lab">bra</text>
+      <!-- row box -->
+      <rect x="230" y="194" width="170" height="80" rx="8" style="fill:var(--second-soft);stroke:var(--second)"/>
+      <path d="M258,212 h-7 v36 h7" fill="none" style="stroke:var(--ink)" stroke-width="1.6"/>
+      <path d="M372,212 h7 v36 h-7" fill="none" style="stroke:var(--ink)" stroke-width="1.6"/>
+      <text x="290" y="238" text-anchor="middle" font-size="22" style="fill:var(--ink)">α*</text>
+      <text x="342" y="238" text-anchor="middle" font-size="22" style="fill:var(--ink)">β*</text>
+      <text x="315" y="266" text-anchor="middle" class="lab">row</text>
+      <text x="210" y="240" text-anchor="middle" font-size="22" style="fill:var(--muted)">=</text>
+      <!-- bra-ket click -->
+      <line x1="20" y1="296" x2="400" y2="296" style="stroke:var(--rule)"/>
+      <text x="20" y="324" class="lab">bra in front of ket = row × column = one number:</text>
+      <text x="20" y="362" font-size="22" style="fill:var(--ink)"><tspan style="fill:var(--second)">⟨φ|</tspan><tspan style="fill:var(--accent)">ψ⟩</tspan> = φ₀*·ψ₀ + φ₁*·ψ₁</text>
+    </svg>
+    <figcaption>Read across for the translation, down for the dagger. Example: if <span class="m">|ψ⟩ = (3/5, 4i/5)</span> as a column, then <span class="m">⟨ψ| = (3/5, −4i/5)</span> as a row. The <span class="m">i</span> changed sign; the real 3/5 did not. (φ₀ is "phi nought", the first entry of φ.)</figcaption>
+  </figure>
+</section>
+
+<section aria-labelledby="formula">
+  <h2 id="formula">Key definition</h2>
+  <div class="key">
+    <div class="big"><span class="m" style="font-size:1em">|ψ⟩ = α|0⟩ + β|1⟩</span><br><span style="font-size:.6em;color:var(--muted)">with</span><br><span class="m" style="font-size:1em">|α|² + |β|² = 1</span></div>
+    <div class="read"><strong>Read it aloud:</strong> "ket psi equals alpha times ket zero plus beta times ket one, where mod alpha squared plus mod beta squared equals one."</div>
+    <div class="read">In plain words: a qubit is a mix of 0 and 1; square each amplitude's size to get the chance of measuring that outcome, and the chances must total 1. Equivalently, <span class="m">⟨ψ|ψ⟩ = 1</span> ("bra psi ket psi equals one").</div>
+  </div>
+</section>
+
+<section aria-labelledby="worked">
+  <h2 id="worked">Worked example</h2>
+  <p><strong>Is <span class="m">|ψ⟩ = (3/5)|0⟩ + (4i/5)|1⟩</span> a valid qubit state? If so, what are the measurement probabilities?</strong></p>
+  <div class="steps">
+    <div>Step 1 · write the ket as a column: &nbsp; |ψ⟩ = (3/5, 4i/5)</div>
+    <div>Step 2 · make the bra (conjugate each entry):</div>
+    <div>&nbsp;&nbsp;(3/5)* = 3/5 &nbsp;&nbsp;(real, unchanged)</div>
+    <div>&nbsp;&nbsp;(4i/5)* = −4i/5 &nbsp;&nbsp;(sign of i flips)</div>
+    <div>&nbsp;&nbsp;⟨ψ| = (3/5, −4i/5)</div>
+    <div>Step 3 · ⟨ψ|ψ⟩ = (3/5)·(3/5) + (−4i/5)·(4i/5)</div>
+    <div>Step 4 · first product: (3/5)·(3/5) = (3·3)/(5·5) = 9/25</div>
+    <div>Step 5 · second product: (−4i/5)·(4i/5) = (−4·4)·(i·i)/(5·5)</div>
+    <div>&nbsp;&nbsp;= (−16)·(i²)/25</div>
+    <div>&nbsp;&nbsp;= (−16)·(−1)/25 &nbsp;&nbsp;(because i² = −1)</div>
+    <div>&nbsp;&nbsp;= 16/25</div>
+    <div>Step 6 · add: 9/25 + 16/25 = 25/25 = 1 &nbsp;→ valid state <span class="ok">✓</span></div>
+    <div>Step 7 · probabilities: P(0) = |3/5|² = 9/25 = 0.36</div>
+    <div>&nbsp;&nbsp;P(1) = |4i/5|² = (4/5)² = 16/25 = 0.64</div>
+    <div class="note">Check: 0.36 + 0.64 = 1.00 <span class="ok">✓</span> &nbsp;Same 3‑4‑5 triangle as Pythagoras: 3² + 4² = 9 + 16 = 25 = 5².</div>
+  </div>
+</section>
+
+<section class="xt" id="born">
+  <h2>The Born rule and what measuring does</h2>
+<div class="box">
+    <div class="steps"><span>For |ψ⟩ = α|0⟩ + β|1⟩:</span><span>P(0) = |α|²,   P(1) = |β|²</span></div>
+    <p class="why">Read aloud: "the probability of outcome zero is mod alpha squared". Linked to the inner product: P(0) = |⟨0|ψ⟩|² = |α|².</p>
+  </div>
+  <div class="scroll"><table>
+    <thead><tr><th>State</th><th>P(0)</th><th>P(1)</th></tr></thead>
+    <tbody>
+      <tr><td class="m">|0⟩</td><td>1</td><td>0</td></tr>
+      <tr><td class="m">|1⟩</td><td>0</td><td>1</td></tr>
+      <tr><td class="m">|+⟩</td><td>1/2</td><td>1/2</td></tr>
+      <tr><td class="m">½|0⟩ + (√3/2)|1⟩</td><td>1/4</td><td>3/4</td></tr>
+    </tbody>
+  </table></div>
+  <div class="steps">
+    <span>Worked example: measure |+⟩ = (1/√2)|0⟩ + (1/√2)|1⟩</span>
+    <span>Step 1  α = 1/√2, β = 1/√2</span>
+    <span>Step 2  P(0) = |1/√2|² = 1/2,  P(1) = |1/√2|² = 1/2</span>
+    <span>Step 3  50% outcome 0, 50% outcome 1</span>
+    <span>Step 4  after outcome 0 the state has collapsed to |0⟩</span>
+  </div>
+  <p><b>The shadow analogy.</b> Measuring is like a 3-D object casting a 2-D shadow: a continuous state is forced onto a one-bit answer.</p>
+  <ul>
+    <li>The outcome is random, and the odds are set by the state (on the sphere: by the latitude).</li>
+    <li>Measurement destroys the superposition. Measure again and you get the same answer.</li>
+    <li>The state was not "secretly 0 or 1" before. The randomness is fundamental, not ignorance.</li>
+  </ul>
+  <div class="ql"><b>Trap: |+⟩ is not a coin flip.</b> It gives 50/50 outcomes, but it is a definite quantum state. The difference shows up in interference: apply H and |+⟩ returns to |0⟩ every time. A coin you can't see would not.</div>
+  <details class="sol"><summary>Try it: check the last table row</summary><div>
+    <div class="steps">
+      <span>α = 1/2, β = √3/2</span>
+      <span>P(0) = (1/2)² = 1/4,  P(1) = (√3/2)² = 3/4</span>
+      <span class="ok">1/4 + 3/4 = 1 ✓ a valid state</span>
+    </div>
+  </div></details>
+</section>
+
+<section class="xt" id="any-basis">
+  <h2>Bras, and measuring in any basis</h2>
+  <p>A <b>bra</b> is the ket turned into a row <i>and conjugated</i>: if |ψ⟩ = (α, β) then ⟨ψ| = |ψ⟩† = (ᾱ, β̄). Forgetting the conjugate is the most common mistake, and it hides well: for |0⟩, |1⟩, |±⟩ every entry is real, so the conjugate changes nothing until an i shows up. ⟨+i| = (1, −i)/√2, not (1, i)/√2.</p>
+  <p class="why"><b>The Born rule, formally.</b> Measuring |ψ⟩ in <i>any</i> orthonormal basis {|x⟩} gives outcome x with probability P(x) = |⟨x|ψ⟩|², and afterwards the state is |x⟩. The probabilities add to 1 because Σ|⟨x|ψ⟩|² = ⟨ψ|ψ⟩ = 1 (Parseval).</p>
+  <div class="steps">
+    <div class="note">Worked example: |ψ⟩ = (√3/2)|0⟩ + (1/2)|1⟩, measured two ways.</div>
+    <div>Z basis:  P(0) = (√3/2)² = 3/4,   P(1) = (1/2)² = 1/4</div>
+    <div>X basis:  ⟨+|ψ⟩ = (1/√2)(√3/2 + 1/2) = (√3 + 1)/(2√2)</div>
+    <div>          P(+) = (√3 + 1)²/8 = (4 + 2√3)/8 = (2 + √3)/4 ≈ 0.933</div>
+    <div>          P(−) = (2 − √3)/4 ≈ 0.067</div>
+    <div class="ok">Same state, very different odds in the two bases ✓</div>
+  </div>
+  <div class="box scroll"><table>
+    <tr><th>State</th><th>P(0) in Z</th><th>P(+) in X</th></tr>
+    <tr><td class="m">|+⟩</td><td>1/2</td><td>1</td></tr>
+    <tr><td class="m">|−⟩</td><td>1/2</td><td>0</td></tr>
+    <tr><td class="m">|+i⟩</td><td>1/2</td><td>1/2</td></tr>
+  </table></div>
+  <p>The three states are identical in the Z basis and completely different in the X basis. That is what "relative phase is observable" means. Hardware measures only in Z, so <b>to measure in X, apply H and then measure</b>. That is the job of the last H in <a href="../16-deutsch-algorithm/">Deutsch's circuit</a>. <a href="../13-one-qubit-big-picture/#bases">One qubit, the whole picture</a> shows every basis as a diameter of the Bloch sphere.</p>
+</section>
+
+
+<section class="xt" id="filters">
+  <h2>The three-filter puzzle</h2>
+<p>A polarising filter lets through light whose "wobble direction" lines up with it. Two filters at 0° and 90° (crossed) block all light. Now slide a third filter at 45° <b>between</b> them, and light gets through again. Adding a filter lets <i>more</i> light pass. How?</p>
+  <figure>
+    <svg viewBox="0 0 340 150" role="img" aria-label="Light passes a vertical filter, then a 45 degree filter, then a horizontal filter; one quarter of the light after the first filter comes out">
+      <line x1="10" y1="75" x2="330" y2="75" class="mutS" stroke-dasharray="4 4"/>
+      <rect x="60" y="25" width="16" height="100" rx="3" class="bgF reS" stroke-width="2"/><line x1="68" y1="35" x2="68" y2="115" class="reS" stroke-width="2"/>
+      <rect x="160" y="25" width="16" height="100" rx="3" class="bgF okS" stroke-width="2"/><line x1="160" y1="115" x2="176" y2="35" class="okS" stroke-width="2"/>
+      <rect x="260" y="25" width="16" height="100" rx="3" class="bgF imS" stroke-width="2"/><line x1="262" y1="75" x2="274" y2="75" class="imS" stroke-width="2"/>
+      <text x="52" y="142" class="reT">0° → |0⟩</text>
+      <text x="146" y="142" class="okT">45° → |+⟩</text>
+      <text x="246" y="142" class="imT">90° → |1⟩</text>
+      <text x="96" y="66" class="mut">× ½</text><text x="196" y="66" class="mut">× ½</text>
+      <text x="292" y="66" class="lab">¼</text>
+    </svg>
+    <figcaption><b>Each filter is a measurement in its own basis.</b> Half survive the middle filter, half of those survive the last: ½ × ½ = ¼ of the light that passed the first filter.</figcaption>
+  </figure>
+  <div class="steps">
+    <span>After the 0° filter the photon is |0⟩ (vertical).</span>
+    <span>45° filter measures in {|+⟩, |−⟩}. Pass chance = |⟨+|0⟩|²</span>
+    <span>  ⟨+|0⟩ = (1/√2)(1) + (1/√2)(0) = 1/√2   →   |1/√2|² = 1/2</span>
+    <span>A photon that passed is now |+⟩. The "vertical" record is gone.</span>
+    <span>90° filter: pass chance = |⟨1|+⟩|² = |1/√2|² = 1/2</span>
+    <span class="ok">Total: 1/2 × 1/2 = 1/4 = 25% ✓</span>
+    <span>Without the middle filter: |⟨1|0⟩|² = 0² = 0. Nothing passes.</span>
+  </div>
+  <p class="why">Send one photon at a time and each one passes or is absorbed at random. Only the <b>probability</b> is fixed: a counter of photons that make it through settles at ¼. Try re-deriving the 25% yourself with pen and paper before reading the steps.</p>
+</section>
+
+<section aria-labelledby="mist">
+  <h2 id="mist">Common mistakes</h2>
+  <ul class="mistakes">
+    <li><b>Forgetting to conjugate the bra.</b> With the example above, skipping it gives 9/25 + (4i/5)·(4i/5) = 9/25 + 16i²/25 = 9/25 − 16/25 = −7/25. A negative "length squared" is the giveaway that something went wrong.</li>
+    <li><b>Reading |0⟩ as the zero vector.</b> |0⟩ is the column (1, 0): a perfectly good arrow of length 1. The label "0" names the outcome, not the size.</li>
+    <li><b>Treating amplitudes as probabilities.</b> |+⟩ has amplitudes 0.7071 each, but the probabilities are 0.7071² = 0.5 each. Always square the size first.</li>
+      <li><b>"Superposition means it is 0 and 1 at the same time."</b> A superposition is one definite state. Measuring gives one answer, with odds set by the amplitudes.</li>
+    <li><b>"|+⟩ is just a fair coin."</b> It gives 50/50, but apply H and it becomes |0⟩ every time. A hidden coin would stay 50/50. The difference is phase (<a href="../02-complex-numbers/#phase">phase and interference</a>).</li>
+    <li><b>Expecting more filters to block more light.</b> A filter is a measurement, not a sieve. The middle 45° filter re-prepares the photon as |+⟩, which gives the last filter something to pass.</li>
+  </ul>
+</section>
+
+<section aria-labelledby="practice">
+  <h2 id="practice">Check question</h2>
+  <p><strong>Write <span class="m">|+⟩ = (|0⟩ + |1⟩)/√2</span> as a column vector and check it is normalised.</strong></p>
+  <details>
+    <summary>Show answer</summary>
+    <div class="steps">
+      <div>Step 1 · substitute the columns: |0⟩ = (1, 0), |1⟩ = (0, 1)</div>
+      <div>Step 2 · add them: (1, 0) + (0, 1) = (1 + 0, 0 + 1) = (1, 1)</div>
+      <div>Step 3 · divide each entry by √2: |+⟩ = (1/√2, 1/√2) ≈ (0.7071, 0.7071)</div>
+      <div>Step 4 · bra: entries are real, so ⟨+| = (1/√2, 1/√2) (nothing changes)</div>
+      <div>Step 5 · ⟨+|+⟩ = (1/√2)·(1/√2) + (1/√2)·(1/√2)</div>
+      <div>Step 6 · each product: (1·1)/(√2·√2) = 1/2</div>
+      <div>Step 7 · add: 1/2 + 1/2 = 2/2 = 1</div>
+      <div class="note">⟨+|+⟩ = 1, so |+⟩ is normalised <span class="ok">✓</span> Meaning: measuring |+⟩ gives 0 with probability 1/2 and 1 with probability 1/2.</div>
+    </div>
+  </details>
+</section>
+
+<section aria-labelledby="code">
+  <h2 id="code">Check it in NumPy</h2>
+<pre><code>import numpy as np
+plus = np.array([1, 1]) / np.sqrt(2)   <span class="cm"># |+> as a column</span>
+print(plus)                            <span class="cm"># [0.7071 0.7071]</span>
+print(np.vdot(plus, plus))             <span class="cm"># 1.0 -> normalised (vdot conjugates the first vector)</span></code></pre>
+  <p class="aside">You may see 0.9999999999999998 instead of 1.0. That is rounding inside the computer, not a mistake.</p>
+</section>
+
+<section aria-labelledby="deeper">
+  <h2 id="deeper">Go deeper</h2>
+  <ul class="links">
+    <li><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/quantum-foundations/concepts/10-qubits-and-dirac-notation/notebook.ipynb">Tutorial notebook (.ipynb, to run yourself)</a></li>
+    <li><a href="notebook.html">The same tutorial as a web page</a></li>
+    <li><a href="../../reference/reading-maths-symbols.html">Symbol dictionary: how to read maths aloud</a></li>
+      <li>Reading: Mermin, <i>Quantum Computer Science</i> §1.1–1.3 (start here); Nielsen &amp; Chuang §1.2 and §2.1.1–2.1.4; Wong, <i>Introduction to Classical and Quantum Computing</i> ch. 3–4 (free online).</li>
+    <li><a href="../../reference/checks/quantum-basics-check.py">quantum-basics-check.py</a>: NumPy re-check of the Born-rule table and the three-filter result.</li>
+  </ul>
+</section>
+
+
+<footer>
+  <span>Study time: <strong>30 min</strong> · next concept: Gates as matrices</span>
+  <a href="../../../">All concepts</a>
+</footer>
+
+</main>
+
+<script>
+(function () {
+  var s = document.getElementById('theta');
+  var arrow = document.getElementById('psiArrow');
+  var lab = document.getElementById('psiLab');
+  var out = document.getElementById('readout');
+  var tv = document.getElementById('thetaVal');
+  function f(x) { var v = (Math.abs(x) < 5e-4 ? 0 : x).toFixed(3); return v.replace('-', '−'); }
+  function update() {
+    var deg = +s.value, t = deg * Math.PI / 180;
+    var a = Math.cos(t), b = Math.sin(t);
+    var L = 128, x = 180 + L * a, y = 180 - L * b;
+    arrow.setAttribute('x2', x.toFixed(1)); arrow.setAttribute('y2', y.toFixed(1));
+    lab.setAttribute('x', (180 + 150 * a - 12).toFixed(1));
+    lab.setAttribute('y', (180 - 150 * b + 6).toFixed(1));
+    var sign = b < -5e-4 ? ' − ' : ' + ';
+    tv.textContent = String(deg).replace('-', '−') + '°';
+    out.textContent = '|ψ⟩ = ' + f(a) + '|0⟩' + sign + f(Math.abs(b)) + '|1⟩\nP(0) = ' + f(a * a) + ', P(1) = ' + f(b * b) + ', total = ' + f(a * a + b * b);
+  }
+  s.addEventListener('input', update);
+  update();
+})();
+</script>
+
+<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Part C · Concept 10 of 17</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../09-probability/">← Probability and expectation</a> · <a href="../11-bloch-sphere/">The Bloch sphere →</a></div></nav></body></html>

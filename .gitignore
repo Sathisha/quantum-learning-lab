@@ -8,3 +8,6 @@ __pycache__/
 class-material/
 class material/
 .venv-pipeline/
+
+# Class quizzes, homework, problem sheets and puzzles with worked solutions: local only, never commit
+class-work/

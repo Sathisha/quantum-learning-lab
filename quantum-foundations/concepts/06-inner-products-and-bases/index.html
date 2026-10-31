@@ -1,0 +1,948 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body><style>
+.cnav{--cn-ink:#1b2430;--cn-mut:#566275;--cn-bg:#f5f7fb;--cn-rule:#d3dae4;--cn-a:#1d5bbd;
+ display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 18px;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+ color:var(--cn-mut);background:var(--cn-bg);border-bottom:1px solid var(--cn-rule);
+ padding-block:9px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.cnav:not(.bottom){margin-bottom:22px}
+.cnav.bottom{border-bottom:0;border-top:1px solid var(--cn-rule);margin-top:32px}
+.cnav a{color:var(--cn-a);text-decoration:none}.cnav a:hover{text-decoration:underline}
+.cnav a:focus-visible{outline:2px solid var(--cn-a);outline-offset:2px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}}
+:root[data-theme="dark"] .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}
+</style><nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Part B · Concept 06 of 17</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../05-vector-spaces/">← Vector spaces</a> · <a href="../07-matrices-and-linear-maps/">Matrices and linear maps →</a></div></nav>
+<title>Vectors and Inner Products</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a single graph-paper notebook column; figures sit on a faint grid, maths set in STIX */
+:root {
+  --bg: #f5f7fa;
+  --paper: #ffffff;
+  --grid: #e3e8f0;
+  --ink: #1a2232;
+  --muted: #5a6478;
+  --line: #d3d9e4;
+  --accent: #2c5aa0;      /* blue ink: basis vectors, u */
+  --accent-soft: #e6eefa;
+  --vec: #c0531a;         /* orange: the vector v */
+  --good: #23784a;
+  --code-bg: #eef1f6;
+  --display: "STIX Two Text", "Cambria Math", Georgia, serif;
+  --body: "Atkinson Hyperlegible", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #11151d; --paper: #181e29; --grid: #232c3b; --ink: #e4e9f2; --muted: #9aa5b8;
+    --line: #2e384a; --accent: #7ea8ec; --accent-soft: #1d2a40; --vec: #f08c50; --good: #5cc48a;
+    --code-bg: #1d2431; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #11151d; --paper: #181e29; --grid: #232c3b; --ink: #e4e9f2; --muted: #9aa5b8;
+  --line: #2e384a; --accent: #7ea8ec; --accent-soft: #1d2a40; --vec: #f08c50; --good: #5cc48a;
+  --code-bg: #1d2431; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--body); font-size: 1.0625rem; line-height: 1.6; }
+.wrap { max-width: 46rem; margin: 0 auto; padding-inline: 16px; padding-block: 1.5rem 3rem; display: flex; flex-direction: column; gap: 2.25rem; }
+header .eyebrow { font-size: .8rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 700; }
+header h1 { font-family: var(--display); font-weight: 600; font-size: clamp(1.9rem, 6vw, 2.6rem); line-height: 1.15; margin: .35rem 0 .5rem; text-wrap: balance; }
+header p { margin: 0; color: var(--muted); max-width: 60ch; }
+h2 { font-family: var(--display); font-weight: 600; font-size: 1.45rem; margin: 0 0 .75rem; text-wrap: balance; }
+h3 { font-size: 1rem; margin: 1rem 0 .4rem; }
+p { margin: 0 0 .75rem; max-width: 65ch; }
+section > :last-child { margin-bottom: 0; }
+.m { font-family: var(--display); font-size: 1.12em; white-space: nowrap; }
+.box { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: 1rem 1.1rem; }
+.tablewrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: .95rem; }
+th, td { text-align: left; padding: .45rem .6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-size: .75rem; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
+td.sym { font-family: var(--display); font-size: 1.25rem; white-space: nowrap; color: var(--accent); }
+td.say { font-style: italic; white-space: nowrap; }
+.steps { font-family: var(--display); font-size: 1.12rem; line-height: 1.75; margin: .5rem 0 .75rem; padding: .75rem 1rem; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; overflow-x: auto; }
+.steps div { white-space: nowrap; }
+.steps .note { font-family: var(--body); font-size: .9rem; color: var(--muted); white-space: normal; }
+.steps .ok { color: var(--good); font-weight: 600; }
+figure { margin: 0; background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: .75rem; display: flex; flex-direction: column; gap: .5rem; }
+figure .svgwrap { overflow-x: auto; }
+figure svg { display: block; width: 100%; max-width: 520px; height: auto; margin: 0 auto; }
+figcaption { font-size: .92rem; color: var(--muted); }
+figcaption b { color: var(--ink); }
+.figs { display: flex; flex-direction: column; gap: 1.25rem; }
+svg text { font-family: var(--display); fill: var(--ink); }
+svg .small { font-family: var(--body); font-size: 11px; fill: var(--muted); }
+.ctrl { display: flex; flex-wrap: wrap; gap: .5rem 1rem; align-items: center; font-size: .95rem; }
+.ctrl input[type=range] { flex: 1 1 12rem; accent-color: var(--vec); }
+.readout { font-family: var(--display); font-size: 1.08rem; background: var(--accent-soft); border-radius: 8px; padding: .5rem .75rem; font-variant-numeric: tabular-nums; overflow-x: auto; }
+.key { text-align: center; background: var(--accent-soft); border-radius: 12px; padding: 1.4rem 1rem; }
+.key .f { font-family: var(--display); font-size: clamp(1.35rem, 5vw, 2rem); line-height: 1.4; overflow-x: auto; white-space: nowrap; }
+.key .aloud { margin: .75rem auto 0; font-size: .98rem; max-width: 55ch; }
+ul.mist { margin: 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: .5rem; }
+details { background: var(--paper); border: 1px solid var(--line); border-radius: 10px; padding: .75rem 1rem; margin-top: .75rem; }
+summary { cursor: pointer; font-weight: 700; color: var(--accent); }
+summary:focus-visible, a:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.q { font-size: 1.1rem; border-left: 4px solid var(--vec); padding-left: .9rem; }
+pre { background: var(--code-bg); border-radius: 8px; padding: .85rem 1rem; overflow-x: auto; font-family: var(--mono); font-size: .86rem; line-height: 1.55; margin: 0; }
+a { color: var(--accent); }
+ul.links { margin: 0; padding-left: 1.2rem; display: flex; flex-direction: column; gap: .35rem; }
+footer { border-top: 1px solid var(--line); padding-top: 1rem; font-size: .92rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; }
+footer b { color: var(--ink); }
+</style>
+
+<style id="xt-style">
+.xt{
+  --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4; --grid:#e6ebf2;
+  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --okbg:#e5f4ec; --soft:#f5f7fb; --code:#f2f4f8;
+  --f-math:ui-monospace,"IBM Plex Mono","JetBrains Mono",Menlo,Consolas,monospace;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .xt{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}}
+:root[data-theme="dark"] .xt{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}
+.xt{color:inherit;font:inherit;display:flex;flex-direction:column;gap:12px;min-width:0;text-align:left}
+.xt h3{margin:10px 0 0}
+.xt section,.xt article{display:flex;flex-direction:column;gap:12px;min-width:0}
+.xt p{margin:0;max-width:65ch}
+.xt .eyebrow{font:600 .78rem/1 var(--f-math);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.xt .m{font-family:var(--f-math);font-size:.92em;white-space:nowrap}
+.xt .re{color:var(--re)} .im{color:var(--im)}
+.xt .bar{text-decoration:overline;text-decoration-thickness:1.5px}
+.xt .box{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.xt .scroll{overflow-x:auto}
+.xt table{border-collapse:collapse;width:100%;font-size:.95rem}
+.xt th,.xt td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+.xt th{font:600 .75rem var(--f-math);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.xt .sym td:first-child{font-family:var(--f-math);font-weight:600;white-space:nowrap}
+.xt .key{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:8px}
+.xt .key a{display:flex;justify-content:space-between;align-items:baseline;gap:6px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:7px 10px;font-family:var(--f-math);font-variant-numeric:tabular-nums}
+.xt .key a b{color:var(--ok)}
+.xt .key a span{color:var(--muted);font-size:.85rem}
+.xt .qcard{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
+.xt .qhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.xt .qhead .qn{font:700 .85rem var(--f-math);color:var(--muted)}
+.xt .qtext{font-size:1.05rem}
+.xt .opts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:6px}
+.xt .opts li{border:1px solid var(--rule);border-radius:8px;padding:6px 10px;font-family:var(--f-math);font-size:.92rem;min-width:0;overflow-wrap:anywhere}
+.xt .opts li .l{color:var(--muted);margin-right:6px}
+.xt .show .opts li.ok,.xt .revealed .opts li.ok{border-color:var(--ok);background:var(--okbg);color:var(--ink)}
+.xt .show .opts li.ok .l,.xt .revealed .opts li.ok .l{color:var(--ok);font-weight:700}
+.xt .badge{font:700 .82rem var(--f-math);color:var(--ok);background:var(--okbg);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.xt body:not(.show) .qcard:not(.revealed) .badge{visibility:hidden}
+.xt .steps{font-family:var(--f-math);font-size:.93rem;background:var(--code);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.xt .steps span{white-space:pre-wrap}
+.xt .steps .note{color:var(--muted);font-family:var(--f-body);font-size:.88rem;white-space:normal}
+.xt .steps .ok{color:var(--ok);font-weight:600}
+.xt figure{margin:0;background:var(--soft);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.xt figure svg{width:100%;height:auto;max-width:360px;align-self:center;display:block}
+.xt figcaption{font-size:.9rem;color:var(--muted)}
+.xt figcaption b{color:var(--ink)}
+.xt svg text{font-family:var(--f-math);font-size:12px;fill:var(--ink)}
+.xt svg .lab{font-size:13px;font-weight:600}
+.xt svg .mut{fill:var(--muted)}
+.xt svg .grid{stroke:var(--grid);stroke-width:1}
+.xt svg .axis{stroke:var(--muted);stroke-width:1.3}
+.xt svg .reS{stroke:var(--re)} svg .imS{stroke:var(--im)} svg .inkS{stroke:var(--ink)} svg .okS{stroke:var(--ok)} svg .mutS{stroke:var(--muted)}
+.xt svg .reF{fill:var(--re)} svg .imF{fill:var(--im)} svg .inkF{fill:var(--ink)} svg .okF{fill:var(--ok)} svg .bgF{fill:var(--paper)} svg .none{fill:none}
+.xt svg .okT{fill:var(--ok)} svg .reT{fill:var(--re)} svg .imT{fill:var(--im)}
+.xt .why{font-size:.95rem;color:var(--muted)}
+.xt .why b{color:var(--ink)}
+.xt .ql{background:var(--soft);border-left:3px solid var(--im);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.xt .ql b{color:var(--im)}
+.xt .warn{background:var(--soft);border-left:3px solid var(--re);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.xt details.sol{border-top:1px dashed var(--rule);padding-top:10px}
+.xt details.sol>summary{cursor:pointer;font-weight:700;color:var(--re);list-style-position:inside}
+.xt details.sol[open]>summary{margin-bottom:10px}
+.xt details.sol>div{display:flex;flex-direction:column;gap:12px}
+.xt .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.xt button{font:600 .9rem var(--f-body);color:var(--re);background:var(--paper);border:1px solid var(--re);border-radius:8px;padding:8px 14px;cursor:pointer}
+.xt button:hover{background:var(--soft)}
+.xt button:focus-visible,.xt summary:focus-visible,.xt a:focus-visible{outline:2px solid var(--re);outline-offset:3px}
+.xt ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;max-width:65ch}
+.xt pre.code{margin:0;background:var(--code);border-radius:8px;padding:14px 16px;overflow-x:auto;font:.85rem/1.55 var(--f-math)}
+.xt a{color:var(--re)}
+.xt footer{border-top:1px solid var(--rule);padding-top:14px;color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+@media (prefers-reduced-motion:reduce){.xt *{transition:none!important}}
+.xt .tag{font:600 .72rem var(--f-math);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.xt .tag.new{color:var(--ok);background:var(--okbg)} .tag.have{color:var(--re);background:var(--soft)} .tag.next{color:var(--im);background:var(--soft)}
+.xt .cov td:nth-child(2){white-space:nowrap}
+.xt .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:12px}
+.xt .grid2>div{min-width:0}
+
+.xt .formula{text-align:center}
+.xt>p,.xt>ul{margin:0}
+.xt .fml{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:18px 12px;text-align:center;font:600 clamp(1.05rem,4.4vw,1.5rem)/1.4 var(--f-math);overflow-x:auto}
+.xt .say{color:var(--muted);font-size:.95rem}
+.xt .say b{color:var(--ink)}
+.xt thead{display:table-header-group}.xt tbody tr{display:table-row;padding:0}.xt tbody td{display:table-cell;padding:7px 10px;border-bottom:1px solid var(--rule);color:inherit}
+.xt .steps{font-size:.86rem}
+@media (max-width:560px){.xt table.symt thead{display:none}.xt table.symt tbody tr{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;padding:9px 6px;border-bottom:1px solid var(--rule)}.xt table.symt tbody td{display:block;border:0;padding:0}.xt table.symt td:nth-child(3){grid-column:1/-1;color:var(--muted)}}
+.xt .steps .note{background:none;border:0;padding:0;margin:0;border-radius:0;font-size:.85rem}
+</style>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Concept 06 · Part B · Linear algebra</div>
+  <h1>Linear algebra 1: vectors and inner products</h1>
+  <p>A qubit's state is a list of complex numbers. This page shows how to measure the length of such a list and how alike two lists are. Every quantum probability you meet later is built from these two operations.</p>
+</header>
+
+<section>
+  <h2>Symbols on this page</h2>
+  <div class="box tablewrap">
+    <table>
+      <thead><tr><th>Symbol</th><th>Say it</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td class="sym">v = (v₁, v₂, v₃)</td><td class="say">"v equals v-one, v-two, v-three"</td><td>A vector: an ordered list of numbers. The small number below is the position in the list.</td></tr>
+        <tr><td class="sym">v₁</td><td class="say">"v sub one" or "v one"</td><td>The first entry (component) of v.</td></tr>
+        <tr><td class="sym">e₁, e₂</td><td class="say">"e one, e two"</td><td>Basis vectors: (1, 0) and (0, 1). One step along each axis.</td></tr>
+        <tr><td class="sym">c·v</td><td class="say">"c times v"</td><td>Scaling: multiply every entry of v by the number c.</td></tr>
+        <tr><td class="sym">a²</td><td class="say">"a squared"</td><td>a times a.</td></tr>
+        <tr><td class="sym">√</td><td class="say">"square root of"</td><td>The number which, multiplied by itself, gives what is under the sign. √25 = 5.</td></tr>
+        <tr><td class="sym">i</td><td class="say">"i"</td><td>The imaginary unit from the complex numbers concept: i² = −1.</td></tr>
+        <tr><td class="sym">z̄</td><td class="say">"z bar" or "conjugate of z"</td><td>Flip the sign of the imaginary part: a + bi becomes a − bi. Some books write z*.</td></tr>
+        <tr><td class="sym">|z|</td><td class="say">"modulus of z" or "absolute value of z"</td><td>Size of one number. For z = a + bi, |z|² = a² + b².</td></tr>
+        <tr><td class="sym">‖v‖</td><td class="say">"norm of v" or "length of v"</td><td>Length of a whole vector (double bars, to tell it apart from |z|).</td></tr>
+        <tr><td class="sym">v̂</td><td class="say">"v hat"</td><td>The unit vector: v shrunk or stretched to length exactly 1.</td></tr>
+        <tr><td class="sym">⟨u, v⟩</td><td class="say">"inner product of u and v"</td><td>One number saying how much u and v point the same way. On the qubits concept it is respelled ⟨u|v⟩.</td></tr>
+        <tr><td class="sym">θ</td><td class="say">"theta"</td><td>A Greek letter used for an angle.</td></tr>
+        <tr><td class="sym">cos θ</td><td class="say">"cosine of theta"</td><td>1 when the angle is 0°, 0 at 90°, −1 at 180°.</td></tr>
+        <tr><td class="sym">≈</td><td class="say">"is approximately"</td><td>Rounded value.</td></tr>
+              <tr><td class="sym">Σ</td><td class="say">"sum" (capital sigma)</td><td>Add up the terms that follow, one for each index.</td></tr>
+        <tr><td class="sym">≤</td><td class="say">"is at most"</td><td>Less than or equal to.</td></tr>
+        <tr><td class="sym">δᵢⱼ</td><td class="say">"delta i j" (Kronecker delta)</td><td>1 if i = j, otherwise 0.</td></tr>
+        <tr><td class="sym">ONB</td><td class="say">"orthonormal basis"</td><td>A basis of unit-length vectors that are all perpendicular to each other.</td></tr>
+        <tr><td class="sym">h₊, h₋</td><td class="say">"h plus", "h minus"</td><td>The Hadamard basis (1, ±1)/√2, later written |+⟩, |−⟩.</td></tr>
+        <tr><td class="sym">c₊, c₋</td><td class="say">"c plus", "c minus"</td><td>The circular basis (1, ±i)/√2, later written |+i⟩, |−i⟩.</td></tr>
+        <tr><td class="sym">⊥</td><td class="say">"is perpendicular to"</td><td>Inner product 0: the two vectors meet at a right angle.</td></tr>
+        <tr><td class="sym">U†</td><td class="say">"U dagger"</td><td>Conjugate transpose: swap rows and columns, then conjugate every entry.</td></tr>
+        <tr><td class="sym">I</td><td class="say">"the identity"</td><td>The matrix with 1s on the diagonal and 0s elsewhere; it leaves every vector unchanged.</td></tr>
+        <tr><td class="sym">⟺</td><td class="say">"if and only if"</td><td>Each side implies the other.</td></tr>
+        <tr><td class="sym">e e†</td><td class="say">"e times e dagger" (outer product)</td><td>Column times row: a matrix. For a unit vector e it projects onto e.</td></tr>
+        <tr><td class="sym">H</td><td class="say">"H" or "Hadamard"</td><td>The matrix (1/√2)[[1, 1], [1, −1]] whose columns are h₊ and h₋.</td></tr>
+        <tr><td class="sym">α</td><td class="say">"alpha"</td><td>A Greek letter, used here for a coefficient or an angle.</td></tr>
+        <tr><td class="sym">⊗</td><td class="say">"tensor"</td><td>Combines two qubits' vectors into one (tensor products concept).</td></tr>
+</tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Back to basics: Pythagoras and square roots</h2>
+  <p>In a right-angled triangle, the two short sides a and b and the long side c (the hypotenuse) obey <span class="m">a² + b² = c²</span>. Read it aloud: "a squared plus b squared equals c squared." To get c itself, take the square root of both sides: <span class="m">c = √(a² + b²)</span>.</p>
+  <p>Tiny example: short sides 3 and 4.</p>
+  <div class="steps">
+    <div>3² = 3 × 3 = 9</div>
+    <div>4² = 4 × 4 = 16</div>
+    <div>9 + 16 = 25</div>
+    <div>c = √25 = 5 <span class="note">(because 5 × 5 = 25)</span></div>
+  </div>
+  <p>One more refresher from the complex numbers concept. For a complex number, "size squared" is a number times its own conjugate: <span class="m">z̄ · z = |z|²</span>. For z = i: <span class="m">ī · i = (−i)(i) = −i² = −(−1) = 1</span>. So |i|² = 1, never −1. Lengths are never negative.</p>
+</section>
+
+<section>
+  <h2>The idea</h2>
+  <p>A vector is a list of numbers that you can picture as an arrow from the origin. Every vector is a mix (a <b>linear combination</b>) of a few fixed <b>basis</b> arrows, such as (1, 0) and (0, 1). Its length comes straight from Pythagoras. The <b>inner product</b> of two vectors is one number that says how much one points along the other. With complex entries you must conjugate the first vector, so that a vector's inner product with itself is always its length squared, a positive real number.</p>
+</section>
+
+<section>
+  <h2>Pictures</h2>
+  <div class="figs">
+
+    <figure>
+      <div class="svgwrap">
+      <svg viewBox="0 0 340 270" role="img" aria-label="The vector v equals 3 e1 plus 2 e2 drawn on a grid">
+        <defs>
+          <marker id="ahB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+          <marker id="ahO" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--vec)"/></marker>
+          <marker id="ahM" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/></marker>
+        </defs>
+        <!-- origin (40,220), 60px per unit -->
+        <g stroke="var(--grid)" stroke-width="1">
+          <line x1="100" y1="40" x2="100" y2="220"/><line x1="160" y1="40" x2="160" y2="220"/><line x1="220" y1="40" x2="220" y2="220"/><line x1="280" y1="40" x2="280" y2="220"/>
+          <line x1="40" y1="160" x2="300" y2="160"/><line x1="40" y1="100" x2="300" y2="100"/><line x1="40" y1="40" x2="300" y2="40"/>
+        </g>
+        <line x1="40" y1="220" x2="310" y2="220" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#ahM)"/>
+        <line x1="40" y1="220" x2="40" y2="25" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#ahM)"/>
+        <text x="316" y="224" class="small">x</text><text x="36" y="18" class="small">y</text>
+        <text x="96" y="238" class="small">1</text><text x="156" y="238" class="small">2</text><text x="216" y="238" class="small">3</text><text x="276" y="238" class="small">4</text>
+        <text x="26" y="164" class="small">1</text><text x="26" y="104" class="small">2</text><text x="26" y="44" class="small">3</text>
+        <text x="28" y="236" class="small">0</text>
+        <!-- 3 e1 then 2 e2, dashed -->
+        <line x1="40" y1="220" x2="218" y2="220" stroke="var(--accent)" stroke-width="2" stroke-dasharray="6 4" opacity=".7"/>
+        <line x1="220" y1="220" x2="220" y2="104" stroke="var(--accent)" stroke-width="2" stroke-dasharray="6 4" opacity=".7" marker-end="url(#ahB)"/>
+        <text x="120" y="212" font-size="14" fill="var(--accent)" style="fill:var(--accent)">3·e₁</text>
+        <text x="226" y="165" font-size="14" style="fill:var(--accent)">2·e₂</text>
+        <!-- basis vectors -->
+        <line x1="40" y1="220" x2="98" y2="220" stroke="var(--accent)" stroke-width="3.5" marker-end="url(#ahB)"/>
+        <line x1="40" y1="220" x2="40" y2="162" stroke="var(--accent)" stroke-width="3.5" marker-end="url(#ahB)"/>
+        <text x="62" y="254" font-size="15" style="fill:var(--accent)">e₁ = (1, 0)</text>
+        <text x="46" y="175" font-size="15" style="fill:var(--accent)">e₂</text>
+        <!-- v -->
+        <line x1="40" y1="220" x2="217" y2="102" stroke="var(--vec)" stroke-width="3.5" marker-end="url(#ahO)"/>
+        <circle cx="220" cy="100" r="3.5" fill="var(--vec)"/>
+        <text x="150" y="98" font-size="17" font-style="italic" style="fill:var(--vec)">v = (3, 2)</text>
+      </svg>
+      </div>
+      <figcaption><b>A vector is a recipe in a basis.</b> v = (3, 2) means "3 steps of e₁, then 2 steps of e₂": v = 3·e₁ + 2·e₂. Adding vectors means walking one arrow, then the next (tip to tail). Scaling by c stretches the arrow by c. The basis e₁, e₂ is any set of arrows you can mix to reach every point, with none of them redundant.</figcaption>
+    </figure>
+
+    <figure>
+      <div class="svgwrap">
+      <svg id="proj" viewBox="0 0 400 270" role="img" aria-label="Projection of v onto the unit vector u-hat; drag the slider to rotate v">
+        <defs>
+          <marker id="ahB2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+          <marker id="ahO2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--vec)"/></marker>
+        </defs>
+        <line id="uline" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="3 4"/>
+        <line id="shadow" stroke="var(--good)" stroke-width="7" stroke-linecap="round" opacity=".55"/>
+        <line id="drop" stroke="var(--muted)" stroke-width="1.3" stroke-dasharray="4 3"/>
+        <line id="uhat" stroke="var(--accent)" stroke-width="3.5" marker-end="url(#ahB2)"/>
+        <text id="uhatlbl" font-size="17" font-style="italic" style="fill:var(--accent)">û</text>
+        <line id="vline" stroke="var(--vec)" stroke-width="3.5" marker-end="url(#ahO2)"/>
+        <text id="vlbl" font-size="17" font-style="italic" style="fill:var(--vec)">v</text>
+        <path id="arc" fill="none" stroke="var(--muted)" stroke-width="1.2"/>
+        <text id="thlbl" font-size="15" style="fill:var(--muted)">θ</text>
+        <circle cx="200" cy="200" r="3" fill="var(--ink)"/>
+        <text x="186" y="218" class="small">0</text>
+        <text x="12" y="262" class="small">green bar = shadow of v on the û line = ⟨û, v⟩</text>
+      </svg>
+      </div>
+      <div class="ctrl"><label for="ang">Angle of v</label><input id="ang" type="range" min="0" max="180" value="70" step="1"><span id="angv" class="m">70°</span></div>
+      <div class="readout" id="projout"></div>
+      <figcaption><b>The inner product is a shadow.</b> û is fixed at 20° with length 1; v has length 3. Drop a line from the tip of v that meets the û line at a right angle (the dashed line): the shadow of v has signed length ⟨û, v⟩ = ‖v‖ · cos θ. Point v along û and the shadow is the full 3; make them perpendicular (θ = 90°) and it is 0; point v backwards and it goes negative. For complex vectors there is no flat picture, but the meaning is the same: how much of v lies along û.</figcaption>
+    </figure>
+
+    <figure>
+      <div class="svgwrap">
+      <svg viewBox="0 0 340 290" role="img" aria-label="The vector (3,4) of length 5 scaled down to the unit vector (0.6, 0.8) on the unit circle">
+        <defs>
+          <marker id="ahO3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--vec)"/></marker>
+          <marker id="ahB3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>
+          <marker id="ahM3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/></marker>
+        </defs>
+        <!-- origin (50,250), 50px per unit -->
+        <line x1="50" y1="250" x2="300" y2="250" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#ahM3)"/>
+        <line x1="50" y1="250" x2="50" y2="20" stroke="var(--muted)" stroke-width="1.2" marker-end="url(#ahM3)"/>
+        <text x="96" y="267" class="small">1</text><text x="196" y="267" class="small">3</text>
+        <line x1="100" y1="247" x2="100" y2="253" stroke="var(--muted)"/><line x1="200" y1="247" x2="200" y2="253" stroke="var(--muted)"/>
+        <text x="34" y="204" class="small">1</text><text x="34" y="54" class="small">4</text>
+        <line x1="47" y1="200" x2="53" y2="200" stroke="var(--muted)"/><line x1="47" y1="50" x2="53" y2="50" stroke="var(--muted)"/>
+        <!-- unit circle quarter, radius 50 -->
+        <path d="M100,250 A50,50 0 0 0 50,200" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="4 3"/>
+        <text x="88" y="190" class="small" style="fill:var(--accent)">unit circle (radius 1)</text>
+        <!-- triangle -->
+        <line x1="50" y1="250" x2="200" y2="250" stroke="var(--muted)" stroke-width="1" stroke-dasharray="5 4"/>
+        <line x1="200" y1="250" x2="200" y2="50" stroke="var(--muted)" stroke-width="1" stroke-dasharray="5 4"/>
+        <text x="150" y="243" font-size="14" style="fill:var(--muted)">3</text>
+        <text x="207" y="155" font-size="14" style="fill:var(--muted)">4</text>
+        <!-- v -->
+        <line x1="50" y1="250" x2="198" y2="53" stroke="var(--vec)" stroke-width="3" marker-end="url(#ahO3)"/>
+        <text x="210" y="50" font-size="16" font-style="italic" style="fill:var(--vec)">v = (3, 4)</text>
+        <text x="96" y="130" font-size="14" style="fill:var(--vec)">‖v‖ = 5</text>
+        <!-- v hat -->
+        <line x1="50" y1="250" x2="79" y2="212" stroke="var(--accent)" stroke-width="4.5" marker-end="url(#ahB3)"/>
+        <circle cx="80" cy="210" r="3" fill="var(--accent)"/>
+        <text x="110" y="226" font-size="15" font-style="italic" style="fill:var(--accent)">v̂ = (0.6, 0.8)</text>
+        <text x="110" y="208" class="small">÷ 5 → length 1</text>
+      </svg>
+      </div>
+      <figcaption><b>Normalising: same direction, length 1.</b> v = (3, 4) has length √(3² + 4²) = 5. Divide every entry by 5 and you get v̂ = (0.6, 0.8), which lands exactly on the unit circle. Quantum states must always be normalised like this.</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section>
+  <h2>Key definition</h2>
+  <div class="key">
+    <div class="f">⟨u, v⟩ = ū₁v₁ + ū₂v₂ + … + ūₙvₙ</div>
+    <div class="f" style="font-size:clamp(1.15rem,4vw,1.5rem);margin-top:.4rem">‖v‖ = √⟨v, v⟩ &nbsp;&nbsp;·&nbsp;&nbsp; v̂ = v ⁄ ‖v‖</div>
+    <p class="aloud"><b>Read it aloud:</b> "The inner product of u and v equals u-one-bar times v-one, plus u-two-bar times v-two, and so on up to u-n-bar times v-n." Then: "The norm of v is the square root of the inner product of v with itself. v hat is v divided by its norm."</p>
+  </div>
+</section>
+
+<section class="xt" id="rules">
+  <h2>The three rules of the inner product</h2>
+<p>Why conjugate at all? Without it, v = (1, i) would give 1·1 + i·i = 1 − 1 = 0: a non-zero vector of "length" 0. With it, Σ v̄ⱼvⱼ = Σ |vⱼ|² is always ≥ 0.</p>
+  <div class="box">
+    <ul>
+      <li><b>Conjugate symmetry:</b> ⟨v, u⟩ = conj(⟨u, v⟩). Swapping the order conjugates the answer.</li>
+      <li><b>Linear in the second slot:</b> ⟨u, αv + βw⟩ = α⟨u, v⟩ + β⟨u, w⟩</li>
+      <li><b>Positive:</b> ⟨v, v⟩ ≥ 0, and it is 0 only for v = 0</li>
+      <li><b>Consequence:</b> a scalar leaves the <i>first</i> slot conjugated: ⟨αu, v⟩ = ᾱ⟨u, v⟩ ("anti-linear")</li>
+      <li><b>Both slots at once:</b> ⟨αu, βv⟩ = ᾱβ⟨u, v⟩. Example: if ⟨u, v⟩ = 1 + i, then ⟨2iu, 3v⟩ = (−2i)(3)(1 + i) = −6i − 6i² = 6 − 6i.</li>
+    </ul>
+  </div>
+  <div class="steps">
+    <span>u = (1, i), v = (1+i, 2)</span>
+    <span>⟨u, v⟩ = conj(1)(1+i) + conj(i)(2) = (1+i) + (−i)(2) = 1 + i − 2i = 1 − i</span>
+    <span>⟨v, u⟩ = conj(1+i)(1) + conj(2)(i) = (1−i) + 2i = 1 + i</span>
+    <span class="ok">1 + i = conj(1 − i) ✓ conjugate symmetry</span>
+  </div>
+  <p class="why">Maths books often conjugate the <i>second</i> slot instead. Quantum computing, and these pages, conjugate the first. Check which convention a source uses before copying formulas.</p>
+</section>
+
+
+<section>
+  <h2>Worked example</h2>
+  <p>Take u = (1, i) and v = (2, 3i). Find ⟨u, v⟩, then the length of u, then normalise u.</p>
+  <h3>Part A: the inner product ⟨u, v⟩</h3>
+  <div class="steps">
+    <div>Step 1. Conjugate u: ū = (1̄, ī) = (1, −i)</div>
+    <div>Step 2. First pair: ū₁ · v₁ = 1 · 2 = 2</div>
+    <div>Step 3. Second pair: ū₂ · v₂ = (−i) · (3i)</div>
+    <div class="note">Multiply the plain numbers and the i's separately:</div>
+    <div>(−i) · (3i) = −3 · i · i = −3 · i²</div>
+    <div>i² = −1, so −3 · i² = −3 · (−1) = 3</div>
+    <div>Step 4. Add: ⟨u, v⟩ = 2 + 3 = 5</div>
+  </div>
+  <h3>Part B: the length ‖u‖</h3>
+  <div class="steps">
+    <div>⟨u, u⟩ = ū₁u₁ + ū₂u₂</div>
+    <div>ū₁u₁ = 1 · 1 = 1</div>
+    <div>ū₂u₂ = (−i) · (i) = −i² = −(−1) = 1</div>
+    <div>⟨u, u⟩ = 1 + 1 = 2</div>
+    <div>‖u‖ = √2 ≈ 1.414</div>
+  </div>
+  <h3>Part C: normalise u</h3>
+  <div class="steps">
+    <div>û = u ⁄ ‖u‖ = (1 ⁄ √2, i ⁄ √2)</div>
+    <div>Check: |1 ⁄ √2|² = 1 ⁄ 2</div>
+    <div>|i ⁄ √2|² = |i|² ⁄ 2 = 1 ⁄ 2</div>
+    <div>‖û‖² = 1 ⁄ 2 + 1 ⁄ 2 = 1, so ‖û‖ = 1 <span class="ok">✓</span></div>
+    <div class="note">Check of Part A in NumPy: np.vdot([1, 1j], [2, 3j]) gives (5+0j). ✓</div>
+  </div>
+</section>
+
+<section class="xt" id="cs">
+  <h2>Cauchy–Schwarz and the triangle inequality</h2>
+<div class="formula"><div class="big">|⟨u, v⟩| ≤ ‖u‖ ‖v‖</div><div class="read"><b>Read it aloud:</b> "the size of the inner product of u and v is at most the length of u times the length of v." Equal only when one is a multiple of the other.</div></div>
+  <figure>
+    <svg viewBox="0 0 340 200" role="img" aria-label="Vector u casts a shadow on the line of v; the shadow is never longer than u itself">
+      <line x1="30" y1="170" x2="320" y2="170" class="reS" stroke-width="2.5"/><text x="300" y="190" class="lab reT">v</text>
+      <line x1="30" y1="170" x2="210" y2="50" class="imS" stroke-width="2.5"/><text x="214" y="46" class="lab imT">u</text>
+      <line x1="210" y1="50" x2="210" y2="170" class="mutS" stroke-dasharray="4 4"/>
+      <line x1="30" y1="170" x2="210" y2="170" class="okS" stroke-width="5" opacity=".7"/>
+      <text x="60" y="160" class="okT lab">shadow = |⟨u,v⟩| / ‖v‖</text>
+      <text x="80" y="95" class="mut" transform="rotate(-33 80 95)">‖u‖</text>
+      <rect x="200" y="160" width="10" height="10" class="none mutS"/>
+    </svg>
+    <figcaption><b>A shadow is never longer than the stick.</b> Dividing both sides by ‖v‖ gives exactly "shadow ≤ ‖u‖".</figcaption>
+  </figure>
+  <div class="steps">
+    <span>Same u = (1, i), v = (1+i, 2):</span>
+    <span>|⟨u, v⟩| = |1 − i| = √(1 + 1) = √2 ≈ 1.414</span>
+    <span>‖u‖ = √(1 + 1) = √2,  ‖v‖ = √(|1+i|² + 4) = √(2 + 4) = √6</span>
+    <span>‖u‖‖v‖ = √12 ≈ 3.464 ≥ 1.414 ✓</span>
+    <span>Triangle: u + v = (2+i, 2+i), ‖u+v‖ = √(5 + 5) = √10 ≈ 3.162</span>
+    <span>‖u‖ + ‖v‖ = 1.414 + 2.449 = 3.863 ≥ 3.162 ✓</span>
+  </div>
+  <p class="ql"><b>Quantum link:</b> for unit vectors (states) φ and ψ, Cauchy–Schwarz gives 0 ≤ |⟨φ, ψ⟩|² ≤ 1. That is why this number can be a <b>probability</b>.</p>
+</section>
+
+<section class="xt" id="onb">
+  <h2>Orthonormal bases: coordinates are inner products, and Parseval</h2>
+<p>An <b>orthonormal basis (ONB)</b> has unit-length, mutually orthogonal vectors: ⟨eᵢ, eⱼ⟩ = δᵢⱼ. Then two formulas do all the work:</p>
+  <div class="grid2">
+    <div class="formula"><div class="big" style="font-size:1.25rem">v = Σ ⟨eᵢ, v⟩ eᵢ</div><div class="read">each coordinate is one inner product, with no equations to solve</div></div>
+    <div class="formula"><div class="big" style="font-size:1.25rem">‖v‖² = Σ |⟨eᵢ, v⟩|²</div><div class="read"><b>Parseval:</b> squared coordinates add up to the squared length, in any ONB</div></div>
+  </div>
+  <figure>
+    <svg viewBox="0 0 300 250" role="img" aria-label="Vector (3,1) with its coordinates along the tilted h-plus and h-minus axes: 2 root 2 and root 2. Squares 8 plus 2 equal 10 equal the squared length.">
+      <line class="grid" x1="20" y1="180" x2="290" y2="180"/><line class="grid" x1="60" y1="20" x2="60" y2="245"/>
+      <line x1="20" y1="220" x2="200" y2="40" class="mutS" stroke-dasharray="2 4"/><line x1="20" y1="140" x2="120" y2="240" class="mutS" stroke-dasharray="2 4"/>
+      <text x="200" y="38" class="mut">h₊ axis</text><text x="122" y="244" class="mut">h₋ axis</text>
+      <line x1="60" y1="180" x2="140" y2="100" class="reS" stroke-width="3"/><text x="88" y="92" class="lab reT">2√2 · h₊</text>
+      <line x1="60" y1="180" x2="100" y2="220" class="imS" stroke-width="3"/><text x="104" y="232" class="lab imT">√2 · h₋</text>
+      <line x1="60" y1="180" x2="180" y2="140" class="okS" stroke-width="3"/><circle cx="180" cy="140" r="5" class="okF"/><text x="186" y="136" class="lab okT">v = (3, 1)</text>
+      <line x1="180" y1="140" x2="140" y2="100" class="mutS" stroke-dasharray="4 3"/><line x1="180" y1="140" x2="100" y2="220" class="mutS" stroke-dasharray="4 3"/>
+      <text x="170" y="195" class="mut">(2√2)² + (√2)² = 8 + 2</text>
+      <text x="170" y="212" class="mut">= 10 = 3² + 1² ✓</text>
+    </svg>
+    <figcaption><b>Parseval is Pythagoras in any orthonormal basis.</b> Tilting the axes changes the coordinates but not the length.</figcaption>
+  </figure>
+  <div class="steps">
+    <span>A complex example: v = (1, 1+i)/√3. Check it's a state: (1 + |1+i|²)/3 = (1 + 2)/3 = 1 ✓</span>
+    <span>⟨h₊, v⟩ = (1/√2)(1/√3)(1 + 1 + i) = (2 + i)/√6</span>
+    <span>⟨h₋, v⟩ = (1/√2)(1/√3)(1 − 1 − i) = −i/√6</span>
+    <span>Parseval: |2+i|²/6 + |−i|²/6 = 5/6 + 1/6 = 1 ✓</span>
+    <span class="ok">Measured in the ± basis: P(+) = 5/6, P(−) = 1/6</span>
+  </div>
+  <p class="ql"><b>Quantum link:</b> the coordinates ⟨eᵢ, ψ⟩ are the <b>amplitudes</b> of ψ in that basis, |⟨eᵢ, ψ⟩|² are the measurement probabilities, and Parseval is why they add up to 1.</p>
+  <details class="sol"><summary>Practice: write v = (1, 1+i)/√3 in the standard basis and check Parseval there too</summary><div>
+    <div class="steps">
+      <span>⟨e₁, v⟩ = 1/√3,  ⟨e₂, v⟩ = (1+i)/√3</span>
+      <span>|1/√3|² + |(1+i)/√3|² = 1/3 + 2/3 = 1 ✓</span>
+      <span class="ok">P(0) = 1/3, P(1) = 2/3. Same state, different basis, different probabilities.</span>
+    </div>
+  </div></details>
+</section>
+
+<section class="xt" id="onb-deep">
+  <h2>Orthonormal bases, more deeply</h2>
+  <p>If the end of the inner-product lecture felt slippery, the gap is usually one level down: what a basis is and why perpendicular vectors are independent. This section rebuilds orthonormal bases from those pieces, then shows the tools you will use all course: the matrix test, projections, completeness and Gram–Schmidt.</p>
+
+  <h3>1. What the name promises</h3>
+  <div class="box">
+    <ul>
+      <li><b>Ortho</b> (perpendicular): ⟨eᵢ, eⱼ⟩ = 0 whenever i ≠ j.</li>
+      <li><b>Normal</b> (length 1): ⟨eᵢ, eᵢ⟩ = 1, so ‖eᵢ‖ = 1.</li>
+      <li><b>Basis</b>: every vector is exactly one mix α₁e₁ + … + αₙeₙ (see <a href="../05-vector-spaces/">vector spaces</a>).</li>
+    </ul>
+  </div>
+  <div class="fml">⟨eᵢ, eⱼ⟩ = δᵢⱼ</div>
+  <p class="say"><b>Read it aloud:</b> "the inner product of e-i and e-j is delta i j": 1 when i and j are the same vector, 0 when they are different. One line packs both the "ortho" and the "normal" conditions.</p>
+
+  <h3>2. Perpendicular gives you "basis" for free</h3>
+  <p>Independence means the only mix that gives the zero vector is the all-zero mix. For orthonormal vectors this takes one inner product per coefficient:</p>
+  <div class="steps">
+    <span>Suppose α₁e₁ + α₂e₂ + … + αₙeₙ = 0.</span>
+    <span>Take the inner product of both sides with e₁:</span>
+    <span>⟨e₁, α₁e₁ + α₂e₂ + … + αₙeₙ⟩ = ⟨e₁, 0⟩ = 0</span>
+    <span class="note">Linear in the second slot, so the coefficients come out:</span>
+    <span>α₁⟨e₁, e₁⟩ + α₂⟨e₁, e₂⟩ + … + αₙ⟨e₁, eₙ⟩ = 0</span>
+    <span>α₁ · 1 + α₂ · 0 + … + αₙ · 0 = 0</span>
+    <span>α₁ = 0</span>
+    <span>Repeat with e₂, e₃, …: every αⱼ = 0.</span>
+    <span class="ok">So orthonormal vectors are always independent.</span>
+  </div>
+  <p>Then the dimension shortcut from class finishes the job: n independent vectors in an n-dimensional space are a basis. <b>So n orthonormal vectors in ℂⁿ are automatically an orthonormal basis.</b> You only ever check lengths and perpendicularity, never "spanning".</p>
+
+  <h3>3. One matrix test does every check at once</h3>
+  <p>Put the vectors in as the columns of a matrix U. The conjugate transpose U† has the same vectors, conjugated, as its rows. Entry (i, j) of U†U is "row i of U† times column j of U", which is exactly ⟨eᵢ, eⱼ⟩. So:</p>
+  <div class="fml">orthonormal columns ⟺ U†U = I</div>
+  <p class="say"><b>Read it aloud:</b> "the columns are orthonormal exactly when U-dagger times U equals the identity." The diagonal 1s are the lengths, the off-diagonal 0s are the right angles. ⟺ reads "if and only if".</p>
+  <p>Test it on the circular basis c₊ = (1, i)/√2, c₋ = (1, −i)/√2, where the conjugate matters:</p>
+  <div class="steps">
+    <span>U = (1/√2) [[1, 1], [i, −i]]   (columns c₊, c₋)</span>
+    <span>U† = (1/√2) [[1, −i], [1, i]]   (transpose, then conjugate every entry)</span>
+    <span>U†U = ½ [[1·1 + (−i)(i),  1·1 + (−i)(−i)], [1·1 + (i)(i),  1·1 + (i)(−i)]]</span>
+    <span class="note">The four products of i's: (−i)(i) = −i² = 1, (−i)(−i) = i² = −1, (i)(i) = −1, (i)(−i) = −i² = 1</span>
+    <span>U†U = ½ [[1 + 1, 1 − 1], [1 − 1, 1 + 1]] = ½ [[2, 0], [0, 2]] = [[1, 0], [0, 1]] = I</span>
+    <span class="ok">✓ orthonormal basis</span>
+  </div>
+  <p class="ql"><b>Quantum link:</b> a square matrix with U†U = I is called <b>unitary</b>. Every quantum gate is one (<a href="../12-gates/">gates</a>). So "a gate" and "an orthonormal basis written as columns" are the same object.</p>
+
+  <h3>4. Why orthonormal is the easy kind of basis</h3>
+  <p>Take a basis that is <i>not</i> orthogonal: b₁ = (1, 0), b₂ = (1, 1). They are independent, but ⟨b₁, b₂⟩ = 1·1 + 0·1 = 1, not 0. Find the coordinates of v = (3, 1).</p>
+  <div class="grid2">
+    <div class="steps">
+      <span><b>Right way: solve</b></span>
+      <span>α(1, 0) + β(1, 1) = (3, 1)</span>
+      <span>second entries: 0 + β = 1, so β = 1</span>
+      <span>first entries: α + β = 3, so α = 2</span>
+      <span>check: 2(1, 0) + 1(1, 1) = (3, 1) <span class="ok">✓</span></span>
+    </div>
+    <div class="steps">
+      <span><b>Shortcut used wrongly</b></span>
+      <span>⟨b₁, v⟩ = 3,  ⟨b₂, v⟩ = 3 + 1 = 4</span>
+      <span>3(1, 0) + 4(1, 1) = (7, 4) ≠ (3, 1) ✗</span>
+      <span>Parseval fails too:</span>
+      <span>2² + 1² = 5, but ‖v‖² = 10 ✗</span>
+    </div>
+  </div>
+  <p>Why the shortcut works only for an orthonormal basis: write v = α₁e₁ + … + αₙeₙ and take the inner product with one basis vector eⱼ.</p>
+  <div class="steps">
+    <span>⟨eⱼ, v⟩ = α₁⟨eⱼ, e₁⟩ + … + αⱼ⟨eⱼ, eⱼ⟩ + … + αₙ⟨eⱼ, eₙ⟩</span>
+    <span>       = α₁·0 + … + αⱼ·1 + … + αₙ·0</span>
+    <span class="ok">       = αⱼ   (every other term is killed by a 0)</span>
+  </div>
+  <p>With b₁, b₂ the cross term ⟨b₁, b₂⟩ = 1 survives and pollutes the answer. Perpendicular axes don't "leak" into each other; slanted ones do.</p>
+
+  <h3>5. Projections: the shadow on each axis</h3>
+  <div class="fml">projection of v onto unit e<br>= ⟨e, v⟩ e</div>
+  <p class="say"><b>Read it aloud:</b> "the inner product of e with v, times e": how far v reaches along e, as a vector pointing along e.</p>
+  <p>What's left over, v − ⟨e, v⟩e, is perpendicular to e:</p>
+  <div class="steps">
+    <span>⟨e, v − ⟨e, v⟩e⟩ = ⟨e, v⟩ − ⟨e, v⟩⟨e, e⟩ = ⟨e, v⟩ − ⟨e, v⟩ · 1 = 0 ✓</span>
+  </div>
+  <p>In an orthonormal basis, v is the sum of its projections onto every eᵢ, and those pieces meet at right angles. Pythagoras on right-angled pieces is exactly Parseval: ‖v‖² = Σ |⟨eᵢ, v⟩|².</p>
+  <p>Written as a matrix, the projection onto e is the column e times the row e†: <span class="m">P = e e†</span> (an "outer product"). Adding the projections for a whole orthonormal basis gives back the identity, because together they rebuild every vector:</p>
+  <div class="fml">e₁e₁† + e₂e₂† + … + eₙeₙ† = I</div>
+  <div class="steps">
+    <span>Standard basis of ℂ²:</span>
+    <span>e₁e₁† = (1, 0)ᵀ(1, 0) = [[1, 0], [0, 0]]</span>
+    <span>e₂e₂† = (0, 1)ᵀ(0, 1) = [[0, 0], [0, 1]]</span>
+    <span class="ok">sum = [[1, 0], [0, 1]] = I ✓</span>
+  </div>
+  <p class="ql"><b>Quantum link:</b> in Dirac notation this "completeness relation" is written Σ |i⟩⟨i| = I, and each |i⟩⟨i| is the projector a measurement uses. The Hadamard version is worked out in the next section.</p>
+
+  <h3>6. Spin the basis; the length stays</h3>
+  <figure>
+    <svg id="rb-svg" viewBox="0 0 300 280" role="img" aria-label="The vector v = (3, 1) with a rotating orthonormal basis e1-prime, e2-prime and the two projections of v onto it">
+      <line class="grid" x1="6" y1="140" x2="294" y2="140"/><line class="grid" x1="150" y1="4" x2="150" y2="276"/>
+      <line id="rb-ax1" class="reS" stroke-width="1" stroke-dasharray="3 4"/>
+      <line id="rb-ax2" class="imS" stroke-width="1" stroke-dasharray="3 4"/>
+      <line id="rb-p1" class="reS" stroke-width="7" stroke-linecap="round" opacity=".4"/>
+      <line id="rb-p2" class="imS" stroke-width="7" stroke-linecap="round" opacity=".4"/>
+      <line id="rb-d1" class="mutS" stroke-width="1.2" stroke-dasharray="4 3"/>
+      <line id="rb-d2" class="mutS" stroke-width="1.2" stroke-dasharray="4 3"/>
+      <line id="rb-e1" class="reS" stroke-width="3"/><circle id="rb-e1t" r="4" class="reF"/><text id="rb-e1l" class="lab reT">e₁′</text>
+      <line id="rb-e2" class="imS" stroke-width="3"/><circle id="rb-e2t" r="4" class="imF"/><text id="rb-e2l" class="lab imT">e₂′</text>
+      <line x1="150" y1="140" x2="246" y2="108" class="okS" stroke-width="3"/><circle cx="246" cy="108" r="5" class="okF"/><text x="294" y="96" text-anchor="end" class="lab okT">v = (3, 1)</text>
+    </svg>
+    <div class="ctrl"><label for="rb-ang">Turn the basis by α</label><input id="rb-ang" type="range" min="0" max="180" value="30" step="1"><span id="rb-angv" class="m">30°</span></div>
+    <div class="readout" id="rb-out"></div>
+    <figcaption><b>The coordinates change; the sum of their squares never does.</b> e₁′ = (cos α, sin α) and e₂′ = (−sin α, cos α) are an orthonormal basis for every α. The shaded bars are v's projections onto them. At α = 0 you get the standard coordinates (3, 1). At α = 45°, e₁′ = h₊ and e₂′ = −h₋ (see the next section).</figcaption>
+  </figure>
+
+  <h3>7. Gram–Schmidt: making any basis orthonormal</h3>
+  <p>Given any basis a₁, a₂, …, you can build an orthonormal one that spans the same space:</p>
+  <div class="box">
+    <ul>
+      <li><b>Step 1.</b> Normalise the first: e₁ = a₁ / ‖a₁‖.</li>
+      <li><b>Step 2.</b> From a₂, subtract its shadow on e₁: w = a₂ − ⟨e₁, a₂⟩e₁. What's left is perpendicular to e₁. Normalise it: e₂ = w / ‖w‖.</li>
+      <li><b>Step 3 onwards.</b> From each next aₖ, subtract its shadows on <i>all</i> earlier e's, then normalise.</li>
+    </ul>
+  </div>
+  <p>Worked example: a₁ = (1, 1), a₂ = (1, 0).</p>
+  <div class="steps">
+    <span>‖a₁‖ = √(1² + 1²) = √2,  so e₁ = (1, 1)/√2</span>
+    <span>⟨e₁, a₂⟩ = (1·1 + 1·0)/√2 = 1/√2</span>
+    <span>shadow = ⟨e₁, a₂⟩ e₁ = (1/√2) · (1, 1)/√2 = (1, 1)/2 = (½, ½)</span>
+    <span>w = a₂ − shadow = (1, 0) − (½, ½) = (½, −½)</span>
+    <span>check w ⊥ e₁: (1·½ + 1·(−½))/√2 = 0 ✓</span>
+    <span>‖w‖ = √(¼ + ¼) = √½ = 1/√2</span>
+    <span>e₂ = w / ‖w‖ = (½, −½) · √2 = (√2/2, −√2/2) = (1, −1)/√2</span>
+    <span class="ok">Result: e₁ = h₊, e₂ = h₋. Gram–Schmidt on (1, 1), (1, 0) builds the Hadamard basis.</span>
+  </div>
+  <details class="sol"><summary>Practice: run Gram–Schmidt on a₁ = (1, i), a₂ = (1, 0)</summary><div>
+    <div class="steps">
+      <span>‖a₁‖² = |1|² + |i|² = 1 + 1 = 2,  so e₁ = (1, i)/√2</span>
+      <span>⟨e₁, a₂⟩ = conj(1/√2)·1 + conj(i/√2)·0 = 1/√2   (conjugate the first vector)</span>
+      <span>shadow = (1/√2) · (1, i)/√2 = (1, i)/2 = (½, i/2)</span>
+      <span>w = (1, 0) − (½, i/2) = (½, −i/2)</span>
+      <span>‖w‖² = |½|² + |−i/2|² = ¼ + ¼ = ½,  so ‖w‖ = 1/√2</span>
+      <span>e₂ = (½, −i/2) · √2 = (1, −i)/√2</span>
+      <span class="ok">Result: e₁ = c₊, e₂ = c₋, the circular basis.</span>
+      <span class="note">Here the conjugate made no difference only because a₂'s second entry is 0. With a₂ = (0, 1) it matters:</span>
+      <span>⟨e₁, a₂⟩ = conj(i/√2)·1 = −i/√2;  shadow = (−i/√2)(1, i)/√2 = (−i, 1)/2</span>
+      <span>w = (0, 1) − (−i/2, ½) = (i/2, ½);  ‖w‖ = 1/√2;  e₂ = (i, 1)/√2 = i · (1, −i)/√2 = i · c₋ ✓</span>
+      <span>Without the conjugate: shadow = (i/√2)(1, i)/√2 = (i, −1)/2, w = (−i/2, 3/2), and ⟨e₁, w⟩ = (−i/2 − 3i/2)/√2 = −√2 i ≠ 0 ✗</span>
+      <span class="note">i · c₋ is c₋ times a phase. A basis vector is only fixed up to a phase, so this is the same answer.</span>
+    </div>
+  </div></details>
+  <p class="ql"><b>Quantum link:</b> choosing a measurement means choosing an orthonormal basis. The probabilities are |⟨eᵢ, ψ⟩|², and Parseval is why they always add up to 1, whichever basis you pick.</p>
+</section>
+
+<section class="xt" id="hadamard">
+  <h2>The Hadamard basis in depth</h2>
+  <p>The basis you will meet more than any other after the standard one. Named after the French mathematician Jacques Hadamard; say "HAD-a-mar".</p>
+  <div class="fml">h₊ = (1, 1)/√2<br>h₋ = (1, −1)/√2</div>
+  <p class="say"><b>Read it aloud:</b> "h plus is one, one, over root two; h minus is one, minus one, over root two." In Dirac notation: |+⟩ = (|0⟩ + |1⟩)/√2 and |−⟩ = (|0⟩ − |1⟩)/√2: equal parts of 0 and 1, with the same sign or opposite signs.</p>
+
+  <h3>1. Check it is orthonormal, every step</h3>
+  <div class="steps">
+    <span>⟨h₊, h₊⟩ = (1·1 + 1·1)/2 = 2/2 = 1 ✓</span>
+    <span>⟨h₋, h₋⟩ = (1·1 + (−1)·(−1))/2 = (1 + 1)/2 = 1 ✓</span>
+    <span>⟨h₊, h₋⟩ = (1·1 + 1·(−1))/2 = (1 − 1)/2 = 0 ✓</span>
+    <span class="note">Each inner product has a 1/√2 from each vector: (1/√2)(1/√2) = 1/2. The entries are real, so conjugating changes nothing. Without the 1/√2, (1, 1) would have length √2, not 1.</span>
+  </div>
+
+  <h3>2. The picture</h3>
+  <figure>
+    <svg viewBox="0 0 300 250" role="img" aria-label="Standard basis e1 along x and e2 along y; Hadamard basis h-plus at 45 degrees and h-minus at minus 45 degrees; a dashed mirror line at 22.5 degrees">
+      <line class="grid" x1="20" y1="140" x2="290" y2="140"/><line class="grid" x1="70" y1="10" x2="70" y2="245"/>
+      <line x1="70" y1="140" x2="250" y2="65.4" class="mutS" stroke-dasharray="5 4"/><text x="186" y="112" class="mut">mirror, 22.5°</text>
+      <line x1="70" y1="140" x2="180" y2="140" class="reS" stroke-width="3"/><circle cx="180" cy="140" r="4.5" class="reF"/><text x="184" y="156" class="lab reT">e₁ = |0⟩</text>
+      <line x1="70" y1="140" x2="70" y2="30" class="reS" stroke-width="3"/><circle cx="70" cy="30" r="4.5" class="reF"/><text x="78" y="26" class="lab reT">e₂ = |1⟩</text>
+      <line x1="70" y1="140" x2="147.8" y2="62.2" class="imS" stroke-width="3"/><circle cx="147.8" cy="62.2" r="4.5" class="imF"/><text x="112" y="52" class="lab imT">h₊ = |+⟩</text>
+      <line x1="70" y1="140" x2="147.8" y2="217.8" class="imS" stroke-width="3"/><circle cx="147.8" cy="217.8" r="4.5" class="imF"/><text x="154" y="226" class="lab imT">h₋ = |−⟩</text>
+      <path d="M 100 140 A 30 30 0 0 0 91.2 118.8" class="none mutS"/><text x="106" y="134" class="mut">45°</text>
+    </svg>
+    <figcaption><b>The same right angle, tipped by 45°.</b> h₊ points at 45°, h₋ at −45°. One subtle point: the Hadamard pair is the standard pair <i>reflected</i> in the dashed line at 22.5°, not rotated. e₁ at 0° lands on 45° (h₊); e₂ at 90° lands on −45° (h₋). A 45° rotation would send e₂ to 135°, which is −h₋. Overall signs like this never change a probability.</figcaption>
+  </figure>
+
+  <h3>3. Coordinates are a sum and a difference</h3>
+  <p>For any v = (a, b), the two inner products are:</p>
+  <div class="fml">⟨h₊, v⟩ = (a + b)/√2<br>⟨h₋, v⟩ = (a − b)/√2</div>
+  <p class="say"><b>Read it aloud:</b> "the plus-coordinate is a plus b over root two; the minus-coordinate is a minus b over root two." The Hadamard basis measures how much the two entries agree and how much they differ.</p>
+  <div class="steps">
+    <span>v = (3, 1)</span>
+    <span>⟨h₊, v⟩ = (3 + 1)/√2 = 4/√2 = 4√2/2 = 2√2 ≈ 2.828</span>
+    <span>⟨h₋, v⟩ = (3 − 1)/√2 = 2/√2 = √2 ≈ 1.414</span>
+    <span>Rebuild: 2√2 · (1, 1)/√2 + √2 · (1, −1)/√2 = 2(1, 1) + 1(1, −1) = (2 + 1, 2 − 1) = (3, 1) ✓</span>
+    <span class="ok">Parseval: (2√2)² + (√2)² = 8 + 2 = 10 = 3² + 1² ✓ (the figure above)</span>
+  </div>
+  <p>Going back the other way uses the same sum-and-difference rule:</p>
+  <div class="steps">
+    <span>e₁ = (h₊ + h₋)/√2:  h₊ + h₋ = ((1, 1) + (1, −1))/√2 = (2, 0)/√2;  divide by √2: (2, 0)/2 = (1, 0) ✓</span>
+    <span>e₂ = (h₊ − h₋)/√2:  h₊ − h₋ = ((1, 1) − (1, −1))/√2 = (0, 2)/√2;  divide by √2: (0, 2)/2 = (0, 1) ✓</span>
+  </div>
+
+  <h3>4. The Hadamard matrix H</h3>
+  <p>Put h₊ and h₋ in as columns:</p>
+  <div class="fml">H = (1/√2) [[1, 1], [1, −1]]</div>
+  <div class="box">
+    <ul>
+      <li><b>It builds the basis.</b> H e₁ = first column = h₊, and H e₂ = second column = h₋ (the column rule from <a href="../07-matrices-and-linear-maps/">matrices</a>).</li>
+      <li><b>It passes the orthonormal test.</b> H is real and symmetric, so H† = H, and H†H = H·H.</li>
+      <li><b>It converts coordinates.</b> The coordinates of v in the Hadamard basis are H†v, which is just Hv. The same matrix builds the new basis and translates into it.</li>
+    </ul>
+  </div>
+  <div class="steps">
+    <span>H·H = ½ [[1·1 + 1·1,  1·1 + 1·(−1)], [1·1 + (−1)·1,  1·1 + (−1)·(−1)]]</span>
+    <span>    = ½ [[2, 0], [0, 2]] = I ✓</span>
+    <span>H(3, 1) = (1/√2)(3 + 1, 3 − 1) = (4, 2)/√2 = (2√2, √2) ✓ same coordinates as above</span>
+    <span>det H = (1·(−1) − 1·1)/2 = −2/2 = −1   (a reflection, matching the picture)</span>
+  </div>
+  <p>Completeness in the Hadamard basis: the two projectors add up to the identity.</p>
+  <div class="steps">
+    <span>h₊h₊† = ½ [[1, 1], [1, 1]]</span>
+    <span>h₋h₋† = ½ [[1·1, 1·(−1)], [(−1)·1, (−1)·(−1)]] = ½ [[1, −1], [−1, 1]]</span>
+    <span class="ok">sum = ½ [[2, 0], [0, 2]] = I ✓  (in Dirac: |+⟩⟨+| + |−⟩⟨−| = I)</span>
+  </div>
+
+  <h3>5. Mutually unbiased: why |0⟩ is 50/50 in the ± basis</h3>
+  <p>Square every inner product between a standard vector and a Hadamard vector:</p>
+  <div class="scroll"><table>
+    <thead><tr><th></th><th>h₊</th><th>h₋</th></tr></thead>
+    <tbody>
+      <tr><td><b>e₁</b></td><td class="m">|1/√2|² = 1/2</td><td class="m">|1/√2|² = 1/2</td></tr>
+      <tr><td><b>e₂</b></td><td class="m">|1/√2|² = 1/2</td><td class="m">|−1/√2|² = 1/2</td></tr>
+    </tbody>
+  </table></div>
+  <p>Every entry is 1/2. Knowing a state is e₁ tells you <i>nothing</i> about whether a ± measurement gives + or −, and the other way round. Two bases with this property are called <b>mutually unbiased</b>. The circular basis is unbiased to both of them as well: for example |⟨h₊, c₊⟩|² = |(1 + i)/2|² = (1² + 1²)/4 = 2/4 = 1/2. That is why the three bases sit on three perpendicular axes of the <a href="../11-bloch-sphere/">Bloch sphere</a>.</p>
+  <p class="ql"><b>Quantum link:</b> quantum key distribution (BB84, later in the course) switches at random between the standard and the Hadamard basis. An eavesdropper who measures in the wrong one gets pure coin flips, and disturbs the state in a way that can be detected.</p>
+
+  <h3>6. Hadamard twice: a first look at interference</h3>
+  <div class="steps">
+    <span>H e₁ = h₊ = (e₁ + e₂)/√2</span>
+    <span>H h₊ = (H e₁ + H e₂)/√2 = (h₊ + h₋)/√2</span>
+    <span>     = (1/√2) [ (e₁ + e₂)/√2 + (e₁ − e₂)/√2 ]</span>
+    <span>     = ½ [ e₁ + e₂ + e₁ − e₂ ]</span>
+    <span>     = ½ [ 2e₁ + (1 − 1)e₂ ] = e₁</span>
+    <span class="ok">The two e₂ pieces arrive with opposite signs (+½ and −½) and cancel.</span>
+  </div>
+  <p>|+⟩ and a fair coin both give 50/50 when measured, but a coin can't be "un-flipped". The hidden signs in the Hadamard basis can cancel. That cancellation is the engine of <a href="../16-deutsch-algorithm/">Deutsch's algorithm</a> and the <a href="../12-gates/">H gate</a>.</p>
+
+  <h3>7. Hadamard on many qubits</h3>
+  <p>Apply H to each of n qubits starting from all zeros and you get every one of the 2ⁿ basis states with equal amplitude 1/√2ⁿ. For two qubits (⊗ is the tensor product from <a href="../14-tensor-products/">tensor products</a>):</p>
+  <div class="steps">
+    <span>(H ⊗ H)|00⟩ = h₊ ⊗ h₊ = (1/√2)(1, 1) ⊗ (1/√2)(1, 1) = ½ (1, 1, 1, 1)</span>
+    <span>             = ½ (|00⟩ + |01⟩ + |10⟩ + |11⟩)</span>
+    <span>H ⊗ H = ½ [[1, 1, 1, 1], [1, −1, 1, −1], [1, 1, −1, −1], [1, −1, −1, 1]]</span>
+    <span class="ok">Its four columns are again an orthonormal basis, now of ℂ⁴: each has length √(4 · ¼) = 1, and any two share two + and two − products, which cancel.</span>
+  </div>
+
+  <div class="warn"><b>Common slips with the Hadamard basis.</b>
+    <ul>
+      <li>Writing h₋ as (−1, 1)/√2. That is −h₋: same axis, opposite arrow. Either is a valid basis vector, but stay consistent inside one calculation.</li>
+      <li>Calling H "a 45° rotation". It is a reflection (det H = −1), which is why H·H = I. Two 45° rotations would make a 90° rotation, not the identity.</li>
+      <li>Dropping the 1/√2 from H. Then H·H = 2I, and lengths double at every step.</li>
+    </ul>
+  </div>
+
+  <details class="sol"><summary>Practice: write c₊ = (1, i)/√2 in the Hadamard basis. What are the ± probabilities?</summary><div>
+    <div class="steps">
+      <span>⟨h₊, c₊⟩ = (1·1 + 1·i)/2 = (1 + i)/2</span>
+      <span>⟨h₋, c₊⟩ = (1·1 + (−1)·i)/2 = (1 − i)/2</span>
+      <span>P(+) = |1 + i|²/4 = (1² + 1²)/4 = 2/4 = 1/2</span>
+      <span>P(−) = |1 − i|²/4 = (1² + (−1)²)/4 = 2/4 = 1/2</span>
+      <span>Parseval: 1/2 + 1/2 = 1 ✓</span>
+      <span>Rebuild: (1+i)/2 · (1, 1)/√2 + (1−i)/2 · (1, −1)/√2 = (1/(2√2)) (1+i+1−i, 1+i−1+i) = (1/(2√2)) (2, 2i) = (1, i)/√2 ✓</span>
+      <span class="ok">50/50 again: the circular and Hadamard bases are mutually unbiased.</span>
+    </div>
+  </div></details>
+  <details class="sol"><summary>Quick check: are (1, 1)/√2 and (1, −1)/2 an orthonormal basis?</summary><div>
+    <div class="steps">
+      <span>Perpendicular: (1·1 + 1·(−1))/(2√2) = 0 ✓</span>
+      <span>Length of the second: √((1 + 1)/4) = √(1/2) = 1/√2 ≈ 0.707 ✗</span>
+      <span class="ok">Orthogonal but not normalised, so not orthonormal. "Coordinate = inner product" would give wrong answers with it.</span>
+    </div>
+  </div></details>
+</section>
+
+<script>
+(function () {
+  var O = { x: 150, y: 140 }, S = 32;
+  function P(x, y) { return { x: O.x + S * x, y: O.y - S * y }; }
+  function ln(id, a, b) { var e = document.getElementById(id); e.setAttribute('x1', a.x); e.setAttribute('y1', a.y); e.setAttribute('x2', b.x); e.setAttribute('y2', b.y); }
+  function pt(id, p, dx, dy) { var e = document.getElementById(id); if (e.tagName === 'circle') { e.setAttribute('cx', p.x); e.setAttribute('cy', p.y); } else { e.setAttribute('x', p.x + (dx || 0)); e.setAttribute('y', p.y + (dy || 0)); } }
+  function f(n) { return (Math.abs(n) < 0.0005 ? 0 : n).toFixed(3); }
+  var input = document.getElementById('rb-ang'), v = { x: 3, y: 1 };
+  function draw() {
+    var a = +input.value * Math.PI / 180, c = Math.cos(a), s = Math.sin(a);
+    var c1 = 3 * c + 1 * s, c2 = -3 * s + 1 * c;
+    ln('rb-ax1', P(-4.2 * c, -4.2 * s), P(4.2 * c, 4.2 * s));
+    ln('rb-ax2', P(4.2 * s, -4.2 * c), P(-4.2 * s, 4.2 * c));
+    ln('rb-e1', O, P(c, s)); pt('rb-e1t', P(c, s)); pt('rb-e1l', P(1.45 * c, 1.45 * s), -8, 5);
+    ln('rb-e2', O, P(-s, c)); pt('rb-e2t', P(-s, c)); pt('rb-e2l', P(-1.45 * s, 1.45 * c), -8, 5);
+    var f1 = P(c1 * c, c1 * s), f2 = P(-c2 * s, c2 * c), tip = P(v.x, v.y);
+    ln('rb-p1', O, f1); ln('rb-p2', O, f2); ln('rb-d1', tip, f1); ln('rb-d2', tip, f2);
+    document.getElementById('rb-angv').textContent = input.value + '°';
+    document.getElementById('rb-out').textContent =
+      '⟨e₁′, v⟩ = ' + f(c1) + ',  ⟨e₂′, v⟩ = ' + f(c2) + ',  squares: ' + f(c1 * c1) + ' + ' + f(c2 * c2) + ' = ' + f(c1 * c1 + c2 * c2);
+  }
+  input.addEventListener('input', draw); draw();
+})();
+</script>
+
+<section class="xt" id="circ">
+  <h2>The three standard bases of ℂ², including the circular one</h2>
+<div class="scroll"><table>
+    <thead><tr><th>Basis</th><th>Vectors</th><th>Bloch-sphere axis (<a href="../11-bloch-sphere/">Bloch sphere</a>)</th></tr></thead>
+    <tbody>
+      <tr><td>Standard</td><td class="m">e₁ = (1, 0), e₂ = (0, 1)</td><td>z: north and south poles</td></tr>
+      <tr><td>Hadamard</td><td class="m">h± = (1, ±1)/√2</td><td>x: front and back of the equator</td></tr>
+      <tr><td>Circular</td><td class="m">c± = (1, ±i)/√2</td><td>y: left and right of the equator. Needs complex numbers.</td></tr>
+    </tbody>
+  </table></div>
+  <figure>
+    <svg viewBox="0 0 340 250" role="img" aria-label="Bloch sphere with three axes: z through e1 and e2, x through h plus and h minus, y through c plus and c minus">
+      <circle cx="170" cy="125" r="95" class="none mutS" stroke-width="1.4"/>
+      <ellipse cx="170" cy="125" rx="95" ry="28" class="none mutS" stroke-dasharray="4 4"/>
+      <line x1="170" y1="30" x2="170" y2="220" class="reS" stroke-width="2"/>
+      <line x1="118" y1="148" x2="222" y2="102" class="imS" stroke-width="2"/>
+      <line x1="75" y1="125" x2="265" y2="125" class="okS" stroke-width="2"/>
+      <circle cx="170" cy="30" r="5" class="reF"/><text x="178" y="26" class="lab reT">e₁ = |0⟩</text>
+      <circle cx="170" cy="220" r="5" class="reF"/><text x="178" y="238" class="lab reT">e₂ = |1⟩</text>
+      <circle cx="118" cy="148" r="5" class="imF"/><text x="62" y="172" class="lab imT">h₊ = |+⟩</text>
+      <circle cx="222" cy="102" r="5" class="imF"/><text x="226" y="92" class="lab imT">h₋</text>
+      <circle cx="265" cy="125" r="5" class="okF"/><text x="272" y="121" class="lab okT">c₊</text>
+      <circle cx="75" cy="125" r="5" class="okF"/><text x="28" y="121" class="lab okT">c₋</text>
+    </svg>
+    <figcaption><b>Each basis is a pair of opposite points</b> on the Bloch sphere. Orthogonal states sit at opposite ends, which is why they are perfectly distinguishable.</figcaption>
+  </figure>
+  <div class="steps">
+    <span>Check c₊ ⊥ c₋ (conjugate the first vector):</span>
+    <span>⟨c₊, c₋⟩ = ½ (conj(1)·1 + conj(i)·(−i)) = ½ (1 + (−i)(−i)) = ½ (1 + i²) = ½ (1 − 1) = 0 ✓</span>
+    <span>Without the conjugate: ½ (1·1 + i·(−i)) = ½ (1 + 1) = 1 ✗. The conjugate is what makes this basis work.</span>
+  </div>
+</section>
+
+<section class="xt" id="notation">
+  <h2>Same ideas, other notation</h2>
+<p>Linear-algebra books and many slide decks write vectors in bold with ⟨u, v⟩. From <a href="../10-qubits-and-dirac-notation/">qubits and Dirac notation</a> onward these pages use Dirac "kets". They name the same things, so here is the translation.</p>
+  <div class="scroll"><table class="sym">
+    <thead><tr><th>Books write</th><th>Quantum notation</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>e₁, e₂</td><td>|0⟩, |1⟩</td><td>standard basis: (1, 0) and (0, 1)</td></tr>
+      <tr><td>h₊, h₋</td><td>|+⟩, |−⟩</td><td>Hadamard basis: (1, ±1)/√2</td></tr>
+      <tr><td>c₊, c₋</td><td>|+i⟩, |−i⟩</td><td>circular basis: (1, ±i)/√2</td></tr>
+      <tr><td><b>ψ</b> (bold)</td><td>|ψ⟩</td><td>a state, as a column vector</td></tr>
+      <tr><td>v†</td><td>⟨v|</td><td>conjugate transpose: the row of conjugated entries</td></tr>
+      <tr><td>⟨u, v⟩ = u†v</td><td>⟨u|v⟩</td><td>inner product, conjugating the first vector</td></tr>
+      <tr><td>z̄ (physics: z*)</td><td>z̄</td><td>complex conjugate</td></tr>
+      <tr><td>δᵢⱼ</td><td>δᵢⱼ</td><td>"Kronecker delta": 1 if i = j, else 0</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section>
+  <h2>Common mistakes</h2>
+  <ul class="mist">
+    <li><b>Forgetting to conjugate the first vector.</b> Without it, u = (1, i) "dotted" with itself gives 1·1 + i·i = 1 + (−1) = 0, a non-zero vector with length 0. That is nonsense, and it is why the bar is there.</li>
+    <li><b>Squaring i instead of taking its modulus squared.</b> The length of (1, i, 1) uses |i|² = 1, not i² = −1. Lengths add only positive pieces.</li>
+    <li><b>Using np.dot instead of np.vdot.</b> np.dot does not conjugate: np.dot([1, 1j], [2, 3j]) gives −1, the wrong answer. np.vdot conjugates the first argument and gives 5.</li>
+      <li><b>Copying a formula from a book with the other convention.</b> Many maths books conjugate the <i>second</i> slot. Then ⟨αu, v⟩ = α⟨u, v⟩ instead of ᾱ⟨u, v⟩. Check before you copy.</li>
+    <li><b>Using "coordinate = inner product" in a basis that isn't orthonormal.</b> v = Σ⟨eᵢ, v⟩eᵢ only works when the eᵢ have length 1 and are perpendicular. Otherwise solve the equations (<a href="../05-vector-spaces/#worked">vector spaces</a>).</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Practice</h2>
+  <p class="q">Normalise v = (1, i, 1). Then compute the inner product of your normalised vector v̂ with e₁ = (1, 0, 0).</p>
+  <details>
+    <summary>Show answer</summary>
+    <h3>Step 1: length of v</h3>
+    <div class="steps">
+      <div>|1|² = 1</div>
+      <div>|i|² = ī · i = (−i)(i) = −i² = 1</div>
+      <div>|1|² = 1</div>
+      <div>⟨v, v⟩ = 1 + 1 + 1 = 3</div>
+      <div>‖v‖ = √3 ≈ 1.732</div>
+    </div>
+    <h3>Step 2: divide every entry by √3</h3>
+    <div class="steps">
+      <div>v̂ = (1 ⁄ √3, i ⁄ √3, 1 ⁄ √3)</div>
+      <div>1 ⁄ √3 ≈ 1 ⁄ 1.732 ≈ 0.577</div>
+      <div>v̂ ≈ (0.577, 0.577i, 0.577)</div>
+      <div>Check: 1⁄3 + 1⁄3 + 1⁄3 = 3⁄3 = 1 <span class="ok">✓ normalised</span></div>
+    </div>
+    <h3>Step 3: inner product with e₁ = (1, 0, 0)</h3>
+    <div class="steps">
+      <div>Conjugate v̂: (1 ⁄ √3, −i ⁄ √3, 1 ⁄ √3)</div>
+      <div>⟨v̂, e₁⟩ = (1 ⁄ √3)·1 + (−i ⁄ √3)·0 + (1 ⁄ √3)·0</div>
+      <div>= 1 ⁄ √3 + 0 + 0</div>
+      <div>= 1 ⁄ √3 ≈ 0.577 <span class="ok">✓</span></div>
+      <div class="note">The zeros in e₁ simply pick out the first entry. Swapping the order, ⟨e₁, v̂⟩, gives the conjugate of this number; here the first entry is real, so it is also 1 ⁄ √3. Squared, (1 ⁄ √3)² = 1 ⁄ 3: on the probability concept you will see this is a probability.</div>
+    </div>
+  </details>
+</section>
+
+<section>
+  <h2>Check it in NumPy</h2>
+<pre><code>import numpy as np
+v = np.array([1, 1j, 1])
+v_hat = v / np.linalg.norm(v)              # divide by √3
+print(np.linalg.norm(v), np.linalg.norm(v_hat))   # 1.732..., 1.0
+print(np.vdot(v_hat, [1, 0, 0]))           # vdot conjugates the first: (0.577+0j)
+
+H = np.array([[1, 1], [1, -1]]) / np.sqrt(2)   # columns h+, h-
+print(np.allclose(H.conj().T @ H, np.eye(2)))  # True: orthonormal basis
+print(H @ [3, 1])                              # Hadamard coordinates (2.828, 1.414) = (2√2, √2)
+print(np.round(H @ H, 12))                     # identity: H twice undoes itself</code></pre>
+</section>
+
+<section>
+  <h2>Go deeper</h2>
+  <ul class="links">
+    <li><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/quantum-foundations/concepts/06-inner-products-and-bases/notebook.ipynb">Tutorial notebook (.ipynb, to run yourself)</a></li>
+    <li><a href="notebook.html">The same tutorial as a web page</a></li>
+    <li><a href="../../reference/reading-maths-symbols.html">Symbol dictionary: how to read maths symbols</a></li>
+  </ul>
+</section>
+
+
+
+
+
+
+
+
+
+<footer>
+  <span>Study time: <b>75 min</b> (45 core + 30 for the two in-depth sections)</span>
+  <span><a href="../../../">All concepts</a></span>
+</footer>
+
+</div>
+
+<script>
+(function () {
+  var O = { x: 200, y: 200 }, S = 55, U = 20, L = 3;
+  function P(len, deg) { var r = deg * Math.PI / 180; return { x: O.x + S * len * Math.cos(r), y: O.y - S * len * Math.sin(r) }; }
+  function set(id, a, b) { var e = document.getElementById(id); e.setAttribute('x1', a.x); e.setAttribute('y1', a.y); e.setAttribute('x2', b.x); e.setAttribute('y2', b.y); }
+  function f(n) { return (Math.abs(n) < 0.0005 ? 0 : n).toFixed(3); }
+  set('uline', P(-3.3, U), P(3.3, U));
+  set('uhat', O, P(0.97, U));
+  var ul = P(1.25, U - 12); var t = document.getElementById('uhatlbl'); t.setAttribute('x', ul.x); t.setAttribute('y', ul.y);
+  var input = document.getElementById('ang');
+  function draw() {
+    var a = +input.value, th = a - U;
+    var dot = L * Math.cos(th * Math.PI / 180);
+    var tip = P(L, a), foot = P(dot, U);
+    set('vline', O, P(L - 0.06, a));
+    set('drop', tip, foot);
+    set('shadow', O, foot);
+    var vl = P(L + 0.3, a); var vt = document.getElementById('vlbl'); vt.setAttribute('x', vl.x - 5); vt.setAttribute('y', vl.y + 5);
+    var r = 0.7, p1 = P(r, U), p2 = P(r, a);
+    document.getElementById('arc').setAttribute('d', 'M' + p1.x + ',' + p1.y + ' A' + (r * S) + ',' + (r * S) + ' 0 0 ' + (th >= 0 ? 0 : 1) + ' ' + p2.x + ',' + p2.y);
+    var lp = P(0.95, U + th / 2); var tl = document.getElementById('thlbl'); tl.setAttribute('x', lp.x - 4); tl.setAttribute('y', lp.y + 5);
+    var ux = Math.cos(U * Math.PI / 180), uy = Math.sin(U * Math.PI / 180), vx = L * Math.cos(a * Math.PI / 180), vy = L * Math.sin(a * Math.PI / 180);
+    document.getElementById('angv').textContent = a + '°';
+    document.getElementById('projout').innerHTML =
+      'û = (' + f(ux) + ', ' + f(uy) + ') &nbsp; v = (' + f(vx) + ', ' + f(vy) + ')<br>' +
+      '⟨û, v⟩ = ' + f(ux) + '×' + f(vx) + ' + ' + f(uy) + '×' + f(vy) + ' = <b>' + f(ux * vx + uy * vy) + '</b><br>' +
+      'same as ‖v‖·cos θ = 3 × cos ' + th + '° = ' + f(dot);
+  }
+  input.addEventListener('input', draw);
+  draw();
+})();
+</script>
+
+<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Part B · Concept 06 of 17</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../05-vector-spaces/">← Vector spaces</a> · <a href="../07-matrices-and-linear-maps/">Matrices and linear maps →</a></div></nav></body></html>

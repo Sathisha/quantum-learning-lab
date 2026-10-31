@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Real → complex: what changes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+.cnav{--cn-ink:#1b2430;--cn-mut:#566275;--cn-bg:#f5f7fb;--cn-rule:#d3dae4;--cn-a:#1d5bbd;
+ display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 18px;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+ color:var(--cn-mut);background:var(--cn-bg);border-bottom:1px solid var(--cn-rule);
+ padding-block:9px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.cnav:not(.bottom){margin-bottom:22px}
+.cnav.bottom{border-bottom:0;border-top:1px solid var(--cn-rule);margin-top:32px}
+.cnav a{color:var(--cn-a);text-decoration:none}.cnav a:hover{text-decoration:underline}
+.cnav a:focus-visible{outline:2px solid var(--cn-a);outline-offset:2px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}}
+:root[data-theme="dark"] .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}
+</style>
+
+<style>
+/* Toolkit pages: one reading column; colour carries meaning throughout: cos / real part = blue, sin / imaginary part = magenta, angle / phase = amber. */
+:root{
+  --bg:#f4f6f9; --paper:#ffffff; --ink:#1a2330; --muted:#59667a; --line:#d6dde6; --soft:#eef2f7;
+  --cos:#1d5bbd; --sin:#b02c68; --ang:#b8690f; --ok:#1e7a4a; --bad:#b3261e;
+  --cos-soft:#e3ecfb; --sin-soft:#f8e3ec; --ang-soft:#fbeedd; --ok-soft:#e1f2e8; --bad-soft:#fbe4e2;
+  --display:"Fraunces",Georgia,serif; --body:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace; color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --line:#2c3644; --soft:#1b2330;
+  --cos:#7eb0ff; --sin:#f28ab9; --ang:#f0aa5a; --ok:#6fd39d; --bad:#ff8f86;
+  --cos-soft:#1c2b45; --sin-soft:#3a1c2b; --ang-soft:#3a2a16; --ok-soft:#163323; --bad-soft:#3b1a18; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --line:#2c3644; --soft:#1b2330;
+  --cos:#7eb0ff; --sin:#f28ab9; --ang:#f0aa5a; --ok:#6fd39d; --bad:#ff8f86;
+  --cos-soft:#1c2b45; --sin-soft:#3a1c2b; --ang-soft:#3a2a16; --ok-soft:#163323; --bad-soft:#3b1a18; color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 var(--body)}
+.wrap{max-width:44rem;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:8px 40px;display:flex;flex-direction:column;gap:38px}
+header{display:flex;flex-direction:column;gap:10px}
+section{display:flex;flex-direction:column;gap:12px;min-width:0}
+h1,h2,h3{font-family:var(--display);line-height:1.15;margin:0;text-wrap:balance}
+h1{font-size:clamp(2rem,7vw,2.7rem)}
+h2{font-size:1.45rem}
+h3{font-size:1.1rem;margin-top:6px}
+p{margin:0}
+ul,ol{margin:0;padding-left:1.25em;display:flex;flex-direction:column;gap:6px}
+a{color:var(--cos)}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--cos);outline-offset:2px;border-radius:4px}
+.eyebrow{font:500 .76rem/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--muted);font-size:1.07rem}
+.m{font-family:var(--mono);font-size:.92em;white-space:nowrap}
+.c{color:var(--cos);font-weight:600}.s{color:var(--sin);font-weight:600}.a{color:var(--ang);font-weight:600}.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}
+.box{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.key{background:var(--ok-soft);border-left:4px solid var(--ok);border-radius:0 10px 10px 0;padding:12px 14px}
+.warn{background:var(--bad-soft);border-left:4px solid var(--bad);border-radius:0 10px 10px 0;padding:12px 14px}
+.why{background:var(--ang-soft);border-left:4px solid var(--ang);border-radius:0 10px 10px 0;padding:12px 14px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:.94rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font:500 .72rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--soft)}
+td.sym{font-family:var(--mono)}
+td.say{font-style:italic}
+.steps{font-family:var(--mono);font-size:.86rem;line-height:1.8;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--cos);border-radius:0 10px 10px 0;padding:10px 12px;overflow-x:auto;white-space:pre-wrap}
+.steps .n{font-family:var(--body);color:var(--muted);font-size:.9rem}
+.formula{font-family:var(--mono);font-size:clamp(1.05rem,4.6vw,1.6rem);text-align:center;padding:20px 10px;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow-x:auto;text-wrap:balance}
+.aloud{color:var(--muted);text-align:center;margin-top:-4px}
+.aloud b{color:var(--ink)}
+figure{margin:0;display:flex;flex-direction:column;gap:8px}
+figcaption{font-size:.92rem;color:var(--muted)}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--mono);fill:var(--ink)}
+svg .mut{fill:var(--muted)}
+.ctl{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.ctl label{font-family:var(--mono);font-size:.92rem}
+.ctl input[type=range]{flex:1 1 200px;min-width:0;accent-color:var(--ang)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+button{font:500 .86rem var(--mono);background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer;min-height:36px}
+button:hover{border-color:var(--ang)}
+button[aria-pressed=true]{background:var(--ang-soft);border-color:var(--ang)}
+.readout{font-family:var(--mono);font-size:.9rem;line-height:1.7;background:var(--soft);border-radius:10px;padding:10px 12px;overflow-x:auto;white-space:pre}
+details{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+summary{cursor:pointer;font-weight:700}
+details[open] summary{margin-bottom:10px}
+details>div{display:flex;flex-direction:column;gap:10px}
+pre{margin:0;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;overflow-x:auto;font:400 .86rem/1.55 var(--mono)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(15rem,100%),1fr));gap:12px}
+.grid2>*{min-width:0}
+.box .m,.key .m,.warn .m,.why .m{white-space:normal}
+.pill{display:inline-block;font:600 .7rem var(--mono);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:1px 8px;background:var(--soft);color:var(--muted);vertical-align:2px}
+.toc{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.95rem}
+
+.box>*+*,.key>*+*,.warn>*+*,.why>*+*{margin-top:8px}
+.key ul,.warn ul{margin-top:6px}
+
+</style></head><body>
+<nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Part A · Concept 04 of 17</span></div><div><a href="../03-euler-and-phase/">← e^(iθ) and phase</a> · <a href="../05-vector-spaces/">Vector spaces →</a></div></nav>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Concept 04 · Part A · Toolkit</div>
+  <h1>Real → complex: what changes</h1>
+  <p class="lede">Most linear algebra we learnt was over the real numbers. Quantum computing runs over the complex numbers, and almost every rule we know has a complex version with <b>one extra conjugate</b> in it. This page lists each real habit next to its complex replacement, then lines up the three notations used in class (bold vectors, Dirac kets, NumPy) so you can translate between them.</p>
+  <div class="toc"><a href="#one-rule">The one rule</a><a href="#table">ℝ vs ℂ table</a><a href="#tester">Orthogonality tester</a><a href="#notation">Three notations</a><a href="#counting">Counting traps</a><a href="#conventions">Convention clashes</a></div>
+</header>
+
+<section id="symbols">
+  <h2>Symbols on this page</h2>
+  <div class="scroll"><table>
+    <tr><th>Symbol</th><th>Say it</th><th>Meaning</th></tr>
+    <tr><td class="sym">ℝ, ℂ</td><td class="say">R, C</td><td>The real numbers; the complex numbers.</td></tr>
+    <tr><td class="sym">z̄, z*</td><td class="say">z bar, z star</td><td>The conjugate: a + bi → a − bi.</td></tr>
+    <tr><td class="sym">Aᵀ</td><td class="say">A transpose</td><td>Rows become columns.</td></tr>
+    <tr><td class="sym">A†</td><td class="say">A dagger</td><td>Transpose <i>and</i> conjugate every entry.</td></tr>
+    <tr><td class="sym">⟨u, v⟩, ⟨u|v⟩</td><td class="say">inner product of u and v; bra u ket v</td><td>The same number in two notations: Σ ū<sub>k</sub>v<sub>k</sub>.</td></tr>
+    <tr><td class="sym">e₁, h₊, c₊</td><td class="say">e one, h plus, c plus</td><td>The linear-algebra lectures' names for |0⟩, |+⟩, |+i⟩.</td></tr>
+  </table></div>
+</section>
+
+<section id="one-rule">
+  <h2>The one rule behind everything</h2>
+  <p>For a real number, x · x = x² is never negative, so it works as a "size squared". For a complex number it fails: i · i = −1. The fix is to multiply by the <b>conjugate</b> instead:</p>
+  <div class="formula">|z|² = z̄ · z = a² + b²   <span style="font-size:.7em;color:var(--muted)">(z = a + bi)</span></div>
+  <div class="steps">z = 3 + 4i:   z · z = 9 + 24i + 16i² = −7 + 24i     <span class="bad">✗ not a size</span>
+              z̄ · z = (3 − 4i)(3 + 4i) = 9 + 16 = 25   <span class="ok">✓ |z| = 5</span></div>
+  <div class="key">Every rule on this page is this same fix applied again. Wherever real linear algebra "multiplies a thing by itself" to get a length, an angle or a probability, the complex version <b>conjugates one of the two copies</b>.</div>
+</section>
+
+<section id="table">
+  <h2>The translation table</h2>
+  <div class="scroll"><table>
+    <tr><th>Idea</th><th>Over ℝ (the habit)</th><th>Over ℂ (the rule)</th><th>Quick check</th></tr>
+    <tr><td>Size squared</td><td class="sym">x²</td><td class="sym">|z|² = z̄z</td><td>|i|² = 1, while i² = −1</td></tr>
+    <tr><td>Length of a vector</td><td class="sym">√(x₁² + x₂²)</td><td class="sym">√(|z₁|² + |z₂|²)</td><td>‖(1, i)‖ = √2, not √(1 + i²) = 0</td></tr>
+    <tr><td>Dot / inner product</td><td class="sym">u·v = Σ u<sub>k</sub>v<sub>k</sub></td><td class="sym">⟨u, v⟩ = Σ ū<sub>k</sub>v<sub>k</sub></td><td>⟨c₊, c₋⟩ = 0 (see the tester below)</td></tr>
+    <tr><td>Swapping the two</td><td class="sym">u·v = v·u</td><td class="sym">⟨v, u⟩ = conj ⟨u, v⟩</td><td>Same size, opposite phase</td></tr>
+    <tr><td>Pulling out a number</td><td class="sym">(αu)·v = α(u·v)</td><td class="sym">⟨αu, v⟩ = ᾱ⟨u, v⟩,  ⟨u, αv⟩ = α⟨u, v⟩</td><td>A number leaving the first slot gets conjugated</td></tr>
+    <tr><td>Flip a matrix</td><td class="sym">Aᵀ</td><td class="sym">A† = (Ā)ᵀ</td><td>Y† = Y although Yᵀ = −Y</td></tr>
+    <tr><td>Row version of a vector</td><td class="sym">uᵀ</td><td class="sym">u† = ⟨u| (a bra)</td><td>⟨+i| = (1, −i)/√2</td></tr>
+    <tr><td>Reversing a product</td><td class="sym">(AB)ᵀ = BᵀAᵀ</td><td class="sym">(AB)† = B†A†</td><td>"Socks and shoes" in both worlds</td></tr>
+    <tr><td>"Self-mirror" matrices</td><td>symmetric, A = Aᵀ</td><td>Hermitian, A = A†</td><td>Real diagonal, opposite entries conjugate: [[2, 1+i], [1−i, 3]]</td></tr>
+    <tr><td>Length-keeping matrices</td><td>orthogonal, QᵀQ = I</td><td>unitary, U†U = I</td><td>S = diag(1, i) is unitary, not orthogonal</td></tr>
+    <tr><td>Angle between vectors</td><td class="sym">cos∠ = u·v / (‖u‖‖v‖)</td><td>⟨u, v⟩ is complex; use |⟨u, v⟩|</td><td>|⟨u, v⟩|² is a measurement probability</td></tr>
+    <tr><td>Projection onto unit e</td><td class="sym">(e·v) e</td><td class="sym">⟨e, v⟩ e = e e† v</td><td>The order matters: e goes in the conjugated slot</td></tr>
+    <tr><td>"Same direction"</td><td>±v</td><td>e<sup>iφ</sup>v for any φ</td><td>Unit eigenvectors and states are fixed only up to a phase</td></tr>
+    <tr><td>Rotating in a plane</td><td>matrix R<sub>θ</sub></td><td>also: multiply by e<sup>iθ</sup></td><td><a href="../03-euler-and-phase/">e<sup>iθ</sup> page</a></td></tr>
+    <tr><td>Eigenvalues</td><td>may not exist (a rotation has none)</td><td>always exist</td><td>R<sub>θ</sub> has e<sup>±iθ</sup></td></tr>
+    <tr><td>Dimension</td><td>ℝⁿ: n real numbers</td><td>ℂⁿ: n complex = 2n real</td><td>A qubit: 4 real numbers → 2 angles after normalising and dropping the global phase</td></tr>
+  </table></div>
+</section>
+
+<section id="worked">
+  <h2>Worked example, every step shown: are c₊ and c₋ orthogonal?</h2>
+  <p>c₊ = (1, i)/√2 and c₋ = (1, −i)/√2, also written |+i⟩ and |−i⟩. On the Bloch sphere they are opposite ends of the y-axis, so they must be orthogonal.</p>
+  <div class="grid2">
+    <div class="warn"><b>Real habit (no conjugate)</b>
+      <div class="steps" style="border-left-color:var(--bad)">½ [1·1 + i·(−i)]
+= ½ [1 − i²]
+= ½ [1 + 1] = 1</div>
+      <p>This says they are the <i>same</i> state, which is nonsense.</p></div>
+    <div class="key"><b>Complex rule (conjugate the first)</b>
+      <div class="steps" style="border-left-color:var(--ok)">½ [conj(1)·1 + conj(i)·(−i)]
+= ½ [1 + (−i)(−i)]
+= ½ [1 + i²] = ½ [1 − 1] = 0 ✓</div>
+      <p>Orthogonal, as the picture says.</p></div>
+  </div>
+  <p>Notice why the real habit usually goes unnoticed: for |0⟩, |1⟩, |+⟩ and |−⟩ all the entries are real, and conjugating a real number does nothing. The mistake only shows once an i appears.</p>
+</section>
+
+<section id="tester">
+  <h2>Try it: the orthogonality tester</h2>
+  <p>Pick two of the six standard states and compare the "real habit" sum with the correct inner product.</p>
+  <div class="box">
+    <div class="ctl"><span class="m">u =</span><span class="chips" id="tU"></span></div>
+    <div class="ctl"><span class="m">v =</span><span class="chips" id="tV"></span></div>
+    <div class="readout" id="tOut" aria-live="polite"></div>
+  </div>
+</section>
+
+<section id="notation">
+  <h2>Three notations, one set of objects</h2>
+  <p>The linear-algebra lectures write bold vectors; the quantum lectures write kets; the labs write NumPy. They describe exactly the same objects:</p>
+  <div class="scroll"><table>
+    <tr><th>Object</th><th>Linear algebra</th><th>Dirac</th><th>NumPy</th></tr>
+    <tr><td>Standard basis</td><td class="sym">e₁, e₂</td><td class="sym">|0⟩, |1⟩</td><td class="sym">np.array([1,0]), ([0,1])</td></tr>
+    <tr><td>Hadamard basis</td><td class="sym">h₊, h₋ = (1, ±1)/√2</td><td class="sym">|+⟩, |−⟩</td><td class="sym">np.array([1,±1])/np.sqrt(2)</td></tr>
+    <tr><td>Circular basis</td><td class="sym">c₊, c₋ = (1, ±i)/√2</td><td class="sym">|+i⟩, |−i⟩</td><td class="sym">np.array([1,±1j])/np.sqrt(2)</td></tr>
+    <tr><td>A column vector</td><td class="sym">v</td><td class="sym">|v⟩ (ket)</td><td class="sym">v</td></tr>
+    <tr><td>Its conjugate row</td><td class="sym">v†</td><td class="sym">⟨v| (bra)</td><td class="sym">v.conj()</td></tr>
+    <tr><td>Inner product</td><td class="sym">⟨u, v⟩</td><td class="sym">⟨u|v⟩</td><td class="sym">np.vdot(u, v)</td></tr>
+    <tr><td>Length</td><td class="sym">‖v‖</td><td class="sym">√⟨v|v⟩</td><td class="sym">np.linalg.norm(v)</td></tr>
+    <tr><td>Outer product</td><td class="sym">u v†</td><td class="sym">|u⟩⟨v|</td><td class="sym">np.outer(u, v.conj())</td></tr>
+    <tr><td>Projector onto e</td><td class="sym">P = e e†</td><td class="sym">|e⟩⟨e|</td><td class="sym">np.outer(e, e.conj())</td></tr>
+    <tr><td>Adjoint</td><td class="sym">A†</td><td class="sym">A†</td><td class="sym">A.conj().T</td></tr>
+    <tr><td>Matrix entry</td><td class="sym">A<sub>ij</sub> = ⟨e<sub>i</sub>, A e<sub>j</sub>⟩</td><td class="sym">⟨i|A|j⟩</td><td class="sym">A[i, j]</td></tr>
+    <tr><td>Tensor product</td><td class="sym">u ⊗ v</td><td class="sym">|u⟩|v⟩ = |uv⟩</td><td class="sym">np.kron(u, v)</td></tr>
+  </table></div>
+  <div class="warn"><b>NumPy's four "dot" functions</b>, and which one conjugates:
+    <ul>
+      <li><span class="m">np.vdot(u, v)</span>: conjugates u. <span class="ok">This is ⟨u, v⟩.</span></li>
+      <li><span class="m">u @ v</span>, <span class="m">np.dot(u, v)</span>, <span class="m">np.inner(u, v)</span>: no conjugate. For u = (1, i), <span class="m">u @ u</span> gives 0, while <span class="m">np.vdot(u, u)</span> gives 2.</li>
+      <li><span class="m">A.T</span> is the transpose; <span class="m">A.conj().T</span> is the dagger.</li>
+      <li><span class="m">z**2</span> is z²; <span class="m">abs(z)**2</span> is |z|².</li>
+    </ul></div>
+</section>
+
+<section id="counting">
+  <h2>Counting traps: 1-based vs 0-based, left vs right</h2>
+  <div class="scroll"><table>
+    <tr><th>Trap</th><th>What to remember</th></tr>
+    <tr><td>e₁ = |0⟩</td><td>Linear algebra counts from 1, qubits count from 0. e₁ = (1, 0) = |0⟩ and e₂ = (0, 1) = |1⟩.</td></tr>
+    <tr><td>Matrix entries</td><td>A<sub>12</sub> (row 1, column 2) in maths is ⟨0|A|1⟩ in Dirac and <span class="m">A[0, 1]</span> in NumPy.</td></tr>
+    <tr><td>Two-qubit labels</td><td>In |ab⟩ = |a⟩⊗|b⟩, the <b>left</b> label is the first qubit, the top wire of the circuit. The four basis vectors in order are |00⟩, |01⟩, |10⟩, |11⟩ = e₁, e₂, e₃, e₄.</td></tr>
+    <tr><td>Qiskit's printout</td><td>Qiskit prints bit strings the other way round (q1 q0): qubit 0 is the <b>rightmost</b> character. See <a href="../15-entanglement-and-qiskit/#qubit-order">qubit order</a>.</td></tr>
+    <tr><td>"Column j"</td><td>Column j of a gate's matrix is where it sends the j-th basis vector: the first column is the image of |0⟩.</td></tr>
+  </table></div>
+</section>
+
+<section id="conventions">
+  <h2>Convention clashes between books</h2>
+  <ul>
+    <li><b>Which slot is conjugated.</b> This course and physics books conjugate the <i>first</i> vector: ⟨u, v⟩ = Σ ū<sub>k</sub>v<sub>k</sub>. Many maths books conjugate the <i>second</i>. The two answers are conjugates of each other, so |⟨u, v⟩| and orthogonality agree; just never mix the two in one calculation.</li>
+    <li><b>Angles on the Bloch sphere.</b> θ is measured <i>down from the north pole</i> (the z-axis), not up from the x-axis as on the unit circle. φ is measured round the equator starting from the x-axis.</li>
+    <li><b>The half angle.</b> The amplitudes use θ/2: <span class="m">cos(θ/2)|0⟩ + e<sup>iφ</sup> sin(θ/2)|1⟩</span>. Opposite points on the sphere (180° apart) are orthogonal vectors (90° apart). <a href="../13-one-qubit-big-picture/#why-half">Why</a>.</li>
+    <li><b>i or j.</b> Electrical engineers write j for √−1, and Python writes <span class="m">1j</span>.</li>
+    <li><b>"Orthogonal".</b> For vectors it means ⟨u, v⟩ = 0. An "orthogonal matrix" is the real cousin of a unitary one.</li>
+    <li><b>ψ vs |ψ⟩.</b> Both name the same state vector. The ket brackets just flag that it is a column you can put a bra in front of.</li>
+  </ul>
+</section>
+
+<section id="mistakes">
+  <h2>Common mistakes</h2>
+  <ul>
+    <li>Squaring an amplitude instead of taking |·|²: (i/√2)² = −1/2, but the probability is |i/√2|² = 1/2.</li>
+    <li>Forgetting to conjugate when writing a bra: ⟨−i| = (1, +i)/√2.</li>
+    <li>Calling a matrix Hermitian because it is symmetric. Symmetric with complex entries, like [[0, i], [i, 0]], is <b>not</b> Hermitian.</li>
+    <li>Using <span class="m">@</span> or <span class="m">np.dot</span> for an inner product of complex vectors.</li>
+    <li>Reading |01⟩ from Qiskit's printout as "qubit 0 is 0".</li>
+  </ul>
+</section>
+
+<section id="practice">
+  <h2>Practice</h2>
+  <ol>
+    <li>Compute ⟨u, v⟩ for u = (i, 1) and v = (1, i). Are they orthogonal?</li>
+    <li>Is A = [[2, 1+i], [1−i, 3]] Hermitian? Is it symmetric?</li>
+    <li>Write ⟨−i| as a row, and compute |⟨−i|0⟩|².</li>
+    <li>What does <span class="m">np.array([1, 1j]) @ np.array([1, 1j])</span> print, and what did you probably want?</li>
+  </ol>
+  <details><summary>Show worked solutions</summary><div>
+    <div class="steps">1.  conj(i)·1 + conj(1)·i = −i + i = 0   →  orthogonal
+2.  A† = transpose of conj(A) = [[2, conj(1−i)], [conj(1+i), 3]] = [[2, 1+i], [1−i, 3]] = A  → Hermitian
+    Aᵀ = [[2, 1−i], [1+i, 3]] ≠ A                                                    → not symmetric
+3.  |−i⟩ = (1, −i)/√2, so ⟨−i| = (1, +i)/√2.   ⟨−i|0⟩ = 1/√2,  |·|² = 1/2
+4.  1·1 + 1j·1j = 1 − 1 = 0.   You wanted ⟨u,u⟩ = np.vdot(u, u) = 2 (so ‖u‖ = √2).</div>
+  </div></details>
+</section>
+
+<section id="numpy">
+  <h2>Check it in NumPy</h2>
+<pre>import numpy as np
+cp, cm = np.array([1, 1j])/np.sqrt(2), np.array([1, -1j])/np.sqrt(2)
+print(cp @ cm, np.vdot(cp, cm))          # (1+0j) wrong habit,  0j correct
+A = np.array([[2, 1+1j], [1-1j, 3]])
+print(np.allclose(A, A.conj().T), np.allclose(A, A.T))   # True False
+u, v = np.array([1j, 1]), np.array([2, 1j])
+a = 2 + 3j
+print(np.isclose(np.vdot(a*u, v), np.conj(a)*np.vdot(u, v)))  # True: conjugated on the way out</pre>
+</section>
+
+<script>
+(function(){
+  const r=1/Math.SQRT2;
+  const S={'|0⟩':[[1,0],[0,0]],'|1⟩':[[0,0],[1,0]],'|+⟩':[[r,0],[r,0]],'|−⟩':[[r,0],[-r,0]],'|+i⟩':[[r,0],[0,r]],'|−i⟩':[[r,0],[0,-r]]};
+  let u='|+i⟩',v='|−i⟩';
+  const mul=(a,b)=>[a[0]*b[0]-a[1]*b[1],a[0]*b[1]+a[1]*b[0]],cj=a=>[a[0],-a[1]],add=(a,b)=>[a[0]+b[0],a[1]+b[1]];
+  const fmt=z=>{let re=Math.abs(z[0])<1e-9?0:z[0],im=Math.abs(z[1])<1e-9?0:z[1];const f=x=>(+x.toFixed(3)).toString();if(im===0)return f(re);if(re===0)return f(im)+'i';return f(re)+(im<0?' − ':' + ')+f(Math.abs(im))+'i'};
+  function chips(id,get,set){const el=document.getElementById(id);Object.keys(S).forEach(k=>{const b=document.createElement('button');b.type='button';b.textContent=k;b.onclick=()=>{set(k);draw()};el.appendChild(b)});return el}
+  const cu=chips('tU',()=>u,k=>u=k),cv=chips('tV',()=>v,k=>v=k);
+  function draw(){
+    cu.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.textContent===u));
+    cv.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.textContent===v));
+    const a=S[u],b=S[v];
+    const wrong=add(mul(a[0],b[0]),mul(a[1],b[1])),right=add(mul(cj(a[0]),b[0]),mul(cj(a[1]),b[1]));
+    const p=right[0]**2+right[1]**2;
+    document.getElementById('tOut').textContent=
+`real habit   Σ u_k v_k      = ${fmt(wrong)}
+correct      Σ conj(u_k) v_k = ${fmt(right)}
+|⟨u|v⟩|² = ${(+p.toFixed(3))}   →  ${p<1e-9?'orthogonal: opposite points on the Bloch sphere':(Math.abs(p-1)<1e-9?'the same state':'overlap: measuring u in a basis containing v gives v with probability '+(+p.toFixed(3)))}${Math.abs(wrong[0]-right[0])+Math.abs(wrong[1]-right[1])>1e-9?'\n(the two disagree: an i is involved)':''}`;
+  }
+  draw();
+})();
+</script>
+
+</div>
+<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Part A · Concept 04 of 17</span></div><div><a href="../03-euler-and-phase/">← e^(iθ) and phase</a> · <a href="../05-vector-spaces/">Vector spaces →</a></div></nav>
+</body></html>

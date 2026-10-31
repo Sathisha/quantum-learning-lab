@@ -1,0 +1,390 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>One qubit, the whole picture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+.cnav{--cn-ink:#1b2430;--cn-mut:#566275;--cn-bg:#f5f7fb;--cn-rule:#d3dae4;--cn-a:#1d5bbd;
+ display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 18px;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+ color:var(--cn-mut);background:var(--cn-bg);border-bottom:1px solid var(--cn-rule);
+ padding-block:9px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.cnav:not(.bottom){margin-bottom:22px}
+.cnav.bottom{border-bottom:0;border-top:1px solid var(--cn-rule);margin-top:32px}
+.cnav a{color:var(--cn-a);text-decoration:none}.cnav a:hover{text-decoration:underline}
+.cnav a:focus-visible{outline:2px solid var(--cn-a);outline-offset:2px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}}
+:root[data-theme="dark"] .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}
+</style>
+
+<style>
+/* Toolkit pages: one reading column; colour carries meaning throughout: cos / real part = blue, sin / imaginary part = magenta, angle / phase = amber. */
+:root{
+  --bg:#f4f6f9; --paper:#ffffff; --ink:#1a2330; --muted:#59667a; --line:#d6dde6; --soft:#eef2f7;
+  --cos:#1d5bbd; --sin:#b02c68; --ang:#b8690f; --ok:#1e7a4a; --bad:#b3261e;
+  --cos-soft:#e3ecfb; --sin-soft:#f8e3ec; --ang-soft:#fbeedd; --ok-soft:#e1f2e8; --bad-soft:#fbe4e2;
+  --display:"Fraunces",Georgia,serif; --body:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace; color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --line:#2c3644; --soft:#1b2330;
+  --cos:#7eb0ff; --sin:#f28ab9; --ang:#f0aa5a; --ok:#6fd39d; --bad:#ff8f86;
+  --cos-soft:#1c2b45; --sin-soft:#3a1c2b; --ang-soft:#3a2a16; --ok-soft:#163323; --bad-soft:#3b1a18; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --line:#2c3644; --soft:#1b2330;
+  --cos:#7eb0ff; --sin:#f28ab9; --ang:#f0aa5a; --ok:#6fd39d; --bad:#ff8f86;
+  --cos-soft:#1c2b45; --sin-soft:#3a1c2b; --ang-soft:#3a2a16; --ok-soft:#163323; --bad-soft:#3b1a18; color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 var(--body)}
+.wrap{max-width:44rem;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:8px 40px;display:flex;flex-direction:column;gap:38px}
+header{display:flex;flex-direction:column;gap:10px}
+section{display:flex;flex-direction:column;gap:12px;min-width:0}
+h1,h2,h3{font-family:var(--display);line-height:1.15;margin:0;text-wrap:balance}
+h1{font-size:clamp(2rem,7vw,2.7rem)}
+h2{font-size:1.45rem}
+h3{font-size:1.1rem;margin-top:6px}
+p{margin:0}
+ul,ol{margin:0;padding-left:1.25em;display:flex;flex-direction:column;gap:6px}
+a{color:var(--cos)}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--cos);outline-offset:2px;border-radius:4px}
+.eyebrow{font:500 .76rem/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--muted);font-size:1.07rem}
+.m{font-family:var(--mono);font-size:.92em;white-space:nowrap}
+.c{color:var(--cos);font-weight:600}.s{color:var(--sin);font-weight:600}.a{color:var(--ang);font-weight:600}.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}
+.box{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.key{background:var(--ok-soft);border-left:4px solid var(--ok);border-radius:0 10px 10px 0;padding:12px 14px}
+.warn{background:var(--bad-soft);border-left:4px solid var(--bad);border-radius:0 10px 10px 0;padding:12px 14px}
+.why{background:var(--ang-soft);border-left:4px solid var(--ang);border-radius:0 10px 10px 0;padding:12px 14px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:.94rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font:500 .72rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--soft)}
+td.sym{font-family:var(--mono)}
+td.say{font-style:italic}
+.steps{font-family:var(--mono);font-size:.86rem;line-height:1.8;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--cos);border-radius:0 10px 10px 0;padding:10px 12px;overflow-x:auto;white-space:pre-wrap}
+.steps .n{font-family:var(--body);color:var(--muted);font-size:.9rem}
+.formula{font-family:var(--mono);font-size:clamp(1.05rem,4.6vw,1.6rem);text-align:center;padding:20px 10px;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow-x:auto;text-wrap:balance}
+.aloud{color:var(--muted);text-align:center;margin-top:-4px}
+.aloud b{color:var(--ink)}
+figure{margin:0;display:flex;flex-direction:column;gap:8px}
+figcaption{font-size:.92rem;color:var(--muted)}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--mono);fill:var(--ink)}
+svg .mut{fill:var(--muted)}
+.ctl{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.ctl label{font-family:var(--mono);font-size:.92rem}
+.ctl input[type=range]{flex:1 1 200px;min-width:0;accent-color:var(--ang)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+button{font:500 .86rem var(--mono);background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer;min-height:36px}
+button:hover{border-color:var(--ang)}
+button[aria-pressed=true]{background:var(--ang-soft);border-color:var(--ang)}
+.readout{font-family:var(--mono);font-size:.9rem;line-height:1.7;background:var(--soft);border-radius:10px;padding:10px 12px;overflow-x:auto;white-space:pre}
+details{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+summary{cursor:pointer;font-weight:700}
+details[open] summary{margin-bottom:10px}
+details>div{display:flex;flex-direction:column;gap:10px}
+pre{margin:0;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;overflow-x:auto;font:400 .86rem/1.55 var(--mono)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(15rem,100%),1fr));gap:12px}
+.grid2>*{min-width:0}
+.box .m,.key .m,.warn .m,.why .m{white-space:normal}
+.pill{display:inline-block;font:600 .7rem var(--mono);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:1px 8px;background:var(--soft);color:var(--muted);vertical-align:2px}
+.toc{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.95rem}
+
+.box>*+*,.key>*+*,.warn>*+*,.why>*+*{margin-top:8px}
+.key ul,.warn ul{margin-top:6px}
+
+</style></head><body>
+<nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Part C · Concept 13 of 17</span></div><div><a href="../12-gates/">← Gates as matrices</a> · <a href="../14-tensor-products/">Two qubits and tensor products →</a></div></nav>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Concept 13 · Part C · One qubit</div>
+  <h1>One qubit, the whole picture</h1>
+  <p class="lede">The first three weeks gave us one qubit in four languages: a column vector in ℂ², a ket, an arrow on the Bloch sphere, and a gate as a turn of that sphere. This page joins them up. Orthonormal bases become opposite points, measurements become diameters, gates become rotations, a gate's eigenvectors become its axis, and its eigenvalues become the angle it turns through. It is where the trigonometry, e<sup>iθ</sup>, inner product and eigenvalue pages all meet.</p>
+  <div class="toc"><a href="#dictionary">Dictionary</a><a href="#state">State = point</a><a href="#why-half">Why θ/2</a><a href="#bases">Bases = diameters</a><a href="#gates">Gates = rotations</a><a href="#eigen-axis">Eigen = axis + angle</a><a href="#explore">Explorer</a><a href="#conjugation">HZH = X</a><a href="#trace">One trace</a><a href="#recap">Weeks 1–3 recap</a></div>
+</header>
+
+<section id="symbols">
+  <h2>Symbols on this page</h2>
+  <div class="scroll"><table>
+    <tr><th>Symbol</th><th>Say it</th><th>Meaning</th></tr>
+    <tr><td class="sym">|ψ⟩</td><td class="say">ket psi</td><td>A qubit state: a unit column vector in ℂ².</td></tr>
+    <tr><td class="sym">⟨φ|ψ⟩</td><td class="say">bra phi ket psi</td><td>The inner product (overlap) of φ and ψ, conjugating φ.</td></tr>
+    <tr><td class="sym">|u⟩⟨v|</td><td class="say">ket u bra v</td><td>An outer product: a matrix that reads "how much v" and outputs that much u.</td></tr>
+    <tr><td class="sym">θ, φ</td><td class="say">theta, phi</td><td>Bloch angles: θ down from the north pole, φ round the equator.</td></tr>
+    <tr><td class="sym">n, m</td><td class="say">n, m</td><td>Bloch vectors: unit arrows (x, y, z) in ordinary 3-D space.</td></tr>
+    <tr><td class="sym">n·m</td><td class="say">n dot m</td><td>The ordinary dot product of two real 3-D arrows: cos of the angle between them.</td></tr>
+    <tr><td class="sym">λ</td><td class="say">lambda</td><td>An eigenvalue. For a gate it is always a phase e<sup>iα</sup>.</td></tr>
+  </table></div>
+</section>
+
+<section id="dictionary">
+  <h2>The dictionary: pictures ↔ symbols</h2>
+  <p>The first quantum lectures used pictures; the third proved each one in symbols. Here is the full translation in one table. The rest of the page goes through it row by row.</p>
+  <div class="scroll"><table>
+    <tr><th>Picture</th><th>Symbol</th><th>Section</th></tr>
+    <tr><td>An arrow on the Bloch sphere</td><td class="sym">cos(θ/2)|0⟩ + e<sup>iφ</sup> sin(θ/2)|1⟩</td><td><a href="#state">State</a></td></tr>
+    <tr><td>Opposite points</td><td>Orthogonal vectors: ⟨ψ|ψ<sup>⊥</sup>⟩ = 0</td><td><a href="#why-half">θ/2</a></td></tr>
+    <tr><td>A diameter</td><td>An orthonormal basis = a measurement</td><td><a href="#bases">Bases</a></td></tr>
+    <tr><td>The shadow on the wall</td><td class="sym">P(x) = |⟨x|ψ⟩|²</td><td><a href="#bases">Bases</a></td></tr>
+    <tr><td>A turn that can be undone</td><td>A unitary U, U†U = I</td><td><a href="#gates">Gates</a></td></tr>
+    <tr><td>The axis a gate leaves alone</td><td>Its eigenvectors: U|v⟩ = λ|v⟩</td><td><a href="#eigen-axis">Eigen</a></td></tr>
+    <tr><td>How far it turns</td><td>The phase between its two eigenvalues, λ₂/λ₁ = e<sup>iγ</sup></td><td><a href="#eigen-axis">Eigen</a></td></tr>
+    <tr><td>Moving a gate's axis</td><td>Conjugation: U M U†</td><td><a href="#conjugation">HZH = X</a></td></tr>
+    <tr><td>Two wires</td><td>The tensor product ⊗</td><td><a href="../14-tensor-products/">14</a></td></tr>
+  </table></div>
+</section>
+
+<section id="state">
+  <h2>1 · A state is a point on the sphere</h2>
+  <p>A qubit α|0⟩ + β|1⟩ has two complex numbers, which is four real numbers. Normalisation (|α|² + |β|² = 1) removes one, and the invisible global phase (<a href="../03-euler-and-phase/#qubit">e<sup>iθ</sup> page</a>) removes another. That leaves two angles:</p>
+  <div class="formula">|ψ⟩ = cos(θ/2)|0⟩ + e<sup>iφ</sup> sin(θ/2)|1⟩</div>
+  <p>Read the angles as a point on a sphere, the <b>Bloch vector</b>:</p>
+  <div class="formula">n = (sin θ cos φ,  sin θ sin φ,  cos θ)</div>
+  <div class="steps">From amplitudes directly (handy in code), with |ψ⟩ = α|0⟩ + β|1⟩:
+x = 2·Re(ᾱβ)     y = 2·Im(ᾱβ)     z = |α|² − |β|²</div>
+  <div class="scroll"><table>
+    <tr><th>State</th><th>Column</th><th>(θ, φ)</th><th>Bloch point</th></tr>
+    <tr><td class="sym">|0⟩</td><td class="sym">(1, 0)</td><td class="sym">(0, –)</td><td>north pole (0, 0, 1)</td></tr>
+    <tr><td class="sym">|1⟩</td><td class="sym">(0, 1)</td><td class="sym">(π, –)</td><td>south pole (0, 0, −1)</td></tr>
+    <tr><td class="sym">|+⟩</td><td class="sym">(1, 1)/√2</td><td class="sym">(π/2, 0)</td><td>+x (1, 0, 0)</td></tr>
+    <tr><td class="sym">|−⟩</td><td class="sym">(1, −1)/√2</td><td class="sym">(π/2, π)</td><td>−x (−1, 0, 0)</td></tr>
+    <tr><td class="sym">|+i⟩</td><td class="sym">(1, i)/√2</td><td class="sym">(π/2, π/2)</td><td>+y (0, 1, 0)</td></tr>
+    <tr><td class="sym">|−i⟩</td><td class="sym">(1, −i)/√2</td><td class="sym">(π/2, 3π/2)</td><td>−y (0, −1, 0)</td></tr>
+  </table></div>
+  <p><b>Latitude sets the odds and longitude sets the phase</b> (<a href="../11-bloch-sphere/#lat-long">Bloch sphere page</a>): θ alone fixes P(0) = cos²(θ/2), and φ alone is the relative phase.</p>
+</section>
+
+<section id="why-half">
+  <h2>2 · Why θ/2? Opposite points are orthogonal vectors</h2>
+  <p>|0⟩ and |1⟩ are orthogonal: 90° apart as vectors in ℂ². On the sphere they are the poles, 180° apart. Halving the angle is what turns "opposite on the sphere" into "orthogonal in ℂ²". Here is the check for every point. The point opposite (θ, φ) is (π − θ, φ + π):</p>
+  <div class="steps">|ψ⟩  = cos(θ/2)|0⟩ + e^(iφ) sin(θ/2)|1⟩
+|ψ⊥⟩ = cos((π−θ)/2)|0⟩ + e^(i(φ+π)) sin((π−θ)/2)|1⟩
+     = sin(θ/2)|0⟩ − e^(iφ) cos(θ/2)|1⟩          <span class="n">cos(π/2 − x) = sin x,  e^(iπ) = −1</span>
+⟨ψ|ψ⊥⟩ = cos(θ/2)·sin(θ/2) + conj(e^(iφ) sin(θ/2))·(−e^(iφ) cos(θ/2))
+       = cos(θ/2) sin(θ/2) − e^(−iφ)e^(iφ) sin(θ/2) cos(θ/2)
+       = 0  ✓                                     <span class="n">e^(−iφ)e^(iφ) = 1</span></div>
+  <div class="key"><b>The general overlap rule.</b> If the Bloch vectors of |ψ⟩ and |χ⟩ are an angle γ apart, then
+    <span class="m">|⟨χ|ψ⟩|² = cos²(γ/2) = (1 + n·m)/2</span>.
+    The same point gives 1, a quarter turn apart (|0⟩ and |+⟩, or |+⟩ and |+i⟩) gives 1/2, and opposite points give 0. The second form is the <a href="../01-trigonometry/#half">half-angle formula</a>.</div>
+</section>
+
+<section id="bases">
+  <h2>3 · An orthonormal basis is a diameter, and a diameter is a measurement</h2>
+  <p>An orthonormal basis of ℂ² is two unit vectors with ⟨b₁|b₂⟩ = 0 (<a href="../06-inner-products-and-bases/#onb">orthonormal bases</a>). By section 2, that is <b>two opposite points</b>, which is one diameter of the sphere. Every diameter is a possible measurement, and the three axes are the three standard ones:</p>
+  <div class="scroll"><table>
+    <tr><th>Basis</th><th>Kets</th><th>Linear-algebra names</th><th>Diameter</th></tr>
+    <tr><td>Z (computational)</td><td class="sym">|0⟩, |1⟩</td><td class="sym">e₁, e₂</td><td>z-axis</td></tr>
+    <tr><td>X (Hadamard)</td><td class="sym">|+⟩, |−⟩</td><td class="sym">h₊, h₋</td><td>x-axis</td></tr>
+    <tr><td>Y (circular)</td><td class="sym">|+i⟩, |−i⟩</td><td class="sym">c₊, c₋</td><td>y-axis</td></tr>
+  </table></div>
+  <h3>The Born rule, in any basis</h3>
+  <div class="formula">P(x) = |⟨x|ψ⟩|² = ⟨ψ|P<sub>x</sub>|ψ⟩,   P<sub>x</sub> = |x⟩⟨x|</div>
+  <p>After the measurement the state <i>is</i> |x⟩. Geometrically, the outcome probability is the "shadow" of the arrow on that diameter: <span class="m">P(+n end) = (1 + n·m)/2</span>. Each basis sees only one coordinate of the arrow:</p>
+  <div class="scroll"><table>
+    <tr><th>State</th><th>Z basis P(0), P(1)</th><th>X basis P(+), P(−)</th><th>Y basis P(+i), P(−i)</th></tr>
+    <tr><td class="sym">|0⟩</td><td>1, 0</td><td>½, ½</td><td>½, ½</td></tr>
+    <tr><td class="sym">|+⟩</td><td>½, ½</td><td>1, 0</td><td>½, ½</td></tr>
+    <tr><td class="sym">|+i⟩</td><td>½, ½</td><td>½, ½</td><td>1, 0</td></tr>
+  </table></div>
+  <p>So |+⟩ and |+i⟩ look identical in the Z basis but completely different in the X and Y bases. This is "relative phase is observable", stated precisely. In a circuit the hardware only measures Z, so <b>to measure in X you apply H first</b>. That is exactly what the final H in Deutsch's algorithm does.</p>
+  <div class="why"><b>Completeness: the identity, written in any basis.</b> <span class="m">|0⟩⟨0| + |1⟩⟨1| = I = |+⟩⟨+| + |−⟩⟨−|</span>. Apply either side to |ψ⟩ to see it: you get ⟨0|ψ⟩|0⟩ + ⟨1|ψ⟩|1⟩ = α|0⟩ + β|1⟩. You can insert I anywhere to switch basis. Summing the projectors is also why the probabilities add to 1.</div>
+</section>
+
+<section id="gates">
+  <h2>4 · A gate is a rotation of the sphere</h2>
+  <p>A gate is unitary: U†U = I. Unitaries keep every inner product, ⟨Uφ|Uψ⟩ = ⟨φ|U†U|ψ⟩ = ⟨φ|ψ⟩, so they keep every overlap. By the overlap rule, they keep every angle between Bloch arrows. A map of the sphere that keeps all angles and can be undone is a <b>rigid rotation</b>. That is why every single-qubit gate "turns the ball".</p>
+  <h3>Writing a gate from where it sends the basis</h3>
+  <p>If a gate sends |0⟩ → |u₀⟩ and |1⟩ → |u₁⟩, then</p>
+  <div class="formula">U = |u₀⟩⟨0| + |u₁⟩⟨1|</div>
+  <p>Read it as instructions: "take the |0⟩-part, output u₀; take the |1⟩-part, output u₁". It is the same rule as "column j is the image of e<sub>j</sub>" (<a href="../07-matrices-and-linear-maps/#outer">outer products</a>):</p>
+  <div class="scroll"><table>
+    <tr><th>Gate</th><th>In words</th><th>Dirac form</th></tr>
+    <tr><td class="sym">X</td><td>swap 0 ↔ 1</td><td class="sym">|1⟩⟨0| + |0⟩⟨1|</td></tr>
+    <tr><td class="sym">Z</td><td>sign on |1⟩</td><td class="sym">|0⟩⟨0| − |1⟩⟨1|</td></tr>
+    <tr><td class="sym">H</td><td>0 → +, 1 → −</td><td class="sym">|+⟩⟨0| + |−⟩⟨1|</td></tr>
+  </table></div>
+  <div class="steps">Algebra in one line.  H is Hermitian (H† = H), so also H = |0⟩⟨+| + |1⟩⟨−|. Then:
+H|+⟩ = |0⟩⟨+|+⟩ + |1⟩⟨−|+⟩ = |0⟩·1 + |1⟩·0 = |0⟩
+<span class="n">"H twice gives back |0⟩" is just the single fact ⟨−|+⟩ = 0.</span></div>
+</section>
+
+<section id="eigen-axis">
+  <h2>5 · Eigenvectors are the axis; eigenvalues give the angle</h2>
+  <p>A rotation leaves exactly two points where they are: the two ends of its axis. In vector language, a state that a gate "leaves alone" is one it only multiplies by a number, U|v⟩ = λ|v⟩, which is an eigenvector (<a href="../08-eigenvalues/">eigenvalues page</a>). The extra λ is a pure phase (|λ| = 1 for a unitary), so it is a global phase and the point really does not move.</p>
+  <div class="key"><b>Spectral form.</b> A gate's two eigenvectors are orthogonal (opposite ends of the axis), so they form a basis, and the gate is
+    <span class="m">U = λ₁|v₁⟩⟨v₁| + λ₂|v₂⟩⟨v₂|</span>.
+    A gate is completely fixed by its eigenvectors and its eigenvalues.</div>
+  <p>Now put in any state, written in that basis:</p>
+  <div class="steps">|ψ⟩ = a|v₁⟩ + b|v₂⟩
+U|ψ⟩ = λ₁a|v₁⟩ + λ₂b|v₂⟩ = λ₁ ( a|v₁⟩ + (λ₂/λ₁) b|v₂⟩ )
+<span class="n">λ₁ out front is a global phase. λ₂/λ₁ = e^(iγ) is a relative phase, and relative phase is longitude measured round the v₁ pole.</span>
+So U turns the sphere by γ = arg(λ₂/λ₁) about the axis through v₁.</div>
+  <div class="scroll"><table>
+    <tr><th>Gate</th><th>Eigenvectors (λ)</th><th>Axis</th><th>Turn γ</th></tr>
+    <tr><td class="sym">Z</td><td class="sym">|0⟩ (1), |1⟩ (−1)</td><td>z</td><td>π, half turn</td></tr>
+    <tr><td class="sym">X</td><td class="sym">|+⟩ (1), |−⟩ (−1)</td><td>x</td><td>π</td></tr>
+    <tr><td class="sym">Y</td><td class="sym">|+i⟩ (1), |−i⟩ (−1)</td><td>y</td><td>π</td></tr>
+    <tr><td class="sym">S</td><td class="sym">|0⟩ (1), |1⟩ (i)</td><td>z</td><td>π/2, quarter turn</td></tr>
+    <tr><td class="sym">T</td><td class="sym">|0⟩ (1), |1⟩ (e<sup>iπ/4</sup>)</td><td>z</td><td>π/4, eighth turn</td></tr>
+    <tr><td class="sym">H</td><td class="sym">(cos π/8, sin π/8) (1), (−sin π/8, cos π/8) (−1)</td><td>halfway between x and z</td><td>π</td></tr>
+  </table></div>
+  <div class="why"><b>The Hadamard row is where everything meets.</b> In the real plane, H is a mirror across the line at <b>π/8 = 22.5°</b>. That line is its +1 eigenvector. As a qubit, (cos π/8, sin π/8) has θ/2 = π/8, so θ = <b>π/4</b> on the sphere, and its Bloch axis is (x + z)/√2. The angle doubles on the way from ℂ² to the sphere, exactly as in section 2. A half turn about that diagonal swaps the x and z axes, which is why H turns |0⟩ into |+⟩.</div>
+  <p>Only the <b>ratio</b> of the eigenvalues matters. Multiply a gate by a global phase and both eigenvalues turn together, so the rotation is unchanged. diag(e<sup>−iπ/4</sup>, e<sup>iπ/4</sup>) and S = diag(1, i) are the same quarter turn.</p>
+</section>
+
+<section id="explore">
+  <h2>Explorer: pick a gate and a state</h2>
+  <p>The amber line is the gate's axis (its eigenvectors). The hollow dot is the starting state; the filled dot is where the gate sends it.</p>
+  <figure>
+    <svg id="bx" viewBox="0 0 340 320" style="max-width:420px;margin:0 auto" role="img" aria-label="Bloch sphere showing the chosen gate's axis and the chosen state before and after the gate"></svg>
+    <div class="ctl"><span class="m">gate</span><span class="chips" id="bxG"></span></div>
+    <div class="ctl"><span class="m">state</span><span class="chips" id="bxS"></span></div>
+    <div class="readout" id="bxOut" aria-live="polite"></div>
+  </figure>
+</section>
+
+<section id="conjugation">
+  <h2>6 · Conjugation moves the axis: HZH = X, proved</h2>
+  <p>Sandwich a gate M between U and U†. Using the spectral form and (U|v⟩)† = ⟨v|U†:</p>
+  <div class="formula">U (Σ λ<sub>k</sub>|v<sub>k</sub>⟩⟨v<sub>k</sub>|) U† = Σ λ<sub>k</sub> |Uv<sub>k</sub>⟩⟨Uv<sub>k</sub>|</div>
+  <p><b>The eigenvalues stay; the eigenvectors are carried along by U.</b> On the sphere: the same turn, about an axis that U has moved.</p>
+  <div class="steps">HZH = H ( |0⟩⟨0| − |1⟩⟨1| ) H
+    = (H|0⟩)(⟨0|H) − (H|1⟩)(⟨1|H)
+    = |+⟩⟨+| − |−⟩⟨−|                      <span class="n">H|0⟩ = |+⟩ and ⟨0|H = (H|0⟩)† = ⟨+|, since H† = H</span>
+    = X                                   <span class="n">X's spectral form: eigenvectors |±⟩, eigenvalues ±1</span></div>
+  <p>H swaps the z and x axes, so it turns a z-turn into an x-turn. The same argument gives HXH = Z. Circuit meaning: H–Z–H on a wire acts as X, and an H on each side of a CNOT's target turns it into a controlled-Z. The <a href="../12-gates/#hzh">gates page</a> shows the same identity with matrices.</p>
+</section>
+
+<section id="trace">
+  <h2>One trace that uses every idea</h2>
+  <p>Start at |0⟩, apply H, then S, then measure in each of the three bases.</p>
+  <div class="steps">|0⟩                         north pole
+H|0⟩ = (|0⟩ + |1⟩)/√2 = |+⟩   half turn about (x+z)/√2: north pole → +x
+S|+⟩ = (|0⟩ + i|1⟩)/√2 = |+i⟩ quarter turn about z: +x → +y   (eigenvalues 1, i → γ = π/2)
+Z basis:  P(0) = |⟨0|+i⟩|² = |1/√2|² = 1/2
+X basis:  ⟨+|+i⟩ = ½(1·1 + 1·i) = (1 + i)/2,   |·|² = 2/4 = 1/2
+Y basis:  ⟨+i|+i⟩ = ½(1·1 + conj(i)·i) = ½(1 + 1) = 1     <span class="n">certain</span></div>
+  <p>The arrow points along +y. The Z and X bases each see a zero coordinate, so they give 50/50; the Y basis sees the whole arrow, so the outcome is certain.</p>
+</section>
+
+<section id="recap">
+  <h2>Weeks 1–3 on one page</h2>
+  <p>The main results so far, in learning order, each with the page that teaches it.</p>
+  <div class="scroll"><table>
+    <tr><th>Week</th><th>Result</th><th>Page</th></tr>
+    <tr><td>1</td><td>z = re<sup>iθ</sup>; multiplying means lengths multiply and angles add; |z|² = z̄z</td><td><a href="../02-complex-numbers/">02</a>, <a href="../03-euler-and-phase/">03</a></td></tr>
+    <tr><td>1</td><td>Span, independence, basis, dimension; ℂ² is 2-dimensional over ℂ</td><td><a href="../05-vector-spaces/">05</a></td></tr>
+    <tr><td>1</td><td>⟨u, v⟩ = Σ ū<sub>k</sub>v<sub>k</sub>; Cauchy–Schwarz; in an orthonormal basis the coordinates are inner products (Parseval)</td><td><a href="../06-inner-products-and-bases/">06</a></td></tr>
+    <tr><td>2</td><td>Column j = image of e<sub>j</sub>; outer products; projectors; A†; Hermitian; unitary; change of basis U†AU</td><td><a href="../07-matrices-and-linear-maps/">07</a></td></tr>
+    <tr><td>2–3</td><td>det(A − λI) = 0; trace/det shortcut; rotations have eigenvalues e<sup>±iθ</sup>; A = VDV⁻¹; p(A)v = p(λ)v; M² = I ⇒ λ = ±1</td><td><a href="../08-eigenvalues/">08</a></td></tr>
+    <tr><td>2–3</td><td>Kets, bras, Born rule P(x) = |⟨x|ψ⟩|², measuring in any basis, the three-filter 25%</td><td><a href="../10-qubits-and-dirac-notation/">10</a></td></tr>
+    <tr><td>2–3</td><td>Two angles; θ/2; latitude = odds, longitude = phase; global phase invisible</td><td><a href="../11-bloch-sphere/">11</a></td></tr>
+    <tr><td>2–3</td><td>X, Z, H as half turns; H twice = interference; gates as outer products; HZH = X</td><td><a href="../12-gates/">12</a>, this page</td></tr>
+    <tr><td>2–3</td><td>u ⊗ v; product test ad − bc = 0; (A⊗B)(u⊗v) = Au⊗Bv; CNOT = P₀⊗I + P₁⊗X; H<sup>⊗n</sup></td><td><a href="../14-tensor-products/">14</a></td></tr>
+    <tr><td>2–3</td><td>Bell states; entangled = cannot factor; perfect correlation without signalling</td><td><a href="../15-entanglement-and-qiskit/">15</a></td></tr>
+    <tr><td>2–3</td><td>U<sub>f</sub>|x⟩|y⟩ = |x⟩|y ⊕ f(x)⟩; phase kickback; one query decides constant vs balanced</td><td><a href="../16-deutsch-algorithm/">16</a></td></tr>
+  </table></div>
+</section>
+
+<section id="mistakes">
+  <h2>Common mistakes</h2>
+  <ul>
+    <li><b>Mixing up 90° and 180°.</b> Orthogonal vectors (90° in ℂ²) are opposite points (180° on the sphere).</li>
+    <li><b>Reading an eigenvalue as the angle.</b> The turn is the <i>phase difference</i> of the two eigenvalues. Z has eigenvalues 1 and −1 and turns by π.</li>
+    <li><b>Thinking the eigenvectors move.</b> They only pick up a phase, which is invisible. Every other state moves.</li>
+    <li><b>Forgetting the conjugate</b> in ⟨x|ψ⟩ when x has an i in it (the Y basis).</li>
+    <li><b>Treating "measure in X" as a different machine.</b> It is "apply H, then measure in Z".</li>
+  </ul>
+</section>
+
+<section id="practice">
+  <h2>Practice</h2>
+  <ol>
+    <li>What axis does T turn about, and by how much? Where does T send |+⟩ (give θ and φ)?</li>
+    <li>A state sits 60° from the north pole. What is |⟨0|ψ⟩|²? Use the overlap rule.</li>
+    <li>What does S† do on the sphere? Compute S†|+i⟩.</li>
+    <li>Use conjugation to predict S X S†, then check it with matrices.</li>
+  </ol>
+  <details><summary>Show worked solutions</summary><div>
+    <div class="steps">1.  Eigenvectors |0⟩, |1⟩ → axis z.  λ₂/λ₁ = e^(iπ/4) → an eighth turn (45°).
+    T|+⟩ = (|0⟩ + e^(iπ/4)|1⟩)/√2: still on the equator (θ = π/2), φ = π/4.
+2.  n·m = cos 60° = 1/2  →  (1 + 1/2)/2 = 3/4.    <span class="n">(or cos²30° = 3/4)</span>
+3.  Eigenvalues 1, −i → γ = −π/2: a quarter turn back about z.
+    S†|+i⟩ = (|0⟩ + (−i)(i)|1⟩)/√2 = (|0⟩ + |1⟩)/√2 = |+⟩
+4.  X has eigenvectors |±⟩ (λ = ±1). S carries |+⟩ → |+i⟩ and |−⟩ → |−i⟩.
+    So S X S† has eigenvectors |±i⟩ with λ = ±1: that is Y.
+    Matrices: [[1,0],[0,i]]·[[0,1],[1,0]] = [[0,1],[i,0]];  ·[[1,0],[0,−i]] = [[0,−i],[i,0]] = Y ✓</div>
+  </div></details>
+</section>
+
+<section id="numpy">
+  <h2>Check it in NumPy</h2>
+<pre>import numpy as np
+def bloch(psi):
+    a, b = psi
+    return np.real([2*np.conj(a)*b, -2j*np.conj(a)*b, abs(a)**2 - abs(b)**2]).round(6)
+H = np.array([[1, 1], [1, -1]])/np.sqrt(2)
+w, V = np.linalg.eigh(H)
+print(w, bloch(V[:, 1]))                    # [-1. 1.]  [0.7071 0 0.7071]: axis (x+z)/√2
+print(V[:, 1], np.cos(np.pi/8), np.sin(np.pi/8))   # the +1 eigenvector is at 22.5° (up to sign)
+S = np.diag([1, 1j]); plus = np.array([1, 1])/np.sqrt(2)
+print(bloch(S @ plus))                      # [0 1 0]: |+⟩ → |+i⟩
+Z, X = np.diag([1, -1]), np.array([[0, 1], [1, 0]])
+print(np.allclose(H @ Z @ H, X), np.allclose(S @ X @ S.conj().T, [[0, -1j], [1j, 0]]))   # True True</pre>
+</section>
+
+<script>
+(function(){
+  const s2=Math.SQRT1_2,c8=Math.cos(Math.PI/8),s8=Math.sin(Math.PI/8);
+  const C=(re,im)=>[re,im||0];
+  const G={
+    'I':{m:[[C(1),C(0)],[C(0),C(1)]],n:null,t:'Both eigenvalues are 1: every state is an eigenvector, no turn.'},
+    'X':{m:[[C(0),C(1)],[C(1),C(0)]],n:[1,0,0],t:'Eigenvectors |+⟩ (λ = 1), |−⟩ (λ = −1). Axis x. λ₂/λ₁ = −1 = e^(iπ): half turn.'},
+    'Y':{m:[[C(0),C(0,-1)],[C(0,1),C(0)]],n:[0,1,0],t:'Eigenvectors |+i⟩ (λ = 1), |−i⟩ (λ = −1). Axis y. Half turn.'},
+    'Z':{m:[[C(1),C(0)],[C(0),C(-1)]],n:[0,0,1],t:'Eigenvectors |0⟩ (λ = 1), |1⟩ (λ = −1). Axis z. Half turn.'},
+    'H':{m:[[C(s2),C(s2)],[C(s2),C(-s2)]],n:[s2,0,s2],t:'Eigenvectors (cos π/8, sin π/8) (λ = 1), (−sin π/8, cos π/8) (λ = −1).\nAxis (x+z)/√2. Half turn: swaps the x and z axes.'},
+    'S':{m:[[C(1),C(0)],[C(0),C(0,1)]],n:[0,0,1],t:'Eigenvectors |0⟩ (λ = 1), |1⟩ (λ = i). Axis z. λ₂/λ₁ = e^(iπ/2): quarter turn.'},
+    'T':{m:[[C(1),C(0)],[C(0),C(s2,s2)]],n:[0,0,1],t:'Eigenvectors |0⟩ (λ = 1), |1⟩ (λ = e^(iπ/4)). Axis z. Eighth turn.'},
+    'S†':{m:[[C(1),C(0)],[C(0),C(0,-1)]],n:[0,0,1],t:'Eigenvectors |0⟩ (λ = 1), |1⟩ (λ = −i). Axis z. λ₂/λ₁ = e^(−iπ/2): quarter turn back.'}
+  };
+  const ST={'|0⟩':[C(1),C(0)],'|1⟩':[C(0),C(1)],'|+⟩':[C(s2),C(s2)],'|−⟩':[C(s2),C(-s2)],'|+i⟩':[C(s2),C(0,s2)],'|−i⟩':[C(s2),C(0,-s2)]};
+  let g='H',st='|0⟩';
+  const mul=(a,b)=>[a[0]*b[0]-a[1]*b[1],a[0]*b[1]+a[1]*b[0]],add=(a,b)=>[a[0]+b[0],a[1]+b[1]],cj=a=>[a[0],-a[1]];
+  const app=(m,v)=>[add(mul(m[0][0],v[0]),mul(m[0][1],v[1])),add(mul(m[1][0],v[0]),mul(m[1][1],v[1]))];
+  const bl=v=>{const p=mul(cj(v[0]),v[1]);return [2*p[0],2*p[1],(v[0][0]**2+v[0][1]**2)-(v[1][0]**2+v[1][1]**2)]};
+  const cx=170,cy=160,R=118,P=(x,y,z)=>[cx+R*(0.93*y-0.40*x),cy+R*(-0.93*z+0.30*x)];
+  const svg=document.getElementById('bx'),NS='http://www.w3.org/2000/svg';
+  const el=(t,a)=>{const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);svg.appendChild(e);return e};
+  el('circle',{cx,cy,r:R,fill:'var(--soft)',stroke:'var(--line)','stroke-width':2});
+  let eq='';for(let i=0;i<=72;i++){const t=i/72*2*Math.PI,p=P(Math.cos(t),Math.sin(t),0);eq+=(i?'L':'M')+p[0].toFixed(1)+','+p[1].toFixed(1)}
+  el('path',{d:eq,fill:'none',stroke:'var(--line)','stroke-width':1.5,'stroke-dasharray':'4 4'});
+  [[1,0,0],[0,1,0],[0,0,1]].forEach(a=>{const p=P(...a),q=P(-a[0],-a[1],-a[2]);el('line',{x1:q[0],y1:q[1],x2:p[0],y2:p[1],stroke:'var(--muted)','stroke-width':1})});
+  const labs={'|0⟩':[0,0,1],'|1⟩':[0,0,-1],'|+⟩':[1,0,0],'|−⟩':[-1,0,0],'|+i⟩':[0,1,0],'|−i⟩':[0,-1,0]};
+  for(const k in labs){const p=P(...labs[k]);el('circle',{cx:p[0],cy:p[1],r:3.5,fill:'var(--muted)'});const t=el('text',{x:p[0]+(labs[k][1]>0?8:labs[k][1]<0?-34:labs[k][0]>0?-30:8),y:p[1]+(labs[k][2]>0?-8:labs[k][2]<0?18:labs[k][0]>0?16:-6),'font-size':13});t.textContent=k}
+  const ax=el('line',{stroke:'var(--ang)','stroke-width':4,'stroke-linecap':'round'});
+  const link=el('line',{stroke:'var(--cos)','stroke-width':1.5,'stroke-dasharray':'3 3'});
+  const d0=el('circle',{r:8,fill:'none',stroke:'var(--cos)','stroke-width':2.5});
+  const d1=el('circle',{r:7,fill:'var(--cos)'});
+  const f=z=>{const r=Math.abs(z[0])<1e-9?0:z[0],i=Math.abs(z[1])<1e-9?0:z[1],q=x=>(+x.toFixed(3)).toString();if(i===0)return q(r);if(r===0)return q(i)+'i';return '('+q(r)+(i<0?' − ':' + ')+q(Math.abs(i))+'i)'};
+  const fv=b=>'('+b.map(x=>(+x.toFixed(2)).toString().replace('-','−')).join(', ')+')';
+  function chips(id,keys,cur,set){const e=document.getElementById(id);keys.forEach(k=>{const b=document.createElement('button');b.type='button';b.textContent=k;b.onclick=()=>{set(k);draw()};e.appendChild(b)});return e}
+  const cg=chips('bxG',Object.keys(G),()=>g,k=>g=k),cs=chips('bxS',Object.keys(ST),()=>st,k=>st=k);
+  function draw(){
+    cg.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.textContent===g));
+    cs.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.textContent===st));
+    const gate=G[g];
+    if(gate.n){const p=P(...gate.n.map(x=>x*1.18)),q=P(...gate.n.map(x=>-x*1.18));ax.setAttribute('x1',q[0]);ax.setAttribute('y1',q[1]);ax.setAttribute('x2',p[0]);ax.setAttribute('y2',p[1]);ax.style.display=''}else ax.style.display='none';
+    const v=ST[st],w=app(gate.m,v),b0=bl(v),b1=bl(w),p0=P(...b0),p1=P(...b1);
+    d0.setAttribute('cx',p0[0]);d0.setAttribute('cy',p0[1]);d1.setAttribute('cx',p1[0]);d1.setAttribute('cy',p1[1]);
+    link.setAttribute('x1',p0[0]);link.setAttribute('y1',p0[1]);link.setAttribute('x2',p1[0]);link.setAttribute('y2',p1[1]);
+    document.getElementById('bxOut').textContent=`${gate.t}\n${g}${st} = ${f(w[0])}|0⟩ + ${f(w[1])}|1⟩\nBloch point ${fv(b0)} → ${fv(b1)}`;
+  }
+  draw();
+})();
+</script>
+
+</div>
+<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Part C · Concept 13 of 17</span></div><div><a href="../12-gates/">← Gates as matrices</a> · <a href="../14-tensor-products/">Two qubits and tensor products →</a></div></nav>
+</body></html>

@@ -1,3 +1,5 @@
+> **Historical.** This plan was written before the course started and uses the old concept numbers (01 complex numbers … 12 entanglement). The current learning path is in [../README.md](../README.md).
+
 # Quantum Computing Maths Prep Plan
 
 Oct 5, 2026 · Sathisha NS

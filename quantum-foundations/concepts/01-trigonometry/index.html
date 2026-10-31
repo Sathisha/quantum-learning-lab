@@ -1,0 +1,346 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Trigonometry refresher</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+.cnav{--cn-ink:#1b2430;--cn-mut:#566275;--cn-bg:#f5f7fb;--cn-rule:#d3dae4;--cn-a:#1d5bbd;
+ display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 18px;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+ color:var(--cn-mut);background:var(--cn-bg);border-bottom:1px solid var(--cn-rule);
+ padding-block:9px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.cnav:not(.bottom){margin-bottom:22px}
+.cnav.bottom{border-bottom:0;border-top:1px solid var(--cn-rule);margin-top:32px}
+.cnav a{color:var(--cn-a);text-decoration:none}.cnav a:hover{text-decoration:underline}
+.cnav a:focus-visible{outline:2px solid var(--cn-a);outline-offset:2px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}}
+:root[data-theme="dark"] .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}
+</style>
+
+<style>
+/* Toolkit pages: one reading column; colour carries meaning throughout: cos / real part = blue, sin / imaginary part = magenta, angle / phase = amber. */
+:root{
+  --bg:#f4f6f9; --paper:#ffffff; --ink:#1a2330; --muted:#59667a; --line:#d6dde6; --soft:#eef2f7;
+  --cos:#1d5bbd; --sin:#b02c68; --ang:#b8690f; --ok:#1e7a4a; --bad:#b3261e;
+  --cos-soft:#e3ecfb; --sin-soft:#f8e3ec; --ang-soft:#fbeedd; --ok-soft:#e1f2e8; --bad-soft:#fbe4e2;
+  --display:"Fraunces",Georgia,serif; --body:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace; color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --line:#2c3644; --soft:#1b2330;
+  --cos:#7eb0ff; --sin:#f28ab9; --ang:#f0aa5a; --ok:#6fd39d; --bad:#ff8f86;
+  --cos-soft:#1c2b45; --sin-soft:#3a1c2b; --ang-soft:#3a2a16; --ok-soft:#163323; --bad-soft:#3b1a18; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --line:#2c3644; --soft:#1b2330;
+  --cos:#7eb0ff; --sin:#f28ab9; --ang:#f0aa5a; --ok:#6fd39d; --bad:#ff8f86;
+  --cos-soft:#1c2b45; --sin-soft:#3a1c2b; --ang-soft:#3a2a16; --ok-soft:#163323; --bad-soft:#3b1a18; color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 var(--body)}
+.wrap{max-width:44rem;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:8px 40px;display:flex;flex-direction:column;gap:38px}
+header{display:flex;flex-direction:column;gap:10px}
+section{display:flex;flex-direction:column;gap:12px;min-width:0}
+h1,h2,h3{font-family:var(--display);line-height:1.15;margin:0;text-wrap:balance}
+h1{font-size:clamp(2rem,7vw,2.7rem)}
+h2{font-size:1.45rem}
+h3{font-size:1.1rem;margin-top:6px}
+p{margin:0}
+ul,ol{margin:0;padding-left:1.25em;display:flex;flex-direction:column;gap:6px}
+a{color:var(--cos)}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--cos);outline-offset:2px;border-radius:4px}
+.eyebrow{font:500 .76rem/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--muted);font-size:1.07rem}
+.m{font-family:var(--mono);font-size:.92em;white-space:nowrap}
+.c{color:var(--cos);font-weight:600}.s{color:var(--sin);font-weight:600}.a{color:var(--ang);font-weight:600}.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}
+.box{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.key{background:var(--ok-soft);border-left:4px solid var(--ok);border-radius:0 10px 10px 0;padding:12px 14px}
+.warn{background:var(--bad-soft);border-left:4px solid var(--bad);border-radius:0 10px 10px 0;padding:12px 14px}
+.why{background:var(--ang-soft);border-left:4px solid var(--ang);border-radius:0 10px 10px 0;padding:12px 14px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:.94rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font:500 .72rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--soft)}
+td.sym{font-family:var(--mono)}
+td.say{font-style:italic}
+.steps{font-family:var(--mono);font-size:.86rem;line-height:1.8;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--cos);border-radius:0 10px 10px 0;padding:10px 12px;overflow-x:auto;white-space:pre-wrap}
+.steps .n{font-family:var(--body);color:var(--muted);font-size:.9rem}
+.formula{font-family:var(--mono);font-size:clamp(1.05rem,4.6vw,1.6rem);text-align:center;padding:20px 10px;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow-x:auto;text-wrap:balance}
+.aloud{color:var(--muted);text-align:center;margin-top:-4px}
+.aloud b{color:var(--ink)}
+figure{margin:0;display:flex;flex-direction:column;gap:8px}
+figcaption{font-size:.92rem;color:var(--muted)}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--mono);fill:var(--ink)}
+svg .mut{fill:var(--muted)}
+.ctl{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.ctl label{font-family:var(--mono);font-size:.92rem}
+.ctl input[type=range]{flex:1 1 200px;min-width:0;accent-color:var(--ang)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+button{font:500 .86rem var(--mono);background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer;min-height:36px}
+button:hover{border-color:var(--ang)}
+button[aria-pressed=true]{background:var(--ang-soft);border-color:var(--ang)}
+.readout{font-family:var(--mono);font-size:.9rem;line-height:1.7;background:var(--soft);border-radius:10px;padding:10px 12px;overflow-x:auto;white-space:pre}
+details{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+summary{cursor:pointer;font-weight:700}
+details[open] summary{margin-bottom:10px}
+details>div{display:flex;flex-direction:column;gap:10px}
+pre{margin:0;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;overflow-x:auto;font:400 .86rem/1.55 var(--mono)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(15rem,100%),1fr));gap:12px}
+.grid2>*{min-width:0}
+.box .m,.key .m,.warn .m,.why .m{white-space:normal}
+.pill{display:inline-block;font:600 .7rem var(--mono);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:1px 8px;background:var(--soft);color:var(--muted);vertical-align:2px}
+.toc{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.95rem}
+
+.box>*+*,.key>*+*,.warn>*+*,.why>*+*{margin-top:8px}
+.key ul,.warn ul{margin-top:6px}
+
+</style></head><body>
+<nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Part A · Concept 01 of 17</span></div><div><a href="../02-complex-numbers/">Complex numbers →</a></div></nav>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Concept 01 · Part A · Toolkit</div>
+  <h1>Trigonometry refresher</h1>
+  <p class="lede">Sines and cosines show up in every part of quantum computing: the amplitudes cos(θ/2) and sin(θ/2) on the Bloch sphere, the rotation matrices, the probabilities cos², and Euler's e<sup>iθ</sup> = cos θ + i sin θ. This page rebuilds the trigonometry you need: the unit circle, radians, the special values, and the four identities the course keeps using.</p>
+  <div class="toc"><a href="#circle">Unit circle</a><a href="#radians">Radians</a><a href="#values">Special values</a><a href="#symmetry">Symmetries</a><a href="#addition">Addition formulas</a><a href="#half">Half-angle</a><a href="#rotation">Rotation matrix</a><a href="#where">Where it shows up</a></div>
+</header>
+
+<section id="symbols">
+  <h2>Symbols on this page</h2>
+  <div class="scroll"><table>
+    <tr><th>Symbol</th><th>Say it</th><th>Meaning</th></tr>
+    <tr><td class="sym">θ, φ</td><td class="say">theta, phi</td><td>Names for angles. On the Bloch sphere θ is the angle down from the north pole and φ the angle around the equator.</td></tr>
+    <tr><td class="sym">π</td><td class="say">pi</td><td>≈ 3.14159. Half a turn is π radians, which is 180°.</td></tr>
+    <tr><td class="sym">rad, °</td><td class="say">radians, degrees</td><td>Two units for angles. A full turn is 2π rad = 360°.</td></tr>
+    <tr><td class="sym">cos θ, sin θ</td><td class="say">cos theta, sine theta</td><td>The x and y coordinates of the point at angle θ on the unit circle.</td></tr>
+    <tr><td class="sym">tan θ</td><td class="say">tan theta</td><td>sin θ / cos θ: the slope of the line at angle θ.</td></tr>
+    <tr><td class="sym">sin²θ</td><td class="say">sine squared theta</td><td>(sin θ)². <b>Not</b> sin(θ²).</td></tr>
+    <tr><td class="sym">sin⁻¹, arcsin</td><td class="say">arc sine</td><td>The inverse function: the angle whose sine is a given number. <b>Not</b> 1/sin.</td></tr>
+  </table></div>
+</section>
+
+<section id="basics">
+  <h2>Back to basics: the right triangle</h2>
+  <p>School trigonometry starts with a right-angled triangle. For an angle θ in it:</p>
+  <div class="grid2">
+    <figure>
+      <svg viewBox="0 0 330 190" role="img" aria-label="A right triangle with hypotenuse 1, adjacent side cos theta and opposite side sin theta">
+        <polygon points="30,160 250,160 250,40" fill="var(--soft)" stroke="var(--ink)" stroke-width="1.5"/>
+        <polyline points="236,160 236,146 250,146" fill="none" stroke="var(--muted)"/>
+        <line x1="30" y1="160" x2="250" y2="160" stroke="var(--cos)" stroke-width="4"/>
+        <line x1="250" y1="160" x2="250" y2="40" stroke="var(--sin)" stroke-width="4"/>
+        <path d="M70,160 A40,40 0 0 0 65.2,141" fill="none" stroke="var(--ang)" stroke-width="2.5"/>
+        <text x="78" y="152" style="fill:var(--ang)">θ</text>
+        <text x="100" y="90" transform="rotate(-28 100 90)" font-size="13">hypotenuse = 1</text>
+        <text x="80" y="182" font-size="13" style="fill:var(--cos)">adjacent = cos θ</text>
+        <text x="258" y="98" font-size="13" style="fill:var(--sin)">opposite</text>
+        <text x="258" y="116" font-size="13" style="fill:var(--sin)">= sin θ</text>
+      </svg>
+      <figcaption>With hypotenuse 1, the two short sides <i>are</i> cos θ and sin θ.</figcaption>
+    </figure>
+    <div class="box">
+      <p><b>SOH-CAH-TOA</b></p>
+      <p class="m"><span class="s">sin θ</span> = opposite / hypotenuse</p>
+      <p class="m"><span class="c">cos θ</span> = adjacent / hypotenuse</p>
+      <p class="m">tan θ = opposite / adjacent = sin θ / cos θ</p>
+      <p>Make the hypotenuse length 1 and the fractions disappear: the sides are simply cos θ and sin θ. Pythagoras (a² + b² = c²) then gives the most used identity in the course:</p>
+      <p class="m" style="font-size:1.1rem"><span class="c">cos²θ</span> + <span class="s">sin²θ</span> = 1</p>
+    </div>
+  </div>
+</section>
+
+<section id="circle">
+  <h2>The unit circle: trigonometry for every angle</h2>
+  <p>A triangle only allows angles between 0° and 90°. The <b>unit circle</b> (radius 1, centre at the origin) removes that limit: walk anticlockwise from the point (1, 0) through an angle θ. The point you land on <i>defines</i> cos θ and sin θ:</p>
+  <div class="formula">point at angle θ = (<span class="c">cos θ</span>, <span class="s">sin θ</span>)</div>
+  <p class="aloud">Say: <b>"cos theta is how far right, sin theta is how far up."</b></p>
+  <figure>
+    <svg id="uc" viewBox="0 0 320 320" style="max-width:380px;margin:0 auto" role="img" aria-label="Interactive unit circle showing the point at the chosen angle with its cosine and sine">
+      <line x1="20" y1="160" x2="300" y2="160" stroke="var(--muted)"/>
+      <line x1="160" y1="20" x2="160" y2="300" stroke="var(--muted)"/>
+      <circle cx="160" cy="160" r="120" fill="none" stroke="var(--line)" stroke-width="2"/>
+      <text x="284" y="152" class="mut">1</text><text x="24" y="152" class="mut">−1</text>
+      <text x="166" y="34" class="mut">1</text><text x="166" y="296" class="mut">−1</text>
+      <text x="236" y="60" class="mut">I: + +</text><text x="34" y="60" class="mut">II: − +</text>
+      <text x="30" y="270" class="mut">III: − −</text><text x="232" y="270" class="mut">IV: + −</text>
+      <path id="ucArc" fill="none" stroke="var(--ang)" stroke-width="3"/>
+      <line id="ucCos" x1="160" y1="160" stroke="var(--cos)" stroke-width="5" stroke-linecap="round"/>
+      <line id="ucSin" stroke="var(--sin)" stroke-width="5" stroke-linecap="round"/>
+      <line id="ucRad" x1="160" y1="160" stroke="var(--ink)" stroke-width="2"/>
+      <circle id="ucDot" r="7" fill="var(--ang)"/>
+    </svg>
+    <div class="ctl"><label for="ucR">θ = <span id="ucDeg">60</span>°</label><input id="ucR" type="range" min="0" max="360" step="1" value="60" aria-label="angle in degrees"></div>
+    <div class="chips" id="ucChips"></div>
+    <div class="readout" id="ucOut" aria-live="polite"></div>
+    <figcaption>Drag the angle. The blue bar is cos θ (horizontal), the magenta bar is sin θ (vertical). The quadrant labels show the signs of (cos, sin).</figcaption>
+  </figure>
+  <div class="key"><b>Three facts to read straight off the circle</b>
+    <ul>
+      <li>cos θ and sin θ are always between −1 and 1.</li>
+      <li>cos²θ + sin²θ = 1 for every θ: the point is always at distance 1 from the centre.</li>
+      <li>Going once round (θ → θ + 2π) brings you back: cos and sin repeat every 2π.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="radians">
+  <h2>Radians: the unit the maths uses</h2>
+  <p>A radian measures an angle by the <b>arc length</b> it cuts out of the unit circle. The whole circumference is 2π, so a full turn is 2π radians.</p>
+  <div class="formula">360° = 2π rad   ·   180° = π rad</div>
+  <div class="steps">degrees → radians:  multiply by π/180      90° × π/180 = π/2
+radians → degrees:  multiply by 180/π      π/4 × 180/π = 45°
+<span class="n">Handy anchors: π/2 = quarter turn, π = half turn, 2π = full turn.</span></div>
+  <div class="warn"><b>Calculators and NumPy use radians.</b> <span class="m">np.cos(90)</span> is the cosine of 90 <i>radians</i> (≈ −0.448), not of 90°. Write <span class="m">np.cos(np.pi/2)</span> or <span class="m">np.cos(np.deg2rad(90))</span>.</div>
+</section>
+
+<section id="values">
+  <h2>The special values worth knowing by heart</h2>
+  <div class="scroll"><table>
+    <tr><th>θ (rad)</th><th>θ (°)</th><th>cos θ</th><th>sin θ</th><th>Where you meet it</th></tr>
+    <tr><td class="sym">0</td><td>0°</td><td class="sym c">1</td><td class="sym s">0</td><td>|0⟩, the north pole</td></tr>
+    <tr><td class="sym">π/8</td><td>22.5°</td><td class="sym c">≈ 0.924</td><td class="sym s">≈ 0.383</td><td>The mirror line of the Hadamard gate</td></tr>
+    <tr><td class="sym">π/6</td><td>30°</td><td class="sym c">√3/2 ≈ 0.866</td><td class="sym s">1/2</td><td>A 3/4 vs 1/4 measurement split</td></tr>
+    <tr><td class="sym">π/4</td><td>45°</td><td class="sym c">√2/2 = 1/√2 ≈ 0.707</td><td class="sym s">1/√2</td><td>The 1/√2 in |+⟩ and in H</td></tr>
+    <tr><td class="sym">π/3</td><td>60°</td><td class="sym c">1/2</td><td class="sym s">√3/2</td><td>Cube roots of unity</td></tr>
+    <tr><td class="sym">π/2</td><td>90°</td><td class="sym c">0</td><td class="sym s">1</td><td>e<sup>iπ/2</sup> = i, the equator</td></tr>
+    <tr><td class="sym">π</td><td>180°</td><td class="sym c">−1</td><td class="sym s">0</td><td>e<sup>iπ</sup> = −1, |1⟩, the Z gate</td></tr>
+    <tr><td class="sym">3π/2</td><td>270°</td><td class="sym c">0</td><td class="sym s">−1</td><td>e<sup>i3π/2</sup> = −i</td></tr>
+  </table></div>
+  <div class="why"><b>Memory trick for 0°, 30°, 45°, 60°, 90°.</b> The sines are √0/2, √1/2, √2/2, √3/2, √4/2, which is 0, 1/2, 0.707, 0.866, 1. The cosines are the same list read backwards.</div>
+  <p>Also note <span class="m">√2/2 = 1/√2</span>: multiply top and bottom of 1/√2 by √2. Both spellings appear in the slides.</p>
+</section>
+
+<section id="symmetry">
+  <h2>Symmetries: get any angle from a small one</h2>
+  <p>Each rule is a reflection or a turn of the unit circle, so you can always check it by picturing the point.</p>
+  <div class="scroll"><table>
+    <tr><th>Rule</th><th>Picture</th></tr>
+    <tr><td class="sym">cos(−θ) = cos θ,  sin(−θ) = −sin θ</td><td>Mirror in the x-axis. Cos is <i>even</i>, sin is <i>odd</i>. This is why the complex conjugate of e<sup>iθ</sup> is e<sup>−iθ</sup>.</td></tr>
+    <tr><td class="sym">cos(θ + π) = −cos θ,  sin(θ + π) = −sin θ</td><td>A half turn flips both signs. Hence e<sup>i(θ+π)</sup> = −e<sup>iθ</sup>.</td></tr>
+    <tr><td class="sym">cos(π − θ) = −cos θ,  sin(π − θ) = sin θ</td><td>Mirror in the y-axis.</td></tr>
+    <tr><td class="sym">cos(π/2 − θ) = sin θ,  sin(π/2 − θ) = cos θ</td><td>Mirror in the 45° line swaps the coordinates.</td></tr>
+    <tr><td class="sym">cos(θ + 2π) = cos θ,  sin(θ + 2π) = sin θ</td><td>One full turn changes nothing (period 2π).</td></tr>
+  </table></div>
+</section>
+
+<section id="addition">
+  <h2>The addition formulas</h2>
+  <p>These two formulas are the engine behind the double-angle and half-angle rules and the rotation matrix. On the <a href="../03-euler-and-phase/#add">e<sup>iθ</sup> page</a> you will see them fall out of e<sup>ia</sup>·e<sup>ib</sup> = e<sup>i(a+b)</sup> in two lines, so if you only remember that, you can rebuild them.</p>
+  <div class="formula">cos(a + b) = cos a cos b − sin a sin b</div>
+  <div class="formula">sin(a + b) = sin a cos b + cos a sin b</div>
+  <div class="warn"><b>The classic mistake.</b> sin(a + b) is <b>not</b> sin a + sin b. Check with a = b = 45°: sin 90° = 1, but sin 45° + sin 45° ≈ 1.414.</div>
+  <h3>Set b = a: the double-angle formulas</h3>
+  <div class="steps">cos 2a = cos²a − sin²a
+       = 2cos²a − 1          <span class="n">(use sin²a = 1 − cos²a)</span>
+       = 1 − 2sin²a          <span class="n">(use cos²a = 1 − sin²a)</span>
+sin 2a = 2 sin a cos a</div>
+</section>
+
+<section id="half">
+  <h2>The half-angle formulas: the Bloch sphere's favourite</h2>
+  <p>Solve the two versions of cos 2a for cos²a and sin²a, then write θ for 2a:</p>
+  <div class="formula">cos²(θ/2) = (1 + cos θ)/2  ·  sin²(θ/2) = (1 − cos θ)/2</div>
+  <p class="aloud">Say: <b>"cos squared of half theta is one plus cos theta, over two."</b></p>
+  <p>Here is why the course cares. A qubit at Bloch angle θ is <span class="m">cos(θ/2)|0⟩ + e<sup>iφ</sup> sin(θ/2)|1⟩</span>, so</p>
+  <div class="steps">P(0) = cos²(θ/2) = (1 + cos θ)/2 = (1 + z)/2
+P(1) = sin²(θ/2) = (1 − cos θ)/2 = (1 − z)/2
+<span class="n">z = cos θ is the height of the point on the sphere. The probability is a straight-line function of height.</span></div>
+  <h3>Worked example, every step shown</h3>
+  <p>A qubit sits at θ = 60° (π/3) from the north pole. What is P(0)?</p>
+  <div class="steps">Route 1, directly:  θ/2 = 30°,  cos 30° = √3/2,  P(0) = (√3/2)² = 3/4
+Route 2, half-angle: cos 60° = 1/2,  P(0) = (1 + 1/2)/2 = (3/2)/2 = 3/4  ✓
+P(1) = 1 − 3/4 = 1/4
+<span class="n">The state is (√3/2)|0⟩ + (1/2)|1⟩. Squaring the amplitudes gives 3/4 and 1/4.</span></div>
+</section>
+
+<section id="rotation">
+  <h2>The rotation matrix, derived from the addition formulas</h2>
+  <p>Take the point at angle a, <span class="m">(cos a, sin a)</span>, and turn it by an extra angle b. It lands at angle a + b:</p>
+  <div class="steps">new x = cos(a+b) = cos b·cos a − sin b·sin a
+new y = sin(a+b) = sin b·cos a + cos b·sin a
+<span class="n">Each new coordinate is a fixed mix of the old ones (cos a, sin a), with weights:</span>
+┌ new x ┐   ┌ cos b  −sin b ┐ ┌ cos a ┐
+└ new y ┘ = └ sin b   cos b ┘ └ sin a ┘</div>
+  <p>So "rotate by b" is multiplication by the matrix <span class="m">R<sub>b</sub> = [[cos b, −sin b], [sin b, cos b]]</span>. This matrix appears on the <a href="../07-matrices-and-linear-maps/#linear-test">linear maps page</a>. Its eigenvalues are e<sup>±ib</sup> (<a href="../08-eigenvalues/#rotation">eigenvalues page</a>), which is where trigonometry, complex numbers and eigenvalues meet.</p>
+  <div class="key">Rotating twice by b is rotating once by 2b: <span class="m">R<sub>b</sub>R<sub>b</sub> = R<sub>2b</sub></span>. Multiply it out and you get the double-angle formulas again.</div>
+</section>
+
+<section id="where">
+  <h2>Where this shows up in the course</h2>
+  <div class="scroll"><table>
+    <tr><th>Trig fact</th><th>Quantum use</th><th>Page</th></tr>
+    <tr><td>cos θ + i sin θ</td><td>e<sup>iθ</sup>: every phase, every phase gate</td><td><a href="../03-euler-and-phase/">03</a></td></tr>
+    <tr><td>cos²θ + sin²θ = 1</td><td>Why cos(θ/2)|0⟩ + sin(θ/2)|1⟩ is normalised</td><td><a href="../11-bloch-sphere/">11</a></td></tr>
+    <tr><td>Half-angle</td><td>P(0) = (1 + z)/2; 180° on the sphere is 90° between vectors</td><td><a href="../13-one-qubit-big-picture/#why-half">13</a></td></tr>
+    <tr><td>cos² (Malus's law)</td><td>The three-polariser puzzle: cos²45° · cos²45° = 1/4</td><td><a href="../10-qubits-and-dirac-notation/#filters">10</a></td></tr>
+    <tr><td>Rotation matrix</td><td>Gates as rotations; complex eigenvalues e<sup>±iθ</sup></td><td><a href="../08-eigenvalues/#rotation">08</a></td></tr>
+    <tr><td>π/8 = 22.5°</td><td>H is a mirror across the line at 22.5°; its +1 eigenvector points that way</td><td><a href="../13-one-qubit-big-picture/#eigen-axis">13</a></td></tr>
+  </table></div>
+</section>
+
+<section id="mistakes">
+  <h2>Common mistakes</h2>
+  <ul>
+    <li><b>Degrees in a radians function.</b> NumPy, Python's <span class="m">math</span> and most of the maths assume radians.</li>
+    <li><b>sin²θ vs sin(θ²).</b> sin²θ means (sin θ)².</li>
+    <li><b>sin⁻¹ x vs 1/sin x.</b> sin⁻¹ is the inverse function (arcsin). 1/sin x is written csc x, or just 1/sin x.</li>
+    <li><b>Splitting sums.</b> sin(a + b) ≠ sin a + sin b, and cos(2a) ≠ 2 cos a.</li>
+    <li><b>Forgetting the half on the Bloch sphere.</b> The amplitude uses θ/2, not θ. |1⟩ is at θ = π (south pole), and cos(π/2) = 0 ✓.</li>
+  </ul>
+</section>
+
+<section id="practice">
+  <h2>Practice</h2>
+  <ol>
+    <li>Convert 135° to radians, and 5π/6 to degrees.</li>
+    <li>Use the addition formula to find sin 75° exactly (75 = 45 + 30).</li>
+    <li>A qubit sits on the equator (θ = 90°). Use the half-angle formula to find P(0).</li>
+    <li>Use cos(π − θ) = −cos θ to find cos 150°.</li>
+  </ol>
+  <details><summary>Show worked solutions</summary><div>
+    <div class="steps">1.  135 × π/180 = 3π/4.        5π/6 × 180/π = 150°.
+2.  sin 75° = sin 45° cos 30° + cos 45° sin 30°
+          = (√2/2)(√3/2) + (√2/2)(1/2)
+          = √2(√3 + 1)/4 = (√6 + √2)/4 ≈ 0.9659
+3.  P(0) = (1 + cos 90°)/2 = (1 + 0)/2 = 1/2   <span class="n">(every equator state is 50/50)</span>
+4.  cos 150° = cos(180° − 30°) = −cos 30° = −√3/2 ≈ −0.866</div>
+  </div></details>
+</section>
+
+<section id="numpy">
+  <h2>Check it in NumPy</h2>
+<pre>import numpy as np
+print(np.cos(np.pi/3), np.sin(np.pi/6))        # 0.5 0.5
+print(np.sin(np.deg2rad(75)), (np.sqrt(6)+np.sqrt(2))/4)   # 0.9659 twice
+th = np.pi/3                                     # Bloch angle 60°
+print(np.cos(th/2)**2, (1 + np.cos(th))/2)       # 0.75 0.75
+R = lambda b: np.array([[np.cos(b), -np.sin(b)], [np.sin(b), np.cos(b)]])
+print(np.allclose(R(0.3) @ R(0.3), R(0.6)))      # True: two turns = one double turn</pre>
+</section>
+
+<script>
+(function(){
+  const r=document.getElementById('ucR'),deg=document.getElementById('ucDeg'),out=document.getElementById('ucOut');
+  const cosL=document.getElementById('ucCos'),sinL=document.getElementById('ucSin'),rad=document.getElementById('ucRad'),dot=document.getElementById('ucDot'),arc=document.getElementById('ucArc');
+  const names={0:'0',30:'π/6',45:'π/4',60:'π/3',90:'π/2',120:'2π/3',135:'3π/4',150:'5π/6',180:'π',210:'7π/6',225:'5π/4',240:'4π/3',270:'3π/2',300:'5π/3',315:'7π/4',330:'11π/6',360:'2π'};
+  const chips=document.getElementById('ucChips');
+  [0,30,45,60,90,135,180,270].forEach(d=>{const b=document.createElement('button');b.type='button';b.textContent=d+'°';b.onclick=()=>{r.value=d;draw()};chips.appendChild(b)});
+  function f(x){x=Math.abs(x)<5e-4?0:x;return (x<0?'−':' ')+Math.abs(x).toFixed(3)}
+  function draw(){
+    const d=+r.value,t=d*Math.PI/180,c=Math.cos(t),s=Math.sin(t),X=160+120*c,Y=160-120*s;
+    deg.textContent=d;
+    cosL.setAttribute('x2',X);cosL.setAttribute('y2',160);
+    sinL.setAttribute('x1',X);sinL.setAttribute('y1',160);sinL.setAttribute('x2',X);sinL.setAttribute('y2',Y);
+    rad.setAttribute('x2',X);rad.setAttribute('y2',Y);dot.setAttribute('cx',X);dot.setAttribute('cy',Y);
+    const ax=160+40*c,ay=160-40*s,large=d>180?1:0;
+    arc.setAttribute('d',d===0?'':(d>=360?'M200,160 A40,40 0 1 0 120,160 A40,40 0 1 0 200,160':`M200,160 A40,40 0 ${large} 0 ${ax.toFixed(1)},${ay.toFixed(1)}`));
+    out.textContent=`θ = ${d}° = ${names[d]||(t.toFixed(3)+' rad')}${names[d]?' rad':''}\ncos θ = ${f(c)}   sin θ = ${f(s)}\ncos²θ + sin²θ = ${(c*c+s*s).toFixed(3)}`;
+    chips.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.textContent===d+'°'));
+  }
+  r.addEventListener('input',draw);draw();
+})();
+</script>
+
+</div>
+<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Part A · Concept 01 of 17</span></div><div><a href="../02-complex-numbers/">Complex numbers →</a></div></nav>
+</body></html>

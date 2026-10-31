@@ -1,0 +1,349 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Vector spaces</title><meta name="description" content="Span, subspaces, linear independence, basis and dimension over the complex numbers."><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&family=Spectral:wght@500;700&display=swap"><style>
+/* Layout: same graph-paper notebook column as the concept pages; maths in mono, real = blue, imaginary = magenta, correct answer = green */
+:root{
+  --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4; --grid:#e6ebf2;
+  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --okbg:#e5f4ec; --soft:#f5f7fb; --code:#f2f4f8;
+  --f-display:"Spectral",Georgia,serif; --f-body:"Atkinson Hyperlegible",system-ui,sans-serif; --f-math:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:17px/1.6 var(--f-body);padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:24px 48px}
+main{max-width:46rem;margin:0 auto;display:flex;flex-direction:column;gap:30px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.2}
+h1{font-size:clamp(1.8rem,6vw,2.3rem)}
+h2{font-size:1.5rem;padding-bottom:6px;border-bottom:1px solid var(--rule)}
+h3{font-size:1.2rem}
+section,article{display:flex;flex-direction:column;gap:12px;min-width:0}
+p{margin:0;max-width:65ch}
+.eyebrow{font:600 .78rem/1 var(--f-math);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.m{font-family:var(--f-math);font-size:.92em;white-space:nowrap}
+.re{color:var(--re)} .im{color:var(--im)}
+.bar{text-decoration:overline;text-decoration-thickness:1.5px}
+.box{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font:600 .75rem var(--f-math);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sym td:first-child{font-family:var(--f-math);font-weight:600;white-space:nowrap}
+.key{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:8px}
+.key a{display:flex;justify-content:space-between;align-items:baseline;gap:6px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:7px 10px;font-family:var(--f-math);font-variant-numeric:tabular-nums}
+.key a b{color:var(--ok)}
+.key a span{color:var(--muted);font-size:.85rem}
+.qcard{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
+.qhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.qhead .qn{font:700 .85rem var(--f-math);color:var(--muted)}
+.qtext{font-size:1.05rem}
+.opts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:6px}
+.opts li{border:1px solid var(--rule);border-radius:8px;padding:6px 10px;font-family:var(--f-math);font-size:.92rem;min-width:0;overflow-wrap:anywhere}
+.opts li .l{color:var(--muted);margin-right:6px}
+.show .opts li.ok,.revealed .opts li.ok{border-color:var(--ok);background:var(--okbg);color:var(--ink)}
+.show .opts li.ok .l,.revealed .opts li.ok .l{color:var(--ok);font-weight:700}
+.badge{font:700 .82rem var(--f-math);color:var(--ok);background:var(--okbg);border-radius:999px;padding:3px 10px;white-space:nowrap}
+body:not(.show) .qcard:not(.revealed) .badge{visibility:hidden}
+.steps{font-family:var(--f-math);font-size:.93rem;background:var(--code);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.steps span{white-space:pre-wrap}
+.steps .note{color:var(--muted);font-family:var(--f-body);font-size:.88rem;white-space:normal}
+.steps .ok{color:var(--ok);font-weight:600}
+figure{margin:0;background:var(--soft);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+figure svg{width:100%;height:auto;max-width:360px;align-self:center;display:block}
+figcaption{font-size:.9rem;color:var(--muted)}
+figcaption b{color:var(--ink)}
+svg text{font-family:var(--f-math);font-size:12px;fill:var(--ink)}
+svg .lab{font-size:13px;font-weight:600}
+svg .mut{fill:var(--muted)}
+svg .grid{stroke:var(--grid);stroke-width:1}
+svg .axis{stroke:var(--muted);stroke-width:1.3}
+svg .reS{stroke:var(--re)} svg .imS{stroke:var(--im)} svg .inkS{stroke:var(--ink)} svg .okS{stroke:var(--ok)} svg .mutS{stroke:var(--muted)}
+svg .reF{fill:var(--re)} svg .imF{fill:var(--im)} svg .inkF{fill:var(--ink)} svg .okF{fill:var(--ok)} svg .bgF{fill:var(--paper)} svg .none{fill:none}
+svg .okT{fill:var(--ok)} svg .reT{fill:var(--re)} svg .imT{fill:var(--im)}
+.why{font-size:.95rem;color:var(--muted)}
+.why b{color:var(--ink)}
+.ql{background:var(--soft);border-left:3px solid var(--im);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.ql b{color:var(--im)}
+.warn{background:var(--soft);border-left:3px solid var(--re);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+details.sol{border-top:1px dashed var(--rule);padding-top:10px}
+details.sol>summary{cursor:pointer;font-weight:700;color:var(--re);list-style-position:inside}
+details.sol[open]>summary{margin-bottom:10px}
+details.sol>div{display:flex;flex-direction:column;gap:12px}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+button{font:600 .9rem var(--f-body);color:var(--re);background:var(--paper);border:1px solid var(--re);border-radius:8px;padding:8px 14px;cursor:pointer}
+button:hover{background:var(--soft)}
+button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--re);outline-offset:3px}
+ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;max-width:65ch}
+pre.code{margin:0;background:var(--code);border-radius:8px;padding:14px 16px;overflow-x:auto;font:.85rem/1.55 var(--f-math)}
+a{color:var(--re)}
+footer{border-top:1px solid var(--rule);padding-top:14px;color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+.tag{font:600 .72rem var(--f-math);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.tag.new{color:var(--ok);background:var(--okbg)} .tag.have{color:var(--re);background:var(--soft)} .tag.next{color:var(--im);background:var(--soft)}
+.cov td:nth-child(2){white-space:nowrap}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:12px}
+.grid2>div{min-width:0}
+</style>
+</head><body><style>
+.cnav{--cn-ink:#1b2430;--cn-mut:#566275;--cn-bg:#f5f7fb;--cn-rule:#d3dae4;--cn-a:#1d5bbd;
+ display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 18px;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+ color:var(--cn-mut);background:var(--cn-bg);border-bottom:1px solid var(--cn-rule);
+ padding-block:9px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.cnav:not(.bottom){margin-bottom:22px}
+.cnav.bottom{border-bottom:0;border-top:1px solid var(--cn-rule);margin-top:32px}
+.cnav a{color:var(--cn-a);text-decoration:none}.cnav a:hover{text-decoration:underline}
+.cnav a:focus-visible{outline:2px solid var(--cn-a);outline-offset:2px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}}
+:root[data-theme="dark"] .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}
+</style><nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Part B · Concept 05 of 17</span></div><div><a href="../04-real-to-complex/">← Real → complex: what changes</a> · <a href="../06-inner-products-and-bases/">Inner products and orthonormal bases →</a></div></nav>
+<style id="xt-style">
+.xt{
+  --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4; --grid:#e6ebf2;
+  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --okbg:#e5f4ec; --soft:#f5f7fb; --code:#f2f4f8;
+  --f-math:ui-monospace,"IBM Plex Mono","JetBrains Mono",Menlo,Consolas,monospace;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .xt{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}}
+:root[data-theme="dark"] .xt{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}
+.xt{color:inherit;font:inherit;display:flex;flex-direction:column;gap:12px;min-width:0;text-align:left}
+.xt h3{margin:10px 0 0}
+.xt section,.xt article{display:flex;flex-direction:column;gap:12px;min-width:0}
+.xt p{margin:0;max-width:65ch}
+.xt .eyebrow{font:600 .78rem/1 var(--f-math);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.xt .m{font-family:var(--f-math);font-size:.92em;white-space:nowrap}
+.xt .re{color:var(--re)} .im{color:var(--im)}
+.xt .bar{text-decoration:overline;text-decoration-thickness:1.5px}
+.xt .box{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.xt .scroll{overflow-x:auto}
+.xt table{border-collapse:collapse;width:100%;font-size:.95rem}
+.xt th,.xt td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+.xt th{font:600 .75rem var(--f-math);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.xt .sym td:first-child{font-family:var(--f-math);font-weight:600;white-space:nowrap}
+.xt .key{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:8px}
+.xt .key a{display:flex;justify-content:space-between;align-items:baseline;gap:6px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:7px 10px;font-family:var(--f-math);font-variant-numeric:tabular-nums}
+.xt .key a b{color:var(--ok)}
+.xt .key a span{color:var(--muted);font-size:.85rem}
+.xt .qcard{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
+.xt .qhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.xt .qhead .qn{font:700 .85rem var(--f-math);color:var(--muted)}
+.xt .qtext{font-size:1.05rem}
+.xt .opts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:6px}
+.xt .opts li{border:1px solid var(--rule);border-radius:8px;padding:6px 10px;font-family:var(--f-math);font-size:.92rem;min-width:0;overflow-wrap:anywhere}
+.xt .opts li .l{color:var(--muted);margin-right:6px}
+.xt .show .opts li.ok,.xt .revealed .opts li.ok{border-color:var(--ok);background:var(--okbg);color:var(--ink)}
+.xt .show .opts li.ok .l,.xt .revealed .opts li.ok .l{color:var(--ok);font-weight:700}
+.xt .badge{font:700 .82rem var(--f-math);color:var(--ok);background:var(--okbg);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.xt body:not(.show) .qcard:not(.revealed) .badge{visibility:hidden}
+.xt .steps{font-family:var(--f-math);font-size:.93rem;background:var(--code);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.xt .steps span{white-space:pre-wrap}
+.xt .steps .note{color:var(--muted);font-family:var(--f-body);font-size:.88rem;white-space:normal}
+.xt .steps .ok{color:var(--ok);font-weight:600}
+.xt figure{margin:0;background:var(--soft);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.xt figure svg{width:100%;height:auto;max-width:360px;align-self:center;display:block}
+.xt figcaption{font-size:.9rem;color:var(--muted)}
+.xt figcaption b{color:var(--ink)}
+.xt svg text{font-family:var(--f-math);font-size:12px;fill:var(--ink)}
+.xt svg .lab{font-size:13px;font-weight:600}
+.xt svg .mut{fill:var(--muted)}
+.xt svg .grid{stroke:var(--grid);stroke-width:1}
+.xt svg .axis{stroke:var(--muted);stroke-width:1.3}
+.xt svg .reS{stroke:var(--re)} svg .imS{stroke:var(--im)} svg .inkS{stroke:var(--ink)} svg .okS{stroke:var(--ok)} svg .mutS{stroke:var(--muted)}
+.xt svg .reF{fill:var(--re)} svg .imF{fill:var(--im)} svg .inkF{fill:var(--ink)} svg .okF{fill:var(--ok)} svg .bgF{fill:var(--paper)} svg .none{fill:none}
+.xt svg .okT{fill:var(--ok)} svg .reT{fill:var(--re)} svg .imT{fill:var(--im)}
+.xt .why{font-size:.95rem;color:var(--muted)}
+.xt .why b{color:var(--ink)}
+.xt .ql{background:var(--soft);border-left:3px solid var(--im);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.xt .ql b{color:var(--im)}
+.xt .warn{background:var(--soft);border-left:3px solid var(--re);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.xt details.sol{border-top:1px dashed var(--rule);padding-top:10px}
+.xt details.sol>summary{cursor:pointer;font-weight:700;color:var(--re);list-style-position:inside}
+.xt details.sol[open]>summary{margin-bottom:10px}
+.xt details.sol>div{display:flex;flex-direction:column;gap:12px}
+.xt .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.xt button{font:600 .9rem var(--f-body);color:var(--re);background:var(--paper);border:1px solid var(--re);border-radius:8px;padding:8px 14px;cursor:pointer}
+.xt button:hover{background:var(--soft)}
+.xt button:focus-visible,.xt summary:focus-visible,.xt a:focus-visible{outline:2px solid var(--re);outline-offset:3px}
+.xt ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;max-width:65ch}
+.xt pre.code{margin:0;background:var(--code);border-radius:8px;padding:14px 16px;overflow-x:auto;font:.85rem/1.55 var(--f-math)}
+.xt a{color:var(--re)}
+.xt footer{border-top:1px solid var(--rule);padding-top:14px;color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+@media (prefers-reduced-motion:reduce){.xt *{transition:none!important}}
+.xt .tag{font:600 .72rem var(--f-math);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.xt .tag.new{color:var(--ok);background:var(--okbg)} .tag.have{color:var(--re);background:var(--soft)} .tag.next{color:var(--im);background:var(--soft)}
+.xt .cov td:nth-child(2){white-space:nowrap}
+.xt .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:12px}
+.xt .grid2>div{min-width:0}
+
+.xt .formula{text-align:center}
+.xt>p,.xt>ul{margin:0}
+.xt .fml{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:18px 12px;text-align:center;font:600 clamp(1.05rem,4.4vw,1.5rem)/1.4 var(--f-math);overflow-x:auto}
+.xt .say{color:var(--muted);font-size:.95rem}
+.xt .say b{color:var(--ink)}
+.xt thead{display:table-header-group}.xt tbody tr{display:table-row;padding:0}.xt tbody td{display:table-cell;padding:7px 10px;border-bottom:1px solid var(--rule);color:inherit}
+.xt .steps{font-size:.86rem}
+@media (max-width:560px){.xt table.symt thead{display:none}.xt table.symt tbody tr{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;padding:9px 6px;border-bottom:1px solid var(--rule)}.xt table.symt tbody td{display:block;border:0;padding:0}.xt table.symt td:nth-child(3){grid-column:1/-1;color:var(--muted)}}
+.xt .steps .note{background:none;border:0;padding:0;margin:0;border-radius:0;font-size:.85rem}
+</style>
+<main id="top">
+<header style="display:flex;flex-direction:column;gap:10px">
+  <span class="eyebrow">Concept 05 · Part B · Linear algebra</span>
+  <h1>Vector spaces over ℂ</h1>
+  <p>What you can build by adding vectors and scaling them by complex numbers. Span, subspaces, linear independence, basis and dimension come up in every later topic: in quantum computing every measurement is a choice of basis, so you will be dealing with bases all the time. If orthonormal bases (the next concept) feel shaky, this is the page to come back to.</p>
+</header>
+<section class="xt" id="symbols">
+  <h2>Symbols on this page</h2>
+<div><table class="sym symt">
+    <thead><tr><th>Symbol</th><th>Say it</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>ℝ</td><td>"the reals"</td><td>All ordinary numbers: 3, −0.5, √2, π.</td></tr>
+      <tr><td>ℂ</td><td>"the complex numbers"</td><td>All numbers a + bi (<a href="../02-complex-numbers/">complex numbers</a>).</td></tr>
+      <tr><td>ℂⁿ, ℂ²</td><td>"C n", "C two"</td><td>Columns of n (or 2) complex numbers. A qubit lives in ℂ².</td></tr>
+      <tr><td>ℝ²</td><td>"R two"</td><td>Columns of 2 real numbers: the flat plane you can draw.</td></tr>
+      <tr><td>v, u, w</td><td>"v", "u", "w"</td><td>Names for vectors (columns of numbers).</td></tr>
+      <tr><td>v₁, v₂, …, v_k</td><td>"v one, v two, up to v k"</td><td>A list of k vectors. The small number is a label, not a power.</td></tr>
+      <tr><td>α, β</td><td>"alpha", "beta"</td><td>Names for scalars: the numbers you scale by.</td></tr>
+      <tr><td>αⱼ</td><td>"alpha j"</td><td>The scalar that goes with vⱼ.</td></tr>
+      <tr><td>0 (bold or plain)</td><td>"the zero vector"</td><td>The column of all zeros, (0, 0, …).</td></tr>
+      <tr><td>e₁, e₂</td><td>"e one", "e two"</td><td>The standard basis of ℂ²: (1, 0) and (0, 1). Later written |0⟩ and |1⟩.</td></tr>
+      <tr><td>span{…}</td><td>"the span of …"</td><td>Every combination of the listed vectors.</td></tr>
+      <tr><td>{x : rule}</td><td>"the set of x such that rule"</td><td>The colon reads "such that".</td></tr>
+      <tr><td>∈</td><td>"is in"</td><td>(0, 0) ∈ T: the zero vector belongs to T.</td></tr>
+      <tr><td>dim</td><td>"dimension"</td><td>How many vectors a basis has.</td></tr>
+      <tr><td>…</td><td>"and so on"</td><td>Keep the pattern going.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section class="xt" id="basics">
+  <h2>Back to basics: adding and scaling columns</h2>
+<p>A vector here is just a column of numbers. Two moves are allowed, and both work <b>entry by entry</b>:</p>
+  <ul>
+    <li><b>Add</b> two vectors: add matching entries.</li>
+    <li><b>Scale</b> a vector by a number α: multiply every entry by α. With complex α this can rotate the entries, not just stretch them.</li>
+  </ul>
+  <div class="steps">
+    <span>u = (1, 2i),  v = (3, −i)</span>
+    <span>u + v = (1 + 3, 2i − i) = (4, i)</span>
+    <span>i·u = (i·1, i·2i) = (i, 2i²) = (i, −2)</span>
+    <span class="note">because i² = −1</span>
+    <span>2u − v = (2 − 3, 4i + i) = (−1, 5i)</span>
+  </div>
+</section>
+
+<section>
+  <h2>The idea</h2>
+  <div class="box"><ul>
+    <li><b>ℂⁿ</b> is columns of n complex numbers. You add them entry by entry and scale them by complex numbers.</li>
+    <li><b>Linear combination:</b> α₁v₁ + … + α_kv_k. A quantum <b>superposition</b> is exactly this.</li>
+    <li><b>Independent:</b> no vector is a combination of the others. Each one adds a new direction.</li>
+    <li><b>Basis:</b> independent and spanning, so every vector has <b>unique</b> coordinates. Their count is the <b>dimension</b>.</li>
+  </ul></div>
+  <p class="why">All pictures are drawn in ℝ² because ℂ² needs four real dimensions. The algebra is what carries over.</p>
+</section>
+<section class="xt" id="span">
+  <h2>Span and subspaces</h2>
+  <p>A <b>linear combination</b> of v₁ … v_k is α₁v₁ + … + α_kv_k with complex numbers αⱼ. The <b>span</b> is the set of every such combination. A quantum <b>superposition</b> is exactly a linear combination: α|0⟩ + β|1⟩ is α·e₁ + β·e₂.</p>
+  <p>A <b>subspace</b> is a subset you can't leave by adding or scaling. Every span is a subspace, and every subspace contains 0, so a quick test is "does it contain the zero vector?"</p>
+  <figure>
+    <svg viewBox="0 0 360 190" role="img" aria-label="Left: span of one vector is a line through the origin. Right: span of two non-parallel vectors fills the plane. A shifted line that misses the origin is not a subspace.">
+      <line class="axis" x1="20" y1="120" x2="160" y2="120"/><line class="axis" x1="70" y1="20" x2="70" y2="175"/>
+      <line x1="25" y1="160" x2="155" y2="45" class="reS" stroke-width="2" stroke-dasharray="5 4"/>
+      <line x1="70" y1="120" x2="115" y2="80" class="reS" stroke-width="3"/><circle cx="115" cy="80" r="4" class="reF"/>
+      <text x="120" y="78" class="lab reT">v</text>
+      <text x="22" y="185" class="mut">span{v} = a line</text>
+      <line x1="25" y1="70" x2="150" y2="-40" class="imS" stroke-width="1.5" stroke-dasharray="2 4" transform="translate(0,40)"/>
+      <text x="100" y="35" class="imT">shifted line ✗</text>
+      <rect x="200" y="25" width="140" height="130" rx="4" class="okF" opacity=".12"/>
+      <line class="axis" x1="200" y1="120" x2="340" y2="120"/><line class="axis" x1="250" y1="25" x2="250" y2="155"/>
+      <line x1="250" y1="120" x2="295" y2="80" class="reS" stroke-width="3"/><text x="300" y="78" class="lab reT">v</text>
+      <line x1="250" y1="120" x2="310" y2="120" class="imS" stroke-width="3"/><text x="300" y="138" class="lab imT">w</text>
+      <text x="200" y="185" class="mut">span{v, w} = whole plane</text>
+    </svg>
+    <figcaption><b>A span always passes through 0.</b> A line shifted off the origin isn't closed under adding (two points on it add to a point off it), so it isn't a subspace.</figcaption>
+  </figure>
+  <div class="steps">
+    <span>Is S = {(z₁, z₂) : z₂ = z₁ + 1} a subspace of ℂ²?</span>
+    <span>Zero test: put z₁ = 0 → z₂ = 0 + 1 = 1, so (0, 0) is not in S.</span>
+    <span class="ok">Not a subspace (no zero vector).</span>
+    <span>Compare T = {(z₁, z₂) : z₂ = 2i·z₁}: (0, 0) is in T, and adding or scaling keeps z₂ = 2i·z₁. T = span{(1, 2i)} ✓</span>
+  </div>
+  <details class="sol"><summary>Practice: is {(z₁, z₂) : z₁ · z₂ = 0} a subspace of ℂ²?</summary><div>
+    <div class="steps">
+      <span>It contains (0, 0), so the zero test passes. Now test adding:</span>
+      <span>(1, 0) is in it (1·0 = 0). (0, 1) is in it (0·1 = 0).</span>
+      <span>(1, 0) + (0, 1) = (1, 1), and 1·1 = 1 ≠ 0.</span>
+      <span class="ok">Not a subspace: passing the zero test isn't enough.</span>
+    </div>
+  </div></details>
+</section>
+<section class="xt" id="indep">
+  <h2>Linear independence, and the complex twist</h2>
+  <p>v₁ … v_k are <b>linearly independent</b> if the only way to get α₁v₁ + … + α_kv_k = 0 is with every α = 0. Otherwise one of them is a combination of the others and adds nothing new to the span.</p>
+  <p>The twist: <b>the answer depends on which numbers you may scale by.</b> In ℂⁿ, "parallel" means "a complex multiple", so vectors that look different can point the same way.</p>
+  <div class="steps">
+    <span>u = (1, 2i),  w = (i, −2). Is w a multiple of u?</span>
+    <span>First entries: i = c · 1  →  c = i</span>
+    <span>Check second: c · 2i = i · 2i = 2i² = −2 ✓ matches w</span>
+    <span class="ok">w = i·u → dependent over ℂ.</span>
+    <span>Over ℝ (real c only): c = i isn't allowed, and no real c works → independent over ℝ.</span>
+  </div>
+  <p class="ql"><b>Quantum link:</b> w = i·u is the global-phase idea. ψ and e^{iφ}ψ are "the same direction", which is why they are the same physical state (<a href="../02-complex-numbers/#phase">phases, on the complex numbers page</a>).</p>
+  <details class="sol"><summary>Practice: are (1, 1+i) and (1−i, 2) independent over ℂ?</summary><div>
+    <div class="steps">
+      <span>Try (1−i, 2) = c·(1, 1+i). First entry: c = 1 − i.</span>
+      <span>Second entry: c(1+i) = (1−i)(1+i) = 1 − i² = 2 ✓</span>
+      <span class="ok">Dependent over ℂ: (1−i, 2) = (1−i)·(1, 1+i).</span>
+    </div>
+  </div></details>
+</section>
+<section class="xt" id="dim">
+  <h2>Basis and dimension: always ask "over which numbers?"</h2>
+  <p>A <b>basis</b> is an independent set that spans the space. Every vector then has <b>unique</b> coordinates, and every basis has the same size: the <b>dimension</b>.</p>
+  <div class="steps">
+    <span>ℂ² over ℂ: basis {e₁, e₂}. (a+bi, c+di) = (a+bi)e₁ + (c+di)e₂  → dim 2</span>
+    <span>ℂ² over ℝ: coefficients must be real, so you need {e₁, i·e₁, e₂, i·e₂}:</span>
+    <span>(a+bi, c+di) = a·e₁ + b·(i e₁) + c·e₂ + d·(i e₂)  → dim 4</span>
+    <span class="ok">dim over ℂ = n,  dim over ℝ = 2n</span>
+  </div>
+  <p>n qubits live in ℂ^(2ⁿ): 1 qubit → 2, 2 qubits → 4, 10 qubits → 1,024, 50 qubits → about 10¹⁵. (See <a href="../14-tensor-products/">tensor products</a>.)</p>
+</section>
+<section class="xt" id="worked">
+  <h2>Worked example: coordinates in a basis</h2>
+<p>A basis gives every vector one set of coordinates. Finding them means solving "which combination makes this vector?"</p>
+  <p><b>Find the coordinates of v = (3, i) in the basis b₁ = (1, i), b₂ = (1, −i).</b></p>
+  <div class="steps">
+    <span>Want α·b₁ + β·b₂ = v</span>
+    <span>α(1, i) + β(1, −i) = (3, i)</span>
+    <span class="note">Top entries:</span>
+    <span>α + β = 3</span>
+    <span class="note">Bottom entries:</span>
+    <span>iα − iβ = i</span>
+    <span class="note">Divide both sides by i:</span>
+    <span>α − β = 1</span>
+    <span class="note">Add the two equations: 2α = 4.</span>
+    <span>α = 2,  β = 3 − 2 = 1</span>
+    <span class="note">Check:</span>
+    <span>2(1, i) + 1(1, −i) = (2 + 1, 2i − i) = (3, i) ✓</span>
+    <span class="ok">Coordinates (2, 1) in this basis; (3, i) in the standard basis</span>
+  </div>
+  <p class="why">Same vector, different coordinates in different bases. With an <b>orthonormal</b> basis you don't need to solve equations at all: each coordinate is one inner product (<a href="../06-inner-products-and-bases/#onb">inner products and bases</a>). b₁ and b₂ here happen to be perpendicular: divided by √2 they are the "circular" basis.</p>
+</section>
+
+<section class="xt" id="mistakes">
+  <h2>Common mistakes</h2>
+<ul>
+    <li><b>Calling a shifted line a subspace.</b> Every subspace contains the zero vector, so a line that misses the origin is not one.</li>
+    <li><b>Stopping at the zero test.</b> Containing 0 is necessary but not enough: {z₁z₂ = 0} contains 0 but fails the adding test.</li>
+    <li><b>Thinking qubit states form a subspace.</b> Unit vectors (length 1) don't: the zero vector isn't one, and adding two unit vectors usually doesn't give length 1. States live <i>in</i> the space ℂ²; they are not a subspace of it.</li>
+    <li><b>Checking independence with real numbers only.</b> Over ℂ you may scale by complex numbers, so (i, −2) = i·(1, 2i) is dependent on (1, 2i), even though no real multiple works.</li>
+    <li><b>Mixing up "spans" and "is a basis".</b> A basis must also be independent. If you know the dimension n and you have n vectors, checking just one of the two is enough.</li>
+    <li><b>Assuming a basis must be perpendicular.</b> It doesn't have to be: (1, 0) and (1, 1) are a basis of ℂ² too. Orthonormal bases are just the most convenient.</li>
+  </ul>
+</section>
+
+<footer><span>Notebook: vectors are introduced in the <a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/quantum-foundations/concepts/06-inner-products-and-bases/notebook.ipynb">inner products notebook</a></span><a href="#top">Back to top</a></footer>
+</main>
+<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Part B · Concept 05 of 17</span></div><div><a href="../04-real-to-complex/">← Real → complex: what changes</a> · <a href="../06-inner-products-and-bases/">Inner products and orthonormal bases →</a></div></nav></body></html>

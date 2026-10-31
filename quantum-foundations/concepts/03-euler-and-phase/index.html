@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>eiθ and phase</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+.cnav{--cn-ink:#1b2430;--cn-mut:#566275;--cn-bg:#f5f7fb;--cn-rule:#d3dae4;--cn-a:#1d5bbd;
+ display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 18px;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+ color:var(--cn-mut);background:var(--cn-bg);border-bottom:1px solid var(--cn-rule);
+ padding-block:9px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.cnav:not(.bottom){margin-bottom:22px}
+.cnav.bottom{border-bottom:0;border-top:1px solid var(--cn-rule);margin-top:32px}
+.cnav a{color:var(--cn-a);text-decoration:none}.cnav a:hover{text-decoration:underline}
+.cnav a:focus-visible{outline:2px solid var(--cn-a);outline-offset:2px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}}
+:root[data-theme="dark"] .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}
+</style>
+
+<style>
+/* Toolkit pages: one reading column; colour carries meaning throughout: cos / real part = blue, sin / imaginary part = magenta, angle / phase = amber. */
+:root{
+  --bg:#f4f6f9; --paper:#ffffff; --ink:#1a2330; --muted:#59667a; --line:#d6dde6; --soft:#eef2f7;
+  --cos:#1d5bbd; --sin:#b02c68; --ang:#b8690f; --ok:#1e7a4a; --bad:#b3261e;
+  --cos-soft:#e3ecfb; --sin-soft:#f8e3ec; --ang-soft:#fbeedd; --ok-soft:#e1f2e8; --bad-soft:#fbe4e2;
+  --display:"Fraunces",Georgia,serif; --body:"Source Sans 3",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,Consolas,monospace; color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --line:#2c3644; --soft:#1b2330;
+  --cos:#7eb0ff; --sin:#f28ab9; --ang:#f0aa5a; --ok:#6fd39d; --bad:#ff8f86;
+  --cos-soft:#1c2b45; --sin-soft:#3a1c2b; --ang-soft:#3a2a16; --ok-soft:#163323; --bad-soft:#3b1a18; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --line:#2c3644; --soft:#1b2330;
+  --cos:#7eb0ff; --sin:#f28ab9; --ang:#f0aa5a; --ok:#6fd39d; --bad:#ff8f86;
+  --cos-soft:#1c2b45; --sin-soft:#3a1c2b; --ang-soft:#3a2a16; --ok-soft:#163323; --bad-soft:#3b1a18; color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.6 var(--body)}
+.wrap{max-width:44rem;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:8px 40px;display:flex;flex-direction:column;gap:38px}
+header{display:flex;flex-direction:column;gap:10px}
+section{display:flex;flex-direction:column;gap:12px;min-width:0}
+h1,h2,h3{font-family:var(--display);line-height:1.15;margin:0;text-wrap:balance}
+h1{font-size:clamp(2rem,7vw,2.7rem)}
+h2{font-size:1.45rem}
+h3{font-size:1.1rem;margin-top:6px}
+p{margin:0}
+ul,ol{margin:0;padding-left:1.25em;display:flex;flex-direction:column;gap:6px}
+a{color:var(--cos)}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--cos);outline-offset:2px;border-radius:4px}
+.eyebrow{font:500 .76rem/1.4 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lede{color:var(--muted);font-size:1.07rem}
+.m{font-family:var(--mono);font-size:.92em;white-space:nowrap}
+.c{color:var(--cos);font-weight:600}.s{color:var(--sin);font-weight:600}.a{color:var(--ang);font-weight:600}.ok{color:var(--ok);font-weight:600}.bad{color:var(--bad);font-weight:600}
+.box{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.key{background:var(--ok-soft);border-left:4px solid var(--ok);border-radius:0 10px 10px 0;padding:12px 14px}
+.warn{background:var(--bad-soft);border-left:4px solid var(--bad);border-radius:0 10px 10px 0;padding:12px 14px}
+.why{background:var(--ang-soft);border-left:4px solid var(--ang);border-radius:0 10px 10px 0;padding:12px 14px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--line);border-radius:12px;background:var(--paper)}
+table{border-collapse:collapse;width:100%;font-size:.94rem}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+th{font:500 .72rem var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);background:var(--soft)}
+td.sym{font-family:var(--mono)}
+td.say{font-style:italic}
+.steps{font-family:var(--mono);font-size:.86rem;line-height:1.8;background:var(--paper);border:1px solid var(--line);border-left:4px solid var(--cos);border-radius:0 10px 10px 0;padding:10px 12px;overflow-x:auto;white-space:pre-wrap}
+.steps .n{font-family:var(--body);color:var(--muted);font-size:.9rem}
+.formula{font-family:var(--mono);font-size:clamp(1.05rem,4.6vw,1.6rem);text-align:center;padding:20px 10px;background:var(--paper);border:1px solid var(--line);border-radius:12px;overflow-x:auto;text-wrap:balance}
+.aloud{color:var(--muted);text-align:center;margin-top:-4px}
+.aloud b{color:var(--ink)}
+figure{margin:0;display:flex;flex-direction:column;gap:8px}
+figcaption{font-size:.92rem;color:var(--muted)}
+svg{display:block;width:100%;height:auto}
+svg text{font-family:var(--mono);fill:var(--ink)}
+svg .mut{fill:var(--muted)}
+.ctl{display:flex;flex-wrap:wrap;gap:8px 12px;align-items:center}
+.ctl label{font-family:var(--mono);font-size:.92rem}
+.ctl input[type=range]{flex:1 1 200px;min-width:0;accent-color:var(--ang)}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+button{font:500 .86rem var(--mono);background:var(--paper);color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer;min-height:36px}
+button:hover{border-color:var(--ang)}
+button[aria-pressed=true]{background:var(--ang-soft);border-color:var(--ang)}
+.readout{font-family:var(--mono);font-size:.9rem;line-height:1.7;background:var(--soft);border-radius:10px;padding:10px 12px;overflow-x:auto;white-space:pre}
+details{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+summary{cursor:pointer;font-weight:700}
+details[open] summary{margin-bottom:10px}
+details>div{display:flex;flex-direction:column;gap:10px}
+pre{margin:0;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:12px 14px;overflow-x:auto;font:400 .86rem/1.55 var(--mono)}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(15rem,100%),1fr));gap:12px}
+.grid2>*{min-width:0}
+.box .m,.key .m,.warn .m,.why .m{white-space:normal}
+.pill{display:inline-block;font:600 .7rem var(--mono);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:1px 8px;background:var(--soft);color:var(--muted);vertical-align:2px}
+.toc{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.95rem}
+
+.box>*+*,.key>*+*,.warn>*+*,.why>*+*{margin-top:8px}
+.key ul,.warn ul{margin-top:6px}
+
+</style></head><body>
+<nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Part A · Concept 03 of 17</span></div><div><a href="../02-complex-numbers/">← Complex numbers</a> · <a href="../04-real-to-complex/">Real → complex: what changes →</a></div></nav>
+<div class="wrap">
+<header>
+  <div class="eyebrow">Concept 03 · Part A · Toolkit</div>
+  <h1>e<sup>iθ</sup> and phase</h1>
+  <p class="lede">e<sup>iθ</sup> is the single most used expression in quantum computing. It is not exponential growth: it is a <b>point on the unit circle</b> at angle θ, and multiplying by it <b>turns</b> a complex number by θ. Once that clicks, phases, phase gates, global vs relative phase and the complex eigenvalues of rotations all become the same idea.</p>
+  <div class="toc"><a href="#idea">The idea</a><a href="#table">Special values</a><a href="#add">Multiply = add angles</a><a href="#rules">Four rules</a><a href="#cos-sin">cos and sin back out</a><a href="#qubit">Phase on a qubit</a><a href="#gates">Phase gates</a><a href="#eigen">As eigenvalues</a><a href="#roots">Roots of unity</a></div>
+</header>
+
+<section id="symbols">
+  <h2>Symbols on this page</h2>
+  <div class="scroll"><table>
+    <tr><th>Symbol</th><th>Say it</th><th>Meaning</th></tr>
+    <tr><td class="sym">e</td><td class="say">e</td><td>Euler's number ≈ 2.718, the base of natural exponentials.</td></tr>
+    <tr><td class="sym">e<sup>iθ</sup></td><td class="say">e to the i theta</td><td>cos θ + i sin θ: the unit-length complex number at angle θ.</td></tr>
+    <tr><td class="sym">φ, γ</td><td class="say">phi, gamma</td><td>Angles used as phases. φ is usually the relative phase, γ a global one.</td></tr>
+    <tr><td class="sym">arg z</td><td class="say">argument of z</td><td>The angle of z measured from the positive real axis.</td></tr>
+    <tr><td class="sym">|z|</td><td class="say">modulus of z</td><td>The length of z. |e<sup>iθ</sup>| = 1 always.</td></tr>
+    <tr><td class="sym">z̄, z*</td><td class="say">z bar, z star</td><td>The complex conjugate: flip the sign of the imaginary part.</td></tr>
+    <tr><td class="sym">ω</td><td class="say">omega</td><td>A root of unity, usually e<sup>2πi/n</sup>.</td></tr>
+  </table></div>
+</section>
+
+<section id="basics">
+  <h2>Back to basics: exponent rules</h2>
+  <p>For ordinary numbers you know these rules. The surprise is that all three still hold when the exponent is imaginary. That is what makes e<sup>iθ</sup> so convenient.</p>
+  <div class="steps">e^a · e^b = e^(a+b)        <span class="n">multiply → add exponents</span>
+(e^a)^n   = e^(na)         <span class="n">power → multiply exponent (n a whole number)</span>
+e^0       = 1
+1 / e^a   = e^(−a)</div>
+  <p>The complex numbers page has the <a href="../02-complex-numbers/#why-euler">reason Euler's formula is true</a> (put iθ into the series for e<sup>x</sup>). Here we only use it.</p>
+</section>
+
+<section id="idea">
+  <h2>The idea: a direction you can multiply</h2>
+  <div class="formula">e<sup>iθ</sup> = <span class="c">cos θ</span> + i <span class="s">sin θ</span></div>
+  <p class="aloud">Say: <b>"e to the i theta is cos theta plus i sine theta."</b></p>
+  <p>The real part is <span class="c">cos θ</span> and the imaginary part is <span class="s">sin θ</span>. That is exactly the point at angle θ on the <a href="../01-trigonometry/#circle">unit circle</a>, now read as a complex number. Any complex number can be written as <b>length × direction</b>:</p>
+  <div class="formula">z = r · e<sup>iθ</sup>   <span style="font-size:.7em;color:var(--muted)">(r = |z|, θ = arg z)</span></div>
+  <p>Multiplying by e<sup>iθ</sup> keeps the length and adds θ to the angle: <b>it rotates</b>. Try it: set two angles and watch the product land at their sum.</p>
+  <figure>
+    <svg id="eu" viewBox="0 0 320 320" style="max-width:380px;margin:0 auto" role="img" aria-label="Unit circle showing e to the i a, e to the i b and their product at angle a plus b">
+      <line x1="20" y1="160" x2="300" y2="160" stroke="var(--muted)"/>
+      <line x1="160" y1="20" x2="160" y2="300" stroke="var(--muted)"/>
+      <circle cx="160" cy="160" r="120" fill="none" stroke="var(--line)" stroke-width="2"/>
+      <text x="286" y="152" class="mut">1</text><text x="22" y="152" class="mut">−1</text>
+      <text x="166" y="32" class="mut">i</text><text x="166" y="296" class="mut">−i</text>
+      <text x="292" y="176" class="mut">Re</text><text x="168" y="14" class="mut">Im</text>
+      <line id="euA" x1="160" y1="160" stroke="var(--cos)" stroke-width="3"/>
+      <line id="euB" x1="160" y1="160" stroke="var(--sin)" stroke-width="3"/>
+      <line id="euP" x1="160" y1="160" stroke="var(--ang)" stroke-width="4"/>
+      <circle id="euAd" r="6" fill="var(--cos)"/><circle id="euBd" r="6" fill="var(--sin)"/><circle id="euPd" r="8" fill="var(--ang)"/>
+      <text id="euAl" style="fill:var(--cos)">a</text><text id="euBl" style="fill:var(--sin)">b</text><text id="euPl" style="fill:var(--ang)">a+b</text>
+    </svg>
+    <div class="ctl"><label for="euAr" style="color:var(--cos)">a = <span id="euAv">30</span>°</label><input id="euAr" type="range" min="0" max="360" value="30" aria-label="angle a in degrees"></div>
+    <div class="ctl"><label for="euBr" style="color:var(--sin)">b = <span id="euBv">60</span>°</label><input id="euBr" type="range" min="0" max="360" value="60" aria-label="angle b in degrees"></div>
+    <div class="readout" id="euOut" aria-live="polite"></div>
+    <figcaption>Blue is e<sup>ia</sup>, magenta is e<sup>ib</sup>, amber is their product. The product always sits at angle a + b and stays on the circle.</figcaption>
+  </figure>
+</section>
+
+<section id="table">
+  <h2>Special values: the phases you will meet</h2>
+  <div class="scroll"><table>
+    <tr><th>θ</th><th>e<sup>iθ</sup></th><th>Where it appears</th></tr>
+    <tr><td class="sym">0</td><td class="sym">1</td><td>No phase</td></tr>
+    <tr><td class="sym">π/4</td><td class="sym">(1 + i)/√2</td><td>The T gate</td></tr>
+    <tr><td class="sym">π/2</td><td class="sym">i</td><td>The S gate; |+i⟩ = (|0⟩ + i|1⟩)/√2</td></tr>
+    <tr><td class="sym">π</td><td class="sym">−1</td><td>The Z gate; |−⟩; phase kickback signs (−1)<sup>f(x)</sup></td></tr>
+    <tr><td class="sym">3π/2 (= −π/2)</td><td class="sym">−i</td><td>|−i⟩ = (|0⟩ − i|1⟩)/√2</td></tr>
+    <tr><td class="sym">2π</td><td class="sym">1</td><td>A full turn: back where you started</td></tr>
+    <tr><td class="sym">−θ</td><td class="sym">e<sup>−iθ</sup> = conj(e<sup>iθ</sup>) = 1/e<sup>iθ</sup></td><td>Bras, daggers, undoing a phase</td></tr>
+  </table></div>
+  <p>Read the most famous line, <span class="m">e<sup>iπ</sup> = −1</span>, as "half a turn points the opposite way". So a minus sign <i>is</i> a phase of π. Every (−1)<sup>f(x)</sup> in Deutsch's algorithm is e<sup>iπf(x)</sup>.</p>
+</section>
+
+<section id="add">
+  <h2>Multiply = add angles, and the trig formulas come free</h2>
+  <p>The exponent rule e<sup>ia</sup>·e<sup>ib</sup> = e<sup>i(a+b)</sup> holds. Expand both sides and compare real and imaginary parts:</p>
+  <div class="steps">left:  (cos a + i sin a)(cos b + i sin b)
+     = cos a cos b + i cos a sin b + i sin a cos b + i² sin a sin b
+     = (cos a cos b − sin a sin b) + i (sin a cos b + cos a sin b)      <span class="n">(i² = −1)</span>
+right: cos(a+b) + i sin(a+b)
+<span class="n">Real parts match:</span>       cos(a+b) = cos a cos b − sin a sin b
+<span class="n">Imaginary parts match:</span>  sin(a+b) = sin a cos b + cos a sin b</div>
+  <div class="key">You never need to memorise the <a href="../01-trigonometry/#addition">addition formulas</a> again. Multiply two e<sup>iθ</sup>'s and read them off.</div>
+  <h3>Worked example, every step shown</h3>
+  <p>Compute e<sup>iπ/3</sup> · e<sup>iπ/6</sup> both ways.</p>
+  <div class="steps">Angles:       π/3 + π/6 = 2π/6 + π/6 = 3π/6 = π/2   →   e^(iπ/2) = i
+Rectangular:  e^(iπ/3) = 1/2 + i√3/2,   e^(iπ/6) = √3/2 + i/2
+              (1/2 + i√3/2)(√3/2 + i/2)
+            = √3/4 + i/4 + i·3/4 + i²·√3/4
+            = (√3/4 − √3/4) + i(1/4 + 3/4)
+            = 0 + i  ✓</div>
+</section>
+
+<section id="rules">
+  <h2>Four rules that cover almost everything</h2>
+  <div class="scroll"><table>
+    <tr><th>Rule</th><th>Why</th><th>Quantum use</th></tr>
+    <tr><td class="sym">|e<sup>iθ</sup>| = 1</td><td>cos²θ + sin²θ = 1</td><td>Multiplying an amplitude by a phase never changes its probability.</td></tr>
+    <tr><td class="sym">conj(e<sup>iθ</sup>) = e<sup>−iθ</sup></td><td>cos(−θ) = cos θ, sin(−θ) = −sin θ</td><td>Taking a bra or a dagger flips every phase.</td></tr>
+    <tr><td class="sym">(e<sup>iθ</sup>)<sup>n</sup> = e<sup>inθ</sup></td><td>n turns by θ = one turn by nθ (de Moivre)</td><td>S² = Z, T² = S, T⁸ = I.</td></tr>
+    <tr><td class="sym">e<sup>i(θ+2π)</sup> = e<sup>iθ</sup></td><td>A full turn changes nothing</td><td>Phases are angles "mod 2π"; i<sup>4</sup> = 1, so powers of i cycle i, −1, −i, 1.</td></tr>
+  </table></div>
+  <div class="warn"><b>Careful with fractional powers.</b> Because angles repeat every 2π, "the square root of e<sup>iθ</sup>" has two answers, e<sup>iθ/2</sup> and −e<sup>iθ/2</sup>. Whole-number powers are always safe.</div>
+</section>
+
+<section id="cos-sin">
+  <h2>Getting cos and sin back out</h2>
+  <p>Add and subtract e<sup>iθ</sup> and e<sup>−iθ</sup>. The sine parts cancel in the sum, and the cosine parts cancel in the difference:</p>
+  <div class="formula">cos θ = (e<sup>iθ</sup> + e<sup>−iθ</sup>)/2  ·  sin θ = (e<sup>iθ</sup> − e<sup>−iθ</sup>)/(2i)</div>
+  <p>This is interference in miniature: two arrows that turn in opposite directions add up to something purely real. It comes back in Deutsch's algorithm, where the amplitude of |0⟩ is (−1)<sup>f(0)</sup> + (−1)<sup>f(1)</sup>, so it is either ±2 (the arrows agree) or 0 (they cancel).</p>
+</section>
+
+<section id="qubit">
+  <h2>Phase on a qubit: global vs relative</h2>
+  <p>A qubit is α|0⟩ + β|1⟩ with complex α, β. Write each amplitude as length × phase. Only two things can then happen to the phases:</p>
+  <div class="grid2">
+    <div class="box"><b>Global phase: invisible</b>
+      <p class="m">e<sup>iγ</sup>(α|0⟩ + β|1⟩)</p>
+      <p>Every amplitude turns by the same γ. All probabilities |e<sup>iγ</sup>α|² = |α|² are unchanged in <i>every</i> basis, so <b>it is the same physical state</b>. Example: −|ψ⟩ ≡ |ψ⟩ (γ = π).</p></div>
+    <div class="box"><b>Relative phase: real and measurable</b>
+      <p class="m">α|0⟩ + e<sup>iφ</sup>β|1⟩</p>
+      <p>Only one amplitude turns. The Z-basis probabilities stay the same, but measurements in other bases change. |+⟩ and |−⟩ differ only by φ = π: both are 50/50 in Z, but H sends them to |0⟩ and |1⟩.</p></div>
+  </div>
+  <div class="key">On the Bloch sphere, the relative phase φ <b>is the longitude</b>: <span class="m">cos(θ/2)|0⟩ + e<sup>iφ</sup> sin(θ/2)|1⟩</span>. Global phase has no place on the sphere at all, which is why one qubit needs only two angles (<a href="../11-bloch-sphere/#two-angles">Bloch sphere page</a>).</div>
+</section>
+
+<section id="gates">
+  <h2>Phase gates: turning around the z-axis</h2>
+  <p>A phase gate leaves |0⟩ alone and multiplies |1⟩ by e<sup>iφ</sup>:</p>
+  <div class="formula">P(φ) = [[1, 0], [0, e<sup>iφ</sup>]]</div>
+  <div class="scroll"><table>
+    <tr><th>Gate</th><th>φ</th><th>Matrix</th><th>Turn about z</th></tr>
+    <tr><td class="sym">Z</td><td class="sym">π</td><td class="sym">diag(1, −1)</td><td>half turn</td></tr>
+    <tr><td class="sym">S</td><td class="sym">π/2</td><td class="sym">diag(1, i)</td><td>quarter turn</td></tr>
+    <tr><td class="sym">T</td><td class="sym">π/4</td><td class="sym">diag(1, e<sup>iπ/4</sup>)</td><td>eighth turn</td></tr>
+    <tr><td class="sym">S† = S⁻¹</td><td class="sym">−π/2</td><td class="sym">diag(1, −i)</td><td>quarter turn back</td></tr>
+  </table></div>
+  <div class="steps">P(φ)|+⟩ = (|0⟩ + e^(iφ)|1⟩)/√2       <span class="n">walks round the equator by φ</span>
+S|+⟩ = (|0⟩ + i|1⟩)/√2 = |+i⟩
+S·S  = diag(1, i·i) = diag(1, e^(iπ)) = Z      <span class="n">phases add: π/2 + π/2 = π</span>
+T·T  = diag(1, e^(iπ/2)) = S                    T⁸ = diag(1, e^(i2π)) = I</div>
+</section>
+
+<section id="eigen">
+  <h2>e<sup>iθ</sup> as an eigenvalue</h2>
+  <p>The rotation matrix R<sub>θ</sub> turns every real arrow, so it has no real eigenvector. Over ℂ its eigenvalues are <b>e<sup>+iθ</sup> and e<sup>−iθ</sup></b> (<a href="../08-eigenvalues/#rotation">worked on the eigenvalues page</a>). This is a general pattern:</p>
+  <div class="key"><b>Every eigenvalue of a unitary matrix is a pure phase e<sup>iα</sup>.</b> A unitary never changes lengths, so if Uv = λv then ‖v‖ = ‖λv‖ = |λ|·‖v‖, which forces |λ| = 1. For the gates: X, Z, H have eigenvalues ±1 = e<sup>i0</sup>, e<sup>iπ</sup>; S has 1, i; T has 1, e<sup>iπ/4</sup>.</div>
+  <p>The <i>difference</i> between a gate's two eigenvalue phases is the angle it turns the Bloch sphere through, about the axis through its eigenvectors. <a href="../13-one-qubit-big-picture/#eigen-axis">Page 13</a> puts this together.</p>
+</section>
+
+<section id="roots">
+  <h2>Roots of unity: equal steps round the circle</h2>
+  <p>The n solutions of zⁿ = 1 are the powers of <span class="m">ω = e<sup>2πi/n</sup></span>: n points spaced evenly round the circle. Their sum is 0, because the arrows balance:</p>
+  <div class="steps">n = 4:  ω = e^(iπ/2) = i       1 + i + (−1) + (−i) = 0
+n = 2:  ω = e^(iπ) = −1        1 + (−1) = 0         <span class="n">← the cancellation in Deutsch–Jozsa</span></div>
+  <p>This balancing is the heart of the quantum Fourier transform later in the course.</p>
+</section>
+
+<section id="mistakes">
+  <h2>Common mistakes</h2>
+  <ul>
+    <li><b>Treating e<sup>iθ</sup> as growth.</b> |e<sup>iθ</sup>| = 1 whatever θ is. Only a <i>real</i> exponent grows.</li>
+    <li><b>Adding states is not adding angles.</b> e<sup>ia</sup> · e<sup>ib</sup> = e<sup>i(a+b)</sup>, but e<sup>ia</sup> + e<sup>ib</sup> is a different number with length between 0 and 2.</li>
+    <li><b>Calling a global phase a change.</b> −|0⟩ and |0⟩ are the same state. (|0⟩ − |1⟩)/√2 and (|0⟩ + |1⟩)/√2 are not: that sign is relative.</li>
+    <li><b>Forgetting to flip phases in a bra.</b> ⟨+i| = (1, −i)/√2, not (1, i)/√2.</li>
+    <li><b>Comparing angles without the 2π wrap.</b> −π/2 and 3π/2 are the same phase. NumPy's <span class="m">np.angle</span> always reports values between −π and π.</li>
+  </ul>
+</section>
+
+<section id="practice">
+  <h2>Practice</h2>
+  <ol>
+    <li>Simplify e<sup>i3π/4</sup> · e<sup>iπ/4</sup>.</li>
+    <li>Show that |e<sup>iθ</sup>|² = 1 using the conjugate, not trigonometry.</li>
+    <li>Write z = −1 − i as r·e<sup>iθ</sup>.</li>
+    <li>Is i·(|0⟩ + |1⟩)/√2 the same physical state as |+⟩? Is (|0⟩ + i|1⟩)/√2?</li>
+  </ol>
+  <details><summary>Show worked solutions</summary><div>
+    <div class="steps">1.  3π/4 + π/4 = π   →   e^(iπ) = −1
+2.  |z|² = z · conj(z) = e^(iθ) · e^(−iθ) = e^0 = 1
+3.  r = √((−1)² + (−1)²) = √2.  The point is in quadrant III at 225° = 5π/4.
+    z = √2 · e^(i5π/4)   <span class="n">(or √2·e^(−i3π/4): the same angle, wrapped)</span>
+4.  i = e^(iπ/2) multiplies both terms: a global phase, so the same state as |+⟩.
+    (|0⟩ + i|1⟩)/√2 has a relative phase π/2: it is |+i⟩, a different state.</div>
+  </div></details>
+</section>
+
+<section id="numpy">
+  <h2>Check it in NumPy</h2>
+<pre>import numpy as np
+e = lambda t: np.exp(1j*t)
+print(e(np.pi/3)*e(np.pi/6))                 # ≈ 1j
+print(abs(e(1.234)))                          # 1.0
+print(np.angle(-1-1j), -3*np.pi/4)            # same: np.angle reports (−π, π]
+S, Z, T = np.diag([1, 1j]), np.diag([1, -1]), np.diag([1, e(np.pi/4)])
+print(np.allclose(S@S, Z), np.allclose(T@T, S))   # True True
+R = lambda t: np.array([[np.cos(t), -np.sin(t)], [np.sin(t), np.cos(t)]])
+print(np.linalg.eigvals(R(0.7)), e(0.7), e(-0.7)) # eigenvalues are e^(±0.7i)</pre>
+</section>
+
+<script>
+(function(){
+  const A=document.getElementById('euAr'),B=document.getElementById('euBr'),out=document.getElementById('euOut');
+  const set=(id,a,len)=>{const x=160+len*Math.cos(a),y=160-len*Math.sin(a);const l=document.getElementById(id);l.setAttribute('x2',x);l.setAttribute('y2',y);return [x,y]};
+  const dot=(id,p)=>{const d=document.getElementById(id);d.setAttribute('cx',p[0]);d.setAttribute('cy',p[1])};
+  const lab=(id,a)=>{const t=document.getElementById(id);t.setAttribute('x',160+142*Math.cos(a)-12);t.setAttribute('y',160-142*Math.sin(a)+5)};
+  const f=x=>{x=Math.abs(x)<5e-4?0:x;return (x<0?'−':'+')+Math.abs(x).toFixed(3)};
+  function draw(){
+    const a=+A.value,b=+B.value,ra=a*Math.PI/180,rb=b*Math.PI/180,rp=ra+rb;
+    document.getElementById('euAv').textContent=a;document.getElementById('euBv').textContent=b;
+    dot('euAd',set('euA',ra,120));dot('euBd',set('euB',rb,120));dot('euPd',set('euP',rp,120));
+    lab('euAl',ra);lab('euBl',rb);lab('euPl',rp);
+    const ca=Math.cos(ra),sa=Math.sin(ra),cb=Math.cos(rb),sb=Math.sin(rb);
+    const re=ca*cb-sa*sb,im=sa*cb+ca*sb,sum=(a+b)%360;
+    out.textContent=`e^(ia) = ${f(ca)} ${f(sa)}i\ne^(ib) = ${f(cb)} ${f(sb)}i\nproduct = ${f(re)} ${f(im)}i\ne^(i·${sum}°) = ${f(Math.cos(rp))} ${f(Math.sin(rp))}i   (a + b = ${a+b}°${a+b>=360?' = '+sum+'° after a full turn':''})`;
+  }
+  A.addEventListener('input',draw);B.addEventListener('input',draw);draw();
+})();
+</script>
+
+</div>
+<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Part A · Concept 03 of 17</span></div><div><a href="../02-complex-numbers/">← Complex numbers</a> · <a href="../04-real-to-complex/">Real → complex: what changes →</a></div></nav>
+</body></html>

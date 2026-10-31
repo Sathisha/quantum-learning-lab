@@ -1,0 +1,685 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body><style>
+.cnav{--cn-ink:#1b2430;--cn-mut:#566275;--cn-bg:#f5f7fb;--cn-rule:#d3dae4;--cn-a:#1d5bbd;
+ display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 18px;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+ color:var(--cn-mut);background:var(--cn-bg);border-bottom:1px solid var(--cn-rule);
+ padding-block:9px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.cnav:not(.bottom){margin-bottom:22px}
+.cnav.bottom{border-bottom:0;border-top:1px solid var(--cn-rule);margin-top:32px}
+.cnav a{color:var(--cn-a);text-decoration:none}.cnav a:hover{text-decoration:underline}
+.cnav a:focus-visible{outline:2px solid var(--cn-a);outline-offset:2px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}}
+:root[data-theme="dark"] .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}
+</style><nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Part D · Concept 14 of 17</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../13-one-qubit-big-picture/">← One qubit, the whole picture</a> · <a href="../15-entanglement-and-qiskit/">Entanglement and your first Qiskit circuit →</a></div></nav>
+<title>Two qubits and tensor products</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: one reading column (~68ch); wide figures scroll in their own frame. Qubit 1 = blue, qubit 2 = amber, throughout. */
+:root{
+  --bg:#f5f7f8; --surface:#ffffff; --fg:#17212b; --muted:#566573; --line:#d5dde3;
+  --accent:#0f6b72; --q1:#2459b8; --q2:#b86a12; --q1soft:#e3ecfb; --q2soft:#fbeedd; --code:#eef2f4;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Literata", Georgia, "Times New Roman", serif;
+  --mono:"IBM Plex Mono", ui-monospace, Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#10161c; --surface:#18212a; --fg:#e4eaef; --muted:#9aa8b4; --line:#2c3a46;
+  --accent:#4fc1c8; --q1:#7fa8f5; --q2:#f0aa5a; --q1soft:#1d2c48; --q2soft:#3a2a16; --code:#1d2731; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#10161c; --surface:#18212a; --fg:#e4eaef; --muted:#9aa8b4; --line:#2c3a46;
+  --accent:#4fc1c8; --q1:#7fa8f5; --q2:#f0aa5a; --q1soft:#1d2c48; --q2soft:#3a2a16; --code:#1d2731; color-scheme:dark}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.65}
+.wrap{max-width:46rem;margin:0 auto;padding-inline:18px;padding-block:28px 48px;display:flex;flex-direction:column;gap:34px}
+h1,h2,h3{font-family:var(--display);line-height:1.15;text-wrap:balance;margin:0}
+h1{font-size:2.3rem}
+h2{font-size:1.4rem;margin-bottom:10px}
+p{margin:0 0 .8em}
+section>*:last-child{margin-bottom:0}
+.eyebrow{font-family:var(--mono);font-size:.78rem;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.lede{color:var(--muted);margin-top:10px}
+.m{font-family:var(--mono);font-size:.92em;white-space:nowrap}
+.q1{color:var(--q1);font-weight:500}.q2{color:var(--q2);font-weight:500}
+.box{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px 18px}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;font-size:.93rem}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500}
+td.sym{font-family:var(--mono);font-size:1.02rem;white-space:nowrap}
+td.say{font-style:italic;white-space:nowrap}
+.steps{font-family:var(--mono);font-size:.95rem;background:var(--code);border-radius:8px;padding:12px 14px;margin:0 0 .8em;line-height:1.9;overflow-x:auto;white-space:pre}
+.formula{font-family:var(--mono);font-size:clamp(1.05rem,4.2vw,1.55rem);text-align:center;padding:22px 10px;background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow-x:auto;white-space:nowrap}
+.aloud{margin-top:10px;color:var(--muted)}
+.aloud b{color:var(--fg)}
+figure{margin:0;display:flex;flex-direction:column;gap:10px}
+figcaption{font-size:.92rem;color:var(--muted)}
+svg{display:block;width:100%;height:auto;min-width:520px}
+svg text{font-family:var(--mono);fill:var(--fg)}
+.cellA{fill:var(--q1soft);stroke:var(--q1)}
+.cellB{fill:var(--q2soft);stroke:var(--q2)}
+.cellR{fill:var(--surface);stroke:var(--line)}
+.lblA{fill:var(--q1)}.lblB{fill:var(--q2)}
+.mut{fill:var(--muted)}
+.bar{fill:var(--accent)}
+.bl{font-size:12px;text-anchor:middle;fill:var(--fg)}
+.ax{font-size:12px;text-anchor:middle;fill:var(--muted)}
+.axis{stroke:var(--muted);stroke-width:1}
+.controls{display:flex;flex-wrap:wrap;gap:10px 22px;align-items:center;font-size:.92rem}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{font:inherit;font-family:var(--mono);background:var(--surface);color:var(--fg);border:0;padding:6px 12px;cursor:pointer}
+.seg button+button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--bg)}
+button:focus-visible,summary:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+ul.mist{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:8px}
+details{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 16px}
+summary{cursor:pointer;font-family:var(--display);font-weight:600;color:var(--accent)}
+details[open] summary{margin-bottom:10px}
+pre.code{font-family:var(--mono);font-size:.9rem;background:var(--code);border-radius:8px;padding:14px;overflow-x:auto;margin:0}
+a{color:var(--accent)}
+.links{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px}
+footer{border-top:1px solid var(--line);padding-top:16px;font-size:.92rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:6px 20px;justify-content:space-between}
+.check{color:var(--accent);font-weight:600}
+</style>
+
+<style id="xt-style">
+.xt{
+  --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4; --grid:#e6ebf2;
+  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --okbg:#e5f4ec; --soft:#f5f7fb; --code:#f2f4f8;
+  --f-math:ui-monospace,"IBM Plex Mono","JetBrains Mono",Menlo,Consolas,monospace;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .xt{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}}
+:root[data-theme="dark"] .xt{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}
+.xt{color:inherit;font:inherit;display:flex;flex-direction:column;gap:12px;min-width:0;text-align:left}
+.xt h3{margin:10px 0 0}
+.xt section,.xt article{display:flex;flex-direction:column;gap:12px;min-width:0}
+.xt p{margin:0;max-width:65ch}
+.xt .eyebrow{font:600 .78rem/1 var(--f-math);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.xt .m{font-family:var(--f-math);font-size:.92em;white-space:nowrap}
+.xt .re{color:var(--re)} .im{color:var(--im)}
+.xt .bar{text-decoration:overline;text-decoration-thickness:1.5px}
+.xt .box{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.xt .scroll{overflow-x:auto}
+.xt table{border-collapse:collapse;width:100%;font-size:.95rem}
+.xt th,.xt td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+.xt th{font:600 .75rem var(--f-math);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.xt .sym td:first-child{font-family:var(--f-math);font-weight:600;white-space:nowrap}
+.xt .key{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:8px}
+.xt .key a{display:flex;justify-content:space-between;align-items:baseline;gap:6px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:7px 10px;font-family:var(--f-math);font-variant-numeric:tabular-nums}
+.xt .key a b{color:var(--ok)}
+.xt .key a span{color:var(--muted);font-size:.85rem}
+.xt .qcard{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
+.xt .qhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.xt .qhead .qn{font:700 .85rem var(--f-math);color:var(--muted)}
+.xt .qtext{font-size:1.05rem}
+.xt .opts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:6px}
+.xt .opts li{border:1px solid var(--rule);border-radius:8px;padding:6px 10px;font-family:var(--f-math);font-size:.92rem;min-width:0;overflow-wrap:anywhere}
+.xt .opts li .l{color:var(--muted);margin-right:6px}
+.xt .show .opts li.ok,.xt .revealed .opts li.ok{border-color:var(--ok);background:var(--okbg);color:var(--ink)}
+.xt .show .opts li.ok .l,.xt .revealed .opts li.ok .l{color:var(--ok);font-weight:700}
+.xt .badge{font:700 .82rem var(--f-math);color:var(--ok);background:var(--okbg);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.xt body:not(.show) .qcard:not(.revealed) .badge{visibility:hidden}
+.xt .steps{font-family:var(--f-math);font-size:.93rem;background:var(--code);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.xt .steps span{white-space:pre-wrap}
+.xt .steps .note{color:var(--muted);font-family:var(--f-body);font-size:.88rem;white-space:normal}
+.xt .steps .ok{color:var(--ok);font-weight:600}
+.xt figure{margin:0;background:var(--soft);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.xt figure svg{width:100%;height:auto;max-width:360px;align-self:center;display:block}
+.xt figcaption{font-size:.9rem;color:var(--muted)}
+.xt figcaption b{color:var(--ink)}
+.xt svg text{font-family:var(--f-math);font-size:12px;fill:var(--ink)}
+.xt svg .lab{font-size:13px;font-weight:600}
+.xt svg .mut{fill:var(--muted)}
+.xt svg .grid{stroke:var(--grid);stroke-width:1}
+.xt svg .axis{stroke:var(--muted);stroke-width:1.3}
+.xt svg .reS{stroke:var(--re)} svg .imS{stroke:var(--im)} svg .inkS{stroke:var(--ink)} svg .okS{stroke:var(--ok)} svg .mutS{stroke:var(--muted)}
+.xt svg .reF{fill:var(--re)} svg .imF{fill:var(--im)} svg .inkF{fill:var(--ink)} svg .okF{fill:var(--ok)} svg .bgF{fill:var(--paper)} svg .none{fill:none}
+.xt svg .okT{fill:var(--ok)} svg .reT{fill:var(--re)} svg .imT{fill:var(--im)}
+.xt .why{font-size:.95rem;color:var(--muted)}
+.xt .why b{color:var(--ink)}
+.xt .ql{background:var(--soft);border-left:3px solid var(--im);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.xt .ql b{color:var(--im)}
+.xt .warn{background:var(--soft);border-left:3px solid var(--re);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.xt details.sol{border-top:1px dashed var(--rule);padding-top:10px}
+.xt details.sol>summary{cursor:pointer;font-weight:700;color:var(--re);list-style-position:inside}
+.xt details.sol[open]>summary{margin-bottom:10px}
+.xt details.sol>div{display:flex;flex-direction:column;gap:12px}
+.xt .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.xt button{font:600 .9rem var(--f-body);color:var(--re);background:var(--paper);border:1px solid var(--re);border-radius:8px;padding:8px 14px;cursor:pointer}
+.xt button:hover{background:var(--soft)}
+.xt button:focus-visible,.xt summary:focus-visible,.xt a:focus-visible{outline:2px solid var(--re);outline-offset:3px}
+.xt ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;max-width:65ch}
+.xt pre.code{margin:0;background:var(--code);border-radius:8px;padding:14px 16px;overflow-x:auto;font:.85rem/1.55 var(--f-math)}
+.xt a{color:var(--re)}
+.xt footer{border-top:1px solid var(--rule);padding-top:14px;color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+@media (prefers-reduced-motion:reduce){.xt *{transition:none!important}}
+.xt .tag{font:600 .72rem var(--f-math);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.xt .tag.new{color:var(--ok);background:var(--okbg)} .tag.have{color:var(--re);background:var(--soft)} .tag.next{color:var(--im);background:var(--soft)}
+.xt .cov td:nth-child(2){white-space:nowrap}
+.xt .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:12px}
+.xt .grid2>div{min-width:0}
+
+.xt .formula{text-align:center}
+.xt>p,.xt>ul{margin:0}
+.xt .fml{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:18px 12px;text-align:center;font:600 clamp(1.05rem,4.4vw,1.5rem)/1.4 var(--f-math);overflow-x:auto}
+.xt .say{color:var(--muted);font-size:.95rem}
+.xt .say b{color:var(--ink)}
+.xt thead{display:table-header-group}.xt tbody tr{display:table-row;padding:0}.xt tbody td{display:table-cell;padding:7px 10px;border-bottom:1px solid var(--rule);color:inherit}
+.xt .steps{font-size:.86rem}
+@media (max-width:560px){.xt table.symt thead{display:none}.xt table.symt tbody tr{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;padding:9px 6px;border-bottom:1px solid var(--rule)}.xt table.symt tbody td{display:block;border:0;padding:0}.xt table.symt td:nth-child(3){grid-column:1/-1;color:var(--muted)}}
+.xt .steps .note{background:none;border:0;padding:0;margin:0;border-radius:0;font-size:.85rem}
+</style>
+<div class="wrap">
+
+<header>
+  <div class="eyebrow">Concept 14 · Part D · Many qubits</div>
+  <h1>Two qubits and tensor products</h1>
+  <p class="lede">How two separate qubits become one list of four numbers, and why every extra qubit doubles that list.</p>
+</header>
+
+<section>
+  <h2>Symbols on this page</h2>
+  <div class="box scroll">
+    <table>
+      <thead><tr><th>Symbol</th><th>Say it</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td class="sym">|0⟩</td><td class="say">"ket zero"</td><td>The qubit state "zero". As a column: (1, 0).</td></tr>
+        <tr><td class="sym">|1⟩</td><td class="say">"ket one"</td><td>The qubit state "one". As a column: (0, 1).</td></tr>
+        <tr><td class="sym">|+⟩</td><td class="say">"ket plus"</td><td>Equal mix of |0⟩ and |1⟩: (1/√2, 1/√2).</td></tr>
+        <tr><td class="sym">|01⟩</td><td class="say">"ket zero-one"</td><td>Two qubits: first is 0, second is 1. Same as |0⟩⊗|1⟩.</td></tr>
+        <tr><td class="sym">⊗</td><td class="say">"tensor" (or "kron")</td><td>Tensor product: glue two qubit vectors into one bigger vector.</td></tr>
+        <tr><td class="sym">(a, b)</td><td class="say">"the vector a, b"</td><td>A column of numbers, written sideways to save space.</td></tr>
+        <tr><td class="sym">a·c</td><td class="say">"a times c"</td><td>Ordinary multiplication. The dot just means ×.</td></tr>
+        <tr><td class="sym">2ⁿ</td><td class="say">"two to the power n"</td><td>2 multiplied by itself n times. 2³ = 2×2×2 = 8.</td></tr>
+        <tr><td class="sym">n</td><td class="say">"n"</td><td>How many qubits we have.</td></tr>
+        <tr><td class="sym">√2</td><td class="say">"root two"</td><td>The number that times itself gives 2 (about 1.414).</td></tr>
+        <tr><td class="sym">1/√2</td><td class="say">"one over root two"</td><td>About 0.707. Squared, it gives 1/2.</td></tr>
+        <tr><td class="sym">|x|²</td><td class="say">"x squared" (size of x, squared)</td><td>The probability that comes from amplitude x.</td></tr>
+        <tr><td class="sym">≠</td><td class="say">"is not equal to"</td><td>The two sides are different.</td></tr>
+              <tr><td class="sym">α₀₀ … α₁₁</td><td class="say">"alpha zero zero" … "alpha one one"</td><td>The four amplitudes of a two-qubit state, one per basis state.</td></tr>
+        <tr><td class="sym">Σᵢⱼ</td><td class="say">"sum over i and j"</td><td>Add up the term for every pair i, j (here 00, 01, 10, 11).</td></tr>
+        <tr><td class="sym">ℂ⁴</td><td class="say">"C four"</td><td>Columns of 4 complex numbers: where two qubits live.</td></tr>
+        <tr><td class="sym">10⁹⁰</td><td class="say">"ten to the ninety"</td><td>1 followed by 90 zeros.</td></tr>
+        <tr><td class="sym">A ⊗ B</td><td class="say">"A tensor B"</td><td>Two gates side by side: A on the first qubit, B on the second. A 4×4 matrix built from two 2×2s.</td></tr>
+        <tr><td class="sym">H^⊗n</td><td class="say">"H tensor n"</td><td>H on every one of n qubits: H ⊗ H ⊗ … ⊗ H.</td></tr>
+        <tr><td class="sym">Σₓ</td><td class="say">"sum over x"</td><td>Add up one term for every bit string x (00…0 to 11…1).</td></tr>
+        <tr><td class="sym">P₀, P₁</td><td class="say">"P zero, P one"</td><td>Projectors |0⟩⟨0| = [1 0; 0 0] and |1⟩⟨1| = [0 0; 0 1]: keep only the 0 part or only the 1 part.</td></tr>
+        <tr><td class="sym">b ⊕ a</td><td class="say">"b x-or a"</td><td>Add bits and drop the carry: 0⊕0 = 0, 0⊕1 = 1⊕0 = 1, 1⊕1 = 0.</td></tr>
+        <tr><td class="sym">Φ±, Ψ±</td><td class="say">"phi plus/minus, psi plus/minus"</td><td>The four Bell states, the standard entangled pairs.</td></tr>
+        <tr><td class="sym">⟨u, v⟩, ‖u‖</td><td class="say">"inner product of u and v", "length of u"</td><td>From the inner products concept.</td></tr>
+        <tr><td class="sym">⇔</td><td class="say">"if and only if"</td><td>Each side implies the other.</td></tr>
+</tbody>
+    </table>
+  </div>
+</section>
+
+<section>
+  <h2>Back to basics: powers of two and binary</h2>
+  <p>Two ideas from school do all the work today.</p>
+  <p><b>Powers of two.</b> 2ⁿ means "multiply 2 by itself n times". Each time n goes up by 1, the answer doubles.</p>
+  <p><b>Binary counting.</b> With only the digits 0 and 1, two digits can make exactly four labels: 00, 01, 10, 11. Read them as numbers: the left digit is worth 2, the right digit is worth 1.</p>
+  <div class="steps">2³ = 2 × 2 × 2
+   = 4 × 2
+   = 8
+
+binary 10 = (1 × 2) + (0 × 1)
+          = 2 + 0
+          = 2
+
+binary 11 = (1 × 2) + (1 × 1)
+          = 2 + 1
+          = 3</div>
+  <p>So the two-qubit labels 00, 01, 10, 11 are just the numbers 0, 1, 2, 3. That number is the label's position in the list (counting from 0).</p>
+</section>
+
+<section>
+  <h2>The idea</h2>
+  <p>One qubit is a list of 2 numbers: how much of |0⟩ and how much of |1⟩. Two qubits together are described by a list of 4 numbers, one for each label 00, 01, 10, 11. The tensor product ⊗ builds that 4-list from the two 2-lists: take each number of the first qubit and multiply it into the whole second qubit. Because every added qubit doubles the list, n qubits need 2ⁿ numbers, which is why big quantum states are so hard to store on a normal computer.</p>
+</section>
+
+<section>
+  <figure>
+    <h2>Picture 1: the block expansion</h2>
+    <div class="controls" role="group" aria-label="Choose the two qubit states">
+      <span><span class="q1">Qubit 1</span>&nbsp;
+        <span class="seg" id="segA"><button type="button" id="a0" data-v="0">|0⟩</button><button type="button" id="a1" data-v="1">|1⟩</button><button type="button" id="ap" data-v="p">|+⟩</button></span></span>
+      <span><span class="q2">Qubit 2</span>&nbsp;
+        <span class="seg" id="segB"><button type="button" id="b0" data-v="0">|0⟩</button><button type="button" id="b1" data-v="1">|1⟩</button><button type="button" id="bp" data-v="p">|+⟩</button></span></span>
+    </div>
+    <div class="box scroll">
+    <svg viewBox="0 0 640 280" role="img" aria-label="Kronecker product: a two-number vector times a two-number vector gives a four-number vector">
+      <text x="72" y="48" text-anchor="middle" class="lblA" font-size="14">qubit 1</text>
+      <rect class="cellA" x="40" y="80" width="64" height="44" rx="6"/>
+      <rect class="cellA" x="40" y="132" width="64" height="44" rx="6"/>
+      <text id="tA0" x="72" y="108" text-anchor="middle" font-size="15">1/√2</text>
+      <text id="tA1" x="72" y="160" text-anchor="middle" font-size="15">1/√2</text>
+      <text x="30" y="108" text-anchor="end" class="lblA" font-size="14">a</text>
+      <text x="30" y="160" text-anchor="end" class="lblA" font-size="14">b</text>
+
+      <text x="146" y="138" text-anchor="middle" font-size="26">⊗</text>
+
+      <text x="220" y="48" text-anchor="middle" class="lblB" font-size="14">qubit 2</text>
+      <rect class="cellB" x="188" y="80" width="64" height="44" rx="6"/>
+      <rect class="cellB" x="188" y="132" width="64" height="44" rx="6"/>
+      <text id="tB0" x="220" y="108" text-anchor="middle" font-size="15">1</text>
+      <text id="tB1" x="220" y="160" text-anchor="middle" font-size="15">0</text>
+      <text x="262" y="108" class="lblB" font-size="14">c</text>
+      <text x="262" y="160" class="lblB" font-size="14">d</text>
+
+      <text x="306" y="138" text-anchor="middle" font-size="26">=</text>
+
+      <text x="440" y="20" text-anchor="middle" class="mut" font-size="13">4 numbers, one per label</text>
+      <!-- block 1: a times (c,d) -->
+      <path d="M350 32 h-8 v116 h8" fill="none" stroke="var(--q1)" stroke-width="2"/>
+      <text x="336" y="94" text-anchor="end" class="lblA" font-size="12">a×</text>
+      <!-- block 2: b times (c,d) -->
+      <path d="M350 156 h-8 v116 h8" fill="none" stroke="var(--q1)" stroke-width="2"/>
+      <text x="336" y="218" text-anchor="end" class="lblA" font-size="12">b×</text>
+
+      <rect class="cellR" x="360" y="36" width="160" height="50" rx="6"/>
+      <rect class="cellR" x="360" y="94" width="160" height="50" rx="6"/>
+      <rect class="cellR" x="360" y="160" width="160" height="50" rx="6"/>
+      <rect class="cellR" x="360" y="218" width="160" height="50" rx="6"/>
+      <text x="372" y="66" font-size="13"><tspan class="lblA">a</tspan>·<tspan class="lblB">c</tspan></text>
+      <text x="372" y="124" font-size="13"><tspan class="lblA">a</tspan>·<tspan class="lblB">d</tspan></text>
+      <text x="372" y="190" font-size="13"><tspan class="lblA">b</tspan>·<tspan class="lblB">c</tspan></text>
+      <text x="372" y="248" font-size="13"><tspan class="lblA">b</tspan>·<tspan class="lblB">d</tspan></text>
+      <text id="r0" x="508" y="66" text-anchor="end" font-size="15">1/√2</text>
+      <text id="r1" x="508" y="124" text-anchor="end" font-size="15">0</text>
+      <text id="r2" x="508" y="190" text-anchor="end" font-size="15">1/√2</text>
+      <text id="r3" x="508" y="248" text-anchor="end" font-size="15">0</text>
+      <text x="534" y="66" font-size="14"><tspan class="lblA">|0</tspan><tspan class="lblB">0⟩</tspan></text>
+      <text x="534" y="124" font-size="14"><tspan class="lblA">|0</tspan><tspan class="lblB">1⟩</tspan></text>
+      <text x="534" y="190" font-size="14"><tspan class="lblA">|1</tspan><tspan class="lblB">0⟩</tspan></text>
+      <text x="534" y="248" font-size="14"><tspan class="lblA">|1</tspan><tspan class="lblB">1⟩</tspan></text>
+      <text x="590" y="66" class="mut" font-size="12">#0</text>
+      <text x="590" y="124" class="mut" font-size="12">#1</text>
+      <text x="590" y="190" class="mut" font-size="12">#2</text>
+      <text x="590" y="248" class="mut" font-size="12">#3</text>
+    </svg>
+    </div>
+    <figcaption>The top <span class="q1">qubit-1</span> number <i>a</i> multiplies the whole <span class="q2">qubit-2</span> column, giving the top half. The bottom number <i>b</i> does the same for the bottom half. The left digit of each label comes from qubit 1, the right digit from qubit 2. Try the buttons: <b>Now showing <span id="nowShowing" class="m">|+⟩ ⊗ |0⟩</span></b>.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <figure>
+    <h2>Picture 2: every qubit doubles the list</h2>
+    <div class="controls">
+      <span>Scale&nbsp;<span class="seg"><button type="button" id="sLin" aria-pressed="true">plain</button><button type="button" id="sLog">doubling steps</button></span></span>
+    </div>
+    <div class="box scroll">
+    <svg viewBox="0 0 640 300" role="img" aria-label="Bar chart of 2 to the power n for n from 1 to 10">
+      <line class="axis" x1="56" y1="250" x2="624" y2="250"/>
+      <line class="axis" x1="56" y1="30" x2="56" y2="250"/>
+      <text x="340" y="292" text-anchor="middle" class="mut" font-size="13">n = number of qubits</text>
+      <text x="20" y="140" text-anchor="middle" class="mut" font-size="13" transform="rotate(-90 20 140)">numbers needed (2ⁿ)</text>
+      <g id="gLin">
+<rect x="64.0" y="249.2" width="40.8" height="0.8" class="bar"/><text x="84.4" y="243.6" class="bl">2</text>
+<rect x="120.8" y="249.1" width="40.8" height="0.9" class="bar"/><text x="141.2" y="243.1" class="bl">4</text>
+<rect x="177.6" y="248.3" width="40.8" height="1.7" class="bar"/><text x="198.0" y="242.3" class="bl">8</text>
+<rect x="234.4" y="246.6" width="40.8" height="3.4" class="bar"/><text x="254.8" y="240.6" class="bl">16</text>
+<rect x="291.2" y="243.1" width="40.8" height="6.9" class="bar"/><text x="311.6" y="237.1" class="bl">32</text>
+<rect x="348.0" y="236.2" width="40.8" height="13.8" class="bar"/><text x="368.4" y="230.2" class="bl">64</text>
+<rect x="404.8" y="222.5" width="40.8" height="27.5" class="bar"/><text x="425.2" y="216.5" class="bl">128</text>
+<rect x="461.6" y="195.0" width="40.8" height="55.0" class="bar"/><text x="482.0" y="189.0" class="bl">256</text>
+<rect x="518.4" y="140.0" width="40.8" height="110.0" class="bar"/><text x="538.8" y="134.0" class="bl">512</text>
+<rect x="575.2" y="30.0" width="40.8" height="220.0" class="bar"/><text x="595.6" y="24.0" class="bl">1024</text>
+      </g>
+      <g id="gLog" hidden>
+<rect x="64.0" y="228.0" width="40.8" height="22.0" class="bar"/><text x="84.4" y="222.0" class="bl">2</text>
+<rect x="120.8" y="206.0" width="40.8" height="44.0" class="bar"/><text x="141.2" y="200.0" class="bl">4</text>
+<rect x="177.6" y="184.0" width="40.8" height="66.0" class="bar"/><text x="198.0" y="178.0" class="bl">8</text>
+<rect x="234.4" y="162.0" width="40.8" height="88.0" class="bar"/><text x="254.8" y="156.0" class="bl">16</text>
+<rect x="291.2" y="140.0" width="40.8" height="110.0" class="bar"/><text x="311.6" y="134.0" class="bl">32</text>
+<rect x="348.0" y="118.0" width="40.8" height="132.0" class="bar"/><text x="368.4" y="112.0" class="bl">64</text>
+<rect x="404.8" y="96.0" width="40.8" height="154.0" class="bar"/><text x="425.2" y="90.0" class="bl">128</text>
+<rect x="461.6" y="74.0" width="40.8" height="176.0" class="bar"/><text x="482.0" y="68.0" class="bl">256</text>
+<rect x="518.4" y="52.0" width="40.8" height="198.0" class="bar"/><text x="538.8" y="46.0" class="bl">512</text>
+<rect x="575.2" y="30.0" width="40.8" height="220.0" class="bar"/><text x="595.6" y="24.0" class="bl">1024</text>
+      </g>
+<text x="84.4" y="268" class="ax">1</text><text x="141.2" y="268" class="ax">2</text><text x="198.0" y="268" class="ax">3</text><text x="254.8" y="268" class="ax">4</text><text x="311.6" y="268" class="ax">5</text><text x="368.4" y="268" class="ax">6</text><text x="425.2" y="268" class="ax">7</text><text x="482.0" y="268" class="ax">8</text><text x="538.8" y="268" class="ax">9</text><text x="595.6" y="268" class="ax">10</text>
+    </svg>
+    </div>
+    <figcaption><b>Plain</b> scale: bar height is the real count, so the first few bars are almost flat and the last one shoots up. <b>Doubling steps</b>: each step up means "times 2", so the bars climb evenly. Ten qubits already need 1,024 numbers; fifty qubits would need about a million billion (2⁵⁰ ≈ 1.13 × 10¹⁵).</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>The key formula</h2>
+  <div class="formula">(<span class="q1">a</span>, <span class="q1">b</span>) ⊗ (<span class="q2">c</span>, <span class="q2">d</span>) = (<span class="q1">a</span>·<span class="q2">c</span>, <span class="q1">a</span>·<span class="q2">d</span>, <span class="q1">b</span>·<span class="q2">c</span>, <span class="q1">b</span>·<span class="q2">d</span>)</div>
+  <p class="aloud"><b>Read it aloud:</b> "The vector a, b, tensor the vector c, d, equals the vector: a times c, a times d, b times c, b times d."</p>
+  <p>The four slots, in order, belong to the labels |00⟩, |01⟩, |10⟩, |11⟩. With n qubits, the list has 2ⁿ slots.</p>
+</section>
+
+<section>
+  <h2>Worked example: |+⟩ ⊗ |0⟩</h2>
+  <p>Qubit 1 is |+⟩ = (1/√2, 1/√2), so <span class="q1">a = 1/√2</span>, <span class="q1">b = 1/√2</span>. Qubit 2 is |0⟩ = (1, 0), so <span class="q2">c = 1</span>, <span class="q2">d = 0</span>.</p>
+  <div class="steps">slot 1 (|00⟩):  a·c = (1/√2) × 1 = 1/√2
+slot 2 (|01⟩):  a·d = (1/√2) × 0 = 0
+slot 3 (|10⟩):  b·c = (1/√2) × 1 = 1/√2
+slot 4 (|11⟩):  b·d = (1/√2) × 0 = 0
+
+|+⟩ ⊗ |0⟩ = (1/√2, 0, 1/√2, 0)
+          = (1/√2)|00⟩ + (1/√2)|10⟩
+          = (|00⟩ + |10⟩)/√2</div>
+  <p>In words: qubit 1 is a 50/50 mix, qubit 2 is surely 0. So only labels ending in 0 (00 and 10) appear.</p>
+  <p class="check">Check: the probabilities must add up to 1.</p>
+  <div class="steps">(1/√2)² = 1 / (√2 × √2) = 1/2
+0²      = 0
+
+1/2 + 0 + 1/2 + 0
+  = 1/2 + 1/2
+  = 1   ✓</div>
+</section>
+
+<section class="xt" id="four-states">
+  <h2>Any two-qubit state: four amplitudes</h2>
+<div class="steps">
+    <span>Two qubits live in ℂ² ⊗ ℂ² = ℂ⁴</span>
+    <span>|ψ⟩ = α₀₀|00⟩ + α₀₁|01⟩ + α₁₀|10⟩ + α₁₁|11⟩</span>
+    <span>with |α₀₀|² + |α₀₁|² + |α₁₀|² + |α₁₁|² = 1</span>
+    <span class="note">Short form: Σᵢⱼ |αᵢⱼ|² = 1, "sum over i and j of mod alpha i j squared". The four probabilities add to 1.</span>
+  </div>
+  <div class="grid2">
+    <div class="scroll"><table>
+      <thead><tr><th>Basis state</th><th>q1</th><th>q0</th></tr></thead>
+      <tbody>
+        <tr><td class="m">|00⟩</td><td>0</td><td>0</td></tr>
+        <tr><td class="m">|01⟩</td><td>0</td><td>1</td></tr>
+        <tr><td class="m">|10⟩</td><td>1</td><td>0</td></tr>
+        <tr><td class="m">|11⟩</td><td>1</td><td>1</td></tr>
+      </tbody>
+    </table></div>
+    <div class="scroll"><table>
+      <thead><tr><th>Qubits</th><th>Amplitudes</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>2</td></tr>
+        <tr><td>2</td><td>4</td></tr>
+        <tr><td>10</td><td>1,024</td></tr>
+        <tr><td>50</td><td>≈ 10¹⁵</td></tr>
+        <tr><td>300</td><td>&gt; 10⁹⁰</td></tr>
+      </tbody>
+    </table></div>
+  </div>
+  <p class="why">10⁹⁰ is more than the number of atoms in the observable universe: no classical computer can even store the list for 300 qubits. In |q1 q0⟩ the left label belongs to qubit 1 and the right one to qubit 0. Keep track of which qubit is which: Qiskit prints them in this right-to-left order (see <a href="../15-entanglement-and-qiskit/#qubit-order">entanglement</a>).</p>
+
+  <p>Not every list of four amplitudes comes from two separate qubits. In a product state |a⟩ ⊗ |b⟩ each of the four amplitudes is a product aᵢ·bⱼ of one number from each qubit. A general two-qubit state can be <i>any</i> length-1 list of four numbers, and most such lists are not of that form. Those are the entangled states.</p>
+</section>
+
+<section class="xt" id="product-vs-entangled">
+  <h2>Product state or entangled state</h2>
+<div class="grid2">
+    <div class="box"><b>Product (separable)</b><p>Each qubit has its own state, and the pair can be written |a⟩ ⊗ |b⟩, shortened to |ab⟩.</p><p class="m">|0⟩ ⊗ |1⟩ = |01⟩ = (0, 1, 0, 0)</p></div>
+    <div class="box"><b>Entangled</b><p>Cannot be written as |a⟩ ⊗ |b⟩ for any single-qubit states. The qubits are correlated, not independent. Example: (|00⟩ + |11⟩)/√2.</p></div>
+  </div>
+  <details class="sol"><summary>Try it: write |0⟩ ⊗ |1⟩ as a column</summary><div>
+    <div class="steps">
+      <span>|0⟩ ⊗ |1⟩ = (1·|1⟩ stacked on 0·|1⟩)</span>
+      <span>= (1·0, 1·1, 0·0, 0·1)</span>
+      <span class="ok">= (0, 1, 0, 0): the amplitude sits in slot "01" ✓</span>
+    </div>
+  </div></details>
+
+  <p><b>A quick test.</b> Write the amplitudes of α₀₀|00⟩ + α₀₁|01⟩ + α₁₀|10⟩ + α₁₁|11⟩ in a 2 × 2 grid. The state is a product exactly when <b>α₀₀·α₁₁ = α₀₁·α₁₀</b> (the grid is a times table). The grid picture is on <a href="../15-entanglement-and-qiskit/">entanglement</a>.</p>
+  <div class="steps">
+    <span>(|00⟩ + |01⟩ + |10⟩ + |11⟩)/2</span>
+    <span>α₀₀α₁₁ = ½·½ = ¼,  α₀₁α₁₀ = ½·½ = ¼</span>
+    <span class="ok">Equal → product: it is |+⟩ ⊗ |+⟩</span>
+    <span>(|00⟩ + |11⟩)/√2</span>
+    <span>α₀₀α₁₁ = ½,  α₀₁α₁₀ = 0·0 = 0</span>
+    <span class="ok">Not equal → entangled</span>
+  </div>
+  <p id="product-test"><b>Same test, written as a determinant.</b> List the state as (a, b, c, d) = (α₀₀, α₀₁, α₁₀, α₁₁) and arrange it as the grid [a b; c d]. Then (for a non-zero state):</p>
+  <div class="formula">product state  ⇔  ad − bc = 0</div>
+  <p class="aloud"><b>Read it aloud:</b> "it's a product state if and only if a d minus b c equals zero", i.e. the grid's determinant is 0.</p>
+  <div class="steps">
+    <span class="note">Why product ⇒ ad − bc = 0: a product (u₁, u₂) ⊗ (v₁, v₂) has entries</span>
+    <span>(a, b, c, d) = (u₁v₁, u₁v₂, u₂v₁, u₂v₂)</span>
+    <span>ad = u₁v₁u₂v₂ = u₁v₂u₂v₁ = bc</span>
+    <span class="note">Why ad − bc = 0 ⇒ product: it says the two halves (a, b) and (c, d) are parallel, so both are multiples of one vector v: (a, b) = u₁v and (c, d) = u₂v. That is exactly (u₁, u₂) ⊗ v.</span>
+    <span>½(1, 1, 1, 1):    ad − bc = ¼ − ¼ = 0        → product, |+⟩|+⟩ ✓</span>
+    <span>(1, 0, 0, 1)/√2:  ad − bc = ½ − 0 = ½ ≠ 0   → entangled</span>
+  </div>
+  <p><b>Entangled</b> means there is no way to give each qubit its own state. The pair has a definite joint state; the parts on their own do not. The four <b>Bell states</b> are the standard examples, and together they form an orthonormal basis of ℂ⁴:</p>
+  <div class="steps">
+    <span>Φ± = (|00⟩ ± |11⟩)/√2      <span class="note">"phi plus / phi minus"</span></span>
+    <span>Ψ± = (|01⟩ ± |10⟩)/√2      <span class="note">"psi plus / psi minus"</span></span>
+  </div>
+</section>
+
+<section class="xt" id="rules">
+  <h2>Rules for computing with ⊗</h2>
+  <p>⊗ behaves like multiplying out brackets, with one difference: <b>you must keep the order</b>, because "first qubit" and "second qubit" are different slots.</p>
+  <h3>Bilinearity: it distributes over + and lets numbers out</h3>
+  <div class="steps">
+    <span>(u + u′) ⊗ v = u ⊗ v + u′ ⊗ v</span>
+    <span>u ⊗ (v + v′) = u ⊗ v + u ⊗ v′</span>
+    <span>(c·u) ⊗ v = u ⊗ (c·v) = c·(u ⊗ v)</span>
+  </div>
+  <h3>Inner products multiply</h3>
+  <div class="steps">
+    <span>⟨u ⊗ v, u′ ⊗ v′⟩ = ⟨u, u′⟩ · ⟨v, v′⟩</span>
+    <span>‖u ⊗ v‖ = ‖u‖ · ‖v‖</span>
+    <span class="note">So unit ⊗ unit is a unit vector (a valid two-qubit state), and the tensor products of two orthonormal bases give an orthonormal basis of the big space.</span>
+  </div>
+  <h3>Example: |+⟩ ⊗ |+⟩, by multiplying out</h3>
+  <div class="steps">
+    <span>|+⟩ ⊗ |+⟩ = (1/√2)(|0⟩ + |1⟩) ⊗ (1/√2)(|0⟩ + |1⟩)</span>
+    <span class="note">Numbers out front: (1/√2)(1/√2) = 1/2. Then multiply every term by every term, keeping left with left:</span>
+    <span>= ½ (|0⟩⊗|0⟩ + |0⟩⊗|1⟩ + |1⟩⊗|0⟩ + |1⟩⊗|1⟩)</span>
+    <span class="ok">= ½ (|00⟩ + |01⟩ + |10⟩ + |11⟩) = ½(1, 1, 1, 1)</span>
+    <span class="note">An equal superposition of all four bit strings. With n copies:</span>
+    <span>|+⟩ ⊗ … ⊗ |+⟩ = (1/√2ⁿ) Σₓ |x⟩,  the sum over all 2ⁿ strings x of n bits</span>
+  </div>
+  <div class="steps">
+    <span class="note">Mixed example: |0⟩ ⊗ |−⟩</span>
+    <span>= |0⟩ ⊗ (1/√2)(|0⟩ − |1⟩) = (1/√2)(|00⟩ − |01⟩) = (1/√2)(1, −1, 0, 0)</span>
+  </div>
+  <p class="why">Order check with numbers: (1, 2) ⊗ (3, i) = (3, i, 6, 2i), but (3, i) ⊗ (1, 2) = (3, 6, i, 2i). Same four numbers, different slots. Entry (j, k) of u ⊗ v is uⱼvₖ: one index from each factor, left bit from u.</p>
+  <p class="why">Notation: |a⟩ ⊗ |b⟩ is also written |a⟩|b⟩, |a, b⟩ or |ab⟩. The ⊗ is often dropped.</p>
+</section>
+
+<section class="xt" id="matrices">
+  <h2>Tensor product of matrices: gates on two qubits</h2>
+  <p>The same "each entry scales a copy" idea works for matrices:</p>
+  <div class="formula">A ⊗ B = [a₁₁B  a₁₂B; a₂₁B  a₂₂B]</div>
+  <p class="aloud"><b>Read it aloud:</b> "A tensor B is the block matrix: a one-one times B, a one-two times B, and so on". For two 2×2 matrices the answer is 4×4.</p>
+  <div class="grid2">
+    <div class="box"><b>X ⊗ I</b><p class="m">[0 0 1 0; 0 0 0 1; 1 0 0 0; 0 1 0 0]</p><p>Flips the <b>first</b> qubit: |00⟩ ↔ |10⟩, |01⟩ ↔ |11⟩.</p></div>
+    <div class="box"><b>I ⊗ X</b><p class="m">[0 1 0 0; 1 0 0 0; 0 0 0 1; 0 0 1 0]</p><p>Flips the <b>second</b> qubit: |00⟩ ↔ |01⟩, |10⟩ ↔ |11⟩.</p></div>
+  </div>
+  <p class="why">"Do nothing to the other qubit" is written ⊗ I. The position of the I tells you which qubit is left alone.</p>
+  <h3>The key rule: act on each factor separately</h3>
+  <div class="formula">(A ⊗ B)(u ⊗ v) = (Au) ⊗ (Bv)</div>
+  <p class="aloud"><b>Read it aloud:</b> "A tensor B, applied to u tensor v, equals A u tensor B v". Two gates side by side in one column of a circuit: A on the top wire, B on the bottom.</p>
+  <div class="steps">
+    <span>(A ⊗ B)(C ⊗ D) = (AC) ⊗ (BD)          <span class="note">mixed-product rule</span></span>
+    <span>(A ⊗ B)† = A† ⊗ B†</span>
+    <span>A, B unitary  ⇒  A ⊗ B unitary</span>
+    <span>A ⊗ B = (A ⊗ I)(I ⊗ B) = (I ⊗ B)(A ⊗ I)</span>
+    <span class="note">The last line says gates on different qubits commute: the order you draw them in one column doesn't matter.</span>
+  </div>
+  <h3>Example: Hadamard on every qubit</h3>
+  <div class="steps">
+    <span>H ⊗ H = ½ [1 1 1 1; 1 −1 1 −1; 1 1 −1 −1; 1 −1 −1 1]</span>
+    <span class="note">No 4×4 multiplication needed, by the key rule:</span>
+    <span>(H ⊗ H)|00⟩ = H|0⟩ ⊗ H|0⟩ = |+⟩|+⟩ = ½(|00⟩ + |01⟩ + |10⟩ + |11⟩)</span>
+    <span class="note">With n qubits, n Hadamards make a superposition over all 2ⁿ strings:</span>
+    <span class="ok">H^⊗n |0…0⟩ = (1/√2ⁿ) Σₓ |x⟩</span>
+  </div>
+  <p class="ql"><b>Quantum link:</b> this is the first step of almost every quantum algorithm, including <a href="../16-deutsch-algorithm/">Deutsch–Jozsa</a>. n gates set up 2ⁿ amplitudes at once.</p>
+  <h3 id="cnot-formula">Not every two-qubit gate is a tensor product: CNOT</h3>
+  <p><a href="../15-entanglement-and-qiskit/#cnot">CNOT</a> flips the second qubit if and only if the first is 1: |a⟩|b⟩ ↦ |a⟩|b ⊕ a⟩. It can't be written as A ⊗ B, but it is a sum of two:</p>
+  <div class="formula">CNOT = P₀ ⊗ I + P₁ ⊗ X</div>
+  <p class="aloud"><b>Read it aloud:</b> "if the first qubit is 0, do nothing to the second; if it is 1, apply X to the second". Here P₀ = e₁e₁† = |0⟩⟨0| and P₁ = e₂e₂† = |1⟩⟨1| are the projectors onto 0 and 1.</p>
+  <div class="steps">
+    <span>|00⟩  —(H ⊗ I)→  (|00⟩ + |10⟩)/√2  —CNOT→  (|00⟩ + |11⟩)/√2 = Φ⁺</span>
+  </div>
+  <p class="why">A product gate A ⊗ B sends product states to product states, so it can never create entanglement. Creating entanglement needs a gate like CNOT.</p>
+</section>
+
+<section class="xt" id="wires">
+  <h2>Gates on wires: the recipe for any number of qubits</h2>
+  <p><b>Convention:</b> in |ab⟩ = |a⟩ ⊗ |b⟩ the left label is the top wire. "H on the top wire only" is H ⊗ I, and "X on the bottom wire" is I ⊗ X. (Qiskit prints bit strings the other way round; see <a href="../15-entanglement-and-qiskit/#qubit-order">qubit order</a>.)</p>
+  <p>A controlled gate is "if the control is |0⟩ do nothing; if it is |1⟩ apply X". Written with the projectors P₀ = |0⟩⟨0| and P₁ = |1⟩⟨1|, that sentence becomes a sum of tensor products:</p>
+  <div class="steps">
+    <span><b>Recipe:</b> one factor per wire, top wire first.</span>
+    <span>Control → P₀ in one term, P₁ in the other.  Target → I with P₀, X with P₁.  Idle wires → I.</span>
+    <span>CNOT (control top)    = P₀ ⊗ I + P₁ ⊗ X       maps |x⟩|y⟩ → |x⟩|y ⊕ x⟩</span>
+    <span>CNOT (control bottom) = I ⊗ P₀ + X ⊗ P₁       swaps |01⟩ ↔ |11⟩, leaves |00⟩ and |10⟩</span>
+    <span class="note">The order of the factors is the order of the wires, so moving the control just swaps the factors.</span>
+  </div>
+  <p>The same recipe scales to any number of wires. With four wires labelled q₃ q₂ q₁ q₀ from the top, a CNOT with control q₀ and target q₃ is</p>
+  <div class="steps">
+    <span>CNOT(q₀ → q₃) = I ⊗ I ⊗ I ⊗ P₀ + X ⊗ I ⊗ I ⊗ P₁</span>
+    <span>|x₃x₂x₁x₀⟩ → |(x₃ ⊕ x₀) x₂ x₁ x₀⟩</span>
+    <span class="note">As a matrix it is 16 × 16 with only 16 non-zero entries out of 256. For 20 qubits the matrix would have about 10¹² entries, so simulators store the recipe (a few small factors), never the full matrix.</span>
+  </div>
+</section>
+
+<section class="xt" id="hadamard-n">
+  <h2>Hadamard on n qubits: the sign formula</h2>
+  <p>One qubit first. H|0⟩ = |+⟩ and H|1⟩ = |−⟩ fit in one formula, because the only minus sign appears when both the input x and the output z are 1:</p>
+  <div class="steps">
+    <span>H|x⟩ = (1/√2) Σ<sub>z∈{0,1}</sub> (−1)<sup>x·z</sup> |z⟩       <span class="note">x = 0: |0⟩ + |1⟩.  x = 1: |0⟩ − |1⟩.</span></span>
+  </div>
+  <p>For n qubits, multiply out n such brackets with the mixed-product rule. Each output string z collects one sign per wire:</p>
+  <div class="steps">
+    <span><b>H<sup>⊗n</sup>|x⟩ = 2<sup>−n/2</sup> Σ<sub>z</sub> (−1)<sup>x·z</sup> |z⟩,   x·z = x₁z₁ ⊕ x₂z₂ ⊕ ⋯ ⊕ xₙzₙ</b></span>
+    <span class="note">Example n = 2, x = 10: the sign is −1 exactly when z₁ = 1.</span>
+    <span>H⊗H |10⟩ = ½(|00⟩ + |01⟩ − |10⟩ − |11⟩) = |−⟩|+⟩ ✓</span>
+    <span class="note">Special case x = 0…0: every sign is +1, giving the equal superposition of all 2ⁿ strings, the first step of almost every algorithm.</span>
+  </div>
+  <p>This formula is what makes the <a href="../16-deutsch-algorithm/#dj-algebra">Deutsch–Jozsa algebra</a> work: after the oracle, the final H<sup>⊗n</sup> sends every input x back towards |0…0⟩ with sign +1, so that amplitude is just the average of the oracle's signs.</p>
+  <p class="why"><b>A natural-looking state can still be entangled.</b> (1/√2)(|0⟩|+⟩ + |1⟩|−⟩) reads like "|0⟩ with |+⟩, or |1⟩ with |−⟩". As a column it is ½(1, 1, 1, −1), and ad − bc = −¼ − ¼ = −½ ≠ 0, so it does not factor. Always run the test; don't trust the look.</p>
+</section>
+
+
+
+<section class="xt" id="measure-one">
+  <h2>Measuring only the first qubit</h2>
+  <p>The projectors for "first qubit is 0" and "first qubit is 1" are P₀ ⊗ I and P₁ ⊗ I. The ⊗ I says "ignore the second qubit".</p>
+  <div class="steps">
+    <span>Pr(first qubit = a) = ‖(Pₐ ⊗ I)ψ‖²</span>
+    <span>afterwards the state is (Pₐ ⊗ I)ψ, rescaled to length 1</span>
+  </div>
+  <div class="steps">
+    <span class="note">Example: ψ = (|00⟩ + |01⟩ + |10⟩)/√3</span>
+    <span>(P₀ ⊗ I)ψ = (|00⟩ + |01⟩)/√3    <span class="note">keep the terms whose first bit is 0</span></span>
+    <span>probability = (1/√3)² + (1/√3)² = 2/3</span>
+    <span>new state = (|00⟩ + |01⟩)/√2 = |0⟩ ⊗ |+⟩</span>
+    <span>(P₁ ⊗ I)ψ = |10⟩/√3</span>
+    <span>probability = 1/3, new state |10⟩</span>
+    <span class="ok">2/3 + 1/3 = 1 ✓</span>
+  </div>
+</section>
+
+<section class="xt" id="bell-correlations">
+  <h2>Bell-state correlations, in two bases</h2>
+  <p>Measure both qubits of Φ⁺ = (|00⟩ + |11⟩)/√2: you get 00 or 11, each with probability ½, and never 01 or 10. Each qubit on its own looks like a fair coin, but the two always agree.</p>
+  <p>Now write the same state in the ± basis, using bilinearity:</p>
+  <div class="steps">
+    <span>(|++⟩ + |−−⟩)/√2</span>
+    <span>= (1/√2)·½·[(|0⟩ + |1⟩)(|0⟩ + |1⟩) + (|0⟩ − |1⟩)(|0⟩ − |1⟩)]</span>
+    <span>= (1/(2√2))·[(|00⟩ + |01⟩ + |10⟩ + |11⟩) + (|00⟩ − |01⟩ − |10⟩ + |11⟩)]</span>
+    <span>= (1/(2√2))·(2|00⟩ + 2|11⟩)</span>
+    <span class="ok">= (|00⟩ + |11⟩)/√2 = Φ⁺</span>
+  </div>
+  <p>So measuring both qubits in the ± basis <i>also</i> gives perfectly agreeing results. A classical story ("both coins were secretly the same all along") can explain agreement in one basis, but not agreement in every basis at once. That gap is what Bell inequalities measure, and it is covered on <a href="../15-entanglement-and-qiskit/#spooky">entanglement</a>.</p>
+</section>
+
+<section>
+  <h2>Common mistakes</h2>
+  <ul class="mist">
+    <li><b>Swapping the order.</b> ⊗ is not like ordinary ×. |0⟩⊗|1⟩ = (0, 1, 0, 0) = |01⟩, but |1⟩⊗|0⟩ = (0, 0, 1, 0) = |10⟩. So |0⟩⊗|1⟩ ≠ |1⟩⊗|0⟩.</li>
+    <li><b>Adding sizes instead of multiplying.</b> Two 2-number vectors give 2 × 2 = 4 numbers, not 2 + 2. Three qubits give 2 × 2 × 2 = 8.</li>
+    <li><b>Qiskit reads labels backwards.</b> On paper the left digit is the first qubit. Qiskit names qubits q0, q1, … and prints q0 on the <i>right</i>. When Qiskit shows "01", it means q0 = 1 and q1 = 0. You will meet this tomorrow.</li>
+      <li><b>Assuming every two-qubit state splits into two one-qubit states.</b> Only product states do. (|00⟩ + |11⟩)/√2 fails the α₀₀α₁₁ = α₀₁α₁₀ test.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Check question</h2>
+  <p>Compute |0⟩ ⊗ |1⟩ (by hand, then with <span class="m">np.kron</span>) and say which basis state it is.</p>
+  <details>
+    <summary>Show answer</summary>
+    <p>|0⟩ = (1, 0), so <span class="q1">a = 1</span>, <span class="q1">b = 0</span>. |1⟩ = (0, 1), so <span class="q2">c = 0</span>, <span class="q2">d = 1</span>.</p>
+    <div class="steps">slot 1 (|00⟩):  a·c = 1 × 0 = 0
+slot 2 (|01⟩):  a·d = 1 × 1 = 1
+slot 3 (|10⟩):  b·c = 0 × 0 = 0
+slot 4 (|11⟩):  b·d = 0 × 1 = 0
+
+|0⟩ ⊗ |1⟩ = (0, 1, 0, 0)</div>
+    <p>The only 1 sits in slot 2, whose label is 01. So |0⟩⊗|1⟩ = <b>|01⟩</b>: first qubit 0, second qubit 1. In binary, 01 = (0 × 2) + (1 × 1) = 1, which matches the position (#1, counting from 0).</p>
+    <p class="check">Check: 0² + 1² + 0² + 0² = 0 + 1 + 0 + 0 = 1 ✓</p>
+  </details>
+</section>
+
+<section>
+  <h2>Check it in NumPy</h2>
+<pre class="code">import numpy as np
+ket0, ket1 = np.array([1, 0]), np.array([0, 1])
+state = np.kron(ket0, ket1)
+print(state)                 # [0 1 0 0]
+print(np.argmax(state), format(np.argmax(state), "02b"))  # 1 01</pre>
+</section>
+
+<section>
+  <h2>Go deeper</h2>
+  <ul class="links">
+    <li><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/quantum-foundations/concepts/14-tensor-products/notebook.ipynb">Tutorial notebook (.ipynb, to run yourself)</a></li>
+    <li><a href="notebook.html">The same tutorial as a web page</a></li>
+    <li><a href="../../reference/reading-maths-symbols.html">Symbol dictionary: reading maths symbols</a></li>
+  </ul>
+</section>
+
+
+<footer>
+  <span>Study time: about 1 hour</span>
+  <a href="../../../">All concepts</a>
+</footer>
+
+</div>
+
+<script>
+(function(){
+  var R2=Math.SQRT1_2;
+  var S={"0":[1,0],"1":[0,1],"p":[R2,R2]};
+  var N={"0":"|0⟩","1":"|1⟩","p":"|+⟩"};
+  function fmt(x){
+    if(Math.abs(x)<1e-9) return "0";
+    if(Math.abs(x-1)<1e-9) return "1";
+    if(Math.abs(x-R2)<1e-9) return "1/√2";
+    if(Math.abs(x-0.5)<1e-9) return "1/2";
+    return x.toFixed(3);
+  }
+  var st={a:"p",b:"0"};
+  function set(id,t){document.getElementById(id).textContent=t;}
+  function render(){
+    var A=S[st.a],B=S[st.b];
+    set("tA0",fmt(A[0]));set("tA1",fmt(A[1]));
+    set("tB0",fmt(B[0]));set("tB1",fmt(B[1]));
+    set("r0",fmt(A[0]*B[0]));set("r1",fmt(A[0]*B[1]));
+    set("r2",fmt(A[1]*B[0]));set("r3",fmt(A[1]*B[1]));
+    set("nowShowing",N[st.a]+" ⊗ "+N[st.b]);
+    ["0","1","p"].forEach(function(k){
+      document.getElementById("a"+k).setAttribute("aria-pressed",String(st.a===k));
+      document.getElementById("b"+k).setAttribute("aria-pressed",String(st.b===k));
+    });
+  }
+  ["0","1","p"].forEach(function(k){
+    document.getElementById("a"+k).addEventListener("click",function(){st.a=k;render();});
+    document.getElementById("b"+k).addEventListener("click",function(){st.b=k;render();});
+  });
+  render();
+  var lin=document.getElementById("gLin"),lg=document.getElementById("gLog");
+  var bL=document.getElementById("sLin"),bG=document.getElementById("sLog");
+  function scale(isLog){lin.hidden=isLog;lg.hidden=!isLog;bL.setAttribute("aria-pressed",String(!isLog));bG.setAttribute("aria-pressed",String(isLog));}
+  bL.addEventListener("click",function(){scale(false);});
+  bG.addEventListener("click",function(){scale(true);});
+})();
+</script>
+
+<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Part D · Concept 14 of 17</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../13-one-qubit-big-picture/">← One qubit, the whole picture</a> · <a href="../15-entanglement-and-qiskit/">Entanglement and your first Qiskit circuit →</a></div></nav></body></html>

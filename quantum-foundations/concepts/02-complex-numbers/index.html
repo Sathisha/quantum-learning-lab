@@ -1,0 +1,665 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body><style>
+.cnav{--cn-ink:#1b2430;--cn-mut:#566275;--cn-bg:#f5f7fb;--cn-rule:#d3dae4;--cn-a:#1d5bbd;
+ display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 18px;font:14px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif;
+ color:var(--cn-mut);background:var(--cn-bg);border-bottom:1px solid var(--cn-rule);
+ padding-block:9px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.cnav:not(.bottom){margin-bottom:22px}
+.cnav.bottom{border-bottom:0;border-top:1px solid var(--cn-rule);margin-top:32px}
+.cnav a{color:var(--cn-a);text-decoration:none}.cnav a:hover{text-decoration:underline}
+.cnav a:focus-visible{outline:2px solid var(--cn-a);outline-offset:2px}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}}
+:root[data-theme="dark"] .cnav{--cn-ink:#e4e9f0;--cn-mut:#9aa7b9;--cn-bg:#161d27;--cn-rule:#2c3644;--cn-a:#7eb0ff}
+</style><nav class="cnav" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Part A · Concept 02 of 17</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../01-trigonometry/">← Trigonometry refresher</a> · <a href="../03-euler-and-phase/">e^(iθ) and phase →</a></div></nav>
+<title>Complex numbers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=JetBrains+Mono:wght@400;600&family=Spectral:wght@500;700&display=swap">
+<style>
+/* Layout: a single graph-paper notebook column; maths in mono, real = blue, imaginary = magenta throughout */
+:root{
+  --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4; --grid:#e6ebf2;
+  --re:#1d5bbd; --im:#b02c68; --soft:#f5f7fb; --code:#f2f4f8;
+  --f-display:"Spectral",Georgia,serif; --f-body:"Atkinson Hyperlegible",system-ui,sans-serif; --f-math:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --soft:#1b2330; --code:#121820; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --soft:#1b2330; --code:#121820; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:17px/1.6 var(--f-body);padding-inline:16px;padding-block:24px 48px}
+main{max-width:46rem;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.2}
+h1{font-size:2.3rem}
+h2{font-size:1.45rem;padding-bottom:6px;border-bottom:1px solid var(--rule)}
+section{display:flex;flex-direction:column;gap:12px;min-width:0}
+p{margin:0;max-width:65ch}
+.eyebrow{font:600 .78rem/1 var(--f-math);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.m{font-family:var(--f-math);font-size:.92em;white-space:nowrap}
+.re{color:var(--re)} .im{color:var(--im)}
+.box{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:16px}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.95rem}
+th,td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+th{font:600 .75rem var(--f-math);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+td:first-child{font-family:var(--f-math);font-weight:600;white-space:nowrap}
+td:nth-child(2){font-style:italic;white-space:nowrap}
+.steps{font-family:var(--f-math);font-size:.95rem;background:var(--code);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.steps span{white-space:pre-wrap}
+.steps .note{color:var(--muted);font-family:var(--f-body);font-size:.88rem;white-space:normal}
+.steps .ok{color:var(--re);font-weight:600}
+figure{margin:0;background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:14px;display:flex;flex-direction:column;gap:8px}
+figure svg{width:100%;height:auto;max-width:420px;align-self:center;display:block}
+figcaption{font-size:.92rem;color:var(--muted)}
+figcaption b{color:var(--ink)}
+svg text{font-family:var(--f-math);font-size:12px;fill:var(--ink)}
+svg .lab{font-size:13px;font-weight:600}
+svg .mut{fill:var(--muted)}
+svg .grid{stroke:var(--grid);stroke-width:1}
+svg .axis{stroke:var(--muted);stroke-width:1.4}
+svg .reS{stroke:var(--re)} svg .imS{stroke:var(--im)} svg .inkS{stroke:var(--ink)}
+svg .reF{fill:var(--re)} svg .imF{fill:var(--im)} svg .inkF{fill:var(--ink)}
+.formula{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:22px 16px;text-align:center;display:flex;flex-direction:column;gap:10px}
+.formula .big{font:600 clamp(1.4rem,5.5vw,2.1rem)/1.3 var(--f-math)}
+.formula .read{font-size:.98rem;color:var(--muted)}
+.formula .read b{color:var(--ink)}
+.slider{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;font-family:var(--f-math);font-size:.9rem}
+.slider input{flex:1 1 200px;accent-color:var(--re)}
+.readout{font-family:var(--f-math);font-size:.9rem;background:var(--code);border-radius:8px;padding:10px 12px;font-variant-numeric:tabular-nums;overflow-x:auto;white-space:pre}
+ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:8px;max-width:65ch}
+details{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:12px 16px}
+summary{cursor:pointer;font-weight:700;color:var(--re)}
+details[open] summary{margin-bottom:12px}
+summary:focus-visible,a:focus-visible,input:focus-visible{outline:2px solid var(--re);outline-offset:3px}
+pre.code{margin:0;background:var(--code);border-radius:8px;padding:14px 16px;overflow-x:auto;font:.88rem/1.55 var(--f-math)}
+.q{background:var(--soft);border-left:3px solid var(--im);padding:12px 14px;border-radius:0 8px 8px 0}
+a{color:var(--re)}
+.links{display:flex;flex-direction:column;gap:8px;padding-left:1.2rem;margin:0}
+footer{border-top:1px solid var(--rule);padding-top:14px;color:var(--muted);font-size:.92rem;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+@media (max-width:560px){thead{display:none}tbody tr{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;padding:9px 6px;border-bottom:1px solid var(--rule)}tbody td{border:0;padding:0}tbody td:nth-child(2){white-space:normal}tbody td:nth-child(3){grid-column:1/-1;color:var(--muted)}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<style id="xt-style">
+.xt{
+  --bg:#eef1f5; --paper:#ffffff; --ink:#1b2430; --muted:#566275; --rule:#d3dae4; --grid:#e6ebf2;
+  --re:#1d5bbd; --im:#b02c68; --ok:#1e7a4a; --okbg:#e5f4ec; --soft:#f5f7fb; --code:#f2f4f8;
+  --f-math:ui-monospace,"IBM Plex Mono","JetBrains Mono",Menlo,Consolas,monospace;}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]) .xt{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}}
+:root[data-theme="dark"] .xt{
+  --bg:#0f141b; --paper:#161d27; --ink:#e4e9f0; --muted:#9aa7b9; --rule:#2c3644; --grid:#1f2833;
+  --re:#7eb0ff; --im:#f28ab9; --ok:#6fd39d; --okbg:#15291f; --soft:#1b2330; --code:#121820; color-scheme:dark}
+.xt{color:inherit;font:inherit;display:flex;flex-direction:column;gap:12px;min-width:0;text-align:left}
+.xt h3{margin:10px 0 0}
+.xt section,.xt article{display:flex;flex-direction:column;gap:12px;min-width:0}
+.xt p{margin:0;max-width:65ch}
+.xt .eyebrow{font:600 .78rem/1 var(--f-math);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.xt .m{font-family:var(--f-math);font-size:.92em;white-space:nowrap}
+.xt .re{color:var(--re)} .im{color:var(--im)}
+.xt .bar{text-decoration:overline;text-decoration-thickness:1.5px}
+.xt .box{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:16px;display:flex;flex-direction:column;gap:10px}
+.xt .scroll{overflow-x:auto}
+.xt table{border-collapse:collapse;width:100%;font-size:.95rem}
+.xt th,.xt td{text-align:left;padding:7px 10px;border-bottom:1px solid var(--rule);vertical-align:top}
+.xt th{font:600 .75rem var(--f-math);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.xt .sym td:first-child{font-family:var(--f-math);font-weight:600;white-space:nowrap}
+.xt .key{display:grid;grid-template-columns:repeat(auto-fill,minmax(5.2rem,1fr));gap:8px}
+.xt .key a{display:flex;justify-content:space-between;align-items:baseline;gap:6px;text-decoration:none;color:var(--ink);background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:7px 10px;font-family:var(--f-math);font-variant-numeric:tabular-nums}
+.xt .key a b{color:var(--ok)}
+.xt .key a span{color:var(--muted);font-size:.85rem}
+.xt .qcard{background:var(--paper);border:1px solid var(--rule);border-radius:12px;padding:18px 16px;display:flex;flex-direction:column;gap:12px;scroll-margin-top:16px}
+.xt .qhead{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}
+.xt .qhead .qn{font:700 .85rem var(--f-math);color:var(--muted)}
+.xt .qtext{font-size:1.05rem}
+.xt .opts{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(9.5rem,1fr));gap:6px}
+.xt .opts li{border:1px solid var(--rule);border-radius:8px;padding:6px 10px;font-family:var(--f-math);font-size:.92rem;min-width:0;overflow-wrap:anywhere}
+.xt .opts li .l{color:var(--muted);margin-right:6px}
+.xt .show .opts li.ok,.xt .revealed .opts li.ok{border-color:var(--ok);background:var(--okbg);color:var(--ink)}
+.xt .show .opts li.ok .l,.xt .revealed .opts li.ok .l{color:var(--ok);font-weight:700}
+.xt .badge{font:700 .82rem var(--f-math);color:var(--ok);background:var(--okbg);border-radius:999px;padding:3px 10px;white-space:nowrap}
+.xt body:not(.show) .qcard:not(.revealed) .badge{visibility:hidden}
+.xt .steps{font-family:var(--f-math);font-size:.93rem;background:var(--code);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:4px;overflow-x:auto}
+.xt .steps span{white-space:pre-wrap}
+.xt .steps .note{color:var(--muted);font-family:var(--f-body);font-size:.88rem;white-space:normal}
+.xt .steps .ok{color:var(--ok);font-weight:600}
+.xt figure{margin:0;background:var(--soft);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:8px}
+.xt figure svg{width:100%;height:auto;max-width:360px;align-self:center;display:block}
+.xt figcaption{font-size:.9rem;color:var(--muted)}
+.xt figcaption b{color:var(--ink)}
+.xt svg text{font-family:var(--f-math);font-size:12px;fill:var(--ink)}
+.xt svg .lab{font-size:13px;font-weight:600}
+.xt svg .mut{fill:var(--muted)}
+.xt svg .grid{stroke:var(--grid);stroke-width:1}
+.xt svg .axis{stroke:var(--muted);stroke-width:1.3}
+.xt svg .reS{stroke:var(--re)} svg .imS{stroke:var(--im)} svg .inkS{stroke:var(--ink)} svg .okS{stroke:var(--ok)} svg .mutS{stroke:var(--muted)}
+.xt svg .reF{fill:var(--re)} svg .imF{fill:var(--im)} svg .inkF{fill:var(--ink)} svg .okF{fill:var(--ok)} svg .bgF{fill:var(--paper)} svg .none{fill:none}
+.xt svg .okT{fill:var(--ok)} svg .reT{fill:var(--re)} svg .imT{fill:var(--im)}
+.xt .why{font-size:.95rem;color:var(--muted)}
+.xt .why b{color:var(--ink)}
+.xt .ql{background:var(--soft);border-left:3px solid var(--im);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.xt .ql b{color:var(--im)}
+.xt .warn{background:var(--soft);border-left:3px solid var(--re);padding:10px 14px;border-radius:0 8px 8px 0;font-size:.95rem}
+.xt details.sol{border-top:1px dashed var(--rule);padding-top:10px}
+.xt details.sol>summary{cursor:pointer;font-weight:700;color:var(--re);list-style-position:inside}
+.xt details.sol[open]>summary{margin-bottom:10px}
+.xt details.sol>div{display:flex;flex-direction:column;gap:12px}
+.xt .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.xt button{font:600 .9rem var(--f-body);color:var(--re);background:var(--paper);border:1px solid var(--re);border-radius:8px;padding:8px 14px;cursor:pointer}
+.xt button:hover{background:var(--soft)}
+.xt button:focus-visible,.xt summary:focus-visible,.xt a:focus-visible{outline:2px solid var(--re);outline-offset:3px}
+.xt ul{margin:0;padding-left:1.2rem;display:flex;flex-direction:column;gap:6px;max-width:65ch}
+.xt pre.code{margin:0;background:var(--code);border-radius:8px;padding:14px 16px;overflow-x:auto;font:.85rem/1.55 var(--f-math)}
+.xt a{color:var(--re)}
+.xt footer{border-top:1px solid var(--rule);padding-top:14px;color:var(--muted);font-size:.9rem;display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+@media (prefers-reduced-motion:reduce){.xt *{transition:none!important}}
+.xt .tag{font:600 .72rem var(--f-math);letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:2px 9px;white-space:nowrap}
+.xt .tag.new{color:var(--ok);background:var(--okbg)} .tag.have{color:var(--re);background:var(--soft)} .tag.next{color:var(--im);background:var(--soft)}
+.xt .cov td:nth-child(2){white-space:nowrap}
+.xt .grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(15rem,1fr));gap:12px}
+.xt .grid2>div{min-width:0}
+
+.xt .formula{text-align:center}
+.xt>p,.xt>ul{margin:0}
+.xt .fml{background:var(--paper);border:1px solid var(--rule);border-radius:10px;padding:18px 12px;text-align:center;font:600 clamp(1.05rem,4.4vw,1.5rem)/1.4 var(--f-math);overflow-x:auto}
+.xt .say{color:var(--muted);font-size:.95rem}
+.xt .say b{color:var(--ink)}
+.xt thead{display:table-header-group}.xt tbody tr{display:table-row;padding:0}.xt tbody td{display:table-cell;padding:7px 10px;border-bottom:1px solid var(--rule);color:inherit}
+.xt .steps{font-size:.86rem}
+@media (max-width:560px){.xt table.symt thead{display:none}.xt table.symt tbody tr{display:grid;grid-template-columns:auto 1fr;gap:2px 12px;padding:9px 6px;border-bottom:1px solid var(--rule)}.xt table.symt tbody td{display:block;border:0;padding:0}.xt table.symt td:nth-child(3){grid-column:1/-1;color:var(--muted)}}
+.xt .steps .note{background:none;border:0;padding:0;margin:0;border-radius:0;font-size:.85rem}
+</style>
+<main>
+<header style="display:flex;flex-direction:column;gap:10px">
+  <div class="eyebrow">Concept 02 · Part A · Toolkit</div>
+  <h1>Complex numbers</h1>
+  <p style="color:var(--muted)">Every qubit is described by complex numbers. This page shows how to read them, draw them, turn them into an angle and a length, and why their angles (phases) make interference possible.</p>
+</header>
+
+<section>
+  <h2>Symbols on this page</h2>
+  <div class="box scroll" style="padding:4px 6px">
+  <table>
+    <thead><tr><th>Symbol</th><th>Say it</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>i</td><td>"i"</td><td>The imaginary unit: the number whose square is −1.</td></tr>
+      <tr><td>i²</td><td>"i squared"</td><td>i × i. Equals −1. A small raised number means "multiply by itself that many times".</td></tr>
+      <tr><td>√x</td><td>"square root of x"</td><td>The positive number that, times itself, gives x. √25 = 5.</td></tr>
+      <tr><td>z</td><td>"zed"</td><td>A name we give to one complex number.</td></tr>
+      <tr><td>a + bi</td><td>"a plus b i"</td><td>A complex number: <span class="re">a</span> is the real part, <span class="im">b</span> is the imaginary part.</td></tr>
+      <tr><td>z̄  or  z*</td><td>"zed bar" / "zed star"</td><td>The conjugate: flip the sign of the imaginary part.</td></tr>
+      <tr><td>|z|</td><td>"mod zed" / "absolute value of zed"</td><td>The modulus: the length of z's arrow from 0.</td></tr>
+      <tr><td>r</td><td>"r"</td><td>Short for that length (radius).</td></tr>
+      <tr><td>θ</td><td>"theta"</td><td>A Greek letter used for an angle, measured anticlockwise from the positive real axis.</td></tr>
+      <tr><td>π</td><td>"pi"</td><td>≈ 3.14159. Half a turn: π radians = 180°.</td></tr>
+      <tr><td>°</td><td>"degrees"</td><td>Angle unit: a full turn is 360°.</td></tr>
+      <tr><td>rad</td><td>"radians"</td><td>The other angle unit: a full turn is 2π rad. Python and NumPy use radians.</td></tr>
+      <tr><td>cos θ, sin θ</td><td>"cos theta", "sine theta"</td><td>For a point on a circle of radius 1 at angle θ: cos θ is how far across, sin θ is how far up.</td></tr>
+      <tr><td>arctan(x)</td><td>"arc-tan of x"</td><td>Reverse of tan: gives back the angle whose tan is x. Also written tan⁻¹ ("tan inverse").</td></tr>
+      <tr><td>e</td><td>"e"</td><td>Euler's number ≈ 2.71828.</td></tr>
+      <tr><td>e^(iθ)</td><td>"e to the i theta"</td><td>The point at angle θ on the circle of radius 1. The ^ means "to the power of".</td></tr>
+      <tr><td>≈</td><td>"is approximately"</td><td>Equal after rounding.</td></tr>
+      <tr><td>× or ·</td><td>"times"</td><td>Multiply.</td></tr>
+      <tr><td>✓</td><td>"check"</td><td>This line confirms the answer.</td></tr>
+            <tr><td>φ</td><td>"phi" (rhymes with "fly")</td><td>Another angle name, used for phases.</td></tr>
+        <tr><td>e^(iφ)</td><td>"e to the i phi"</td><td>A phase: a complex number of size 1 at angle φ.</td></tr>
+        <tr><td>zⁿ</td><td>"z to the n"</td><td>z multiplied by itself n times.</td></tr>
+        <tr><td>n!</td><td>"n factorial"</td><td>1 × 2 × … × n. 3! = 6.</td></tr>
+        <tr><td>ω</td><td>"omega"</td><td>e^(2πi/n): the first n-th root of unity, a turn of 1/n of a circle.</td></tr>
+        <tr><td>k = 0, 1, …, n − 1</td><td>"k runs from zero to n minus one"</td><td>One formula, n answers: one for each k.</td></tr>
+</tbody>
+  </table>
+  </div>
+</section>
+
+<section>
+  <h2>Back to basics</h2>
+  <p><b>Pythagoras.</b> In a right-angled triangle with short sides a and b, the long side (hypotenuse) c obeys <span class="m">c² = a² + b²</span>, so <span class="m">c = √(a² + b²)</span>.</p>
+  <p><b>Sine and cosine (SOH CAH TOA).</b> For the angle θ at one corner: <span class="m">sin θ = opposite ÷ hypotenuse</span>, <span class="m">cos θ = adjacent ÷ hypotenuse</span>, <span class="m">tan θ = opposite ÷ adjacent</span>.</p>
+  <p><b>Degrees and radians.</b> <span class="m">180° = π rad</span>, so 90° = π/2, 45° = π/4.</p>
+  <div class="steps" aria-label="Worked refresher">
+    <span class="note">Tiny example: a triangle with sides a = 3 (across) and b = 4 (up).</span>
+    <span>c = √(3² + 4²)</span>
+    <span>  = √(9 + 16)</span>
+    <span>  = √25</span>
+    <span>  = 5</span>
+    <span>sin θ = opposite ÷ hypotenuse = 4 ÷ 5 = 0.8</span>
+    <span>cos θ = adjacent ÷ hypotenuse = 3 ÷ 5 = 0.6</span>
+    <span class="ok">check: 0.6² + 0.8² = 0.36 + 0.64 = 1 ✓</span>
+  </div>
+</section>
+
+<section>
+  <h2>The idea</h2>
+  <p>No ordinary number squares to give −1, so mathematicians invented one, called <span class="m">i</span>, and declared <span class="m">i² = −1</span>. A complex number <span class="m">a + bi</span> is then just a point on a flat plane: <span class="re">a</span> steps across, <span class="im">b</span> steps up. You can describe the same point a second way, by its <b>length</b> r and its <b>angle</b> θ. Quantum computing uses both descriptions all the time, and Euler's formula is the bridge between them.</p>
+</section>
+
+<section>
+  <h2>Pictures</h2>
+
+  <figure>
+    <svg viewBox="0 0 300 250" role="img" aria-label="Powers of i cycle around a circle: 1, i, minus 1, minus i, back to 1">
+      <defs><marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" class="inkF"/></marker></defs>
+      <line x1="40" y1="130" x2="260" y2="130" class="axis"/>
+      <line x1="150" y1="20" x2="150" y2="240" class="axis"/>
+      <path d="M230 130 A80 80 0 0 0 150 50" fill="none" class="inkS" stroke-width="1.6" marker-end="url(#ah)"/>
+      <path d="M150 50 A80 80 0 0 0 70 130" fill="none" class="inkS" stroke-width="1.6" marker-end="url(#ah)"/>
+      <path d="M70 130 A80 80 0 0 0 150 210" fill="none" class="inkS" stroke-width="1.6" marker-end="url(#ah)"/>
+      <path d="M150 210 A80 80 0 0 0 230 130" fill="none" class="inkS" stroke-width="1.6" marker-end="url(#ah)"/>
+      <circle cx="230" cy="130" r="5" class="reF"/><circle cx="70" cy="130" r="5" class="reF"/>
+      <circle cx="150" cy="50" r="5" class="imF"/><circle cx="150" cy="210" r="5" class="imF"/>
+      <text x="238" y="122" class="lab">1 = i⁴</text>
+      <text x="158" y="40" class="lab">i = i¹</text>
+      <text x="62" y="122" class="lab" text-anchor="end">−1 = i²</text>
+      <text x="158" y="232" class="lab">−i = i³</text>
+      <text x="218" y="66" class="mut">× i</text><text x="70" y="66" class="mut">× i</text>
+      <text x="70" y="202" class="mut">× i</text><text x="218" y="202" class="mut">× i</text>
+    </svg>
+    <figcaption><b>Why i exists, and why its powers cycle.</b> Multiplying by i turns a point a quarter turn (90°) anticlockwise. Start at 1: one turn gives i, two turns give i² = −1 (opposite side), three give i³ = −i, four bring you home: i⁴ = 1. Then it repeats.</figcaption>
+  </figure>
+
+  <figure>
+    <svg viewBox="0 0 360 315" role="img" aria-label="The point 3 plus 4i on the complex plane, with a = 3, b = 4, r = 5 and theta about 53 degrees">
+      <defs><marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="inkF"/></marker></defs>
+      <g class="grid">
+        <line x1="110" y1="15" x2="110" y2="270"/><line x1="160" y1="15" x2="160" y2="270"/><line x1="210" y1="15" x2="210" y2="270"/><line x1="260" y1="15" x2="260" y2="270"/><line x1="310" y1="15" x2="310" y2="270"/>
+        <line x1="60" y1="220" x2="340" y2="220"/><line x1="60" y1="170" x2="340" y2="170"/><line x1="60" y1="120" x2="340" y2="120"/><line x1="60" y1="70" x2="340" y2="70"/><line x1="60" y1="20" x2="340" y2="20"/>
+      </g>
+      <line x1="60" y1="270" x2="345" y2="270" class="axis"/><line x1="60" y1="270" x2="60" y2="10" class="axis"/>
+      <text x="345" y="262" text-anchor="end" class="mut">Re (real)</text>
+      <text x="66" y="12" class="mut">Im (imaginary)</text>
+      <text x="110" y="287" text-anchor="middle" class="mut">1</text><text x="160" y="287" text-anchor="middle" class="mut">2</text><text x="210" y="287" text-anchor="middle" class="mut">3</text><text x="260" y="287" text-anchor="middle" class="mut">4</text><text x="310" y="287" text-anchor="middle" class="mut">5</text>
+      <text x="52" y="224" text-anchor="end" class="mut">1</text><text x="52" y="174" text-anchor="end" class="mut">2</text><text x="52" y="124" text-anchor="end" class="mut">3</text><text x="52" y="74" text-anchor="end" class="mut">4</text>
+      <text x="52" y="285" text-anchor="end" class="mut">0</text>
+      <line x1="60" y1="270" x2="210" y2="270" class="reS" stroke-width="4"/>
+      <line x1="210" y1="270" x2="210" y2="70" class="imS" stroke-width="2.5" stroke-dasharray="6 4"/>
+      <line x1="60" y1="270" x2="205.2" y2="76.4" class="inkS" stroke-width="2.2" marker-end="url(#ah2)"/>
+      <path d="M100 270 A40 40 0 0 0 84 238" fill="none" class="inkS" stroke-width="1.4"/>
+      <circle cx="210" cy="70" r="5" class="inkF"/>
+      <text x="220" y="62" class="lab">3 + 4i</text>
+      <text x="128" y="160" text-anchor="end" class="lab">r = 5</text>
+      <text x="106" y="252" class="lab">θ ≈ 53.1°</text>
+      <text x="135" y="305" text-anchor="middle" class="lab reF">a = 3 (real part)</text>
+      <text x="218" y="175" class="lab imF">b = 4</text>
+    </svg>
+    <figcaption><b>One point, two descriptions.</b> As <span class="m">a + bi</span>: walk <span class="re">3 across</span>, <span class="im">4 up</span>. As <span class="m">(r, θ)</span>: an arrow of length 5 at angle ≈ 53.1° above the real axis. The two are linked by the 3-4-5 triangle from the refresher.</figcaption>
+  </figure>
+
+  <figure>
+    <svg id="uc" viewBox="-20 -10 360 330" role="img" aria-label="Unit circle with the point e to the i theta, moved by the slider">
+      <circle cx="160" cy="160" r="120" fill="none" class="axis" stroke-dasharray="3 4"/>
+      <line x1="20" y1="160" x2="300" y2="160" class="axis"/><line x1="160" y1="20" x2="160" y2="300" class="axis"/>
+      <text x="300" y="152" text-anchor="end" class="mut">Re</text><text x="166" y="28" class="mut">Im</text>
+      <text x="284" y="176" class="mut">1</text><text x="166" y="48" class="mut">i</text><text x="30" y="176" class="mut">−1</text><text x="166" y="294" class="mut">−i</text>
+      <line id="ucCos" x1="160" y1="160" x2="263.92" y2="160" class="reS" stroke-width="4"/>
+      <line id="ucSin" x1="263.92" y1="160" x2="263.92" y2="100" class="imS" stroke-width="3" stroke-dasharray="5 4"/>
+      <line id="ucR" x1="160" y1="160" x2="263.92" y2="100" class="inkS" stroke-width="2.2"/>
+      <path id="ucArc" d="M190 160 A30 30 0 0 0 185.98 145" fill="none" class="inkS" stroke-width="1.4"/>
+      <circle id="ucP" cx="263.92" cy="100" r="6" class="inkF"/>
+      <text id="ucL" x="276" y="97" text-anchor="start" class="lab">e^(iθ)</text>
+    </svg>
+    <div class="slider">
+      <label for="theta">θ (theta) =</label>
+      <input id="theta" type="range" min="0" max="359" step="1" value="30">
+      <output id="thetaOut" for="theta">30°</output>
+    </div>
+    <div class="readout" id="ucRead">θ = 30° = 0.5236 rad
+cos θ = 0.8660   (blue, how far across)
+sin θ = 0.5000   (pink, how far up)
+e^(iθ) = 0.8660 + 0.5000i     length = 1</div>
+    <figcaption><b>Euler's formula as a picture.</b> e^(iθ) is the point at angle θ on the circle of radius 1. Its across-distance is cos θ and its up-distance is sin θ. Drag the slider: the length always stays 1. Try 90° (you land on i) and 180° (you land on −1).</figcaption>
+  </figure>
+
+  <figure>
+    <svg viewBox="0 0 360 380" role="img" aria-label="z = 3 + 4i and its conjugate 3 − 4i are mirror images across the real axis">
+      <defs><marker id="ah3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="inkF"/></marker></defs>
+      <line x1="20" y1="190" x2="345" y2="190" class="axis"/><line x1="100" y1="10" x2="100" y2="370" class="axis"/>
+      <text x="345" y="182" text-anchor="end" class="mut">Re (the mirror)</text><text x="106" y="20" class="mut">Im</text>
+            <text x="92" y="34" text-anchor="end" class="mut">4</text><text x="92" y="354" text-anchor="end" class="mut">−4</text>
+      <line x1="94" y1="30" x2="106" y2="30" class="axis"/><line x1="94" y1="350" x2="106" y2="350" class="axis"/>
+      <line x1="220" y1="30" x2="220" y2="350" class="inkS" stroke-width="1.2" stroke-dasharray="3 5"/>
+      <line x1="100" y1="190" x2="216.4" y2="34.8" class="reS" stroke-width="2.2" marker-end="url(#ah3)"/>
+      <line x1="100" y1="190" x2="216.4" y2="345.2" class="imS" stroke-width="2.2" marker-end="url(#ah3)"/>
+      <circle cx="220" cy="30" r="5" class="reF"/><circle cx="220" cy="350" r="5" class="imF"/>
+      <text x="228" y="34" class="lab">z = 3 + 4i</text>
+      <text x="228" y="354" class="lab">z̄ = 3 − 4i</text>
+      <text x="228" y="196" class="mut">a = 3</text>
+      <text x="128" y="182" class="mut">+θ</text><text x="128" y="208" class="mut">−θ</text>
+    </svg>
+    <figcaption><b>The conjugate is a reflection.</b> To get z̄ (zed bar), keep the real part and flip the sign of the imaginary part. On the plane that is a mirror flip across the real axis: same length r, angle θ becomes −θ.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Key formula</h2>
+  <div class="formula">
+    <div class="big">e^(iθ) = cos θ + i·sin θ</div>
+    <div class="read"><b>Read it aloud:</b> "e to the i theta equals cos theta plus i sine theta."</div>
+    <div class="m" style="white-space:normal">so any z = a + bi can be written  z = r·e^(iθ),  with  r = |z| = √(a² + b²)</div>
+    <div class="read"><b>Read it aloud:</b> "zed equals r e to the i theta, where r, the mod of zed, is the square root of a squared plus b squared."</div>
+  </div>
+</section>
+
+<section class="xt" id="why-euler">
+  <h2>Why is Euler's formula true? (optional)</h2>
+<p>You can use e^(iθ) = cos θ + i sin θ without proving it. If you want to see why, the reason is the "Taylor series" of eˣ: an endless sum that equals eˣ for every x.</p>
+  <div class="steps">
+    <span>eˣ = 1 + x + x²/2! + x³/3! + x⁴/4! + …</span>
+    <span class="note">n! ("n factorial") means 1 × 2 × … × n. So 2! = 2, 3! = 6, 4! = 24.</span>
+    <span>Put x = iθ. The powers of i repeat: i⁰ = 1, i¹ = i, i² = −1, i³ = −i, i⁴ = 1, …</span>
+    <span>e^(iθ) = 1 + iθ − θ²/2! − iθ³/3! + θ⁴/4! + …</span>
+    <span class="note">Terms without i:</span>
+    <span>1 − θ²/2! + θ⁴/4! − … = cos θ</span>
+    <span class="note">Terms with i (take the i out):</span>
+    <span>θ − θ³/3! + θ⁵/5! − … = sin θ</span>
+    <span class="ok">e^(iθ) = cos θ + i sin θ ✓</span>
+  </div>
+  <p class="why">The two grouped sums are the Taylor series of cos and sin. Try θ = π: cos π + i sin π = −1 + 0i, which gives the famous e^(iπ) = −1.</p>
+</section>
+
+
+<section>
+  <h2>Worked example: z = 3 + 4i</h2>
+  <div class="steps">
+    <span class="note">1. Real and imaginary parts</span>
+    <span>a = 3,  b = 4</span>
+    <span class="note">2. Conjugate: flip the sign of b</span>
+    <span>z̄ = 3 − 4i</span>
+    <span class="note">3. Modulus (length) by Pythagoras</span>
+    <span>|z| = √(a² + b²)</span>
+    <span>    = √(3² + 4²)</span>
+    <span>    = √(9 + 16)</span>
+    <span>    = √25</span>
+    <span>    = 5</span>
+    <span class="note">4. Angle (a is positive, so arctan gives the right angle)</span>
+    <span>θ = arctan(b ÷ a)</span>
+    <span>  = arctan(4 ÷ 3)</span>
+    <span>  = arctan(1.3333…)</span>
+    <span>  ≈ 0.9273 rad</span>
+    <span>  ≈ 0.9273 × (180 ÷ π)°</span>
+    <span>  ≈ 53.13°</span>
+    <span class="note">5. Polar form</span>
+    <span>z = 5·(cos 53.13° + i·sin 53.13°) = 5·e^(i·0.9273)</span>
+    <span class="note">Check 1: turn the polar form back into a + bi</span>
+    <span>5 × cos 53.13° = 5 × 0.6 = 3   ✓ (that's a)</span>
+    <span>5 × sin 53.13° = 5 × 0.8 = 4   ✓ (that's b)</span>
+    <span class="note">Check 2: z times its conjugate should be |z|²</span>
+    <span>(3 + 4i)(3 − 4i) = 3·3 + 3·(−4i) + 4i·3 + 4i·(−4i)</span>
+    <span>                 = 9 − 12i + 12i − 16i²</span>
+    <span>                 = 9 − 16·(−1)        (because i² = −1)</span>
+    <span>                 = 9 + 16</span>
+    <span>                 = 25</span>
+    <span class="ok">                 = 5² ✓</span>
+  </div>
+</section>
+
+<section class="xt" id="multiply">
+  <h2>Multiplying in polar form: lengths multiply, angles add</h2>
+<p>Polar form makes multiplication easy. Write z₁ = r₁e^(iθ₁) and z₂ = r₂e^(iθ₂). The power rule e^a · e^b = e^(a+b) works for complex powers too:</p>
+  <div class="fml">z₁ · z₂ = r₁r₂ · e^(i(θ₁ + θ₂))</div>
+  <p class="say"><b>Read it aloud:</b> "z one times z two equals r one r two, e to the i, theta one plus theta two". Multiply the lengths, add the angles.</p>
+  <div class="steps">
+    <span>Example: (1 + i) · (1 + i√3)</span>
+    <span>1 + i: length √(1 + 1) = √2, angle 45°</span>
+    <span>1 + i√3: length √(1 + 3) = 2, angle 60°</span>
+    <span class="note">(angle = arctan(√3 ÷ 1) = 60°)</span>
+    <span>Product: length √2 × 2 = 2√2 ≈ 2.828</span>
+    <span>angle 45° + 60° = 105°</span>
+    <span class="note">Check the long way, using i² = −1:</span>
+    <span>(1 + i)(1 + i√3)</span>
+    <span>= 1 + i√3 + i + i²√3</span>
+    <span>= (1 − √3) + i(1 + √3)</span>
+    <span>≈ −0.732 + 2.732i</span>
+    <span>2.828 × cos 105° = 2.828 × (−0.259) ≈ −0.732 ✓</span>
+    <span>2.828 × sin 105° = 2.828 × 0.966 ≈ 2.732 ✓</span>
+  </div>
+  <h3>Three consequences you will use all the time</h3>
+  <ul>
+    <li><b>Multiplying by e^(iφ) is a pure rotation.</b> Its length is 1, so lengths don't change; the angle just grows by φ. Multiplying by i (= e^(iπ/2)) turns by 90°, by −1 (= e^(iπ)) by 180°.</li>
+    <li><b>Powers: zⁿ = rⁿ · e^(inθ)</b> ("De Moivre"). Example: (1 + i√3)⁶ has length 2⁶ = 64 and angle 6 × 60° = 360°, a full turn, so it equals 64.</li>
+    <li><b>Dividing: lengths divide, angles subtract.</b> 1/e^(iθ) = e^(−iθ), which is also the conjugate of e^(iθ).</li>
+  </ul>
+  <p><b>Negative angles turn clockwise.</b> e^(−iπ/6) is the point 30° <i>below</i> the real axis: cos 30° − i sin 30° = 0.866 − 0.5i.</p>
+</section>
+
+<section class="xt" id="divide">
+  <h2>Dividing, and the reciprocal 1/z</h2>
+  <p>In polar form, division is easy (lengths divide, angles subtract). In a + bi form, use one trick: <b>multiply top and bottom by the conjugate of the bottom</b>. That makes the bottom a real number, because (c + di)(c − di) = c² + d².</p>
+  <div class="steps">
+    <span>(3 + i) / (1 − i)</span>
+    <span class="note">conjugate of the bottom is 1 + i; multiply top and bottom by it</span>
+    <span>top:    (3 + i)(1 + i) = 3 + 3i + i + i² = 3 + 4i − 1 = 2 + 4i</span>
+    <span>bottom: (1 − i)(1 + i) = 1 − i² = 1 + 1 = 2</span>
+    <span class="ok">= (2 + 4i)/2 = 1 + 2i</span>
+    <span class="note">Check: (1 + 2i)(1 − i) = 1 − i + 2i − 2i² = 1 + i + 2 = 3 + i ✓</span>
+  </div>
+  <p>The same idea gives a formula for the reciprocal. Since z·z̄ = |z|²:</p>
+  <div class="fml">1/z = z̄ / |z|²</div>
+  <p class="say"><b>Read it aloud:</b> "one over z equals z bar over mod z squared". Example: z = 3 + 4i has |z|² = 25, so 1/z = (3 − 4i)/25. On the unit circle |z| = 1, so 1/z is just z̄.</p>
+  <div class="steps">
+    <span class="note">Two identities for z = e^(iθ) on the unit circle (1/z = e^(−iθ) = z̄):</span>
+    <span>z + 1/z = (cos θ + i sin θ) + (cos θ − i sin θ) = 2 cos θ    <span class="note">real</span></span>
+    <span>z − 1/z = (cos θ + i sin θ) − (cos θ − i sin θ) = 2i sin θ   <span class="note">purely imaginary</span></span>
+  </div>
+  <p class="why">z and 1/z are mirror images across the real axis, so their sum lies on the real axis and their difference points straight up. Rotating by 90° clockwise is multiplying by −i; doubling the distance is multiplying by 2, so "turn 90° clockwise and double" is multiplying by −2i.</p>
+  <p class="why"><b>Powers of i repeat every 4</b> (i, −1, −i, 1, …), so iⁿ depends only on the remainder of n ÷ 4. Example: 103 = 4 × 25 + 3, so i¹⁰³ = i³ = −i.</p>
+</section>
+
+<section class="xt" id="roots">
+  <h2>Roots of unity</h2>
+<p>"Unity" means 1. The <b>n-th roots of unity</b> are the n numbers z with zⁿ = 1. In polar form the length must be 1 (since 1ⁿ = 1), and n times the angle must be a whole number of full turns. So the angles are 0, 1/n, 2/n, … of a full turn:</p>
+  <div class="fml">z = e^(2πik/n),   k = 0, 1, …, n − 1</div>
+  <p class="say"><b>Read it aloud:</b> "e to the two pi i k over n". Write ω = e^(2πi/n) ("omega"); then the roots are 1, ω, ω², …, ω^(n−1), evenly spaced around the unit circle.</p>
+  <div class="steps">
+    <span>n = 4: angles 0°, 90°, 180°, 270°</span>
+    <span>→ 1, i, −1, −i</span>
+    <span>Check i: i⁴ = (i²)² = (−1)² = 1 ✓</span>
+  </div>
+<figure>
+    <svg viewBox="0 0 360 200" role="img" aria-label="Left: arrows 1, omega and omega squared placed head to tail form a closed triangle, so the sum is zero. Right: the three cube roots of unity on the unit circle.">
+      <defs><marker id="ah2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" class="inkF"/></marker></defs>
+      <line x1="60" y1="160" x2="140" y2="160" class="inkS" stroke-width="2.5" marker-end="url(#ah2)"/><text x="92" y="180" class="lab">1</text>
+      <line x1="140" y1="160" x2="100" y2="90.7" class="inkS" stroke-width="2.5" marker-end="url(#ah2)"/><text x="126" y="118" class="lab">ω</text>
+      <line x1="100" y1="90.7" x2="60" y2="160" class="inkS" stroke-width="2.5" marker-end="url(#ah2)"/><text x="62" y="118" class="lab">ω²</text>
+      <circle cx="60" cy="160" r="5" class="okF"/><text x="16" y="194" class="okT lab">back to start: sum = 0</text>
+      <line class="axis" x1="210" y1="100" x2="340" y2="100"/><line class="axis" x1="275" y1="30" x2="275" y2="170"/>
+      <circle cx="275" cy="100" r="55" class="none mutS" stroke-dasharray="4 4"/>
+      <circle cx="330" cy="100" r="5" class="reF"/><text x="334" y="92" class="lab">1</text>
+      <circle cx="247.5" cy="52.4" r="5" class="imF"/><text x="220" y="44" class="lab">ω</text>
+      <circle cx="247.5" cy="147.6" r="5" class="imF"/><text x="218" y="166" class="lab">ω²</text>
+      <text x="282" y="190" class="mut">n = 3, 120° apart</text>
+    </svg>
+    <figcaption><b>Walk along each root in turn and you end where you started.</b> That is "the sum is zero".</figcaption>
+  </figure>
+  <p><b>For n ≥ 2 the roots add up to zero.</b> Place the arrows head to tail and you come back to the start.</p>
+  <div class="steps">
+    <span>n = 3: ω = e^(2πi/3) = cos 120° + i sin 120° = −1/2 + i√3/2</span>
+    <span>ω² = e^(4πi/3) = −1/2 − i√3/2</span>
+    <span>1 + ω + ω²</span>
+    <span>= (1 − 1/2 − 1/2) + i(√3/2 − √3/2)</span>
+    <span>= 0 + 0i</span>
+    <span class="ok">Sum = 0</span>
+    <span class="note">In general 1 + ω + … + ω^(n−1) = (ωⁿ − 1)/(ω − 1), the geometric-series formula, and ωⁿ − 1 = 0.</span>
+  </div>
+  <p><b>Solving zⁿ = c.</b> Take one answer and multiply it by each n-th root of unity. Example z⁴ = 2: one answer is 2^(1/4) ≈ 1.189, so all four are 1.189, 1.189i, −1.189 and −1.189i.</p>
+  <p class="ql"><b>Quantum link:</b> the cancelling sum is the heart of the quantum Fourier transform, the engine of Shor's algorithm. Example, n = 5: the five roots add to 0, so dropping the root 1 leaves ω + ω² + ω³ + ω⁴ = −1.</p>
+</section>
+
+<section class="xt" id="phase">
+  <h2>Phase and interference</h2>
+<p>A <b>phase</b> is a complex number of size 1: e^(iφ) = cos φ + i sin φ. Picture it as an arrow of length 1 pointing at angle φ ("phi"). From the section above, multiplying by a phase only rotates. It never changes a size.</p>
+  <p><b>Adding is different.</b> Take two arrows of length 1, the number 1 and e^(iφ), and add them tip to tail. Pointing the same way, they make length 2. Pointing opposite ways, they cancel to 0. In between, anything in between.</p>
+  <div class="steps">
+    <span>1 + e^(iφ) = (1 + cos φ) + i·sin φ</span>
+    <span class="note">Real part 1 + cos φ, imaginary part sin φ. Size squared = real² + imaginary²:</span>
+    <span>|1 + e^(iφ)|² = (1 + cos φ)² + sin² φ</span>
+    <span>= 1 + 2cos φ + cos² φ + sin² φ</span>
+    <span>= 1 + 2cos φ + 1</span>
+    <span class="note">because cos² φ + sin² φ = 1</span>
+    <span class="ok">|1 + e^(iφ)|² = 2 + 2cos φ</span>
+  </div>
+  <p>Why the size <i>squared</i>? In quantum computing a probability is an amplitude's size squared, so this is the number that ends up mattering.</p>
+<figure>
+    <svg viewBox="0 0 340 230" role="img" aria-label="Graph of |1 + e to the i phi| squared against phi from 0 to 2 pi: 4 at phi 0, 2 at pi over 2, 1 at 2 pi over 3, 0 at pi">
+      <line class="axis" x1="40" y1="190" x2="325" y2="190"/><line class="axis" x1="40" y1="20" x2="40" y2="190"/>
+      <line class="grid" x1="40" y1="30" x2="320" y2="30"/><line class="grid" x1="40" y1="110" x2="320" y2="110"/>
+      <text x="32" y="34" class="mut" text-anchor="end">4</text><text x="32" y="114" class="mut" text-anchor="end">2</text><text x="32" y="194" class="mut" text-anchor="end">0</text>
+      <text x="40" y="208" class="mut" text-anchor="middle">0</text><text x="110" y="208" class="mut" text-anchor="middle">π/2</text><text x="180" y="208" class="mut" text-anchor="middle">π</text><text x="320" y="208" class="mut" text-anchor="middle">2π</text>
+      <text x="180" y="226" class="mut" text-anchor="middle">phase difference φ</text>
+      <polyline class="none reS" stroke-width="2.5" points="40.0,30.0 44.7,30.4 49.3,31.7 54.0,33.9 58.7,36.9 63.3,40.7 68.0,45.3 72.7,50.5 77.3,56.5 82.0,63.0 86.7,70.0 91.3,77.5 96.0,85.3 100.7,93.4 105.3,101.6 110.0,110.0 114.7,118.4 119.3,126.6 124.0,134.7 128.7,142.5 133.3,150.0 138.0,157.0 142.7,163.5 147.3,169.5 152.0,174.7 156.7,179.3 161.3,183.1 166.0,186.1 170.7,188.3 175.3,189.6 180.0,190.0 184.7,189.6 189.3,188.3 194.0,186.1 198.7,183.1 203.3,179.3 208.0,174.7 212.7,169.5 217.3,163.5 222.0,157.0 226.7,150.0 231.3,142.5 236.0,134.7 240.7,126.6 245.3,118.4 250.0,110.0 254.7,101.6 259.3,93.4 264.0,85.3 268.7,77.5 273.3,70.0 278.0,63.0 282.7,56.5 287.3,50.5 292.0,45.3 296.7,40.7 301.3,36.9 306.0,33.9 310.7,31.7 315.3,30.4 320.0,30.0"/>
+      <circle cx="40" cy="30" r="5" class="okF"/><text x="50" y="24" class="lab okT">4: constructive</text>
+      <circle cx="133.3" cy="150" r="5" class="imF"/><text x="140" y="148" class="lab imT">1 (120°)</text>
+      <circle cx="180" cy="190" r="5" class="okF"/><text x="188" y="182" class="lab okT">0: destructive</text>
+    </svg>
+    <figcaption><b>|1 + e^(iφ)|² = 2 + 2 cos φ.</b> Same sizes, different phase, anything from 0 to 4. This is interference, the engine of quantum algorithms.</figcaption>
+  </figure>
+  <div class="scroll"><table>
+    <thead><tr><th>φ</th><th>cos φ</th><th>2 + 2cos φ</th><th>What happens</th></tr></thead>
+    <tbody>
+      <tr><td class="m">0</td><td>1</td><td><b>4</b></td><td>Arrows aligned: they reinforce (<b>constructive</b> interference)</td></tr>
+      <tr><td class="m">π/2 (90°)</td><td>0</td><td>2</td><td>Arrows at right angles: sum length √2</td></tr>
+      <tr><td class="m">2π/3 (120°)</td><td>−1/2</td><td>1</td><td>The pink dot: two unit arrows 120° apart add up to an arrow of length 1</td></tr>
+      <tr><td class="m">π (180°)</td><td>−1</td><td><b>0</b></td><td>Arrows opposite: they cancel (<b>destructive</b> interference)</td></tr>
+      <tr><td class="m">2π (360°)</td><td>1</td><td>4</td><td>A full turn: aligned again</td></tr>
+    </tbody>
+  </table></div>
+  <p>Both arrows have size 1 in every row. Only the angle <i>between</i> them changes, yet the result runs from 0 to 4. That is <b>interference</b>.</p>
+
+  <h3>Global phase: you can't measure it</h3>
+  <p>A <b>global</b> phase multiplies <i>every</i> number in a state by the same e^(iθ). It turns all the arrows by the same angle, so the angle between any two arrows is unchanged, and so is every sum and every size.</p>
+  <div class="steps">
+    <span>ψ = (1/√2, 1/√2)</span>
+    <span>iψ = (i/√2, i/√2)</span>
+    <span>|i/√2|² = |i|² · (1/√2)² = 1 · 1/2 = 1/2</span>
+    <span class="note">Same as |1/√2|² = 1/2.</span>
+    <span class="ok">Same probabilities, in every basis</span>
+    <span class="note">ψ and iψ are the same physical state.</span>
+  </div>
+
+  <h3>Relative phase: you can measure it</h3>
+  <p>A <b>relative</b> phase sits on only <i>one</i> part of a state. Compare (1, 1)/√2 and (1, −1)/√2, where −1 = e^(iπ):</p>
+  <ul>
+    <li><b>Square each entry separately</b> (the 0/1 measurement): |1/√2|² = |−1/√2|² = 1/2. Both give 50/50, so the minus sign is invisible.</li>
+    <li><b>Add the entries first</b> (the ± measurement, which compares the state with (1, 1)/√2): now the graph above appears.</li>
+  </ul>
+  <div class="steps">
+    <span class="note">State (1, e^(iφ))/√2. Its overlap with (1, 1)/√2:</span>
+    <span>(1/√2)(1/√2) · (1 + e^(iφ))</span>
+    <span>= ½ (1 + e^(iφ))</span>
+    <span class="note">Probability = size squared, and the graph gives |1 + e^(iφ)|²:</span>
+    <span>P(+) = ¼ · |1 + e^(iφ)|²</span>
+    <span>= ¼ (2 + 2cos φ) = (1 + cos φ)/2</span>
+    <span>φ = 0: P(+) = (1 + 1)/2 = 1, "+" every time</span>
+    <span>φ = π: P(+) = (1 − 1)/2 = 0, "−" every time</span>
+  </div>
+  <p>Two states that look identical one way are perfectly distinguishable the other way. The overlap uses the inner product (<a href="../06-inner-products-and-bases/">inner products</a>), and qubit states and the ± measurement are on <a href="../10-qubits-and-dirac-notation/">qubits</a> and <a href="../11-bloch-sphere/">the Bloch sphere</a>.</p>
+  <p class="ql"><b>Why this matters:</b> every quantum algorithm works by arranging phases so that the arrows leading to wrong answers point opposite ways and cancel. <a href="../16-deutsch-algorithm/">Deutsch's algorithm</a> is exactly this graph with φ set to 0 or π.</p>
+  <details class="sol"><summary>Try it: for (1, i)/√2, what is P(+)?</summary><div>
+    <div class="steps">
+      <span>i = e^(iπ/2), so φ = π/2</span>
+      <span>P(+) = (1 + cos 90°)/2 = (1 + 0)/2 = 1/2</span>
+      <span class="ok">The middle of the curve: 50/50 in the ± measurement too.</span>
+    </div>
+  </div></details>
+</section>
+
+<section>
+  <h2>Common mistakes</h2>
+  <ul>
+    <li><b>Forgetting i² = −1.</b> In (3 + 4i)(3 − 4i) the last term is −16i², which is +16, not −16. The answer is 25, not −7.</li>
+    <li><b>Putting the i inside the modulus.</b> |3 + 4i| uses only the numbers a = 3 and b = 4: √(9 + 16) = 5. Never √(9 + (4i)²) = √(9 − 16).</li>
+    <li><b>Degrees vs radians, and the wrong quadrant.</b> NumPy's <span class="m">np.angle</span> returns radians (0.9273, not 53.13). And arctan(b ÷ a) alone is only right when a is positive; for a point on the left half (a negative), add 180°. Draw the point first and look.</li>
+      <li><b>Thinking a negative angle is impossible.</b> −θ just means clockwise: e^(−iπ/6) is 30° below the real axis.</li>
+    <li><b>Adding angles when you add numbers.</b> Angles add when you <i>multiply</i>. Adding two numbers is tip-to-tail arrows, and the result depends on the angle between them.</li>
+    <li><b>Treating every phase as meaningless.</b> A phase on the whole state (global) changes nothing you can measure. A phase on one part only (relative) changes interference.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Practice</h2>
+  <p class="q">Write <span class="m">z = (1 + i)/√2</span> in polar form, and show its modulus is 1.</p>
+  <details>
+    <summary>Show answer</summary>
+    <div class="steps">
+      <span class="note">1. Split into real and imaginary parts</span>
+      <span>z = 1/√2 + i·(1/√2)</span>
+      <span>a = 1/√2 ≈ 0.7071,   b = 1/√2 ≈ 0.7071</span>
+      <span class="note">2. Square each part</span>
+      <span>a² = (1/√2)² = 1² ÷ (√2)² = 1 ÷ 2 = 1/2</span>
+      <span>b² = 1/2   (same working)</span>
+      <span class="note">3. Modulus</span>
+      <span>|z| = √(a² + b²)</span>
+      <span>    = √(1/2 + 1/2)</span>
+      <span>    = √1</span>
+      <span>    = 1   ✓ modulus is 1</span>
+      <span class="note">4. Angle (a and b both positive, so top-right quarter)</span>
+      <span>θ = arctan(b ÷ a)</span>
+      <span>  = arctan(0.7071 ÷ 0.7071)</span>
+      <span>  = arctan(1)</span>
+      <span>  = 45° = π/4 rad</span>
+      <span class="note">5. Polar form</span>
+      <span>z = 1·(cos 45° + i·sin 45°) = e^(iπ/4)</span>
+      <span class="note">Check: cos 45° = sin 45° = 1/√2 ≈ 0.7071, which matches a and b</span>
+      <span class="ok">So (1 + i)/√2 = e^(iπ/4): the point at 45° on the unit circle ✓</span>
+    </div>
+  </details>
+</section>
+
+<section>
+  <h2>Check it in NumPy</h2>
+  <p>Python writes i as <span class="m">1j</span>.</p>
+<pre class="code">import numpy as np
+z = (1 + 1j) / np.sqrt(2)
+print(abs(z))                              # 1.0 (modulus)
+print(np.angle(z), np.pi / 4)              # 0.785398... both (radians)
+print(np.isclose(z, np.exp(1j * np.pi/4))) # True</pre>
+</section>
+
+<section>
+  <h2>Go deeper</h2>
+  <ul class="links">
+    <li><a href="https://github.com/Sathisha/quantum-learning-lab/blob/main/quantum-foundations/concepts/02-complex-numbers/notebook.ipynb">Tutorial notebook (.ipynb, to run yourself)</a></li>
+    <li><a href="notebook.html">The same tutorial as a web page</a></li>
+    <li><a href="../../reference/reading-maths-symbols.html">Symbol dictionary: how to read maths symbols</a></li>
+  </ul>
+</section>
+
+
+
+
+
+
+
+
+
+<footer>
+  <span>Study time: 45 min</span>
+  <a href="../../../">All concepts</a>
+</footer>
+</main>
+
+<script>
+(function(){
+  var s=document.getElementById('theta'), out=document.getElementById('thetaOut');
+  var el=function(id){return document.getElementById(id)};
+  function f(n){return (n<0?'−':'')+Math.abs(n).toFixed(4)}
+  function upd(){
+    var d=+s.value, t=d*Math.PI/180, c=Math.cos(t), sn=Math.sin(t);
+    if(Math.abs(c)<1e-9)c=0; if(Math.abs(sn)<1e-9)sn=0;
+    var x=160+120*c, y=160-120*sn;
+    el('ucCos').setAttribute('x2',x);
+    el('ucSin').setAttribute('x1',x); el('ucSin').setAttribute('x2',x); el('ucSin').setAttribute('y2',y);
+    el('ucR').setAttribute('x2',x); el('ucR').setAttribute('y2',y);
+    el('ucP').setAttribute('cx',x); el('ucP').setAttribute('cy',y);
+    var L=el('ucL'); L.setAttribute('x',160+134*c+(Math.abs(c)<=0.35?0:0)); L.setAttribute('y',164-134*sn); L.setAttribute('text-anchor',c>0.35?'start':(c<-0.35?'end':'middle'));
+    el('ucArc').setAttribute('d', d===0?'':'M190 160 A30 30 0 '+(d>180?1:0)+' 0 '+(160+30*c)+' '+(160-30*sn));
+    out.textContent=d+'°';
+    var im=sn<0?(' − '+Math.abs(sn).toFixed(4)+'i'):(' + '+sn.toFixed(4)+'i');
+    el('ucRead').textContent='θ = '+d+'° = '+t.toFixed(4)+' rad\ncos θ = '+f(c)+'   (blue, how far across)\nsin θ = '+f(sn)+'   (pink, how far up)\ne^(iθ) = '+f(c)+im+'     length = 1';
+  }
+  s.addEventListener('input',upd); upd();
+})();
+</script>
+
+<nav class="cnav bottom" aria-label="Concept navigation"><div><a href="../../../">Home</a> · <span>Part A · Concept 02 of 17</span> · <a href="notebook.html">Tutorial</a></div><div><a href="../01-trigonometry/">← Trigonometry refresher</a> · <a href="../03-euler-and-phase/">e^(iθ) and phase →</a></div></nav></body></html>
